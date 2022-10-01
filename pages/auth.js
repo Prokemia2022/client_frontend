@@ -6,7 +6,7 @@ import styles from '../styles/Home.module.css';
 function Auth(){
 	return(
 		<Flex className={styles.authbody}>
-			<Stack bg='#000' w='50%' h='100vh' className={styles.authsection1}>
+			<Stack bg='#000' className={styles.authsection1}>
 				<Center m='auto'>
 					<Text fontWeight='ClearSans-Bold' fontSize='32px' color='#009393'>Prok<span style={{color:'#fff'}}>emia</span></Text>
 				</Center>

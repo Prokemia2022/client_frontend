@@ -156,7 +156,7 @@ const Promo=()=>{
 	return(
 		<Flex bg='#000' h='' p='2' >
 			<Image className={styles.promoimg} h='99%' w='40%' borderRadius='2px' objectFit='cover' src='../images.jpeg' alt='next'/>
-			<Flex className={styles.promotext} w='50%' p='2' direction='column' color='#fff' gap='3'>
+			<Flex className={styles.promotext} p='2' direction='column' color='#fff' gap='3'>
 				<Text fontSize='48px'>Want to Sell Products?</Text>
 				<Text fontSize=''>Sell as a Manufacturer, become a distributor or become a salespersn to start marketing your products on out platform</Text>
 				<Text fontSize=''>Boost your sales and access a wide market for your company or business.</Text>
