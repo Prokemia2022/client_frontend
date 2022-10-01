@@ -1,0 +1,43 @@
+.authbody{
+	display:flex;
+}
+.filterbody{
+	width: 95vw;
+		margin: auto;
+		padding: 10px;
+		background-color:#fff;
+		border-radius:10px;
+        box-shadow:
+		  0px 0px 1.2px rgba(0, 0, 0, 0.042),
+		  0px 0px 2.7px rgba(0, 0, 0, 0.062),
+		  0px 0px 4.6px rgba(0, 0, 0, 0.077),
+		  0px 0px 6.9px rgba(0, 0, 0, 0.089),
+		  0px 0px 10px rgba(0, 0, 0, 0.1),
+		  0px 0px 14.2px rgba(0, 0, 0, 0.111),
+		  0px 0px 20.1px rgba(0, 0, 0, 0.123),
+		  0px 0px 29.2px rgba(0, 0, 0, 0.138),
+		  0px 0px 45px rgba(0, 0, 0, 0.158),
+		  0px 0px 80px rgba(0, 0, 0, 0.2)
+		;
+}
+.promotext{
+	width: 50%;
+}
+
+@media screen and (max-width: 48em) {
+    .authbody{
+    	flex-direction: column;
+    	width:100vw;
+    	/*background-color: #000;*/
+    	height: 100vh;
+    }
+    .authsection1{
+    	display: none;
+    }
+    .promoimg{
+    	display: none
+	}
+	.promotext{
+		width: 100%
+	}
+  }
