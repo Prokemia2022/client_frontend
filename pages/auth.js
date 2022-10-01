@@ -6,11 +6,11 @@ import styles from '../styles/Home.module.css';
 function Auth(){
 	return(
 		<Flex className={styles.authbody}>
-			<Stack bg='#000' className={styles.authsection1}>
+			<Flex bg='#000' className={styles.authsection1}>
 				<Center m='auto'>
 					<Text fontWeight='ClearSans-Bold' fontSize='32px' color='#009393'>Prok<span style={{color:'#fff'}}>emia</span></Text>
 				</Center>
-			</Stack>
+			</Flex>
 			
 			<Center p='1' bg='#eee' m='auto' className={styles.authsection2} >
 			<Tabs mt='' isFitted variant='enclosed' w='300px'>
