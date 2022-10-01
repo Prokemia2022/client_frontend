@@ -23,7 +23,12 @@
 .promotext{
 	width: 50%;
 }
-
+.promoimg{
+    	display: flex;
+	}
+.authsection1{
+    	display: flex;
+    }
 @media screen and (max-width: 48em) {
     .authbody{
     	flex-direction: column;
@@ -35,7 +40,7 @@
     	display: none;
     }
     .promoimg{
-    	display: none
+    	display: none;
 	}
 	.promotext{
 		width: 100%
