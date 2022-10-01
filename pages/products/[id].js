@@ -12,7 +12,7 @@ function Explore(){
 			<Text fontSize='28px' fontFamily='ClearSans-Bold' borderBottom='1px solid #000' >{categ.id}</Text>
 			{categories.map((item)=>{
 				return(
-					<div key={distributor.id}>
+					<div key={item.id}>
 						<Categories item={item} />
 					</div>
 				)
@@ -30,9 +30,9 @@ const Categories=({item})=>{
 			<Flex wrap='Wrap' justify='space-between' direction='column' gap='2'>
 				{item.contents.map((content)=>{
 					return(
-						<>
+						<div key={content.id}>
 							<Item content={content}/>
-						</>
+						</div>
 					)
 				})}
 				<Text fontSize='24px' fontFamily='ClearSans-Bold' borderBottom='1px solid #000'> Featured Distributors </Text>
@@ -44,9 +44,9 @@ const Categories=({item})=>{
 						<Flex>
 						{distributor.industries.map((ind)=>{
 							return(
-								<>
+								<div key={ind.id}>
 									<Text fontSize='14px'>{ind},</Text>
-								</>
+								</div>
 							)
 						})}
 						</Flex>
