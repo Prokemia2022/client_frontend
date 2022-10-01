@@ -41,7 +41,7 @@ function Explore(){
 			<Text fontSize='24px' fontFamily='ClearSans-Bold' borderBottom='1px solid #000'> Featured Distributors </Text>
 			{distributors.map((distributor)=>{
 				return(
-					<Flex direction='column' bg='#eee' p='1' m='1'>
+					<Flex direction='column' bg='#eee' p='1' m='1' key={distributor.id}>
 						<Text fontSize='20px' fontFamily='ClearSans-Bold'>{distributor.name}</Text>
 						<Text>Industry: </Text>
 						<Flex>
@@ -60,7 +60,7 @@ function Explore(){
 			<Text fontSize='24px' fontFamily='ClearSans-Bold' borderBottom='1px solid #000'> Featured Manufacturers </Text>
 			{manufacturers.map((manufacturer)=>{
 				return(
-					<Flex direction='column' bg='#eee' p='1' m='1'>
+					<Flex direction='column' bg='#eee' p='1' m='1' key={manufacturer.id}>
 						<Text fontSize='20px' fontFamily='ClearSans-Bold'>{manufacturer.name}</Text>
 						<Text>Industry: </Text>
 						<Flex>

@@ -11,8 +11,8 @@ function _Home(){
 			{/*
 			<Image src='/wave.svg' alt='next'/>
 		*/}
-			<Flex h='35vh' mt='5' direction='column' gap='2' w='70%' p='5'>
-					<Text mb='0' fontFamily='ClearSans-Bold' fontSize='38px' >The Marketplace for ingredients,Polymers and Chemistry.</Text>
+			<Flex h='' mt='5' direction='column' gap='2' w='100%' p='5'>
+					<Text mb='0' fontFamily='ClearSans-Bold' fontSize='36px' >The Marketplace for ingredients,Polymers and Chemistry.</Text>
 					<Text cursor='pointer' w='80%'>Search, Learn, Engage ,sample , quote and purchase from thousands of distributors - all in one platform.Access all easily.</Text>
 				</Flex>
 			<Filter />

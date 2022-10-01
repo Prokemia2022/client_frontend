@@ -60,7 +60,9 @@ const MenuBar=()=>{
 							<Flex pl='4' direction='column' gap='3'>
 								{item.content.map((text)=>{
 									return(
-										<Text mb='0'> - {text} </Text>		
+										<div key={text.id}>
+											<Text mb='0'> - {text} </Text>		
+										</div>
 									)
 								})}
 							</Flex>
