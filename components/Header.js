@@ -1,17 +1,18 @@
 import React,{useState} from 'react'
-import {Flex, Text,Button,Stack} from '@chakra-ui/react'
-import {Menu,Close,Add,HorizontalRule} from '@mui/icons-material';
+import {Flex, Text,Button,Stack,Divider} from '@chakra-ui/react'
+import {Menu,Close,Add,HorizontalRule,ArrowForward} from '@mui/icons-material';
 import {useRouter} from 'next/router'
 
 function Header(){
 	const [showmenubar,setshowmenubar]=useState(false);
 	const router = useRouter();
 	return(
-		<Flex cursor='pointer' bg='#eee' fontFamily='ClearSans-Bold' h='50px' p='2' justify='space-between' align='center'>
+		<Flex position='sticky' top='0' w='100%' zIndex='999' cursor='pointer' bg='#eee' fontFamily='ClearSans-Bold' h='70px' p='2' justify='space-between' align='center'>
 			<Text onClick={(()=>{router.push('/')})} fontSize='28px' color='#00e0c6' fontweight='bold' >Pro<span style={{color:"#000"}}>Kemia</span></Text>
 			<Flex align='center' gap='2'>
-				<Text>Sign in</Text>
-				<Button onClick={(()=>{router.push('/auth')})} bg='#009393' color='#fff' >Sign Up</Button>
+
+				<Text onClick={(()=>{router.push(`/profile/1`)})}>Account</Text>
+				<Button onClick={(()=>{router.push('/auth')})} bg='#009393' color='#fff' >Sign In</Button>
 				{showmenubar ? 
 					<Close onClick={(()=>{setshowmenubar(!showmenubar)})}/>
 						:
@@ -32,7 +33,7 @@ export default Header;
 const navigation=[
 	{
 		title:'For Manufacturers',
-		content:['Create an account','Sell Products','Contact Prokemia']
+		content:['Create an account','Sell Products','Request Demo']
 	},
 	{
 		title:'For Distributors',
@@ -60,8 +61,9 @@ const MenuBar=()=>{
 							<Flex pl='4' direction='column' gap='3'>
 								{item.content.map((text)=>{
 									return(
-										<div key={text.id}>
-											<Text mb='0'> - {text} </Text>		
+										<div key={text.id} style={{display:'flex',justifyContent:'space-between',borderBottom:"1px solid grey",padding:'10px'}}>
+											<Text mb='0'>{text}</Text>		
+											<ArrowForward/>
 										</div>
 									)
 								})}

@@ -1,5 +1,6 @@
 .authbody{
 	display:flex;
+	height: 100vh
 }
 .filterbody{
 	width: 95vw;
@@ -29,6 +30,32 @@
 .authsection1{
     	width: 50%;
     }
+.productbody{
+	flex-direction: row;
+}
+.productsection2{
+	width: 60vw
+}
+.contactbody{
+	flex-direction: row
+}
+.contactside{
+	width: 40%;
+}
+.consolebody{
+	
+}
+.consoleNavigation{
+	height: 100vh;
+	width: 30%;
+	background-color: #eee;
+	flex-direction: column;
+}
+.Hub{
+	width: 60vw;
+	height: 100vh;
+	background-color: #009393;
+}
 @media screen and (max-width: 48em) {
     .authbody{
     	flex-direction: column;
@@ -45,4 +72,33 @@
 	.promotext{
 		width: 100%
 	}
+	.productbody{
+	flex-direction: column;
+}
+.productsection2{
+	width: 100%
+}
+.contactbody{
+	flex-direction: column;
+}
+.contactside{
+	width: 100%;
+}
+.consoleNavigation{
+	height: 50px;
+	width: 100%;
+	background-color: #fff;
+	flex-direction: row;
+	overflow: auto;
+	
+}
+.consolebody{
+	flex-direction: column;
+}
+.Hub{
+	position: absolute;
+	top:50px;
+	left: 0px;
+	z-index: 1
+}
   }

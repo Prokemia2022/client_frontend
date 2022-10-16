@@ -158,7 +158,7 @@ const Promo=()=>{
 			<Image className={styles.promoimg} h='99%' w='40%' borderRadius='2px' objectFit='cover' src='../images.jpeg' alt='next'/>
 			<Flex className={styles.promotext} p='2' direction='column' color='#fff' gap='3'>
 				<Text fontSize='48px'>Want to Sell Products?</Text>
-				<Text fontSize=''>Sell as a Manufacturer, become a distributor or become a salespersn to start marketing your products on out platform</Text>
+				<Text fontSize=''>Register as a Manufacturer or Distributor to start marketing your products in East Africa on Prokemia</Text>
 				<Text fontSize=''>Boost your sales and access a wide market for your company or business.</Text>
 				<Button bg='#000' border='1px solid #fff'>Request a demo <PlayArrowIcon /></Button>
 				<Button bg='#009393' color='#fff' borderRadius='0'>Create an Account</Button>

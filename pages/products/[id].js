@@ -81,7 +81,7 @@ const Categories=({item})=>{
 const Item=({content,categ})=>{
 	const router = useRouter();
 	return(
-		<Flex position='relative' gap='2' align='center'>
+		<Flex position='relative' gap='2' align='center' onClick={(()=>{router.push(`/product/${content.name}`)})}>
 			<Image w='50px' h='50px' borderRadius='10px' objectFit='cover' src={content.img} alt='next'/>
 			<Flex direction='column'>
 			<Text fontSize='16px' fontFamily='ClearSans-Bold'>{content.name}</Text>
@@ -95,16 +95,19 @@ const categories=[
 	{
 		contents:[
 				{
+					id:1,
 					name:"Cereals",
 					img:"../images.jpeg",
 					distributor:'Itaconix'
 				},
 				{
+					id:2,
 					name:"Corn",
 					img:"../download.jpeg",
 					distributor:'Du point'
 				},
 				{
+					id:3,
 					name:"Beans",
 					img:"../download (1).jpeg",
 					distributor:'Du point'
