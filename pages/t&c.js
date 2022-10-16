@@ -16,7 +16,7 @@ function TC(){
 			<Text>You may use this Service only for lawful purposes.</Text>
 			<Text>You agree not to use Service:</Text>
 			<Flex direction='column' gap='1'>
-				{prohibiteduses.map((text)=>{return(<Text>-{text}</Text>)})}
+				{prohibiteduses.map((text)=>{return(<Text key={text.id}>-{text}</Text>)})}
 			</Flex>
 			<Text mt='1' fontWeight='bold' fontSize='20px'>Accounts</Text>
 			<Text>When you create an account with us, you guarantee that you are above at least the age of 18 years or older, and that the information you provide us is accurate, complete, and current at all times. Inaccurate, incomplete, or obsolete information may result in the immediate termination of your account on Service.</Text>
@@ -29,7 +29,7 @@ function TC(){
 			<Text>You may provide us either directly at app@prokemia.com  or via third party sites and tools with information and feedback concerning errors, suggestions for improvements, ideas, problems, complaints, and other matters related to our Service (“Feedback”). </Text>
 			<Text>You acknowledge and agree that:</Text>
 			<Flex direction='column' gap='1'>
-				{errorfeedback.map((text)=>{return(<Text>-{text}</Text>)})}
+				{errorfeedback.map((text)=>{return(<Text key={text.id}>-{text}</Text>)})}
 			</Flex>
 			<Text>In the event the transfer of the ownership to the Feedback is not possible due to applicable mandatory laws, you grant Company and its affiliates an exclusive, transferable, irrevocable, free-of-charge, sub-licensable, unlimited and perpetual right to use (including copy, modify, create derivative works, publish, distribute and commercialize) Feedback in any manner and for any purpose.</Text>
 			<Text mt='1' fontWeight='bold' fontSize='20px'>Links to Other Web Sites</Text>

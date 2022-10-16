@@ -14,7 +14,7 @@ function TC(){
 			<Text mt='1' fontWeight='bold' fontSize='20px'> Our Responsibilities</Text>
 			<Text>It is the policy of The Company to maintain an environment that promotes ethical and responsible conduct in all online network activities. The Company recognizes its legal and ethical obligation to protect your personal information and Data in that regard. To this end, The Company reserves the right and recognizes its obligation to:</Text>
 			<Flex direction='column' gap='1'>
-				{responsibility.map((text)=>{return(<Text>-{text}</Text>)})}
+				{responsibility.map((text)=>{return(<Text key={text.id}>-{text}</Text>)})}
 			</Flex>
 			<Text mt='1' fontWeight='bold' fontSize='20px'>Data Collection</Text>
 			<Text>We collect certain data from you directly, like information you enter yourself, data about your participation in our platform including from third party platforms you connect with The Company. We also use third party analytics to collect some data, like information about your device.</Text>
@@ -22,7 +22,7 @@ function TC(){
 			<Text mt='1' fontWeight='bold' fontSize='20px'>Data You Provide </Text>
 			<Text>We may collect different data from or about you depending on how you use the Services. When you create an account and use the Services, we collect personal information which includes any information about you from which you can be identified. The categories of Personal Information about you that we may collect, use, store or transfer (subject to your consent and/ requirements under applicable law) includes the following, some of which constitute Personal Information only when combined with personal identifiers:</Text>
 			<Flex direction='column' gap='1'>
-				{data.map((text)=>{return(<Text>-{text}</Text>)})}
+				{data.map((text)=>{return(<Text key={text.id}>-{text}</Text>)})}
 			</Flex>
 
 			<Text mt='1' fontWeight='bold' fontSize='20px'>How We Get Data about You</Text>
@@ -31,19 +31,19 @@ function TC(){
 			<Text mt='1' fontWeight='bold' fontSize='20px'>Purpose of Information</Text>
 			<Text>Before or at the time of collecting personal information, we will identify the purposes for which information is being collected. These include but not limited to:</Text>
 			<Flex direction='column' gap='1'>
-				{purposeofinformation.map((text)=>{return(<Text>-{text}</Text>)})}
+				{purposeofinformation.map((text)=>{return(<Text key={text.id}>-{text}</Text>)})}
 			</Flex>
 
 			<Text mt='1' fontWeight='bold' fontSize='20px'>Information Sharing and Disclosure</Text>
 			<Text>Depending on usage, we may share certain data about you with our business partners, analytics and data enrichment providers, your social media providers, companies helping us run promotions and surveys, and advertising companies who help us promote our Services. We may also share your data as needed for security, legal compliance, or as part of a corporate restructuring. Lastly, we can share data in other ways if it is aggregated or de-identified or with your consent. We may share your data with third parties under the following circumstances or as otherwise described in this Privacy Policy:</Text>
 			<Flex direction='column' gap='1'>
-				{InformationSharing.map((text)=>{return(<Text>-{text}</Text>)})}
+				{InformationSharing.map((text)=>{return(<Text key={text.id}>-{text}</Text>)})}
 			</Flex>
 
 			<Text mt='1' fontWeight='bold' fontSize='20px'>Rights of users</Text>
 			<Text>Subject to applicable laws, a user has the following rights;</Text>
 			<Flex direction='column' gap='1'>
-				{rightofusers.map((text)=>{return(<Text>-{text}</Text>)})}
+				{rightofusers.map((text)=>{return(<Text key={text.id}>-{text}</Text>)})}
 			</Flex>
 
 			<Text mt='1' fontWeight='bold' fontSize='20px'>Data Retention</Text>

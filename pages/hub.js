@@ -26,7 +26,7 @@ function Hub(){
 				<Flex h='75vh'  direction='column' gap='2' mt='2' p='2' overflowY='scroll'>
 					{texts.map((content)=>{
 						return(
-							<TextItem content={content}/>
+							<TextItem content={content} key={content.id}/>
 						)
 					})}
 				</Flex>

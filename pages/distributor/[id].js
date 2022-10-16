@@ -4,8 +4,8 @@ import styles from '../../styles/Home.module.css';
 import LocationCityIcon from '@mui/icons-material/LocationCity';
 import {useRouter} from 'next/router';
 
-function distributor(){
-	const [currentvalue,setCurrentValue]=useState('dashboard')
+function Distributor(){
+	const [currentvalue,setCurrentValue] = useState('dashboard')
 	if (currentvalue == 'inventory')
 	{   
 		return(
@@ -40,7 +40,7 @@ function distributor(){
 	}
 }
 
-export default distributor
+export default Distributor
 
 const Navbar=({setCurrentValue,currentvalue,setActive})=>{
 	return(
