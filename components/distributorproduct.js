@@ -57,13 +57,12 @@ function Product(){
 					<Text fontWeight='bold'>Storage & Handling</Text>
 					<Text>Amicult K 42 preferrably to be stored above 0c,as crystalization temperature for productis -O c.</Text>
 				</Flex>
-				<Flex >
+				<Flex direction='column' >
 					<Button bg='#fff' borderRadius='0' border='1px solid #000' p='1'>Contact Distributor</Button>
-					<Button bg='#fff' borderRadius='0' border='1px solid #000' p='1'><LanguageIcon />Visit Website</Button>
 					<Button bg='#fff' borderRadius='0' border='1px solid #000' p='1'><LanguageIcon />Visit Website</Button>
 				</Flex>
 			</Flex>
-		</Flex>direction='column'
+		</Flex>
 	)
 }
 
