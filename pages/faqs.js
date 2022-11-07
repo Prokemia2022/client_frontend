@@ -14,7 +14,7 @@ export default function FAQs(){
 			<Flex direction='column' mt='4' gap='3'>
 				{faqs.map((item)=>{
 					return(
-						<Flex key={item.id} borderTop='3px solid grey' p='2' borderBottom='3px solid grey' p='2' direction='column'>
+						<Flex key={item.id} borderTop='3px solid grey' borderBottom='3px solid grey' p='2' direction='column'>
 							<Flex cursor='pointer' onClick={(()=>{setActive(!active); setcurrentValue(`${item.title}`)})} align='center' justify='space-between' w='100%'>
 								<Text>{item.title}</Text>
 								{active && item.title === currentValue ? <HorizontalRule /> : <Add />}

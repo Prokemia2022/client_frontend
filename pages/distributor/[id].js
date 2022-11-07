@@ -70,22 +70,27 @@ export default Distributor
 
 const navItems = [
  {
+ 	id:1,
 	 title:'dashboard',
 	 icon:<Dashboard/>,
  },
  {
+ 	id:2,
 	 title:'inventory',
 	 icon:<Folder/>,
  },
  {
+ 	id:3,
 	title:'salespersons',
 	icon:<Groups2/>,
  },
  {
+ 	id:4,
 	 title:'manufacturers',
 	 icon:<Groups/>,
  },
  {
+ 	id:5,
 	 title:'settings',
 	 icon:<SettingsIcon/>,
  }
@@ -96,7 +101,7 @@ const Navbar=({setCurrentValue,currentvalue,setActive})=>{
 		<Flex p='2' gap='3' className={styles.consoleNavigation} cursor='pointer'>
 			{navItems.map((content)=>{
 				return (
-					<Flex color='#009393' align='center' p='2' gap='3' className={styles.consoleNavItem} onClick={(()=>{setCurrentValue(content.title)})}>
+					<Flex key={content.id} color='#009393' align='center' p='2' gap='3' className={styles.consoleNavItem} onClick={(()=>{setCurrentValue(content.title)})}>
 						{content.icon}
 						<Text fontSize='20px'  color={currentvalue == content.title ? '#009393': '#000'} p='1.5' mb='0'>{content.title}</Text>
 					</Flex>

@@ -43,11 +43,6 @@ function Header(){
 						})}
 					</MenuList>
 				</Menu>
-				{showmenubar ? 
-					<MenuBar setshowmenubar={setshowmenubar} />
-						:
-					null 
-				}
 			</Flex>
 		</Flex>
 	)

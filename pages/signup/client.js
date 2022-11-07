@@ -11,7 +11,7 @@ export default function ClientSignUp(){
 		<Flex h='100vh' className={styles.SignupBody}>
 			<Flex className={styles.authSection} gap='2' p='8'>
 				<Text w='40vw'  fontSize='2.5rem' color='#fff' fontFamily='ClearSans-bold'><span style={{borderBottom:"3px solid #fff",borderRadius:"3px"}}>Welcome </span>to Pro-Kemia</Text>
-				<Text w='40vw'  fontWeight='bold'>1rem therefore takes on the value which is given to the font-size of the root element. This means that 1 REM keeps the same value throughout your whole CSS code. If the root element's font size is not changed by the user this value is normally 16px</Text>
+				<Text w='40vw'  fontWeight='bold'>Search, Learn, Engage ,get samples and request quotations for products, and purchase from thousands of distributors - all in one platform.Access all easily.</Text>
 			</Flex>
 			<Flex className={styles.authForm} gap='2' direction='column'>
 				<Text w='100%' textAlign='center' fontSize='2rem' fontFamily='ClearSans-bold'><span style={{borderBottom:"4px solid #009393",borderRadius:"3px"}}>Sign</span> Up</Text>
