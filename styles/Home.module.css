@@ -3,7 +3,7 @@
 	height: 100vh
 }
 .filterbody{
-	width: 95vw;
+	width: 70vw;
 		margin: auto;
 		padding: 10px;
 		background-color:#fff;
@@ -30,6 +30,11 @@
 .authsection1{
     	width: 50%;
     }
+.accountBody{
+	background: rgb(0,147,147);
+	background: linear-gradient(243deg, rgba(0,147,147,1) 0%, rgba(255,255,255,1) 100%);
+}
+
 .productbody{
 	flex-direction: row;
 }
@@ -48,15 +53,116 @@
 .consoleNavigation{
 	height: 100vh;
 	width: 30%;
-	background-color: #eee;
+	background-color: #090F14;
 	flex-direction: column;
 }
+.consoleNavItem{
+	background-color:#fff;
+	border-bottom: 1px solid #000;
+	border-radius: 5px;
+	font-weight:bold;
+}
+.consoleNavItem:hover{
+	transform:scale(1.05);
+	transition:ease-out 1s all;
+}
 .Hub{
-	width: 60vw;
+	width: 50vw;
 	height: 100vh;
-	background-color: #009393;
+	background-color: #090F14;
+}
+.SigninBody{
+background: #2193b0;  /* fallback for old browsers */
+background: -webkit-linear-gradient(to left, #6dd5ed, #2193b0);  /* Chrome 10-25, Safari 5.1-6 */
+background: linear-gradient(to left, #6dd5ed, #2193b0); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+}
+.SignupBody{
+background: rgb(0,147,147);
+background: linear-gradient(90deg, rgba(0,147,147,1) 51%, rgba(237,248,248,1) 100%);
+}
+.authSection{
+	display: flex;
+	padding: auto;
+	justify-content: center;
+	flex-direction: column;
+	height: 100%;
+	width: 100%;
+}
+.authForm{
+	background-color: #fff;
+	position: absolute;
+	top: 25vh;
+	right: 10%;
+	height: ;
+	width: 500px;
+	border-radius: 10px;
+	padding: 15px;
+	box-shadow:
+		0px 0px 1.2px rgba(0, 0, 0, 0.051),
+		0px 0px 2.7px rgba(0, 0, 0, 0.074),
+		0px 0px 4.6px rgba(0, 0, 0, 0.092),
+		0px 0px 6.9px rgba(0, 0, 0, 0.106),
+		0px 0px 10px rgba(0, 0, 0, 0.12),
+		0px 0px 14.2px rgba(0, 0, 0, 0.134),
+		0px 0px 20.1px rgba(0, 0, 0, 0.148),
+		0px 0px 29.2px rgba(0, 0, 0, 0.166),
+		0px 0px 45px rgba(0, 0, 0, 0.189),
+		0px 0px 80px rgba(0, 0, 0, 0.24)
+	;
+}
+.feedbackBody{
+	flex-direction: row;
+	height: 100vh;
+	background-color: #fff;
+}
+.feedbackSection{
+	display: flex;
+	padding: auto;
+	justify-content: center;
+	flex-direction: column;
+	height: 100%;
+	width: 100%;
+}
+.feedbackSection h3{
+	width: 40vw;
+	font-size: 3rem;
+	font-family: ClearSans-bold;
+}
+.feedbackSection p{
+	width: 40vw;
+}
+.premiumbody{
+	background: #2193b0;  /* fallback for old browsers */
+	background: -webkit-linear-gradient(to left, #6dd5ed, #2193b0);  /* Chrome 10-25, Safari 5.1-6 */
+	background: linear-gradient(to left, #6dd5ed, #2193b0); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+	width: 100%;
+	padding: 10px
+}
+.premiumsubscriptioncard:hover{
+	transform:scale(1.05);
+	transition:ease-out 1s all;
+}
+.landingslider{
+	width: 60vw;
+	position: absolute;;
+	top:30vh;
+	display: flex;
+	flex-direction: column;
+	padding: 20px
+}
+.landingheader{
+	position: absolute;;
+	top:0;
+	color:#fff;
+	padding: 1rem;
+}
+.landingheader p{
+	font-size: 48px
 }
 @media screen and (max-width: 48em) {
+	.filterbody{
+		width: 95vw;
+}
     .authbody{
     	flex-direction: column;
     	width:100vw;
@@ -87,10 +193,15 @@
 .consoleNavigation{
 	height: 50px;
 	width: 100%;
-	background-color: #fff;
+	background-color: #eee;
 	flex-direction: row;
 	overflow: auto;
-	
+}
+.consoleNavigation::-webkit-scrollbar{
+      display: none; 
+}
+.consoleNavItem{
+	border-bottom: none;
 }
 .consolebody{
 	flex-direction: column;
@@ -100,5 +211,32 @@
 	top:50px;
 	left: 0px;
 	z-index: 1
+}
+.authSection{
+	display: none;
+}
+.authForm{
+	right: 20px;
+	width: 90vw;
+}
+.feedbackBody{
+	flex-direction: column-reverse;
+}
+.feedbackSection{
+	margin-top: -200px; 
+	width: 100vw;
+}
+.feedbackSection h3{
+	width: 100%;
+}
+.feedbackSection p{
+	width: 100%;
+}
+.landingslider{
+	width: 100vw;
+	top:10vh;
+}
+.landingheader p{
+	font-size: 38px
 }
   }

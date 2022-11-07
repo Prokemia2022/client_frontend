@@ -2,7 +2,7 @@ import React from 'react'
 import {Flex,Text,Heading} from '@chakra-ui/react'
 
 function TC(){
-	console.log(prohibiteduses)
+	//console.log(prohibiteduses)
 	return(
 		<Flex direction='column' gap='2' p='2'>
 			<Heading textAlign='center'>TERMS AND CONDITIONS</Heading>

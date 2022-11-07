@@ -1,23 +1,48 @@
 import React,{useState} from 'react'
-import {Flex, Text,Button,Stack,Divider} from '@chakra-ui/react'
-import {Menu,Close,Add,HorizontalRule,ArrowForward} from '@mui/icons-material';
+import {Flex,
+		Text,
+		Button,
+		Stack,
+		Divider,
+		Menu,
+	    MenuButton,
+	    MenuList,
+	    MenuItem,MenuDivider,Center} from '@chakra-ui/react'
+import {Close,Add,HorizontalRule,ArrowForward} from '@mui/icons-material';
+import MenuOpenIcon from '@mui/icons-material/MenuOpen';
 import {useRouter} from 'next/router'
+import Script from 'next/script'
 
 function Header(){
 	const [showmenubar,setshowmenubar]=useState(false);
 	const router = useRouter();
 	return(
-		<Flex position='sticky' top='0' w='100%' zIndex='999' cursor='pointer' bg='#eee' fontFamily='ClearSans-Bold' h='70px' p='2' justify='space-between' align='center'>
-			<Text onClick={(()=>{router.push('/')})} fontSize='28px' color='#00e0c6' fontweight='bold' >Pro<span style={{color:"#000"}}>Kemia</span></Text>
+		<Flex position='sticky' top='0' w='100%' zIndex='999' cursor='pointer' bg='#fff' fontFamily='ClearSans-Bold' h='70px' p='2' justify='space-between' align='center'>
+			<Text mb='0' onClick={(()=>{router.push('/')})} fontSize='28px' color='#00e0c6'>Pro<span style={{color:"#000"}}>Kemia</span></Text>
 			<Flex align='center' gap='2'>
+				<Text mb='0' onClick={(()=>{router.push(`/signin`)})}>Sign in</Text>
+				<Button onClick={(()=>{router.push('/account/1')})} bg='#009393' color='#fff' >Sign Up</Button>
+				<Menu >
+					<MenuButton as={Button} rounded={'full'} variant={'link'} cursor={'pointer'} minW={0} pt='1' color='#000'>
+						<MenuOpenIcon/>
+					</MenuButton>
+					<MenuList alignItems={'center'} p='2'>
+						<Center>
 
-				<Text onClick={(()=>{router.push(`/profile/1`)})}>Account</Text>
-				<Button onClick={(()=>{router.push('/auth')})} bg='#009393' color='#fff' >Sign In</Button>
-				{showmenubar ? 
-					<Close onClick={(()=>{setshowmenubar(!showmenubar)})}/>
-						:
-					<Menu onClick={(()=>{setshowmenubar(!showmenubar)})}/> 
-				}
+							<Script src="https://cdn.lordicon.com/xdjxvujz.js"></Script>
+							<lord-icon src="https://cdn.lordicon.com/dklbhvrt.json" trigger="loop" delay="7000" style={{marginTop:'20px',width:'70px',height:"70px",}} >
+							</lord-icon>
+						</Center>
+						{navigation.map((nav)=>{
+							return(
+								<Flex m='0' key={nav.id} direction='column' p='2' gap='2' onClick={(()=>{router.push(`${nav.link}`)})}>
+									<Text mb='0' >{nav.title}</Text>
+									<Divider/>
+								</Flex>
+							)
+						})}
+					</MenuList>
+				</Menu>
 				{showmenubar ? 
 					<MenuBar setshowmenubar={setshowmenubar} />
 						:
@@ -32,48 +57,23 @@ export default Header;
 
 const navigation=[
 	{
-		title:'For Manufacturers',
-		content:['Create an account','Sell Products','Request Demo']
+		id:1,
+		title:'Explore',
+		link:`/industry/agriculture`
 	},
 	{
-		title:'For Distributors',
-		content:['Create an account','Sell Products','Contact Prokemia']
+		id:2,
+		title:'Sell and Market your Products',
+		link:'/account/2'
 	},
 	{
-		title:'For Salespersons',
-		content:['Create an account','Sell Products','Join Sales Community']
+		id:3,
+		title:'Find Experts/Consultants',
+		link:'/experts'
+	},	
+	{
+		id:4,
+		title:'Marketplace',
+		link:'/shortonexpiry'
 	},
 ]
-const MenuBar=()=>{
-	const [active,setActive]=useState(false);
-	const [currentValue,setcurrentValue]=useState('');
-	return(
-		<Flex direction='column' gap='4' p='4' w='60vw' h='90vh' bg='#eee' position='absolute' top='50px' right='0px' zIndex='2' >
-			{navigation.map((item)=>{
-				return(
-					<>
-						<Flex align='center' bg='#fff' p='2' borderRadius='1' justify='space-between' onClick={(()=>{setActive(!active); setcurrentValue(`${item.title}`)})}>		
-							<Text mb='0' >{item.title}</Text>
-							{active && item.title === currentValue ? <HorizontalRule /> : <Add />}
-						</Flex>
-						
-						{active && item.title === currentValue ? 
-							<Flex pl='4' direction='column' gap='3'>
-								{item.content.map((text)=>{
-									return(
-										<div key={text.id} style={{display:'flex',justifyContent:'space-between',borderBottom:"1px solid grey",padding:'10px'}}>
-											<Text mb='0'>{text}</Text>		
-											<ArrowForward/>
-										</div>
-									)
-								})}
-							</Flex>
-							:
-							null
-						}
-					</>
-				)
-			})}
-		</Flex>
-	)
-}

@@ -13,9 +13,9 @@ function Explore(){
 			<Flex wrap='Wrap' justify='space-between'>
 				{technologiesop?.map((content)=>{
 					return(
-						<>
+						<Flex key={content.id}>
 							<Item content={content} categ={categ}/>
-						</>
+						</Flex>
 					)
 				})}
 			</Flex>
@@ -33,9 +33,9 @@ function Explore(){
 			<Text>browse and explore more {categ.category}</Text>
 			{categories?.filter((op)=> op.title === categ.category).map((item)=>{
 				return(
-					<>
+					<Flex key={item.id}>
 						<Categories item={item}/>
-					</>
+					</Flex>
 				)
 			})}
 			<Text fontSize='24px' fontFamily='ClearSans-Bold' borderBottom='1px solid #000'> Featured Distributors </Text>
@@ -47,9 +47,9 @@ function Explore(){
 						<Flex>
 						{distributor.industries.map((ind)=>{
 							return(
-								<>
+								<Flex key={ind.id}>
 									<Text fontSize='14px'>{ind},</Text>
-								</>
+								</Flex>
 							)
 						})}
 						</Flex>
@@ -66,9 +66,9 @@ function Explore(){
 						<Flex>
 						{manufacturer.industries.map((ind)=>{
 							return(
-								<>
+								<Flex key={ind.id}>
 									<Text fontSize='14px'>{ind},</Text>
-								</>
+								</Flex>
 							)
 						})}
 						</Flex>
@@ -89,9 +89,9 @@ const Categories=({item})=>{
 			<Flex wrap='Wrap' justify='space-between'>
 				{item.contents.slice(3).map((content)=>{
 					return(
-						<>
+						<Flex key={content.id}>
 							<Item content={content}/>
-						</>
+						</Flex>
 					)
 				})}
 			</Flex>
@@ -111,61 +111,76 @@ const Item=({content,categ})=>{
 
 const categories=[
 	{
+		id:1,
 		title:'Industries',
 		contents:[
 			{
+				id:1,
 				name:"Adhesives",
 				img:"../images.jpeg",
 			},
 			{
+				id:2,
 				name:"Agriculture",
 				img:"../download.jpeg",
 			},
 			{
+				id:3,
 				name:"Food and Nutrition",
 				img:"../download (1).jpeg",
 			},
 			{
+				id:4,
 				name:"Pharmaceuticals",
 				img:"../images (1).jpeg",
 			},
 			{
+				id:5,
 				name:"Personal Care",
 				img:"../download (2).jpeg",
 			},
 			{
+				id:6,
 				name:"Electrical & Electronics",
 				img:"../download (3).jpeg",
 			},
 			{
+				id:7,
 				name:"Paintings & Coatings",
 				img:"../images (2).jpeg",
 			},
 			{
+				id:8,
 				name:"Printing & Labelling",
 				img:"../download (4).jpeg",
 			}]
 	},
 	{
+		id:2,
 		title:'Technologies',
 		contents:[
 			{
+				id:1,
 				name:"AgroChemicals",
 				img:"../download.jpeg",
 			},
 			{
+				id:2,
 				name:"Cosmetics ingredients",
 				img:"../images (3).jpeg",
 			},
 			{
+				id:3,
 				name:"Lab ingredients",
 				img:"../download (6).jpeg",
 			},
 			{
+				id:4,
 				name:"Pharmaceuticals",
 				img:"../images (1).jpeg",
 			},
 			{
+				id:5,
 				name:"Paints",
 				img:"../images (2).jpeg",
 			}]
@@ -174,18 +189,22 @@ const categories=[
 
 const technologiesop=[
 			{
+				id:1,
 				name:"Agriculture Crops",
 				img:"../images (1).jpeg",
 			},
 			{
+				id:2,
 				name:"Agriculture films",
 				img:"../images (1).jpeg",
 			},
 			{
+				id:3,
 				name:"Animal Health & Nutrition",
 				img:"../images (1).jpeg",
 			},
 			{
+				id:4,
 				name:"Pest Control",
 				img:"../images (1).jpeg",
 			},
@@ -193,18 +212,22 @@ const technologiesop=[
 
 const distributors=[
 	{
+		id:1,
 		name:'IMCD',
 		industries:['Personal Care','H I &I','Building and Construction',]
 	},
 	{
+		id:2,
 		name:'Carst and Walker',
 		industries:['Personal Care','H I &I']
 	},
 	{
+		id:3,
 		name:'Azelis',
 		industries:['Personal Care','H I &I','Building and Construction',]
 	},
 	{
+		id:4,
 		name:'Brentag',
 		industries:['Personal Care','H I &I','Building and Construction',]
 	},
@@ -212,14 +235,17 @@ const distributors=[
 
 const manufacturers=[
 	{
+		id:1,
 		name:'Crda Inc.',
 		industries:['Personal Care','H I &I']
 	},
 	{
+		id:2,
 		name:'BASF',
 		industries:['Personal Care','H I &I']
 	},
 	{
+		id:3,
 		name:'Du Pont',
 		industries:['Personal Care','Building and Construction',]
 	},

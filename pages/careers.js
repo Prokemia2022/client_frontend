@@ -5,7 +5,7 @@ import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 function careers(){
 	return(
 		<Flex direction='column' p='2'>
-			<Heading as='h2' textDecoration='underline 1px solid #009393'>Careers Section</Heading>
+			<Heading as='h2' textDecoration='underline 1px solid #009393'>Vacancy Section</Heading>
 			<Text>Find upcoming Events and meetups, seminars to build and enrich you.</Text>
 			<Text>Find Job Listings, Job Openings, senior & junior positions from top companies and firms.</Text>
 			<Text m='3' fontSize='24px' fontWeight='bold' textDecoration='underline 1px solid #000' textAlign='center'>VACANCIES</Text>

@@ -4,133 +4,156 @@ import {Flex,Text,Button,Input} from '@chakra-ui/react';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
+import AddNewProduct from '../../components/modals/AddNewProduct.js';
 
 function Profile(){
+	const [isaddnewproductModalvisible,setisaddnewProductModalvisible]=useState(false);
 	const [active,setActive]=useState(false);
+	const [edit,setedit]=useState(false);
 	const [currentValue,setcurrentValue]=useState('');
 	const router = useRouter()
 	const [account,setAccount]=useState('user')
 	return(
 		<Flex p='2' direction='column' gap='2'>
-			<Flex align='center' justify='space-around'>
-				<AccountCircleIcon style={{fontSize:'100px'}}/>
-				<Flex p='1' direction='column' w='60%'>
-					<Text>John Doe</Text>
-					<Text>Johndoe@gmail.com</Text>
-					<Text>0759233322</Text>
-					<Text>Company</Text>
-					<Text>SalesPerson</Text>
-					<Button onClick={(()=>{router.push(`/salesperson/1`)})} mt='2' color='#fff' bg='#009393'>Go to Dashboard</Button>
-				</Flex>
-			</Flex>
-			<Button border='1px solid #000' bg='#fff'>Edit Profile</Button>
-			<Flex direction='column' gap='2'>
-				<Flex justify='space-between' borderBottom='1px solid #000' align='center' bg='#eee' p='1'>
-					<Text fontSize='20px' fontWeight='bold'>Address</Text>
-					{active && currentValue === 'address' ? 
-						<KeyboardArrowUpIcon onClick={(()=>{setcurrentValue('');setActive(!active)})}/>
-						:
-						<KeyboardArrowDownIcon onClick={(()=>{setcurrentValue('address');setActive(!active)})}/>
-					}
-				</Flex>
-				{active && currentValue === 'address' ? 
-					<>
-					<Flex bg='#eee' p='2' direction='column' gap='3'>
-						<Text fontWeight='bold' fontSize='18px'>Juja,Jkuat</Text>
-						<Flex gap='2'>
-							<Text color='#009393' fontSize='14px'>Edit</Text>
-							<Text color='red' fontSize='14px'>Delete</Text>
+		<AddNewProduct isaddnewproductModalvisible={isaddnewproductModalvisible} setisaddnewProductModalvisible={setisaddnewProductModalvisible}/>
+		{edit? 
+
+			<EditProfile setedit={setedit}/>
+			:
+			<Flex direction='column'>
+				<Flex align='center' justify='space-around'>
+					<AccountCircleIcon style={{fontSize:'150px'}} />
+					<Flex p='1' direction='column' w='60%'>
+						<Text>John Doe</Text>
+						<Text>Johndoe@gmail.com</Text>
+						<Text>0759233322</Text>
+						<Text>Company</Text>
+						<Flex gap='2' direction='column'> 
+							<Button border='1px solid #000' bg='#fff' onClick={(()=>{setisaddnewProductModalvisible(true)})}>List a Product on Short Expiry</Button>
+							<Button color='#fff' bg='#009393' onClick={(()=>{setedit(true)})}>Edit Profile</Button>
 						</Flex>
 					</Flex>
-					<Button bg='#fff' border='1px solid #000'>Add New Address</Button>
-					</>
-					:
-					null
-				}
-			</Flex>
-			<Flex direction='column' gap='2'>
-				<Flex justify='space-between' borderBottom='1px solid #000' align='center' bg='#eee' p='1'>
-					<Text fontSize='20px' fontWeight='bold'>Recent Searches</Text>
-					{active && currentValue === 'recents' ? 
-						<KeyboardArrowUpIcon onClick={(()=>{setcurrentValue('');setActive(!active)})}/>
-						:
-						<KeyboardArrowDownIcon onClick={(()=>{setcurrentValue('recents');setActive(!active)})}/>
-					}
 				</Flex>
-				{active && currentValue === 'recents' ? 
-					<>
-					<Flex gap='2' direction='column'>
-						<Text>Pharmaceutical</Text>
-						<Text>Agriculture</Text>
-					</Flex>
-					</>
-					:
-					null
-				}
-			</Flex>
-			<Flex direction='column' gap='2'>
-				<Flex justify='space-between' borderBottom='1px solid #000' align='center' bg='#eee' p='1'>
-					<Text fontSize='20px' fontWeight='bold'>Security</Text>
-					{active && currentValue === 'security' ? 
-						<KeyboardArrowUpIcon onClick={(()=>{setcurrentValue('');setActive(!active)})}/>
-						:
-						<KeyboardArrowDownIcon onClick={(()=>{setcurrentValue('security');setActive(!active)})}/>
-					}
-				</Flex>
-				{active && currentValue === 'security' ? 
-					<>
-					<Flex gap='2' direction='column'>
-						<Text fontWeight='bold'>Password</Text>
-						<Input type='password' value='sammydennis'/>
-						<Button bg='#ff' border='1px solid #000'>Change Password</Button>
-					</Flex>
-					</>
-					:
-					null
-				}
-				</Flex>
-			<Flex direction='column' gap='2'>
-				<Flex justify='space-between' borderBottom='1px solid #000'  color='#009393' align='center' bg='#eee' p='1'>
-					<Text fontSize='20px' fontWeight='bold'>Account Settings</Text>
-					{active && currentValue === 'settings' ? 
-						<KeyboardArrowUpIcon onClick={(()=>{setcurrentValue('');setActive(!active)})}/>
-						:
-						<KeyboardArrowDownIcon onClick={(()=>{setcurrentValue('settings');setActive(!active)})}/>
-					}
-				</Flex>
-				{active && currentValue === 'settings' ? 
-					<>
-					<Flex gap='2' direction='column'>
-						<Button bg='#ff' border='1px solid #000' onClick={(()=>{setAccount('salesperson')})}>Switch to Salesperson Account</Button>
-						<Button bg='#ff' border='1px solid #000' onClick={(()=>{setAccount('distributor')})}>Switch to Distributor Account</Button>
-						<Button bg='#ff' border='1px solid #000' onClick={(()=>{setAccount('manufacturer')})}>Switch to Manudafcturer Account</Button>
-					</Flex>
-					</>
-					:
-					null
-				}
-			</Flex>
-			<Flex direction='column' gap='2'>
-				<Flex justify='space-between' borderBottom='1px solid #000' align='center' bg='#eee' p='1' color='red'>
-					<Text fontSize='20px' color='red' fontWeight='bold'>Delete Account</Text>
-					{active && currentValue === 'delete' ? 
-						<KeyboardArrowUpIcon onClick={(()=>{setcurrentValue('');setActive(!active)})}/>
-						:
-						<KeyboardArrowDownIcon onClick={(()=>{setcurrentValue('delete');setActive(!active)})}/>
-					}
-				</Flex>
-				{active && currentValue === 'delete' ? 
-					<>
-					<Text>By deleting your account , all your information, products and activities in our platform will be erased as your account will be permamnetly deleted and will not be restored.</Text>
-					<Button bg='#ff' border='1px solid red'>Delete Account</Button>
-					</>
-					:
-					null
-				}
 				
+				<Flex direction='column' gap='2'>
+					<Flex justify='space-between' borderBottom='1px solid #000' align='center' p='1'>
+						<Text fontSize='20px' fontWeight='bold'>Address</Text>
+						{active && currentValue === 'address' ? 
+							<KeyboardArrowUpIcon onClick={(()=>{setcurrentValue('');setActive(!active)})}/>
+							:
+							<KeyboardArrowDownIcon onClick={(()=>{setcurrentValue('address');setActive(!active)})}/>
+						}
+					</Flex>
+					{active && currentValue === 'address' ? 
+						<>
+						<Flex p='2' direction='column' gap='3' bg='#eee'>
+							<Text fontWeight='bold' fontSize='18px'>Juja,Jkuat</Text>
+							<Flex gap='2'>
+								<Text color='#009393' fontSize='14px'>Edit</Text>
+								<Text color='red' fontSize='14px'>Delete</Text>
+							</Flex>
+						</Flex>
+						<Button bg='#fff' border='1px solid #000'>Add New Address</Button>
+						</>
+						:
+						null
+					}
+				</Flex>
+				<Flex direction='column' gap='2'>
+					<Flex justify='space-between' borderBottom='1px solid #000' align='center' p='1'>
+						<Text fontSize='20px' fontWeight='bold'>Recent Searches</Text>
+						{active && currentValue === 'recents' ? 
+							<KeyboardArrowUpIcon onClick={(()=>{setcurrentValue('');setActive(!active)})}/>
+							:
+							<KeyboardArrowDownIcon onClick={(()=>{setcurrentValue('recents');setActive(!active)})}/>
+						}
+					</Flex>
+					{active && currentValue === 'recents' ? 
+						<>
+						<Flex gap='2' direction='column' bg='#eee'>
+							<Text>Pharmaceutical</Text>
+							<Text>Agriculture</Text>
+						</Flex>
+						</>
+						:
+						null
+					}
+				</Flex>
+				<Flex direction='column' gap='2'>
+					<Flex justify='space-between' borderBottom='1px solid #000' align='center' p='1'>
+						<Text fontSize='20px' fontWeight='bold'>Security</Text>
+						{active && currentValue === 'security' ? 
+							<KeyboardArrowUpIcon onClick={(()=>{setcurrentValue('');setActive(!active)})}/>
+							:
+							<KeyboardArrowDownIcon onClick={(()=>{setcurrentValue('security');setActive(!active)})}/>
+						}
+					</Flex>
+					{active && currentValue === 'security' ? 
+						<>
+						<Flex gap='2' direction='column'>
+							<Text fontWeight='bold'>Password</Text>
+							<Input type='password' value='sammydennis'/>
+							<Button bg='#ff' border='1px solid #000'>Change Password</Button>
+						</Flex>
+						</>
+						:
+						null
+					}
+					</Flex>
+				<Flex direction='column' gap='2'>
+					<Flex justify='space-between' borderBottom='1px solid #000' align='center' p='1' color='red'>
+						<Text fontSize='20px' color='red' fontWeight='bold'>Delete Account</Text>
+						{active && currentValue === 'delete' ? 
+							<KeyboardArrowUpIcon onClick={(()=>{setcurrentValue('');setActive(!active)})}/>
+							:
+							<KeyboardArrowDownIcon onClick={(()=>{setcurrentValue('delete');setActive(!active)})}/>
+						}
+					</Flex>
+					{active && currentValue === 'delete' ? 
+						<>
+						<Text>By deleting your account , all your information, products and activities in our platform will be erased as your account will be permamnetly deleted and will not be restored.</Text>
+						<Button bg='#ff' border='1px solid red'>Delete Account</Button>
+						</>
+						:
+						null
+					}
+					
+				</Flex>
 			</Flex>
+		}
 		</Flex>
 	)
 }
 
 export default Profile;
+
+
+const EditProfile=({setedit})=>{
+	return(	
+		<Flex gap='3' direction='column'>
+			<Flex gap='2' align='center'>
+				<AccountCircleIcon style={{fontSize:'150px',backgroundColor:"#eee",borderRadius:'150px'}} />
+				<Text>Edit profile Photo</Text>
+			</Flex>
+			<Flex direction='column' gap='3' w='100%'>
+					<Flex direction='column'>
+						<Text>Name</Text>
+						<Input type='text' value='UserName' variant='filled'/>
+					</Flex>
+					<Flex direction='column'>
+						<Text>Email</Text>
+						<Input type='email' value='johndoe@gmail.com' variant='filled'/>
+					</Flex>
+					<Flex direction='column'>
+						<Text>Company</Text>
+						<Input type='text' value='Company' variant='filled'/>
+					</Flex>
+					<Flex direction='column'>
+						<Text>Mobile</Text>
+						<Input type='tel' value='0759233322' variant='filled'/>
+					</Flex>
+					<Button onClick={(()=>{setedit(false)})} bg='#009393' color='#fff'>Save</Button>
+				</Flex>
+			</Flex>
+	)
+}

@@ -41,7 +41,7 @@ export default Hub;
 const Menu=({setActive})=>{
 	return(
 		<Flex className={styles.Hub} direction='column' w='100%' p='2' gap='2'>
-				<Flex w='100%' float='right' >
+				<Flex w='100%' color='#fff' float='right' mt='5' cursor='pointer'>
 					<Spacer/>
 					<CloseIcon onClick={(()=>{setActive(false)})}/>
 				</Flex>

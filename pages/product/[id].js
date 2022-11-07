@@ -36,6 +36,10 @@ function Product(){
 							CAS Number: 1761-71-3
 							Chemical Family: Diamines</Text>
 				</Flex>
+				<Flex>
+					<Text>Expiring on:</Text>
+					<Text color='#009393'>2023-05-23</Text>
+				</Flex>
 				<Flex direction='column' gap='2' mt='2'>
 					<Button bg='grey' borderRadius='0' color='#fff'><FileDownloadIcon />Product Data Sheet</Button>
 					<Button bg='grey' borderRadius='0' color='#fff'><FileDownloadIcon />Safety Data Sheet</Button>
@@ -63,7 +67,7 @@ function Product(){
 				<Button color='#fff' borderRadius='0' bg='#009393' onClick={(()=>{setisquotationModalvisible(true)})}><DescriptionIcon />Request Quotation</Button>
 				<Button color='#fff' borderRadius='0' bg='#000' onClick={(()=>{setissampleModalvisible(true)})}><DescriptionIcon />Request Sample</Button>
 				<Text textAlign='center'>or</Text>
-				<Button bg='#fff' borderRadius='0' border='1px solid #000' p='1'>Contact Distributor</Button>
+				<Button bg='#fff' borderRadius='0' border='1px solid #000' p='1'>Contact</Button>
 				<Button bg='#fff' borderRadius='0' border='1px solid #000' p='1'><LanguageIcon />Visit Website</Button>
 			</Flex>
 		</Flex>
