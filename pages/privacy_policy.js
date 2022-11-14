@@ -1,9 +1,12 @@
 import React from 'react'
 import {Flex,Text,Heading} from '@chakra-ui/react'
+import Header from '../components/Header.js';
 
 function TC(){
 	return(
-		<Flex direction='column' gap='2' p='2'>
+		<Flex direction='column'>
+			<Header/>
+			<Flex direction='column' gap='2' p='2'>
 			<Heading textAlign='center'>PRIVACY POLICY</Heading>
 
 			<Text>We at Prokem Specialty (ProKemia) respect your privacy. This Privacy Policy is established to inform the users of ProKemia (Prokem Specialty, ProKemia, “the Company” “We”, “Us”) Website, App and services of collection, processing, sharing and storing of your personal data.</Text>
@@ -67,6 +70,7 @@ function TC(){
 			
 			<Text mt='1' fontWeight='bold' fontSize='20px'>Contact Us</Text>
 			<Text>Please send your feedback, comments, and requests for technical support by email: app@prokemia.com or  +254 20 2525265</Text>
+		</Flex>
 		</Flex>
 	)
 }

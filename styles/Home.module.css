@@ -33,6 +33,10 @@
 .accountBody{
 	background: rgb(0,147,147);
 	background: linear-gradient(243deg, rgba(0,147,147,1) 0%, rgba(255,255,255,1) 100%);
+	flex-direction: row;
+	justify-content: center;
+	height: 100vh;
+	align-items:center;
 }
 
 .productbody{
@@ -159,6 +163,15 @@ background: linear-gradient(90deg, rgba(0,147,147,1) 51%, rgba(237,248,248,1) 10
 .landingheader p{
 	font-size: 48px
 }
+.ResultsBar{
+	position:absolute;
+	top:110px;
+	margin-left: 20vw;
+	width:50vw;
+}
+.SearchIcon{
+	display: none;
+}
 @media screen and (max-width: 48em) {
 	.filterbody{
 		width: 95vw;
@@ -238,5 +251,13 @@ background: linear-gradient(90deg, rgba(0,147,147,1) 51%, rgba(237,248,248,1) 10
 }
 .landingheader p{
 	font-size: 38px
+}
+.accountBody{
+	flex-direction: column;
+	height: 100%;
+}
+.ResultsBar{
+	margin-left: 0vw;
+	width:90vw;
 }
   }

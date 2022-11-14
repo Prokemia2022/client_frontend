@@ -32,7 +32,7 @@ function DashboardMenu({setCurrentValue}){
 					<Text>adress</Text>		
 				</Flex>
 			</Flex>
-			<Flex gap='3'>
+			<Flex gap='3' direction='column'>
 				<Button bg='#009393' color='#fff' onClick={(()=>{setisaddnewProductModalvisible(true)})}><Add/>Add new Product</Button>
 				<Button bg='#fff' border='1px solid #000' onClick={(()=>{setisaddNewExpertModalvisible(true)})}>Add new Expert</Button>
 				<Button bg='#fff' border='1px solid #000' onClick={(()=>{setisaddnewdistributorModalvisible(true)})}>Add new Distributor</Button>

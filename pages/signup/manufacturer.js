@@ -2,6 +2,7 @@ import React,{useState} from 'react'
 import {Flex,Center,Text,Button,Input,InputGroup,InputRightElement} from '@chakra-ui/react'
 import styles from '../../styles/Home.module.css'
 import {Room,Visibility,VisibilityOff} from '@mui/icons-material'
+import Header from '../../components/Header.js';
 
 export default function ManufacturerSignUp(){
 	const [show, setShow] = useState(false);
@@ -9,6 +10,7 @@ export default function ManufacturerSignUp(){
 
 	return(
 		<Flex h='100vh' className={styles.SignupBody}>
+			<Header/>
 			<Flex className={styles.authSection} gap='2' p='8'>
 				<Text w='40vw'  fontSize='2.5rem' color='#fff' fontFamily='ClearSans-bold'><span style={{borderBottom:"3px solid #fff",borderRadius:"3px"}}>Welcome </span>to Pro-Kemia</Text>
 				<Text w='40vw'  fontWeight='bold'>Find a market for your produced products.We help connect you to clients in search of similar products.Products will be showcased to our marketplace for clients to search for.</Text>

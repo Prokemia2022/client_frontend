@@ -6,6 +6,7 @@ import LanguageIcon from '@mui/icons-material/Language';
 import styles from '../../../styles/Home.module.css';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import DescriptionIcon from '@mui/icons-material/Description';
+import Header from '../../../components/Header.js';
 
 /*Modals*/
 import QuotationModal from '../../../components/modals/Quotation.js';
@@ -26,12 +27,14 @@ function Product(){
 
 	return(
 		<Flex className={styles.productbody}>
+		
 		<QuotationModal isquotationModalvisible={isquotationModalvisible} setisquotationModalvisible={setisquotationModalvisible}/>
 		<SampleModal issampleModalvisible={issampleModalvisible} setissampleModalvisible={setissampleModalvisible}/>
 		<EditProductModal iseditproductModalvisible={iseditproductModalvisible} setiseditProductModalvisible={setiseditProductModalvisible}/>
 		<DeleteProductModal isdeleteproductModalvisible={isdeleteproductModalvisible} setisdeleteProductModalvisible={setisdeleteProductModalvisible}/>
 		<ListProductShortExpiryModal isshortexpproductModalvisible={isshortexpproductModalvisible} setisshortexpproductModalvisible={setisshortexpproductModalvisible}/>
-			<Flex p='2' direction='column' gap='2' className={styles.productsection1}>
+			<Flex p='' direction='column' gap='2' className={styles.productsection1}>
+				<Header/>
 				<Text fontFamily='ClearSans-Bold' fontSize='32px'>{id.id}</Text>
 				<Flex>
 					<Text>Manufactured by:</Text>

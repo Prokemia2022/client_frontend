@@ -2,6 +2,7 @@ import React,{useState} from 'react'
 import {Flex,Center,Text,Button,Input,InputGroup,InputRightElement} from '@chakra-ui/react'
 import styles from '../../styles/Home.module.css'
 import {Room,Visibility,VisibilityOff} from '@mui/icons-material'
+import Header from '../../components/Header.js';
 
 export default function ClientSignUp(){
 	const [show, setShow] = useState(false);
@@ -9,6 +10,7 @@ export default function ClientSignUp(){
 
 	return(
 		<Flex h='100vh' className={styles.SignupBody}>
+			<Header/>
 			<Flex className={styles.authSection} gap='2' p='8'>
 				<Text w='40vw'  fontSize='2.5rem' color='#fff' fontFamily='ClearSans-bold'><span style={{borderBottom:"3px solid #fff",borderRadius:"3px"}}>Welcome </span>to Pro-Kemia</Text>
 				<Text w='40vw'  fontWeight='bold'>Search, Learn, Engage ,get samples and request quotations for products, and purchase from thousands of distributors - all in one platform.Access all easily.</Text>

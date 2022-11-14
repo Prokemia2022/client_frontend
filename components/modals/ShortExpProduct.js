@@ -108,7 +108,24 @@ function AddNewProductModal({isaddnewproductModalvisible,setisaddnewProductModal
 					<Text>Storage & Handling</Text>
 					<Input type='text' placeholder='storage and product handling information' variant='filled'/>
 				</Flex>
-                <Button bg='#009393' borderRadius='0' color='#fff'>Add new Product</Button>
+				<Flex direction='column'>
+					<Text>Volume/Quantity </Text>
+					<Input type='number' placeholder='number of items you wish to sell' variant='filled'/>
+				</Flex>
+				<Text >Unit</Text>
+				<Select variant='filled' placeholder='Select Unit'>
+		          <option value='kg'>Kilograms</option>
+		          <option value='gallons'>Gallons</option>
+		        </Select>
+				<Flex direction='column'>
+					<Text>Price/unit</Text>
+					<Input type='number' placeholder='Your price on the item' variant='filled'/>
+				</Flex>
+				<Flex direction='column'>
+					<Text>List as Short on Expiry</Text>
+					<Checkbox defaultChecked bg='#eee' p='2'>Short on Expiry</Checkbox>
+				</Flex>
+                <Button bg='#009393' borderRadius='0' color='#fff'>List Product</Button>
 			</Stack>
                         </ModalBody>
                     </ModalContent>

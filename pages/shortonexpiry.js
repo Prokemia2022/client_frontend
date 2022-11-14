@@ -1,25 +1,29 @@
 import React from 'react'
 import {Flex,Image,Text,Input,Button,Select} from '@chakra-ui/react'
-import {useRouter} from 'next/router'
+import {useRouter} from 'next/router';
+import Header from '../components/Header.js';
 
 function ShortOnExpiry(){
 	const router = useRouter();
 	return(
-		<Flex direction='column' gap='2' p='2' w='100%' overflowY='scroll' h='100vh'>
-			<Text fontSize='32px' fontWeight='bold' textDecoration='3px solid #009393 underline'>ShortOnExpiry</Text>
-			<Text>Find products listed by other companies, that are looking to dispatch their excess or products expiring soon.</Text>
-			<Text color='#009393'>Want to list your products?<span style={{fontWeight:'bold',cursor:'pointer'}} onClick={(()=>{router.push('/profile/1')})}>Click here</span>.</Text>
-			<Flex gap='2'>
-				<Select w='150px' placeholder='sort'>
-					<option>A-Z</option>
-					<option>z-A</option>
-					<option>by date</option>
-				</Select>
-				<Input placeholder='search products by name, industry'/>
+		<Flex direction='column'>
+			<Header/>
+			<Flex direction='column' gap='2' p='2' w='100%' overflowY='scroll' h='100vh'>
+				<Text fontSize='32px' fontWeight='bold' textDecoration='3px solid #009393 underline'>Short On Expiry</Text>
+				<Text>Find products listed by other companies, that are looking to dispatch their excess or products expiring soon.</Text>
+				<Text color='#009393'>Want to list your products?<span style={{fontWeight:'bold',cursor:'pointer'}} onClick={(()=>{router.push('/profile/1')})}>Click here</span>.</Text>
+				<Flex gap='2'>
+					<Select w='150px' placeholder='sort'>
+						<option>A-Z</option>
+						<option>z-A</option>
+						<option>by date</option>
+					</Select>
+					<Input placeholder='search products by name, industry'/>
+				</Flex>
+				<Item router={router}/>
+				<Item router={router}/>
+				<Item router={router}/>
 			</Flex>
-			<Item router={router}/>
-			<Item router={router}/>
-			<Item router={router}/>
 		</Flex>
 	)
 }

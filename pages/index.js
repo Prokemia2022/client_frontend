@@ -9,8 +9,8 @@ export default function home() {
       <Head>
         <title>Prokemia | Online MarketPlace</title>
         <meta name="description" content="Buy and sell ingredients at a marketplace." />
-        <link rel="icon" href="/favicon.ico" />
-	  </Head>
+        <link rel="icon" href="/Pro.png" />
+      </Head>
 	  <Index />
 	</div>
   )

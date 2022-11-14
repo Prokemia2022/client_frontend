@@ -1,10 +1,12 @@
 import React from 'react'
 import {Flex,Text,Heading} from '@chakra-ui/react'
-
+import Header from '../components/Header.js'
 function TC(){
 	//console.log(prohibiteduses)
 	return(
-		<Flex direction='column' gap='2' p='2'>
+		<Flex direction='column'>
+			<Header/>
+			<Flex direction='column' gap='2' p='2'>
 			<Heading textAlign='center'>TERMS AND CONDITIONS</Heading>
 
 			<Text>These Website Terms and Conditions (“Terms”, “Terms of Service”) contained herein on this webpage, shall govern your use of this website, including all pages within this website (“Website”) located here. https://prokemia.com (together or individually “Service”) operated by Prokem Specialty (“Company”, “we”, “our”, “us”).</Text>
@@ -66,6 +68,7 @@ function TC(){
 			<Text>By using service or other services provided by us, you acknowledge that you have read and understood these terms of service and agree to be bound by them.</Text>
 			<Text mt='1' fontWeight='bold' fontSize='20px'>Contact Us</Text>
 			<Text>Please send your feedback, comments, and requests for technical support by email: app@prokemia.com or  +254 20 2525265</Text>
+		</Flex>
 		</Flex>
 	)
 }

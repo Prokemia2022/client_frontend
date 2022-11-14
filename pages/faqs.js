@@ -1,12 +1,15 @@
 import React,{useState} from 'react';
 import {Flex,Text} from '@chakra-ui/react';
 import {Add,HorizontalRule} from '@mui/icons-material';
+import Header from '../components/Header.js'
 
 export default function FAQs(){
 	const [active,setActive]=useState(false);
 	const [currentValue,setcurrentValue]=useState('');
 	return(
-		<Flex direction='column' p='4'>
+		<Flex direction='column'>
+			<Header/>
+			<Flex direction='column' p='4'>
 			<Text fontSize='52px' fontFamily='ClearSans-bold'>Faqs</Text>
 			<Text color='grey'>Frequently asked Questions.</Text>
 			<Text color='grey'>Here are some common asked questions about Prokemia</Text>
@@ -36,6 +39,7 @@ export default function FAQs(){
 					)
 				})}
 			</Flex>
+		</Flex>
 		</Flex>
 	)
 }

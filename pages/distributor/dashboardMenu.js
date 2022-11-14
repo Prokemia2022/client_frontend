@@ -3,12 +3,12 @@ import {Flex,Text,Input,Button} from '@chakra-ui/react'
 import {useRouter} from 'next/router'
 import LocationCityIcon from '@mui/icons-material/LocationCity'
 import AddNewProduct from '../../components/modals/AddNewProduct.js';
-import AddNewSalesPerson from '../../components/modals/addNewSalesPerson.js';
+import AddNewExpertsModal from '../../components/modals/addNewExperts.js';
 import AddNewManufacturer from '../../components/modals/addNewManufacturer.js';
 
 function DashboardMenu({setCurrentValue}){
 	const [isaddnewproductModalvisible,setisaddnewProductModalvisible]=useState(false);
-	const [isaddnewsalespersonModalvisible,setisaddNewSalesPersonModalvisible]=useState(false);
+	const [isaddnewexpertModalvisible,setisaddNewExpertModalvisible]=useState(false);
 	const [isaddnewmanufacturerModalvisible,setisaddnewmanufacturerModalvisible]=useState(false);
 	const [addnewInd,setaddnewInd]=useState(false);
 	const [addnewTech,setaddnewTech]=useState(false);
@@ -17,7 +17,7 @@ function DashboardMenu({setCurrentValue}){
 	return (
 		<Flex p='1' direction='column' gap='4' w='100%' overflowY='scroll' h='100vh'>
 			<AddNewProduct isaddnewproductModalvisible={isaddnewproductModalvisible} setisaddnewProductModalvisible={setisaddnewProductModalvisible}/>
-			<AddNewSalesPerson isaddnewsalespersonModalvisible={isaddnewsalespersonModalvisible} setisaddNewSalesPersonModalvisible={setisaddNewSalesPersonModalvisible}/>
+			<AddNewExpertsModal isaddnewexpertModalvisible={isaddnewexpertModalvisible} setisaddNewExpertModalvisible={setisaddNewExpertModalvisible}/>
 			<AddNewManufacturer isaddnewmanufacturerModalvisible={isaddnewmanufacturerModalvisible} setisaddnewmanufacturerModalvisible={setisaddnewmanufacturerModalvisible}/>
 			<Flex gap='3'>
 				<LocationCityIcon style={{fontSize:'150px',backgroundColor:"#eee",borderRadius:'150px',padding:'10px'}}/>
@@ -30,7 +30,7 @@ function DashboardMenu({setCurrentValue}){
 			</Flex>
 			<Flex gap='3' wrap='Wrap'>
 				<Button bg='#009393' color='#fff' onClick={(()=>{setisaddnewProductModalvisible(true)})}>Add new Product</Button>
-				<Button bg='#fff' border='1px solid #000' onClick={(()=>{setisaddNewSalesPersonModalvisible(true)})}>Add new Salespersons</Button>
+				<Button bg='#fff' border='1px solid #000' onClick={(()=>{setisaddNewExpertModalvisible(true)})}>Add new Experts</Button>
 				<Button bg='#fff' border='1px solid #000' onClick={(()=>{setisaddnewmanufacturerModalvisible(true)})}>Add new Manufacturer</Button>
 			</Flex>
 			<Text mb='0'>Operating in an industry or Technology not included in our options?</Text>
@@ -45,8 +45,8 @@ function DashboardMenu({setCurrentValue}){
 
 			<Flex direction='column' gap='2'>
 				<Flex justify='space-between' align='center' borderBottom='1px solid #000'>
-					<Text fontWeight='bold' fontSize='20px'>Salesperson</Text>
-					<Text color='#009393' fontWeight='bold' cursor='pointer' onClick={(()=>{setCurrentValue('salespersons')})}>view all</Text>
+					<Text fontWeight='bold' fontSize='20px'>Experts</Text>
+					<Text color='#009393' fontWeight='bold' cursor='pointer' onClick={(()=>{setCurrentValue('experts')})}>view all</Text>
 				</Flex>
 				<Flex direction='column' gap='2'>
 					<Flex p='3' bg='#eee' borderRadius='5px' direction='column'>

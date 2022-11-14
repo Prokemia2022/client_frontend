@@ -2,21 +2,25 @@ import React from 'react';
 import {Flex,Text,Center,Button,Image} from '@chakra-ui/react';
 import {useRouter} from 'next/router';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import Header from '../../components/Header.js';
 
 function Explore(){
 	const router = useRouter()
 	const categ = router.query;
 	console.log(categ)
 	return(
-		<Flex direction='column' gap='2' p='2'>
-			<Text fontSize='28px' fontFamily='ClearSans-Bold' borderBottom='1px solid #000' >{categ.id}</Text>
-			{categories.map((item)=>{
-				return(
-					<div key={item.id}>
-						<Categories item={item} />
-					</div>
-				)
-			})}
+		<Flex direction='column'>
+			<Header/>
+			<Flex p='2' direction='column' gap='2'>
+				<Text fontSize='28px' fontFamily='ClearSans-Bold' borderBottom='1px solid #000' >{categ.id}</Text>
+				{categories.map((item)=>{
+					return(
+						<div key={item.id}>
+							<Categories item={item} />
+						</div>
+					)
+				})}
+			</Flex>
 		</Flex>
 	)
 }

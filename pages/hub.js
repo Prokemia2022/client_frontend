@@ -5,32 +5,36 @@ import CloseIcon from '@mui/icons-material/Close';
 import MessageIcon from '@mui/icons-material/Message';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import SendIcon from '@mui/icons-material/Send';
+import Header from '../components/Header.js';
 
 function Hub(){
 	const [active,setActive]=useState(false);
 	return(
-		<Flex direction='row'>
-			{active? 
-				<Menu setActive={setActive}/>
-				:
-				null
-			}
-			<Flex direction='column' bg='#eee' w='100vw' mt=''>
-				<Flex align='center' gap='5' w='100%' bg='#009393' color='#fff' p='2'>
-					<MessageIcon onClick={(()=>{setActive(true)})}/>
-					<Flex direction='column'>
-						<Text className={styles.Console} fontSize='20px'>Prokemia</Text>
-						<Text fontSize='13px'>200members</Text>
+		<Flex direction='column'>
+			<Header/>
+			<Flex direction='row'>
+				{active? 
+					<Menu setActive={setActive}/>
+					:
+					null
+				}
+				<Flex direction='column' bg='#eee' w='100vw' mt=''>
+					<Flex align='center' gap='5' w='100%' bg='#009393' color='#fff' p='2'>
+						<MessageIcon onClick={(()=>{setActive(true)})}/>
+						<Flex direction='column'>
+							<Text className={styles.Console} fontSize='20px'>Prokemia</Text>
+							<Text fontSize='13px'>200members</Text>
+						</Flex>
 					</Flex>
+					<Flex h='75vh'  direction='column' gap='2' mt='2' p='2' overflowY='scroll'>
+						{texts.map((content)=>{
+							return(
+								<TextItem content={content} key={content.id}/>
+							)
+						})}
+					</Flex>
+					<TextBox />
 				</Flex>
-				<Flex h='75vh'  direction='column' gap='2' mt='2' p='2' overflowY='scroll'>
-					{texts.map((content)=>{
-						return(
-							<TextItem content={content} key={content.id}/>
-						)
-					})}
-				</Flex>
-				<TextBox />
 			</Flex>
 		</Flex>
 	)

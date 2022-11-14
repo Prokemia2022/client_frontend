@@ -2,80 +2,84 @@ import React from 'react';
 import {Flex,Text,Center,Button,Image} from '@chakra-ui/react';
 import {useRouter} from 'next/router';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import Header from '../../components/Header.js';
 
 function Explore(){
 	const router = useRouter()
 	const categ = router.query;
 	console.log(categ)
 	return(
-		<Flex direction='column' gap='2' p='2'>
-			<Text fontSize='28px' fontFamily='ClearSans-Bold' borderBottom='1px solid #000' >{categ.id}</Text>
-			<Flex wrap='Wrap' justify='space-between'>
-				{technologiesop?.map((content)=>{
+		<Flex direction='column' gap='2'>
+			<Header/>
+			<Flex direction='column' gap='2' p='2'>
+				<Text fontSize='28px' fontFamily='ClearSans-Bold' borderBottom='1px solid #000' >{categ.id}</Text>
+				<Flex wrap='Wrap' justify='space-between'>
+					{technologiesop?.map((content)=>{
+						return(
+							<Flex key={content.id}>
+								<Item content={content} categ={categ}/>
+							</Flex>
+						)
+					})}
+				</Flex>
+				<Center>
+					<Flex direction='column'>
+						<Text textAlign='center' fontSize='20px' fontFamily='ClearSans-Bold'>Want to find a specific product?</Text>
+						<Text textAlign='center'>Click to </Text>
+						<Flex cursor='pointer' align='center' color='#009393' justify='center'>
+							<Text >Try our deep search feature</Text>
+							<ArrowForwardIcon/>
+						</Flex>
+					</Flex>
+				</Center>
+				<Text fontSize='24px' fontFamily='ClearSans-Bold' borderBottom='1px solid #000'> Related {categ.category} </Text>
+				<Text>browse and explore more {categ.category}</Text>
+				{categories?.filter((op)=> op.title === categ.category).map((item)=>{
 					return(
-						<Flex key={content.id}>
-							<Item content={content} categ={categ}/>
+						<Flex key={item.id}>
+							<Categories item={item}/>
 						</Flex>
 					)
 				})}
-			</Flex>
-			<Center>
-				<Flex direction='column'>
-					<Text textAlign='center' fontSize='20px' fontFamily='ClearSans-Bold'>Want to find a specific product?</Text>
-					<Text textAlign='center'>Click to </Text>
-					<Flex cursor='pointer' align='center' color='#009393' justify='center'>
-						<Text >Try our deep search feature</Text>
-						<ArrowForwardIcon/>
-					</Flex>
+				<Text fontSize='24px' fontFamily='ClearSans-Bold' borderBottom='1px solid #000'> Featured Distributors </Text>
+				{distributors.map((distributor)=>{
+					return(
+						<Flex direction='column' bg='#eee' p='1' m='1' key={distributor.id}>
+							<Text fontSize='20px' fontFamily='ClearSans-Bold'>{distributor.name}</Text>
+							<Text>Industry: </Text>
+							<Flex>
+							{distributor.industries.map((ind)=>{
+								return(
+									<Flex key={ind.id}>
+										<Text fontSize='14px'>{ind},</Text>
+									</Flex>
+								)
+							})}
+							</Flex>
+							<Text fontSize='14px' color='#009393' cursor='pointer'> click to view &gt;&gt; </Text>
+						</Flex>
+					)
+				})}
+				<Text fontSize='24px' fontFamily='ClearSans-Bold' borderBottom='1px solid #000'> Featured Manufacturers </Text>
+				{manufacturers.map((manufacturer)=>{
+					return(
+						<Flex direction='column' bg='#eee' p='1' m='1' key={manufacturer.id}>
+							<Text fontSize='20px' fontFamily='ClearSans-Bold'>{manufacturer.name}</Text>
+							<Text>Industry: </Text>
+							<Flex>
+							{manufacturer.industries.map((ind)=>{
+								return(
+									<Flex key={ind.id}>
+										<Text fontSize='14px'>{ind},</Text>
+									</Flex>
+								)
+							})}
+							</Flex>
+							<Text fontSize='14px' color='#009393' cursor='pointer'> click to view &gt;&gt; </Text>
+						</Flex>
+					)
+				})}
 				</Flex>
-			</Center>
-			<Text fontSize='24px' fontFamily='ClearSans-Bold' borderBottom='1px solid #000'> Related {categ.category} </Text>
-			<Text>browse and explore more {categ.category}</Text>
-			{categories?.filter((op)=> op.title === categ.category).map((item)=>{
-				return(
-					<Flex key={item.id}>
-						<Categories item={item}/>
-					</Flex>
-				)
-			})}
-			<Text fontSize='24px' fontFamily='ClearSans-Bold' borderBottom='1px solid #000'> Featured Distributors </Text>
-			{distributors.map((distributor)=>{
-				return(
-					<Flex direction='column' bg='#eee' p='1' m='1' key={distributor.id}>
-						<Text fontSize='20px' fontFamily='ClearSans-Bold'>{distributor.name}</Text>
-						<Text>Industry: </Text>
-						<Flex>
-						{distributor.industries.map((ind)=>{
-							return(
-								<Flex key={ind.id}>
-									<Text fontSize='14px'>{ind},</Text>
-								</Flex>
-							)
-						})}
-						</Flex>
-						<Text fontSize='14px' color='#009393' cursor='pointer'> click to view &gt;&gt; </Text>
-					</Flex>
-				)
-			})}
-			<Text fontSize='24px' fontFamily='ClearSans-Bold' borderBottom='1px solid #000'> Featured Manufacturers </Text>
-			{manufacturers.map((manufacturer)=>{
-				return(
-					<Flex direction='column' bg='#eee' p='1' m='1' key={manufacturer.id}>
-						<Text fontSize='20px' fontFamily='ClearSans-Bold'>{manufacturer.name}</Text>
-						<Text>Industry: </Text>
-						<Flex>
-						{manufacturer.industries.map((ind)=>{
-							return(
-								<Flex key={ind.id}>
-									<Text fontSize='14px'>{ind},</Text>
-								</Flex>
-							)
-						})}
-						</Flex>
-						<Text fontSize='14px' color='#009393' cursor='pointer'> click to view &gt;&gt; </Text>
-					</Flex>
-				)
-			})}
 		</Flex>
 	)
 }

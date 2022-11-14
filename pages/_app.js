@@ -6,7 +6,6 @@ import Footer from '../components/Footer.js'
 function MyApp({ Component, pageProps }) {
   return (
 	  <ChakraProvider>
-	  	<Header/>
 		<Component {...pageProps} />
 		<Footer/>
 	  </ChakraProvider>

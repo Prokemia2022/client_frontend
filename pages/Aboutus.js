@@ -1,9 +1,10 @@
 import React from 'react'
 import {Flex,Text,Image,Heading} from '@chakra-ui/react'
-
+import Header from '../components/Header.js';
 function About(){
 	return(
-		<Flex p='2' direction='column' gap='3'>
+		<Flex p='' direction='column' gap='3'>
+			<Header/>
 			<Image src='./circle-scatter.png'/>
 				<Heading as='h1' fontSize='42px' textDecoration='1px solid underline #009393'>About Us, Prokemia </Heading>
 			<Text fontSize='28px'>We are on a mission to bring the industry that enables every physical product into the digital Era.</Text>

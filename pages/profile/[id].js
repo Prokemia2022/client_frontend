@@ -4,7 +4,8 @@ import {Flex,Text,Button,Input} from '@chakra-ui/react';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
-import AddNewProduct from '../../components/modals/AddNewProduct.js';
+import ShortExpProduct from '../../components/modals/ShortExpProduct.js';
+import Header from '../../components/Header.js';
 
 function Profile(){
 	const [isaddnewproductModalvisible,setisaddnewProductModalvisible]=useState(false);
@@ -14,24 +15,20 @@ function Profile(){
 	const router = useRouter()
 	const [account,setAccount]=useState('user')
 	return(
-		<Flex p='2' direction='column' gap='2'>
-		<AddNewProduct isaddnewproductModalvisible={isaddnewproductModalvisible} setisaddnewProductModalvisible={setisaddnewProductModalvisible}/>
+		<Flex p='' direction='column' gap='2'>
+		<Header/>
+		<ShortExpProduct isaddnewproductModalvisible={isaddnewproductModalvisible} setisaddnewProductModalvisible={setisaddnewProductModalvisible}/>
 		{edit? 
 
 			<EditProfile setedit={setedit}/>
 			:
-			<Flex direction='column'>
-				<Flex align='center' justify='space-around'>
-					<AccountCircleIcon style={{fontSize:'150px'}} />
-					<Flex p='1' direction='column' w='60%'>
-						<Text>John Doe</Text>
-						<Text>Johndoe@gmail.com</Text>
-						<Text>0759233322</Text>
-						<Text>Company</Text>
-						<Flex gap='2' direction='column'> 
-							<Button border='1px solid #000' bg='#fff' onClick={(()=>{setisaddnewProductModalvisible(true)})}>List a Product on Short Expiry</Button>
-							<Button color='#fff' bg='#009393' onClick={(()=>{setedit(true)})}>Edit Profile</Button>
-						</Flex>
+			<Flex direction='column' p='1'>
+				<Flex gap='2' p='1' direction='column' w='70%'>
+					<Text fontSize='42px' fontFamily='ClearSans-bold'>Welcome,<br/> John Doe</Text>
+					<Text>johndoe@gmail.com</Text>
+					<Flex gap='2' direction='column'> 
+						<Button border='1px solid #000' bg='#fff' onClick={(()=>{setisaddnewProductModalvisible(true)})}>List a Product on Short Expiry</Button>
+						<Button color='#fff' bg='#009393' onClick={(()=>{setedit(true)})}>Edit Profile</Button>
 					</Flex>
 				</Flex>
 				
@@ -70,7 +67,7 @@ function Profile(){
 					</Flex>
 					{active && currentValue === 'recents' ? 
 						<>
-						<Flex gap='2' direction='column' bg='#eee'>
+						<Flex gap='2' direction='column' bg='#eee' p='2'>
 							<Text>Pharmaceutical</Text>
 							<Text>Agriculture</Text>
 						</Flex>
@@ -131,10 +128,7 @@ export default Profile;
 const EditProfile=({setedit})=>{
 	return(	
 		<Flex gap='3' direction='column'>
-			<Flex gap='2' align='center'>
-				<AccountCircleIcon style={{fontSize:'150px',backgroundColor:"#eee",borderRadius:'150px'}} />
-				<Text>Edit profile Photo</Text>
-			</Flex>
+			<Text fontSize='28px'>Edit Profile</Text>
 			<Flex direction='column' gap='3' w='100%'>
 					<Flex direction='column'>
 						<Text>Name</Text>

@@ -2,6 +2,7 @@
 import {Flex,Text,Button,Input} from '@chakra-ui/react';
 /*css*/
 import styles from '../../styles/Home.module.css';
+import Header from '../../components/Header.js'
 /*Icons*/
 import {LocationCity,Dashboard,Folder,Groups2,Groups} from '@mui/icons-material';
 import SettingsIcon from '@mui/icons-material/Settings';
@@ -24,48 +25,66 @@ function Manufacturer(){
 	if (currentvalue == 'inventory')
 	{   
 		return(
-				<Flex className={styles.consolebody} >
-					<Navbar currentvalue={currentvalue} setCurrentValue={setCurrentValue}/>
-					<Inventory />
+				<Flex direction='column' gap='2'>
+					<Header/>
+					<Flex className={styles.consolebody} >
+						<Navbar currentvalue={currentvalue} setCurrentValue={setCurrentValue}/>
+						<Inventory />
+					</Flex>
 				</Flex>
 			)
 	}else if (currentvalue == 'settings')
 	{
 		return(
-				<Flex className={styles.consolebody}>
-					<Navbar currentvalue={currentvalue} setCurrentValue={setCurrentValue}/>
-					<Settings />
+				<Flex direction='column' gap='2'>
+					<Header/>
+					<Flex className={styles.consolebody} >
+						<Navbar currentvalue={currentvalue} setCurrentValue={setCurrentValue}/>
+						<Settings />
+					</Flex>
 				</Flex>
 			)
 	}else if (currentvalue == 'experts')
 	{
 		return(
-				<Flex className={styles.consolebody}>
-					<Navbar currentvalue={currentvalue} setCurrentValue={setCurrentValue}/>
-					<Experts />
+				<Flex direction='column' gap='2'>
+					<Header/>
+					<Flex className={styles.consolebody} >
+						<Navbar currentvalue={currentvalue} setCurrentValue={setCurrentValue}/>
+						<Experts />
+					</Flex>
 				</Flex>
 			)
 	}else if (currentvalue == 'distributors')
 	{
 		return(
-				<Flex className={styles.consolebody}>
-					<Navbar  currentvalue={currentvalue} setCurrentValue={setCurrentValue}/>
-					<Distributors />
+				<Flex direction='column' gap='2'>
+					<Header/>
+					<Flex className={styles.consolebody} >
+						<Navbar currentvalue={currentvalue} setCurrentValue={setCurrentValue}/>
+						<Distributors />
+					</Flex>
 				</Flex>
 			)
 	}else if (currentvalue == 'upgrade')
 	{
 		return(
-				<Flex className={styles.consolebody}>
-					<Navbar  currentvalue={currentvalue} setCurrentValue={setCurrentValue}/>
-					<Premium />
+				<Flex direction='column' gap='2'>
+					<Header/>
+					<Flex className={styles.consolebody} >
+						<Navbar currentvalue={currentvalue} setCurrentValue={setCurrentValue}/>
+						<Premium />
+					</Flex>
 				</Flex>
 			)
 	}else{
 		return(
-				<Flex className={styles.consolebody} justify='space-between'>
-					<Navbar currentvalue={currentvalue} setCurrentValue={setCurrentValue}/>
-					<DashboardMenu setCurrentValue={setCurrentValue}/>
+				<Flex direction='column' gap='2'>
+					<Header/>
+					<Flex className={styles.consolebody} >
+						<Navbar currentvalue={currentvalue} setCurrentValue={setCurrentValue}/>
+						<DashboardMenu />
+					</Flex>
 				</Flex>
 			)
 	}

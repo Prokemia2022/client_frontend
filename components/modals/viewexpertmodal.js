@@ -53,12 +53,8 @@ function ViewExpertModal({isviewexpertModalvisible,setisViewExpertModalvisible})
                         <AccountCircleIcon style={{fontSize:'150px'}}/>
                         <Flex direction='column' gap='2'>
                         <Text fontSize='24px' color='#009393'>Name: Major</Text>
-                        <Text>Email: major@prokemia.co.ke</Text>
-                        <Text>Mobile: 0759233322</Text>
                         <Text>Company: Sahol Ind</Text>
                         <Text>Industry: Agriculture</Text>
-                        <Text>Technology: Agri-films</Text>
-                        <Button bg='#000' color='#fff' border='1px solid #000'><CallIcon/>Call</Button>
                         <Button bg='#009393' color='#fff'><EmailIcon/>Email</Button>
                       </Flex>
                     </Stack>

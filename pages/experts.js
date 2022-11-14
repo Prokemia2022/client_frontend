@@ -3,25 +3,29 @@ import {Flex,Text,Button,Input,Image,Select} from '@chakra-ui/react';
 import ViewExpert from '../components/modals/viewexpertmodal.js';
 import FilterExperts from '../components/modals/filterExpertsModal.js';
 import TuneIcon from '@mui/icons-material/Tune';
+import Header from '../components/Header';
 
 function Experts(){
 	const [isviewexpertModalvisible,setisViewExpertModalvisible]=useState(false);
 	const [isfilterexpertsModalvisible,setisfilterexpertsModalvisible]=useState(false);
 	return(
-		<Flex direction='column' p='2' gap='2'>
-			<ViewExpert isviewexpertModalvisible={isviewexpertModalvisible} setisViewExpertModalvisible={setisViewExpertModalvisible}/>
-			<FilterExperts isfilterexpertsModalvisible={isfilterexpertsModalvisible} setisfilterexpertsModalvisible={setisfilterexpertsModalvisible}/>
-			<Text fontSize='28px' textDecoration='3px solid #009393 underline' >Experts</Text>
-			<Flex gap='2'>
-				<Button onClick={(()=>{setisfilterexpertsModalvisible(true)})}>Filter<TuneIcon/></Button>
-				<Select placeholder='sort' w='150px'>
-					<option>A - Z</option>
-					<option>Z - A</option>
-				</Select>
-				<Input placeholder='Search by industry, technology'/>
-			</Flex>
-			<Flex p='2' direction='column' gap='2' overflowY='scroll' h='80vh'>
-				<Expert setisViewExpertModalvisible={setisViewExpertModalvisible}/>
+		<Flex direction='column' gap='3'>
+			<Header/>
+			<Flex direction='column' p='2' gap='2'>
+				<ViewExpert isviewexpertModalvisible={isviewexpertModalvisible} setisViewExpertModalvisible={setisViewExpertModalvisible}/>
+				<FilterExperts isfilterexpertsModalvisible={isfilterexpertsModalvisible} setisfilterexpertsModalvisible={setisfilterexpertsModalvisible}/>
+				<Text fontSize='28px' textDecoration='3px solid #009393 underline' >Experts</Text>
+				<Flex gap='2'>
+					<Button onClick={(()=>{setisfilterexpertsModalvisible(true)})}>Filter<TuneIcon/></Button>
+					<Select placeholder='sort' w='150px'>
+						<option>A - Z</option>
+						<option>Z - A</option>
+					</Select>
+					<Input placeholder='Search by industry, technology'/>
+				</Flex>
+				<Flex p='2' direction='column' gap='2' overflowY='scroll' h='80vh'>
+					<Expert setisViewExpertModalvisible={setisViewExpertModalvisible}/>
+				</Flex>
 			</Flex>
 		</Flex>
 	)
