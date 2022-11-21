@@ -206,7 +206,7 @@ background: linear-gradient(90deg, rgba(0,147,147,1) 51%, rgba(237,248,248,1) 10
 .consoleNavigation{
 	height: 50px;
 	width: 100%;
-	background-color: #eee;
+	background-color: #fff;
 	flex-direction: row;
 	overflow: auto;
 }
@@ -214,6 +214,7 @@ background: linear-gradient(90deg, rgba(0,147,147,1) 51%, rgba(237,248,248,1) 10
       display: none; 
 }
 .consoleNavItem{
+	background-color:#eee;
 	border-bottom: none;
 }
 .consolebody{

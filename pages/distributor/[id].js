@@ -28,17 +28,6 @@ function Distributor(){
 					</Flex>
 				</Flex>
 			)
-	}else if (currentvalue == 'settings')
-	{
-		return(
-				<Flex direction='column' gap='2'>
-					<Header/>
-					<Flex className={styles.consolebody}>
-						<Navbar currentvalue={currentvalue} setCurrentValue={setCurrentValue}/>
-						<Settings />
-					</Flex>
-				</Flex>
-			)
 	}else if (currentvalue == 'experts')
 	{
 		return(

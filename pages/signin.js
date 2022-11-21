@@ -24,6 +24,7 @@ export default function ClientSignUp(){
   		if(password === 'manufacturer' && username === 'manufacturer')
   			route = 'manufacturer/1';
 
+		sessionStorage.setItem('auth',username);
   		router.push(`/${route}`)
   	}
 	return(

@@ -4,6 +4,7 @@ import ViewExpert from '../components/modals/viewexpertmodal.js';
 import FilterExperts from '../components/modals/filterExpertsModal.js';
 import TuneIcon from '@mui/icons-material/Tune';
 import Header from '../components/Header';
+import SearchIcon from '@mui/icons-material/Search';
 
 function Experts(){
 	const [isviewexpertModalvisible,setisViewExpertModalvisible]=useState(false);
@@ -21,7 +22,10 @@ function Experts(){
 						<option>A - Z</option>
 						<option>Z - A</option>
 					</Select>
-					<Input placeholder='Search by industry, technology'/>
+				</Flex>
+				<Flex gap='2' p='2'>
+					<Input placeholder='search by Industry,Technology, Company' bg='#fff' flex='1'/>
+					<Button bg='#009393' color='#fff'><SearchIcon /></Button>
 				</Flex>
 				<Flex p='2' direction='column' gap='2' overflowY='scroll' h='80vh'>
 					<Expert setisViewExpertModalvisible={setisViewExpertModalvisible}/>

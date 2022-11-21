@@ -52,7 +52,7 @@ const Form=()=>{
 const Header=()=>{
 	return(
 		<Flex className={styles.landingheader}>
-			<Text fontFamily='ClearSans-bold'>Prokemia</Text>
+			<Text fontFamily='ClearSans-bold'><span style={{color:'#009393'}}>Pro</span>kemia</Text>
 		</Flex>
 		
 	)
@@ -68,7 +68,7 @@ const infos=[
 		text:'Find a market for your produced products.We help connect you to clients in search of similar products.Products will be showcased to our marketplace for clients to search for.'
 	},
 	{
-		heading:'Why Prokemia',
+		heading:'Why Choose Us',
 		text:'Interact with over 8,000 suppliers, browse their catalogs, access documents and download starter formulations.Discover over 180k products in more than 8,000 storefronts.'
 	},
 	{

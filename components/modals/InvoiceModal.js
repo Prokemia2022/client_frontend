@@ -42,7 +42,7 @@ function CreateInvoiceModal({iscreateinvoiceModalvisible,setiscreateinvoiceModal
               <ModalOverlay />
               <ModalContent>
                 <ModalHeader>
-                  <Text>Create a new invoice</Text>
+                  <Text>Create a new Sale</Text>
                 </ModalHeader>
                 <ModalCloseButton />
                 <ModalBody>
@@ -56,18 +56,22 @@ function CreateInvoiceModal({iscreateinvoiceModalvisible,setiscreateinvoiceModal
                       <Input type='Email' placeholder='Email of Client' variant='filled'/>
                     </Flex>
                     <Flex direction='column'>
-                      <Text>Volume of Items/Products</Text>
+                      <Text>Name of Product:</Text>
+                      <Input type='text' placeholder='Name of product' variant='filled'/>
+                    </Flex>
+                    <Flex direction='column'>
+                      <Text>Volume of Items</Text>
                       <Input type='number' placeholder='Volume/amount' variant='filled'/>
                     </Flex>
                     <Flex direction='column'>
-                      <Text>Price per Item</Text>
-                      <Input type='number' placeholder='Price' variant='filled'/>
+                      <Text>Unit Price</Text>
+                      <Input type='number' placeholder='Enter Price per item' variant='filled'/>
                     </Flex>
                     <Flex direction='column'>
 	                    <Text fontSize='14px'>- by creating this invoice you acknowledge that Prokemia will formally trade on behalf </Text>
 	                    <Text fontSize='14px'>- a 2% service fee will be charged for this process.</Text>
                     </Flex>
-                    <Button bg='#009393' borderRadius='0' color='#fff'>Create invoice</Button>
+                    <Button bg='#009393' borderRadius='0' color='#fff'>Create Sale Invoice</Button>
                   </Stack>
                 </ModalBody>
               </ModalContent>

@@ -1,6 +1,7 @@
 import React from 'react'
 import {Flex,Image,Text,Input,Button,Select} from '@chakra-ui/react'
 import {useRouter} from 'next/router'
+import DoneAllIcon from '@mui/icons-material/DoneAll';
 
 function Inventory(){
 	const router = useRouter();
@@ -24,8 +25,10 @@ export default Inventory;
 
 const Item=({router})=>{
 	return(
-		<Flex p='2' bg='#eee' borderRadius='5px' direction='column'>
-			<Image bg='#fff' w='100%' h='50px' borderRadius='5px'/>
+		<Flex p='2' bg='#eee' borderRadius='5px' direction='column' position='relative'>
+			<Flex position='absolute' top='2' right='2' bg='#009393' p='2' borderRadius='5' color='#fff'>
+				<DoneAllIcon/>
+			</Flex>
 			<Text color='#009393' fontWeight='bold' fontSize="24px">Cereal</Text>
 			<Flex gap='2'>
 				<Text fontWeight='bold'>Industry:</Text>

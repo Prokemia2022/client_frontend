@@ -1,4 +1,4 @@
-import React,{useState} from 'react'
+import React,{useState,useEffect} from 'react'
 import {Flex,
 		Text,
 		Button,
@@ -16,30 +16,62 @@ import Search from './Search.js'
 import SearchIcon from '@mui/icons-material/Search';
 import SearchOffIcon from '@mui/icons-material/SearchOff';
 import styles from '../styles/Home.module.css';
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 
 function Header(){
 	const [showmenubar,setshowmenubar]=useState(false);
 	const [searchbaractive,setsearchbaractive]=useState(false);
+	const [signedin,setsignedin]=useState(false);
+	const [user,setuser]=useState('');
+
 	const router = useRouter();
+	useEffect(()=>{
+		let access = sessionStorage.getItem("auth");
+		if (access === 'null')
+		{	
+			setsignedin(false);
+		}
+		else
+		{	
+			setsignedin(true);
+			console.log(access);
+			setuser(access);
+		}
+	},[])
+	const handleProfile=()=>{
+		if(user === 'sales')
+			router.push('/salesperson/1')
+		if(user === 'client')
+			router.push('/profile/1')
+		if(user === 'distributor')
+			router.push('/distributor/1')
+		if(user === 'manufacturer')
+			router.push('/manufacturer/1')
+	}
 	return(
 		<Flex position='sticky' top='0' w='100%' zIndex='999' cursor='pointer' bg='#fff' fontFamily='ClearSans-Bold' p='2' direction='column'>
 			<Flex justify='space-between' align='center'>
 				<Text mb='0' onClick={(()=>{router.push('/')})} fontSize='28px' color='#00e0c6'>Pro<span style={{color:"#000"}}>Kemia</span></Text>
 				<Flex align='center' gap='2'>
 					{searchbaractive ? <SearchOffIcon onClick={(()=>{setsearchbaractive(false)})}/> : <SearchIcon onClick={(()=>{setsearchbaractive(true)})}/>}
-					<Button onClick={(()=>{router.push('/account/1')})} bg='#009393' color='#fff' >Sign Up</Button>
+					{signedin? 
+						<FavoriteBorderIcon onClick={(()=>{router.push('/favorite')})}/> : 
+						<Button onClick={(()=>{router.push('/account/1')})} bg='#009393' color='#fff' >Sign Up</Button>}
 					<Menu >
-						<MenuButton as={Button} rounded={'full'} variant={'link'} cursor={'pointer'} minW={0} pt='1' color='#000'>
-							<MenuOpenIcon/>
+					<Flex bg={signedin?'#009393':'#fff'} align='center' gap='1' p='1' borderRadius='5' color={signedin?'#fff':'#000'}>
+						{signedin?<Text ml='1' textTransform='capitalize'>{user}</Text>:null}
+						<MenuButton as={Button} rounded={'full'} variant={'link'} cursor={'pointer'} minW={0} pt='1' color={signedin?'#fff':'#000'}>
+							<MenuOpenIcon style={{fontSize:'24px'}}/>
 						</MenuButton>
+					</Flex>
 						<MenuList alignItems={'center'} p='2'>
 							<Flex align='center' gap='2'>
 								<Script src="https://cdn.lordicon.com/xdjxvujz.js"></Script>
 								<lord-icon src="https://cdn.lordicon.com/dklbhvrt.json" trigger="loop" delay="7000" style={{marginTop:'20px',width:'70px',height:"70px",}} >
 								</lord-icon>
 								<Flex direction='column' gap='1'>
-									<Text>John Doe</Text>
-									<Text color='#009393' cursor='pointer' onClick={(()=>{router.push('/profile/1')})}>view profile</Text>
+									<Text>{user}</Text>
+									<Text color='#009393' cursor='pointer' onClick={handleProfile}>view profile</Text>
 								</Flex>
 							</Flex>
 							{navigation.map((nav)=>{
@@ -50,7 +82,10 @@ function Header(){
 									</Flex>
 								)
 							})}
-							<Button onClick={(()=>{router.push(`/signin`)})} bg='#009393' color='#fff' w='100%'>Sign In</Button>
+							{signedin? 
+								<Button onClick={(()=>{router.push('/');sessionStorage.setItem('auth',null)})} w='100%' bg='#000' color='#fff'>LogOut</Button>
+									: 
+								<Button onClick={(()=>{router.push(`/signin`)})} bg='#009393' color='#fff' w='100%'>Sign In</Button>}
 						</MenuList>
 					</Menu>
 				</Flex>

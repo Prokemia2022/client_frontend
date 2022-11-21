@@ -72,7 +72,7 @@ const Sell=({active,setActive,router})=>{
 			<Button bg='#009393' color='#fff' onClick={(()=>{router.push('/signup/distributor')})}>Create a Distribuor Account</Button>
 			<Button bg='#009393' color='#fff' onClick={(()=>{router.push('/signup/manufacturer')})}>Create a Manufacturer Account</Button>
 			<Text textAlign='center'>or</Text>
-			<Button bg='#000' color='#fff' onClick={(()=>{router.push('')})}>Request a Demo</Button>
+			<Button bg='#000' color='#fff' onClick={(()=>{router.push('/')})}>Request a Demo</Button>
 		</Flex>
 	)
 }
