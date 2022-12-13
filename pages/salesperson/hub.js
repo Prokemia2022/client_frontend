@@ -11,7 +11,7 @@ function Hub(){
 	const [active,setActive]=useState(false);
 	const router = useRouter();
 	setTimeout(()=>{
-		//router.push('/hub')
+		router.push('/hub')
 	},3000)
 	return(
 		<Flex align='center' justify='center' w='100%' h='80vh' direction='column'>
