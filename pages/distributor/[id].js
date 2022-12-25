@@ -1,8 +1,18 @@
-import React,{useState} from 'react';
+//modules imports
+import React,{useState,useEffect} from 'react';
 import {Flex,Text,Button,Input} from '@chakra-ui/react';
-import styles from '../../styles/Home.module.css';
 import {useRouter} from 'next/router';
+import Cookies from 'universal-cookie';
+import jwt_decode from "jwt-decode";
+//components imports
+import styles from '../../styles/Home.module.css';
 import Header from '../../components/Header.js';
+//icon imports
+import SettingsIcon from '@mui/icons-material/Settings';
+import {LocationCity,Dashboard,Folder,Groups2,Groups} from '@mui/icons-material';
+import WorkspacePremiumOutlinedIcon from '@mui/icons-material/WorkspacePremiumOutlined';
+//api calls
+import Get_Distributor from '../api/auth/distributor/get_distributor.js'
 /*page sections*/
 import Settings from './settings.js'
 import Inventory from './inventory.js';
@@ -10,13 +20,34 @@ import Experts from './experts.js';
 import DashboardMenu from './dashboardMenu.js';
 import Manufacturers from './manufacturers.js';
 import Premium from './Premium.js'
-/*icons*/
-import SettingsIcon from '@mui/icons-material/Settings';
-import {LocationCity,Dashboard,Folder,Groups2,Groups} from '@mui/icons-material';
-import WorkspacePremiumOutlinedIcon from '@mui/icons-material/WorkspacePremiumOutlined';
-
+ 
 function Distributor(){
 	const [currentvalue,setCurrentValue] = useState('dashboard')
+	const cookies = new Cookies();
+	const token = cookies.get('user_token');
+
+	const [distributor_data,set_distributor_data]=useState("");
+
+	useEffect(()=>{
+		if(!token){
+			alert('could not get user_id')
+		}else{
+			const details = jwt_decode(token)
+			console.log(details)
+			const payload = {
+				email_of_company : details?.email,
+				_id: details.id
+			}
+			get_Data(payload)
+		}
+	},[])
+	const get_Data=async(payload)=>{
+		console.log(payload)
+		await Get_Distributor(payload).then((response)=>{
+			console.log(response.data)
+			set_distributor_data(response.data)
+		})
+	}
 	if (currentvalue == 'inventory')
 	{   
 		return(
@@ -24,7 +55,7 @@ function Distributor(){
 					<Header/>
 					<Flex className={styles.consolebody} >
 						<Navbar currentvalue={currentvalue} setCurrentValue={setCurrentValue}/>
-						<Inventory />
+						<Inventory distributor_data={distributor_data}/>
 					</Flex>
 				</Flex>
 			)
@@ -35,7 +66,7 @@ function Distributor(){
 					<Header/>
 					<Flex className={styles.consolebody}>
 						<Navbar  currentvalue={currentvalue} setCurrentValue={setCurrentValue}/>
-						<Experts />
+						<Experts distributor_data={distributor_data}/>
 					</Flex>
 				</Flex>
 			)
@@ -46,7 +77,7 @@ function Distributor(){
 				<Header/>
 				<Flex className={styles.consolebody}>
 					<Navbar currentvalue={currentvalue} setCurrentValue={setCurrentValue}/>
-					<Manufacturers/>
+					<Manufacturers distributor_data={distributor_data}/>
 				</Flex>
 			</Flex>
 		)
@@ -68,7 +99,7 @@ function Distributor(){
 				<Header/>
 				<Flex className={styles.consolebody}>
 					<Navbar currentvalue={currentvalue} setCurrentValue={setCurrentValue}/>
-					<Settings/>
+					<Settings distributor_data={distributor_data}/>
 				</Flex>
 			</Flex>
 		)
@@ -78,7 +109,7 @@ function Distributor(){
 				<Header/>
 				<Flex className={styles.consolebody} justify='space-between'>
 					<Navbar currentvalue={currentvalue} setCurrentValue={setCurrentValue}/>
-					<DashboardMenu setCurrentValue={setCurrentValue}/>
+					<DashboardMenu setCurrentValue={setCurrentValue} distributor_data={distributor_data}/>
 				</Flex>
 			</Flex>
 			)

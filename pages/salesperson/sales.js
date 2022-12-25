@@ -1,41 +1,79 @@
-import React from 'react'
+import React,{useState,useEffect} from 'react'
 import {Flex,Image,Text,Input,Button,Select} from '@chakra-ui/react'
 import {useRouter} from 'next/router'
 import DoneAllIcon from '@mui/icons-material/DoneAll';
+import Get_Orders from '../api/auth/salesperson/get_orders.js'
+import CreateInvoiceModal from '../../components/modals/InvoiceModal.js';
 
-function Inventory(){
+function Sales({salesperson_data}){
 	const router = useRouter();
+	const [orders_data,set_orders]=useState([]);
+	const [sort_value,set_sort_value]=useState('')
+	const [iscreateinvoiceModalvisible,setiscreateinvoiceModalvisible]=useState(false);
+
+	const payload = {
+		_id : salesperson_data._id
+	}
+
+	useEffect(()=>{
+		if(!payload){
+			alert('could not get user_id')
+		}else{
+			get_Data(payload)
+		}
+	},[])
+	const get_Data=async(payload)=>{
+		console.log(payload)
+		await Get_Orders(payload).then((response)=>{
+			console.log(response.data)
+			let data = response.data
+			const result = data.filter((item)=> item.creator_id?.includes(salesperson_data._id))
+			set_orders(result)
+		})
+	}
 	return(
 		<Flex direction='column' gap='3' p='2' w='100%' overflowY='scroll' h='100vh'>
+			<CreateInvoiceModal iscreateinvoiceModalvisible={iscreateinvoiceModalvisible} setiscreateinvoiceModalvisible={setiscreateinvoiceModalvisible} salesperson_data={salesperson_data}/>
 			<Text fontSize='32px' fontWeight='bold' textDecoration='3px solid underline #009393'>Sales</Text>
 			<Flex gap='2'>
-				<Select w='150px' placeholder='sort'>
-					<option>Pending </option>
-					<option>Disbursed</option>
-					<option>Completed</option>
-					<option>Rejected</option>
+				<Select w='150px' placeholder='sort' onChange={((e)=>{set_sort_value(e.target.value)})}>
+					<option value='pending'>Pending </option>
+					<option value='disbursed'>Disbursed</option>
+					<option value='completed'>Completed</option>
+					<option value='rejected'>Rejected</option>
 				</Select>
 				<Input placeholder='search orders by product name, order Id'/>
 			</Flex>
-			<Item router={router}/>
-			<Item router={router}/>
-			<Item router={router}/>
+			{orders_data.length === 0?
+				<Flex justify='center' align='center' h='40vh' direction='column' gap='2'>
+						<Text>You have not Made any sales yet.</Text>
+						<Button bg='#009393' color='#fff' onClick={(()=>{setiscreateinvoiceModalvisible(true)})}>Initiate a sale</Button>
+				</Flex>
+			:
+				<>
+					{orders_data.filter((item)=> item.order_status?.includes(sort_value)).map((order)=>{
+						return(
+							<Item key={order._id} order={order}/>
+						)
+					})}
+				</>
+			}
 		</Flex>
 	)
 }
 
-export default Inventory;
+export default Sales;
 
-const Item=({router})=>{
+const Item=({order,})=>{
 	return(
 		<Flex boxShadow='lg' p='2' bg='#fff' borderRadius='5px' direction='column' position='relative' border='2px dashed #009393'>
-			<Text fontSize='20px' fontWeight='bold'>Order Id: 28739842</Text>
-			<Text>Product Name: Cereal</Text>
-			<Text>Unit Price: 200</Text>
-			<Text>Volume: 1000</Text>	
-			<Text>Email of Client: joan@jussup.com</Text>	
-			<Text>date: 21-11-2022</Text>	
-			<Text>Order Status: <span style={{color:'orange'}}>Pending</span></Text>	
+			<Text fontSize='20px' fontWeight='bold'>Order Id: {order._id}</Text>
+			<Text>Product Name: {order.name_of_product}</Text>
+			<Text>Unit Price: {order.unit_price}</Text>
+			<Text>Volume: {order.volume_of_items}</Text>	
+			<Text>Email of Client: {order.name_of_client}</Text>	
+			<Text>date: {order.createdAt}</Text>	
+			<Text>Order Status: <span style={{color:'orange'}}>{order.order_status}</span></Text>	
 		</Flex>
 	)
 }

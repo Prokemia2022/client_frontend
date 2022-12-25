@@ -1,4 +1,9 @@
+//modules import
 import React,{useState,useEffect} from 'react'
+import {useRouter} from 'next/router'
+import Script from 'next/script'
+import Cookies from 'universal-cookie';
+import jwt_decode from "jwt-decode";
 import {Flex,
 		Text,
 		Button,
@@ -8,45 +13,66 @@ import {Flex,
 	    MenuButton,
 	    MenuList,
 	    MenuItem,MenuDivider,Center} from '@chakra-ui/react'
+//icon import
 import {Close,Add,HorizontalRule,ArrowForward} from '@mui/icons-material';
 import MenuOpenIcon from '@mui/icons-material/MenuOpen';
-import {useRouter} from 'next/router'
-import Script from 'next/script'
-import Search from './Search.js'
 import SearchIcon from '@mui/icons-material/Search';
 import SearchOffIcon from '@mui/icons-material/SearchOff';
-import styles from '../styles/Home.module.css';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+//components import
+import Search from './Search.js'
+import styles from '../styles/Home.module.css';
 
-function Header(){
+
+function Header({products_data,distributors_data,manufacturers_data,industries_data,technologies_data}){
 	const [showmenubar,setshowmenubar]=useState(false);
 	const [searchbaractive,setsearchbaractive]=useState(false);
 	const [signedin,setsignedin]=useState(false);
+	
 	const [user,setuser]=useState('');
+	const [acc_type,set_acc_type]=useState('');
+	const [uid,set_uid]=useState('')
+
 
 	const router = useRouter();
+	const cookies = new Cookies();
+	const token = cookies.get('user_token');
+	
 	useEffect(()=>{
-		let access = sessionStorage.getItem("auth");
-		if (access === 'null')
-		{	
-			setsignedin(false);
-		}
-		else
-		{	
-			setsignedin(true);
-			console.log(access);
-			setuser(access);
+		if(token){
+			const details = jwt_decode(token)
+			console.log(details)
+			setsignedin(true)
+			set_acc_type(details?.acc_type)
+			setuser(details?.email)
+			set_uid(details?.id)
+
+			const payload = {
+				email_of_company : details?.email,
+				_id: uid
+			}
+			console.log(user)
+		}else{
+			setsignedin(false)
+			//alert("could not get user id")
 		}
 	},[])
 	const handleProfile=()=>{
-		if(user === 'sales')
-			router.push('/salesperson/1')
-		if(user === 'client')
-			router.push('/profile/1')
-		if(user === 'distributor')
-			router.push('/distributor/1')
-		if(user === 'manufacturer')
-			router.push('/manufacturer/1')
+		if(acc_type === 'sales')
+			router.push(`/salesperson/${uid}`)
+		if(acc_type === 'client')
+			router.push(`/profile/${uid}`)
+		if(acc_type === 'distributor')
+			router.push(`/distributor/${uid}`)
+		if(acc_type === 'manufacturer')
+			router.push(`/manufacturer/${uid}`)
+	}
+
+	const handle_LogOut=()=>{
+		cookies.remove('user_token', { path: '/' });
+		// router.reload()
+		router.push('/')
+		setsignedin(false)
 	}
 	return(
 		<Flex position='sticky' top='0' w='100%' zIndex='999' cursor='pointer' bg='#fff' fontFamily='ClearSans-Bold' p='2' direction='column'>
@@ -58,8 +84,8 @@ function Header(){
 						<FavoriteBorderIcon onClick={(()=>{router.push('/favorite')})}/> : 
 						<Button onClick={(()=>{router.push('/account/1')})} bg='#009393' color='#fff' >Sign Up</Button>}
 					<Menu >
-					<Flex bg={signedin?'#009393':'#fff'} align='center' gap='1' p='1' borderRadius='5' color={signedin?'#fff':'#000'}>
-						{signedin?<Text ml='1' textTransform='capitalize'>{user}</Text>:null}
+					<Flex bg={signedin?'#009393':'#fff'} align='center' gap='1' p='1' borderRadius='5' color={signedin?'#fff':'#000'} align='center'>
+						{signedin?<Text ml='1' fontSize='12px'>{user}</Text>:null}
 						<MenuButton as={Button} rounded={'full'} variant={'link'} cursor={'pointer'} minW={0} pt='1' color={signedin?'#fff':'#000'}>
 							<MenuOpenIcon style={{fontSize:'24px'}}/>
 						</MenuButton>
@@ -69,10 +95,16 @@ function Header(){
 								<Script src="https://cdn.lordicon.com/xdjxvujz.js"></Script>
 								<lord-icon src="https://cdn.lordicon.com/dklbhvrt.json" trigger="loop" delay="7000" style={{marginTop:'20px',width:'70px',height:"70px",}} >
 								</lord-icon>
-								<Flex direction='column' gap='1'>
-									<Text>{user}</Text>
-									<Text color='#009393' cursor='pointer' onClick={handleProfile}>view profile</Text>
-								</Flex>
+								{signedin? 
+									<Flex direction='column' gap='1'>
+										<Text>{user}</Text>
+										<Text color='#009393' cursor='pointer' onClick={handleProfile}>view profile</Text>
+									</Flex> 
+									: 
+									<Flex direction='column' gap='1' p='2' mt='3' color='#009393'>
+										<Text onClick={(()=>{router.push(`/signin`)})}>sign in to <br/> view profile</Text>
+									</Flex> 
+								}
 							</Flex>
 							{navigation.map((nav)=>{
 								return(
@@ -83,14 +115,14 @@ function Header(){
 								)
 							})}
 							{signedin? 
-								<Button onClick={(()=>{router.push('/');sessionStorage.setItem('auth',null)})} w='100%' bg='#000' color='#fff'>LogOut</Button>
+								<Button w='100%' bg='#000' color='#fff' onClick={handle_LogOut}>LogOut</Button>
 									: 
 								<Button onClick={(()=>{router.push(`/signin`)})} bg='#009393' color='#fff' w='100%'>Sign In</Button>}
 						</MenuList>
 					</Menu>
 				</Flex>
 			</Flex>
-			{searchbaractive ? <Search/> : null}			
+			{searchbaractive ? <Search products_data={products_data} distributors_data={distributors_data} manufacturers_data={manufacturers_data} industries_data={industries_data} technologies_data={technologies_data}/> : null}			
 		</Flex>
 	)
 }
@@ -100,22 +132,22 @@ export default Header;
 const navigation=[
 	{
 		id:1,
-		title:'Explore',
-		link:`/industry/agriculture`
+		title:'Explore industries',
+		link:`/Industries/all`
 	},
 	{
 		id:2,
 		title:'Sell and Market your Products',
 		link:'/account/2'
 	},
+	// {
+	// 	id:3,
+	// 	title:'Find Experts/Consultants',
+	// 	link:'/experts'
+	// },	
 	{
 		id:3,
-		title:'Find Experts/Consultants',
-		link:'/experts'
-	},	
-	{
-		id:4,
 		title:'Marketplace',
-		link:'/shortonexpiry'
+		link:'/market'
 	},
 ]

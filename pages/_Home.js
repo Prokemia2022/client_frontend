@@ -1,4 +1,4 @@
-import React from 'react'
+import React,{useState,useEffect} from 'react'
 import { Flex,Text,Image,Center,Select,Button} from '@chakra-ui/react';
 import styles from '../styles/Home.module.css';
 import styled from 'styled-components';
@@ -7,12 +7,62 @@ import {useRouter} from 'next/router';
 import CloudDownloadIcon from '@mui/icons-material/CloudDownload';
 import QueryStatsIcon from '@mui/icons-material/QueryStats';
 import Header from '../components/Header.js';
+import Get_Products from './api/product/get_products.js'
+import Get_Industries from './api/control/get_industries.js'
+import Get_Technologies from './api/control/get_technologies.js'
+import Get_Distributors from './api/auth/distributor/get_distributors.js'
+import Get_Manufacturers from './api/auth/manufacturer/get_manufacturers.js'
 
 function _Home(){
 	const router = useRouter();
+	const [products_data,set_products_data]=useState([])
+	const [industries_data,set_industries_data]=useState([])
+	const [technologies_data,set_technologies_data]=useState([])
+	const [distributors_data,set_distributors_data]=useState([])
+	const [manufacturers_data,set_manufacturers_data]=useState([])
+
+	useEffect(()=>{
+		get_Products_Data()
+		get_Industries_Data()
+		get_Technologies_Data()
+		get_Distributors_Data()
+		get_Manufacturers_Data()
+		console.log(products_data)
+	},[])
+
+	const get_Products_Data=async()=>{
+		await Get_Products().then((response)=>{
+			set_products_data(response.data)
+			console.log(response.data)
+		})
+	}
+	const get_Industries_Data=async()=>{
+		await Get_Industries().then((response)=>{
+			set_industries_data(response.data)
+			console.log(response.data)
+		})
+	}
+	const get_Technologies_Data=async()=>{
+		await Get_Technologies().then((response)=>{
+			set_technologies_data(response.data)
+			console.log(response.data)
+		})
+	}
+	const get_Distributors_Data=async()=>{
+		await Get_Distributors().then((response)=>{
+			set_distributors_data(response.data)
+			console.log(response.data)
+		})
+	}
+	const get_Manufacturers_Data=async()=>{
+		await Get_Manufacturers().then((response)=>{
+			set_manufacturers_data(response.data)
+			console.log(response.data)
+		})
+	}
 	return(
 		<Flex direction='column' position='relative' gap='2'>
-			<Header/>
+			<Header products_data={products_data} distributors_data={distributors_data} manufacturers_data={manufacturers_data} industries_data={industries_data} technologies_data={technologies_data}/>
 			<Image h='400px' w='100vw' objectFit='cover' src='../2.png' alt='next' />
 			<Flex p='2' direction='column'>
 				<Flex mt='-350px' direction='column' gap='3' w='100%' p='3'>
@@ -21,34 +71,53 @@ function _Home(){
 						
 				</Flex>			
 				<Flex direction='column' p='2'>
-						<Text mb='0' fontSize='18px'>Do not know what you are looking for?</Text>
-						<Text mb='0' fontSize='16px' onClick={(()=>{router.push('/experts')})} color='#009393' cursor='pointer'>Click to ask our Experts</Text>
+					<Text mb='0' fontSize='18px'>Do not know what you are looking for?</Text>
+					<Text mb='0' fontSize='16px' onClick={(()=>{router.push('/experts')})} color='#009393' cursor='pointer'>Click to ask our Experts</Text>
+				</Flex>
+				<Flex direction='column' gap='2' w='100%'>
+					<Text mb='0' borderBottom='2px solid #000' fontFamily='ClearSans-Bold' fontSize='24px'>Industries</Text>
+					<Flex wrap='Wrap' direction='' w='100%'>
+						{industries_data?.map((item)=>{
+							return(
+								<Flex key={item.id} w='170px' h='225px' m='1' position='relative' onClick={(()=>{router.push(`/products/${item.title}`)})}>
+									<Image borderRadius='10px' objectFit='cover' src="../images (1).jpeg" alt='next' boxShadow='dark-lg'/>
+									<Text mb='0' position='absolute' top='10px' left='10px' fontSize='20px' color='#fff' fontFamily='ClearSans-Bold'>{item.title}</Text>
+								</Flex>
+							)
+						})}
 					</Flex>
-				<Flex direction='column' w='100%'>
-					{categories?.map((item)=>{
-						return(
-							<Flex key={item.id} w='100%'>
-								<Categories item={item}/>
-							</Flex>
-						)
-					})}
+					<Button bg='#009393' color='#fff' onClick={(()=>{router.push(`/Industries/all`)})}>Explore All industries</Button>
+				</Flex>
+				<Flex direction='column' gap='2' w='100%'>
+					<Text mb='0' borderBottom='2px solid #000' fontFamily='ClearSans-Bold' fontSize='24px'>Technologies</Text>
+					<Flex wrap='Wrap' direction='' w='100%'>
+						{technologies_data?.map((item)=>{
+							return(
+								<Flex key={item.id} w='170px' h='225px' m='1' position='relative'>
+									<Image borderRadius='10px' objectFit='cover' src="../images (1).jpeg" alt='next' boxShadow='dark-lg'/>
+									<Text mb='0' position='absolute' top='10px' left='10px' fontSize='20px' color='#fff' fontFamily='ClearSans-Bold'>{item.title}</Text>
+								</Flex>
+							)
+						})}
+					</Flex>
+					<Button bg='#009393' color='#fff' onClick={(()=>{router.push(`/Technologies/all`)})}>Explore All Technologies</Button>
 				</Flex>
 				<Text fontSize='24px' fontFamily='ClearSans-Bold' borderBottom='1px solid #000'>Featured Products</Text>
-				{products.map((content)=>{
+				{products_data.map((content)=>{
 					return(
-						<div key={content.id} style={{margin:'5px'}}>
+						<div key={content.id} style={{margin:'5px'}} key={content.id}>
 							<ProductItem content={content}/>
 						</div>
 					)
 				})}
 				<Text fontSize='24px' fontFamily='ClearSans-Bold' borderBottom='1px solid #000'>Top Distributors </Text>
-				{distributors.map((distributor)=>{
+				{distributors_data.map((distributor)=>{
 					return(
 						<Flex direction='column' bg='#eee' p='1' mb='1' key={distributor.id}>
-							<Text mb='0' fontSize='20px' fontFamily='ClearSans-Bold'>{distributor.name}</Text>
+							<Text mb='0' fontSize='20px' fontFamily='ClearSans-Bold'>{distributor.company_name}</Text>
 							<Text mb='0' >Industry: </Text>
 							<Flex>
-							{distributor.industries.map((ind)=>{
+							{distributor.industries?.map((ind)=>{
 								return(
 									<Flex key={ind.id}>
 										<Text mb='0' fontSize='14px'>{ind},</Text>
@@ -61,13 +130,13 @@ function _Home(){
 					)
 				})}
 				<Text fontSize='24px' fontFamily='ClearSans-Bold' borderBottom='1px solid #000'>Top Manufacturers </Text>
-				{manufacturers.map((manufacturer)=>{
+				{manufacturers_data.map((manufacturer)=>{
 					return(
-						<Flex direction='column' bg='#eee' mb='1' p='1' key={manufacturer.id}>
-							<Text mb='0' fontSize='20px' fontFamily='ClearSans-Bold'>{manufacturer.name}</Text>
+						<Flex direction='column' bg='#eee' mb='1' p='1' key={manufacturer._id}>
+							<Text mb='0' fontSize='20px' fontFamily='ClearSans-Bold'>{manufacturer.company_name}</Text>
 							<Text mb='0' >Industry: </Text>
 							<Flex wrap='flex'>
-								{manufacturer.industries.map((ind)=>{
+								{manufacturer.industries?.map((ind)=>{
 									return(
 										<Flex key={ind.id}>
 											<Text mb='0' fontSize='14px'>{ind},</Text>
@@ -330,10 +399,10 @@ const ProductItem=({content,categ})=>{
 	const router = useRouter();
 	return(
 		<Flex position='relative' gap='2' align='center' onClick={(()=>{router.push(`/product/${content.name}`)})}>
-			<Image w='50px' h='50px' borderRadius='10px' objectFit='cover' src={content.img} alt='next'/>
+			<Image w='50px' h='50px' borderRadius='10px' objectFit='cover' src='../images.jpeg' alt='next'/>
 			<Flex direction='column'>
-			<Text fontSize='16px' fontFamily='ClearSans-Bold'>{content.name}</Text>
-			<Text fontSize='14px'>distributed by :{content.distributor}</Text>
+				<Text fontSize='16px' fontFamily='ClearSans-Bold'>{content.name_of_product}</Text>
+				<Text fontSize='14px'>distributed by: {content.distributed_by}</Text>
 			</Flex>
 		</Flex>
 	)

@@ -4,6 +4,7 @@ import styles from '../styles/Home.module.css'
 import {Room,Visibility,VisibilityOff} from '@mui/icons-material'
 import {useRouter} from 'next/router'
 import Header from '../components/Header.js';
+import SignIn from './api/auth/signin.js'
 
 export default function ClientSignUp(){
 	const [show, setShow] = useState(false);
@@ -11,21 +12,23 @@ export default function ClientSignUp(){
   	const router = useRouter();
 
   	const [password,setpassword]=useState('');
-  	const [username,setUsername]=useState('');
+  	const [email_of_company,set_email_of_company]=useState('');
+
+  	const payload = {
+  		password,
+  		email_of_company
+  	}
   	let route = '';
 
-  	const handleSignIn=()=>{
-  		if(password === 'client' && username === 'client')
-  			route = 'profile/1';
-  		if(password === 'sales' && username === 'sales')
-  			route = 'salesperson/1';
-  		if(password === 'distributor' && username === 'distributor')
-  			route =  'distributor/1';
-  		if(password === 'manufacturer' && username === 'manufacturer')
-  			route = 'manufacturer/1';
-
-		sessionStorage.setItem('auth',username);
-  		router.push(`/${route}`)
+  	const handleSignIn=async()=>{
+  		if(password){
+	  		await SignIn(payload).then(()=>{
+	  			router.back()
+	  		})
+  			console.log(payload)
+  		}else{
+  			alert('all inputs are required')
+  		}
   	}
 	return(
 		<Flex direction='column'>
@@ -41,7 +44,7 @@ export default function ClientSignUp(){
 					<Text color='grey'>Welcome back, Please sign in to your account.</Text>
 					<Flex direction='column' gap='2'>
 						<Text fontWeight='bold'>Username</Text>
-						<Input type='text' placeholder='Username' variant='filled' onChange={((e)=>{setUsername(e.target.value)})}/>
+						<Input type='text' placeholder='Email' variant='filled' onChange={((e)=>{set_email_of_company(e.target.value)})}/>
 					</Flex>
 					<Text fontWeight='bold'>Password</Text>
 					<InputGroup size='md'>

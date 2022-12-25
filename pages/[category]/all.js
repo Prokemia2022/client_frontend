@@ -1,25 +1,99 @@
-import React from 'react';
+import React,{useState,useEffect} from 'react';
 import {Flex,Text,Center,Button,Image} from '@chakra-ui/react';
 import {useRouter} from 'next/router';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import Header from '../../components/Header.js';
+import Get_Industries from '../api/control/get_industries.js'
+import Get_Technologies from '../api/control/get_technologies.js'
+import Get_Distributors from '../api/auth/distributor/get_distributors.js'
+import Get_Manufacturers from '../api/auth/manufacturer/get_manufacturers.js'
 
 function All(){
 	const router = useRouter()
-	const categ = router.query;
+	let categ = router.query;
 	console.log(categ)
+
+	const [industries_data,set_industries_data]=useState([])
+	const [technologies_data,set_technologies_data]=useState([])
+	const [distributors_data,set_distributors_data]=useState([])
+	const [manufacturers_data,set_manufacturers_data]=useState([])
+
+	useEffect(()=>{
+		if(!categ){
+			alert('could not get options')
+			router.back()
+		}
+		if(categ.category === 'Industries'){
+			console.log('1')
+			get_Industries_Data()
+		}else if(categ.category === 'Technologies'){
+			console.log('2')
+			get_Technologies_Data()
+		}else{
+			alert('error')
+			router.back()
+		}
+		get_Distributors_Data()
+		get_Manufacturers_Data()
+	},[])
+
+	const get_Industries_Data=async()=>{
+		await Get_Industries().then((response)=>{
+			set_industries_data(response.data)
+			console.log(response.data)
+		})
+	}
+	const get_Technologies_Data=async()=>{
+		await Get_Technologies().then((response)=>{
+			set_technologies_data(response.data)
+			console.log(response.data)
+		})
+	}
+	const get_Distributors_Data=async()=>{
+		await Get_Distributors().then((response)=>{
+			set_distributors_data(response.data)
+			console.log(response.data)
+		})
+	}
+	const get_Manufacturers_Data=async()=>{
+		await Get_Manufacturers().then((response)=>{
+			set_manufacturers_data(response.data)
+			console.log(response.data)
+		})
+	}
 	return(
 		<Flex direction='column' gap='2'>
 			<Header/>
 			<Flex direction='column' gap='2' p='2'>
-				<Text fontSize='28px' fontFamily='ClearSans-Bold' borderBottom='1px solid #000' >{categ.category}</Text>
-				{categories?.filter((op)=> op.title == categ.category).map((item)=>{
-					return(
-						<>
-							<Categories item={item}/>
-						</>
-					)
-				})}
+				{categ.category === 'Industries'?
+					<Flex direction='column' gap='2' w='100%'>
+						<Text fontSize='28px' fontFamily='ClearSans-Bold' borderBottom='1px solid #000' >{categ.category}</Text>
+						<Flex wrap='Wrap' direction='column' w='100%'>
+							{industries_data?.map((item)=>{
+								return(
+									<Flex w='170px' h='225px' m='1' position='relative' onClick={(()=>{router.push(`/products/${item.title}`)})}>
+										<Image borderRadius='10px' objectFit='cover' src="../images (1).jpeg" alt='next'/>
+										<Text mb='0' position='absolute' top='10px' left='10px' fontSize='20px' color='#fff' fontFamily='ClearSans-Bold'>{item.title}</Text>
+									</Flex>
+								)
+							})}
+						</Flex>
+					</Flex>
+				:
+					<Flex direction='column' gap='2' w='100%'>
+						<Text fontSize='28px' fontFamily='ClearSans-Bold' borderBottom='1px solid #000' >{categ.category}</Text>
+						<Flex wrap='Wrap' direction='column' w='100%'>
+							{technologies_data?.map((item)=>{
+								return(
+									<Flex w='170px' h='225px' m='1' position='relative'>
+										<Image borderRadius='10px' objectFit='cover' src="../images (1).jpeg" alt='next'/>
+										<Text mb='0' position='absolute' top='10px' left='10px' fontSize='20px' color='#fff' fontFamily='ClearSans-Bold'>{item.title}</Text>
+									</Flex>
+								)
+							})}
+						</Flex>
+					</Flex>
+				}
 				<Center>
 					<Flex direction='column'>
 						<Text textAlign='center' fontSize='20px' fontFamily='ClearSans-Bold'>Want to find a specific product?</Text>
@@ -31,40 +105,40 @@ function All(){
 					</Flex>
 				</Center>
 				<Text fontSize='24px' fontFamily='ClearSans-Bold' borderBottom='1px solid #000'> Featured Distributors </Text>
-				{distributors.map((distributor)=>{
+				{distributors_data.map((distributor)=>{
 					return(
-						<Flex direction='column' bg='#eee' p='1' m='1' key={distributor.id}>
-							<Text fontSize='20px' fontFamily='ClearSans-Bold'>{distributor.name}</Text>
-							<Text>Industry: </Text>
+						<Flex direction='column' bg='#eee' p='1' mb='1' key={distributor.id}>
+							<Text mb='0' fontSize='20px' fontFamily='ClearSans-Bold'>{distributor.company_name}</Text>
+							<Text mb='0' >Industry: </Text>
 							<Flex>
-							{distributor.industries.map((ind)=>{
+							{distributor.industries?.map((ind)=>{
 								return(
-									<>
-										<Text fontSize='14px'>{ind},</Text>
-									</>
+									<Flex key={ind.id}>
+										<Text mb='0' fontSize='14px'>{ind},</Text>
+									</Flex>
 								)
 							})}
 							</Flex>
-							<Text fontSize='14px' color='#009393' cursor='pointer'> click to view &gt;&gt; </Text>
+							<Text mb='0' fontSize='14px' color='#009393' cursor='pointer'> click to view &gt;&gt; </Text>
 						</Flex>
 					)
 				})}
 				<Text fontSize='24px' fontFamily='ClearSans-Bold' borderBottom='1px solid #000'> Featured Manufacturers </Text>
-				{manufacturers.map((manufacturer)=>{
+				{manufacturers_data.map((manufacturer)=>{
 					return(
-						<Flex direction='column' bg='#eee' p='1' m='1' key={manufacturer.id}>
-							<Text fontSize='20px' fontFamily='ClearSans-Bold'>{manufacturer.name}</Text>
-							<Text>Industry: </Text>
-							<Flex>
-							{manufacturer.industries.map((ind)=>{
-								return(
-									<>
-										<Text fontSize='14px'>{ind},</Text>
-									</>
-								)
-							})}
+						<Flex direction='column' bg='#eee' mb='1' p='1' key={manufacturer._id}>
+							<Text mb='0' fontSize='20px' fontFamily='ClearSans-Bold'>{manufacturer.company_name}</Text>
+							<Text mb='0' >Industry: </Text>
+							<Flex wrap='flex'>
+								{manufacturer.industries?.map((ind)=>{
+									return(
+										<Flex key={ind.id}>
+											<Text mb='0' fontSize='14px'>{ind},</Text>
+										</Flex>
+									)
+								})}
 							</Flex>
-							<Text fontSize='14px' color='#009393' cursor='pointer'> click to view &gt;&gt; </Text>
+							<Text mb='0' fontSize='14px' color='#009393' cursor='pointer'> click to view &gt;&gt; </Text>
 						</Flex>
 					)
 				})}

@@ -14,6 +14,7 @@ import SampleModal from '../../../components/modals/Sample.js';
 import EditProductModal from '../../../components/modals/EditProduct.js';
 import DeleteProductModal from '../../../components/modals/DeleteProduct.js';
 import ListProductShortExpiryModal from '../../../components/modals/ListProductShortExpiry.js';
+import Delete_Product from '../../api/product/delete_product.js';
 
 function Product(){
 	const router = useRouter();

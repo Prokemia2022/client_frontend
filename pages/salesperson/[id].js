@@ -1,7 +1,11 @@
-import React,{useState} from 'react';
+//modules import
+import React,{useState,useEffect} from 'react';
 import {Flex,Text,Button,Input} from '@chakra-ui/react';
-import styles from '../../styles/Home.module.css';
 import {useRouter} from 'next/router';
+import Cookies from 'universal-cookie';
+import jwt_decode from "jwt-decode";
+//components import
+import styles from '../../styles/Home.module.css';
 import Header from '../../components/Header.js';
 /*page sections*/
 import Settings from './settings.js'
@@ -13,9 +17,36 @@ import SettingsIcon from '@mui/icons-material/Settings';
 import {LocationCity,Dashboard,Folder,Groups2,Groups} from '@mui/icons-material';
 import WorkspacePremiumOutlinedIcon from '@mui/icons-material/WorkspacePremiumOutlined';
 import MarkUnreadChatAltOutlinedIcon from '@mui/icons-material/MarkUnreadChatAltOutlined';
+//api calls
+import Get_Salesperson from '../api/auth/salesperson/get_salesperson_client.js'
 
 function SalesPerson(){
 	const [currentvalue,setCurrentValue] = useState('dashboard')
+	const cookies = new Cookies();
+	const token = cookies.get('user_token');
+
+	const [salesperson_data,set_salesperson_data]=useState("");
+
+	useEffect(()=>{
+		if(!token){
+			alert('could not get user_id')
+		}else{
+			const details = jwt_decode(token)
+			console.log(details)
+			const payload = {
+				email_of_company : details?.email,
+				_id: details.id
+			}
+			get_Data(payload)
+		}
+	},[])
+	const get_Data=async(payload)=>{
+		console.log(payload)
+		await Get_Salesperson(payload).then((response)=>{
+			console.log(response.data)
+			set_salesperson_data(response.data)
+		})
+	}
 	if (currentvalue == 'sales')
 	{   
 		return(
@@ -23,7 +54,7 @@ function SalesPerson(){
 					<Header/>
 					<Flex className={styles.consolebody} >
 						<Navbar currentvalue={currentvalue} setCurrentValue={setCurrentValue}/>
-						<Sales />
+						<Sales salesperson_data={salesperson_data}/>
 					</Flex>
 				</Flex>
 			)
@@ -34,7 +65,7 @@ function SalesPerson(){
 					<Header/>
 					<Flex className={styles.consolebody}>
 						<Navbar currentvalue={currentvalue} setCurrentValue={setCurrentValue}/>
-						<Settings />
+						<Settings salesperson_data={salesperson_data}/>
 					</Flex>
 				</Flex>
 			)
@@ -55,7 +86,7 @@ function SalesPerson(){
 				<Header/>
 				<Flex className={styles.consolebody} justify='space-between'>
 					<Navbar currentvalue={currentvalue} setCurrentValue={setCurrentValue}/>
-					<DashboardMenu setCurrentValue={setCurrentValue}/>
+					<DashboardMenu setCurrentValue={setCurrentValue} salesperson_data={salesperson_data}/>
 				</Flex>
 			</Flex>
 			)

@@ -1,6 +1,10 @@
-/*chakra-ui*/
+//modules imports
+import React,{useState,useEffect} from 'react';
 import {Flex,Text,Button,Input} from '@chakra-ui/react';
-/*css*/
+import {useRouter} from 'next/router';
+import Cookies from 'universal-cookie';
+import jwt_decode from "jwt-decode";
+//.components imports
 import styles from '../../styles/Home.module.css';
 import Header from '../../components/Header.js'
 /*Icons*/
@@ -8,9 +12,6 @@ import {LocationCity,Dashboard,Folder,Groups2,Groups} from '@mui/icons-material'
 import SettingsIcon from '@mui/icons-material/Settings';
 import AddIcon from '@mui/icons-material/Add';
 import WorkspacePremiumOutlinedIcon from '@mui/icons-material/WorkspacePremiumOutlined';
-/*UseHooks*/
-import {useRouter} from 'next/router';
-import React,{useState} from 'react';
 /*page sections*/
 import DashboardMenu from './dashboardMenu.js';
 import Inventory from './inventory.js';
@@ -18,10 +19,37 @@ import Distributors from './distributor.js';
 import Experts from './experts.js';
 import Settings from './settings.js';
 import Premium from './Premium.js'
-
+//api calls
+import Get_Manufacturer from '../api/auth/manufacturer/get_manufacturer.js'
 
 function Manufacturer(){
 	const [currentvalue,setCurrentValue]=useState('dashboard')
+	const cookies = new Cookies();
+	const token = cookies.get('user_token');
+
+	const [manufacturer_data,set_manufacturer_data]=useState("");
+
+	useEffect(()=>{
+		if(!token){
+			alert('could not get user_id')
+		}else{
+			const details = jwt_decode(token)
+			console.log(details)
+			const payload = {
+				email_of_company : details?.email,
+				_id: details.id
+			}
+			get_Data(payload)
+		}
+	},[])
+	const get_Data=async(payload)=>{
+		console.log(payload)
+		await Get_Manufacturer(payload).then((response)=>{
+			console.log(response.data)
+			set_manufacturer_data(response.data)
+		})
+	}
+
 	if (currentvalue == 'inventory')
 	{   
 		return(
@@ -29,7 +57,7 @@ function Manufacturer(){
 					<Header/>
 					<Flex className={styles.consolebody} >
 						<Navbar currentvalue={currentvalue} setCurrentValue={setCurrentValue}/>
-						<Inventory />
+						<Inventory manufacturer_data={manufacturer_data}/>
 					</Flex>
 				</Flex>
 			)
@@ -40,7 +68,7 @@ function Manufacturer(){
 					<Header/>
 					<Flex className={styles.consolebody} >
 						<Navbar currentvalue={currentvalue} setCurrentValue={setCurrentValue}/>
-						<Settings />
+						<Settings manufacturer_data={manufacturer_data}/>
 					</Flex>
 				</Flex>
 			)
@@ -51,7 +79,7 @@ function Manufacturer(){
 					<Header/>
 					<Flex className={styles.consolebody} >
 						<Navbar currentvalue={currentvalue} setCurrentValue={setCurrentValue}/>
-						<Experts />
+						<Experts manufacturer_data={manufacturer_data}/>
 					</Flex>
 				</Flex>
 			)
@@ -62,7 +90,7 @@ function Manufacturer(){
 					<Header/>
 					<Flex className={styles.consolebody} >
 						<Navbar currentvalue={currentvalue} setCurrentValue={setCurrentValue}/>
-						<Distributors />
+						<Distributors manufacturer_data={manufacturer_data}/>
 					</Flex>
 				</Flex>
 			)
@@ -83,7 +111,7 @@ function Manufacturer(){
 					<Header/>
 					<Flex className={styles.consolebody} >
 						<Navbar currentvalue={currentvalue} setCurrentValue={setCurrentValue}/>
-						<DashboardMenu />
+						<DashboardMenu manufacturer_data={manufacturer_data}/>
 					</Flex>
 				</Flex>
 			)

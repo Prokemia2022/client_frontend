@@ -1,4 +1,4 @@
-import React,{useState} from 'react';
+import React,{useState,useEffect} from 'react';
 import {useRouter} from 'next/router';
 import {Flex,Text,Button,Input,Switch} from '@chakra-ui/react';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
@@ -9,27 +9,41 @@ import CreateInvoiceModal from '../../components/modals/InvoiceModal.js';
 import SecurityOutlinedIcon from '@mui/icons-material/SecurityOutlined';
 import ReceiptOutlinedIcon from '@mui/icons-material/ReceiptOutlined';
 import Groups2OutlinedIcon from '@mui/icons-material/Groups2Outlined';
+import Edit_Salesperson from '../api/auth/salesperson/edit_salesperson_account.js'
 
-function Salesperson({setCurrentValue}){
+function Salesperson({setCurrentValue,salesperson_data}){
 	const [active,setActive]=useState(false);
 	const [currentValue,setcurrentValue]=useState('');
 	const router = useRouter();
 	const [hubactive,sethubactive]=useState(false);
 	const [edit,setedit]=useState(false);
-	const [annonymous,setannonymous]=useState(false);
+	const annonymous = salesperson_data.account_status;
 	const [iscreateinvoiceModalvisible,setiscreateinvoiceModalvisible]=useState(false);
+
+	console.log(annonymous)
+	const handle_annonymous_status=async()=>{
+		const payload = {
+			_id: salesperson_data._id,
+			account_status: !annonymous
+		}
+		await Edit_Salesperson(payload).then(()=>{
+			console.log(payload)
+			alert('success')
+			router.reload()
+		})
+	}
 	return(
 			<Flex direction='column' w='100%'>
-				<CreateInvoiceModal iscreateinvoiceModalvisible={iscreateinvoiceModalvisible} setiscreateinvoiceModalvisible={setiscreateinvoiceModalvisible}/>
+				<CreateInvoiceModal iscreateinvoiceModalvisible={iscreateinvoiceModalvisible} setiscreateinvoiceModalvisible={setiscreateinvoiceModalvisible} salesperson_data={salesperson_data}/>
 				<Flex p='2' direction='column' gap='2' w='100%' overflowY='scroll' h='100vh'>
 					<Flex gap='4' justify='space-between'>
-						<Text fontSize='42px' fontFamily='ClearSans-bold'>Welcome,<br/> John Doe</Text>
+						<Text fontSize='42px' fontFamily='ClearSans-bold'>Welcome,<br/> {salesperson_data.first_name} {salesperson_data.last_name}</Text>
 						<Flex gap='2' direction='column'>
 							<Flex gap='2'>
-								<Switch size='md' onChange={(()=>{setannonymous(!annonymous)})}/>
-								<Text fontSize='sm' w='100px' fontWeight='bold' color={annonymous == true ? '#009393' : '#000'}>{annonymous == true ? 'Annonymous' : 'johndoe@prokemia.com'}</Text>
+								<Switch value={annonymous} size='md' onChange={handle_annonymous_status}/>
+								<Text fontSize='sm' w='100px' fontWeight='bold' color={annonymous == true ? '#009393' : '#000'}>{annonymous == true ? 'Annonymous' : `${salesperson_data.email_of_salesperson}`}</Text>
 							</Flex>
-							{annonymous == true ?  								
+							{annonymous === true ?  								
 							<Flex boxShadow='dark-lg' bg='#fff' w='150px' h='100px' direction='column' align='center' justify='center' borderRadius='5'>
 								<SecurityOutlinedIcon/>
 								<Text fontSize='12px' textAlign='center' color='#000' fontWeight='bold'>your account is now annonymous </Text>

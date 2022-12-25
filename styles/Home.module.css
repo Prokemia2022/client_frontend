@@ -40,10 +40,10 @@
 }
 
 .productbody{
-	flex-direction: row;
+	/*flex-direction: row;*/
 }
 .productsection2{
-	width: 60vw
+	width: 20vw
 }
 .contactbody{
 	flex-direction: row
@@ -74,7 +74,7 @@
 	width: 50vw;
 	height: 100vh;
 	background-color: #090F14;
-}
+} 
 .SigninBody{
 background: #2193b0;  /* fallback for old browsers */
 background: -webkit-linear-gradient(to left, #6dd5ed, #2193b0);  /* Chrome 10-25, Safari 5.1-6 */
@@ -95,7 +95,7 @@ background: linear-gradient(90deg, rgba(0,147,147,1) 51%, rgba(237,248,248,1) 10
 .authForm{
 	background-color: #fff;
 	position: absolute;
-	top: 25vh;
+	top: 30vh;
 	right: 10%;
 	height: ;
 	width: 500px;
@@ -171,6 +171,11 @@ background: linear-gradient(90deg, rgba(0,147,147,1) 51%, rgba(237,248,248,1) 10
 }
 .SearchIcon{
 	display: none;
+}
+@media screen and (max-width: 60em) {
+  .authSection{
+    display: none;
+  }
 }
 @media screen and (max-width: 48em) {
 	.filterbody{
