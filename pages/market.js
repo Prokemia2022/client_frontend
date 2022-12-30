@@ -9,7 +9,7 @@ function ShortOnExpiry(){
 	const [products_data,set_products_data]=useState([])
 	useEffect(()=>{
 		get_Products_Data()
-		console.log(products_data)
+		//console.log(products_data)
 	},[])
 	const get_Products_Data=async()=>{
 		await Get_Products().then((response)=>{

@@ -74,7 +74,7 @@ function DashboardMenu({setCurrentValue,distributor_data}){
 					<Flex direction='column' p='1' gap='2'>
 						{experts?.slice(0,3).map((item)=>{
 							return(
-								<Flex p='3' bg='#eee' borderRadius='5px' direction='column'>
+								<Flex key={item.id} p='3' bg='#eee' borderRadius='5px' direction='column'>
 									<Text>{item.name}</Text>
 									<Text>{item.mobile}</Text>
 								</Flex>

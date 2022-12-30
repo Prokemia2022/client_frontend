@@ -74,7 +74,7 @@ export default function ClientSignUp(){
 				</Flex>
 				:
 				<Flex gap='2' direction='column'>
-					<Image src='/feedback.jpg'/>
+					<Image src='/feedback.jpg' alt='photo'/>
 				</Flex>
 			}
 			</Flex>

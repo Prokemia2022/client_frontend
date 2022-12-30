@@ -44,7 +44,7 @@ export default function Career_mailing_list(){
 					</Flex>
 				</Flex>
 				<Flex className={styles.CareerListingForm} gap='2' direction='column'>
-					<Image src='/feedback.jpg'/>
+					<Image src='/feedback.jpg' alt='photo'/>
 				</Flex>
 			</Flex>
 

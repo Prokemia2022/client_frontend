@@ -21,7 +21,7 @@ function Manufacturers({distributor_data}){
 				<Flex direction='column' p='1' gap='2' overflowY='scroll' h='85vh'>
 					{manufacturers.map((item)=>{
 						return(
-							<Flex p='2' bg='#eee' borderRadius='5px' direction='column'>
+							<Flex p='2' key={item.id} bg='#eee' borderRadius='5px' direction='column'>
 							  <Text fontSize='24px' fontWeight='bold'>{item.name}</Text>
 							  <Text>Email: {item.email}</Text>
 							  <Text>Mobile: {item.mobile}</Text>

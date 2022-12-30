@@ -84,7 +84,7 @@ function Header({products_data,distributors_data,manufacturers_data,industries_d
 						<FavoriteBorderIcon onClick={(()=>{router.push('/favorite')})}/> : 
 						<Button onClick={(()=>{router.push('/account/1')})} bg='#009393' color='#fff' >Free Sign Up</Button>}
 					<Menu >
-					<Flex bg={signedin?'#009393':'#fff'} align='center' gap='1' p='1' borderRadius='5' color={signedin?'#fff':'#000'} align='center'>
+					<Flex bg={signedin?'#009393':'#fff'} align='center' gap='1' p='1' borderRadius='5' color={signedin?'#fff':'#000'}>
 						{signedin?<Text ml='1' fontSize='12px'>{user}</Text>:null}
 						<MenuButton as={Button} rounded={'full'} variant={'link'} cursor={'pointer'} minW={0} pt='1' color={signedin?'#fff':'#000'}>
 							<MenuOpenIcon style={{fontSize:'24px'}}/>

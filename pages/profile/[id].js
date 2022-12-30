@@ -44,7 +44,7 @@ function Settings(){
 			}
 			get_Data(payload)
 		}
-	},[])
+	},[payload])
 	
 	const get_Data=async(payload)=>{
 		console.log(payload)

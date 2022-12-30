@@ -49,10 +49,10 @@ function Product(){
 			alert("missing info could not fetch data")
 			router.back()
 		}else{
-			console.log(payload)
+			//console.log(payload)
 			get_Data(payload)
 		}
-	},[])
+	},[payload])
 	const handle_Delete_Product=async()=>{
 		await Delete_Product(payload).then(()=>{
 			router.back()

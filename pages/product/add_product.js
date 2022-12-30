@@ -83,7 +83,7 @@ function Product(){
 		}else{
 			setsignedin(false)
 		}
-	},[])
+	},[token])
 
 	const handle_data_sheet_file_upload=async()=>{
 		if (data_sheet == ''){

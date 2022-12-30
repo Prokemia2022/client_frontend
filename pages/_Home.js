@@ -27,7 +27,6 @@ function _Home(){
 		get_Technologies_Data()
 		get_Distributors_Data()
 		get_Manufacturers_Data()
-		console.log(products_data)
 	},[])
 
 	const get_Products_Data=async()=>{
@@ -115,7 +114,7 @@ function _Home(){
 				<Text fontSize='24px' fontFamily='ClearSans-Bold' borderBottom='1px solid #000'>Featured Products</Text>
 				{products_data.slice(0,4).map((content)=>{
 					return(
-						<div key={content.id} style={{margin:'5px'}} key={content.id}>
+						<div key={content.id} style={{margin:'5px'}} >
 							<ProductItem content={content}/>
 						</div>
 					)

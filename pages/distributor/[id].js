@@ -40,7 +40,7 @@ function Distributor(){
 			}
 			get_Data(payload)
 		}
-	},[])
+	},[token])
 	const get_Data=async(payload)=>{
 		console.log(payload)
 		await Get_Distributor(payload).then((response)=>{

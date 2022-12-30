@@ -5,7 +5,7 @@ function About(){
 	return(
 		<Flex p='' direction='column' gap='3'>
 			<Header/>
-			<Image src='./circle-scatter.png'/>
+			<Image src='./circle-scatter.png' alt='photo'/>
 				<Heading as='h1' fontSize='42px' textDecoration='1px solid underline #009393'>About Us, Prokemia </Heading>
 			<Text fontSize='28px'>We are on a mission to bring the industry that enables every physical product into the digital Era.</Text>
 			<Flex direction='column' gap='3' mt='2' bg='#eee' p='2' borderRadius='5'>

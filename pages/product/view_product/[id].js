@@ -48,7 +48,7 @@ function Product(){
 			console.log(payload)
 			get_Data(payload)
 		}
-	},[])
+	},[payload])
 	const handle_Delete_Product=async()=>{
 		await Delete_Product(payload).then(()=>{
 			router.back()

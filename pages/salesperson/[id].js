@@ -39,7 +39,7 @@ function SalesPerson(){
 			}
 			get_Data(payload)
 		}
-	},[])
+	},[payload])
 	const get_Data=async(payload)=>{
 		console.log(payload)
 		await Get_Salesperson(payload).then((response)=>{

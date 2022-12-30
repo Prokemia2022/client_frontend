@@ -15,7 +15,7 @@ function Account(){
 			setActive(true)
 		else
 			setActive(false)
-	},[active])
+	},[active,idactive])
 	
 	return(
 		<Flex direction='column' gap='2'> 

@@ -22,7 +22,7 @@ function Sales({salesperson_data}){
 		}else{
 			get_Data(payload)
 		}
-	},[searchquery])
+	},[searchquery,payload])
 	const get_Data=async(payload)=>{
 		console.log(payload)
 		await Get_Orders(payload).then((response)=>{

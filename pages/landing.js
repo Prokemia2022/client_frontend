@@ -11,7 +11,7 @@ import Create_Landing_page_mailing_list from './api/control/create_landing_page_
 export default function ClientSignUp(){
 	return(
  		<Flex>
-			<Image src='./landing1.jpg' h='100vh' w='100vw' objectFit='cover'/>
+			<Image src='./landing1.jpg' h='100vh' w='100vw' objectFit='cover' alt='photo'/>
 			<Header />
 			<LandingText/>
 		</Flex>

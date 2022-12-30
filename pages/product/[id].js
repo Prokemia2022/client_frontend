@@ -38,7 +38,7 @@ function Product(){
 			console.log(payload)
 			get_Data(payload)
 		}
-	},[])
+	},[payload])
 	
 	let manufactured_date = new Date(product_data.manufactured_date).toLocaleDateString()
 	return(

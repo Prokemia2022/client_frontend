@@ -40,7 +40,7 @@ export default Experts;
 const Expert=({setisViewExpertModalvisible})=>{
 	return(
 		<Flex p='2' gap='2' bg='#eee' borderRadius='5px' direction='column'>
-			<Image bg='#fff' w='100%' h='50px' borderRadius='5px'/>
+			<Image bg='#fff' w='100%' h='50px' borderRadius='5px' alt='photo'/>
 			<Text color='#009393' fontWeight='bold' fontSize="24px">Name</Text>
 			<Flex gap='2'>
 				<Text fontWeight='bold'>Industry:</Text>

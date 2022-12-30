@@ -35,7 +35,7 @@ function All(){
 		}
 		get_Distributors_Data()
 		get_Manufacturers_Data()
-	},[])
+	},[categ])
 
 	const get_Industries_Data=async()=>{
 		await Get_Industries().then((response)=>{
@@ -71,7 +71,7 @@ function All(){
 						<Flex wrap='Wrap' w='100%'>
 							{industries_data?.map((item)=>{
 								return(
-									<Flex w='170px' h='225px' m='1' position='relative' cursor='pointer' onClick={(()=>{router.push(`/products/${item.title}`)})}>
+									<Flex key={item._id} w='170px' h='225px' m='1' position='relative' cursor='pointer' onClick={(()=>{router.push(`/products/${item.title}`)})}>
 										<Image borderRadius='10px' objectFit='cover' src="../images (1).jpeg" alt='next'/>
 										<Text mb='0' position='absolute' top='10px' left='10px' fontSize='20px' color='#fff' fontFamily='ClearSans-Bold'>{item.title}</Text>
 									</Flex>
@@ -85,7 +85,7 @@ function All(){
 						<Flex wrap='Wrap' w='100%'>
 							{technologies_data?.map((item)=>{
 								return(
-									<Flex w='170px' h='225px' m='1' position='relative' cursor='pointer' onClick={(()=>{router.push(`/products/${item.title}`)})} boxShadow='lg'>
+									<Flex key={item._id} w='170px' h='225px' m='1' position='relative' cursor='pointer' onClick={(()=>{router.push(`/products/${item.title}`)})} boxShadow='lg'>
 										<Image borderRadius='10px' objectFit='cover' src="../images (1).jpeg" alt='next'/>
 										<Text mb='0' position='absolute' top='10px' left='10px' fontSize='20px' color='#fff' fontFamily='ClearSans-Bold'>{item.title}</Text>
 									</Flex>

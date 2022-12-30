@@ -41,7 +41,7 @@ function Manufacturer(){
 			}
 			get_Data(payload)
 		}
-	},[])
+	},[token])
 	const get_Data=async(payload)=>{
 		console.log(payload)
 		await Get_Manufacturer(payload).then((response)=>{

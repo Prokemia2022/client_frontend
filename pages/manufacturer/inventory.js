@@ -12,7 +12,7 @@ function Inventory({manufacturer_data}){
 
 	useEffect(()=>{
 		get_Data()
-		console.log(manufacturer_data)
+		//console.log(manufacturer_data)
 	},[])
 
 	const get_Data=async()=>{

@@ -13,7 +13,6 @@ function Inventory({distributor_data}){
 
 	useEffect(()=>{
 		get_Data()
-		console.log(products_data)
 	},[searchquery])
 
 	const get_Data=async()=>{

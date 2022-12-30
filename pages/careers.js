@@ -5,7 +5,7 @@ import Header from '../components/Header.js';
 import Get_Careers from './api/control/get_vacancies.js'
 import {useRouter} from 'next/router';
 
-function careers(){
+export default function Careers(){
 	const [careers_data,set_careers_data]=useState([])
 	const [name,set_name]=useState('')
 	const [email,set_email]=useState('')
@@ -43,8 +43,6 @@ function careers(){
 			</Flex>
 	)
 }
-
-export default careers;
 
 const Career_Item=({career})=>{
 	return(
