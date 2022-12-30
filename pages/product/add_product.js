@@ -7,6 +7,10 @@ import styles from '../../styles/Home.module.css';
 import Header from '../../components/Header';
 import Add_Product from '../api/product/add_product.js'
 
+import {storage} from '../firebase';
+import {ref,uploadBytes,getDownloadURL} from 'firebase/storage';
+import { v4 } from "uuid";
+
 function Product(){
 	const router = useRouter();
 	const cookies = new Cookies();
@@ -34,15 +38,16 @@ function Product(){
 	const [storage_of_product,set_storage_of_product]=useState("");
 	//documents
 	const [data_sheet,set_data_sheet]=useState("");
+	const [data_sheet_url,set_data_sheet_url]=useState("");
+
 	const [safety_data_sheet,set_safety_data_sheet]=useState("");
+	const [safety_data_sheet_url,set_safety_data_sheet_url]=useState("");
+
 	const [formulation_document,set_formulation_document]=useState("");
+	const [formulation_document_url,set_formulation_document_url]=useState("");
 	//category_of_product
 	const [industry,set_industry]=useState("");
 	const [technology,set_technology]=useState("");
-	//featured status
-	const [sponsored,set_sponsored]=useState("");
-	//verification_status
-	const [verification_status,set_verification_status]=useState("");
 
 	const payload = {
 		name_of_product,
@@ -62,13 +67,11 @@ function Product(){
 		application_of_product,
 		packaging_of_product,
 		storage_of_product,
-		data_sheet,
-		safety_data_sheet,
-		formulation_document,
+		data_sheet_url,
+		safety_data_sheet_url,
+		formulation_document_url,
 		industry,
 		technology,
-		sponsored,
-		verification_status,
 	}
 
 	useEffect(()=>{
@@ -76,18 +79,90 @@ function Product(){
 			const details = jwt_decode(token)
 			console.log(details)
 			set_email_of_lister(details?.email)
+			set_listed_by_id(details.id)
 		}else{
 			setsignedin(false)
 		}
 	},[])
 
-	const handle_add_new_product=async()=>{
-		console.log(payload)
-		await Add_Product(payload).then(()=>{
-			alert("successfully created a new product")
-			router.back()
+	const handle_data_sheet_file_upload=async()=>{
+		if (data_sheet == ''){
+			return alert('err')
+		}
+		const data_sheet_documentRef = ref(storage, `data_sheet/${data_sheet.name + v4()}`);
+		await uploadBytes(data_sheet_documentRef,data_sheet).then(snapshot => {
+			getDownloadURL(snapshot.ref).then((url) => {
+				console.log(url)
+				set_data_sheet_url(url)
+			});
 		})
 	}
+
+	const handle_safety_sheet_file_upload=async()=>{
+		if (safety_data_sheet == ''){
+			return alert('err')
+		}
+		const safety_data_sheet_documentRef = ref(storage, `safety_data_sheet/${safety_data_sheet.name + v4()}`);
+		await uploadBytes(safety_data_sheet_documentRef,safety_data_sheet).then(snapshot => {
+			getDownloadURL(snapshot.ref).then((url) => {
+				console.log(url)
+				set_safety_data_sheet_url(url)
+			});
+		})
+	}
+
+	const handle_formulation_document_file_upload=async()=>{
+		if (formulation_document == ''){
+			return alert('err')
+		}
+		const formulation_document_documentRef = ref(storage, `formulation_document/${formulation_document.name + v4()}`);
+		await uploadBytes(formulation_document_documentRef,formulation_document).then(snapshot => {
+	      getDownloadURL(snapshot.ref).then((url) => {
+	      		console.log(url)
+				set_formulation_document_url(url)
+			});
+	    })
+	}
+
+
+	const handle_File_Upload=async()=>{
+		await handle_data_sheet_file_upload()
+		await handle_safety_sheet_file_upload()
+		await handle_formulation_document_file_upload()
+		console.log(data_sheet_url,safety_data_sheet_url,formulation_document_url)
+		console.log(payload)
+	}
+
+	const handle_add_new_product=async()=>{
+		console.log(payload)
+		handle_File_Upload()
+		if(!data_sheet_url || !safety_data_sheet_url || !formulation_document_url){
+			handle_File_Upload()
+			setTimeout(()=>{
+				Add_Product(payload).then(()=>{
+						alert("successfully created a new product")
+						router.push("/inventory")
+					})
+				console.log(payload)
+			},10000)
+		}else{
+			setTimeout(()=>{
+				Add_Product(payload).then(()=>{
+						alert("successfully created a new product")
+						router.back()
+					})
+				console.log(payload)
+			},10000)
+		}
+	}
+
+	// const handle_add_new_product=async()=>{
+	// 	console.log(payload)
+	// 	await Add_Product(payload).then(()=>{
+	// 		alert("successfully created a new product")
+	// 		router.back()
+	// 	})
+	// }
 	return(
 		<Flex direction='column'>
 			<Header />

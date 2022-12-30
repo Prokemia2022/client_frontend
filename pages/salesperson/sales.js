@@ -9,6 +9,7 @@ function Sales({salesperson_data}){
 	const router = useRouter();
 	const [orders_data,set_orders]=useState([]);
 	const [sort_value,set_sort_value]=useState('')
+	const [searchquery,set_searchquery]=useState('')
 	const [iscreateinvoiceModalvisible,setiscreateinvoiceModalvisible]=useState(false);
 
 	const payload = {
@@ -21,13 +22,14 @@ function Sales({salesperson_data}){
 		}else{
 			get_Data(payload)
 		}
-	},[])
+	},[searchquery])
 	const get_Data=async(payload)=>{
 		console.log(payload)
 		await Get_Orders(payload).then((response)=>{
 			console.log(response.data)
 			let data = response.data
-			const result = data.filter((item)=> item.creator_id?.includes(salesperson_data._id))
+			const result_data = data.filter((item)=> item.creator_id?.includes(salesperson_data._id))
+			const result = result_data.filter((item)=> item.name_of_product?.toLowerCase().includes(searchquery) || item._id?.includes(searchquery))
 			set_orders(result)
 		})
 	}
@@ -42,7 +44,7 @@ function Sales({salesperson_data}){
 					<option value='completed'>Completed</option>
 					<option value='rejected'>Rejected</option>
 				</Select>
-				<Input placeholder='search orders by product name, order Id'/>
+				<Input placeholder='search orders by product name, order Id' onChange={((e)=>{set_searchquery(e.target.value)})}/>
 			</Flex>
 			{orders_data.length === 0?
 				<Flex justify='center' align='center' h='40vh' direction='column' gap='2'>

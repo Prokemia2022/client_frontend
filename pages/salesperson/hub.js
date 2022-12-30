@@ -10,13 +10,13 @@ import {useRouter} from 'next/router'
 function Hub(){
 	const [active,setActive]=useState(false);
 	const router = useRouter();
-	setTimeout(()=>{
-		router.push('/hub')
-	},3000)
+	// setTimeout(()=>{
+	// 	router.push('/hub')
+	// },3000)
 	return(
 		<Flex align='center' justify='center' w='100%' h='80vh' direction='column'>
 			<Image src='../community.jpg' alt='photo' w='300px' h='300px'/>
-			<Text fontWeight='bold' fontSize='28px' mt='-20px'>Redirecting to the hub...</Text>
+			<Text fontWeight='bold' fontSize='28px' mt='-20px'>We will be launching this feature soon</Text>
 		</Flex>
 	)
 }

@@ -62,6 +62,7 @@ function AddNewExpertsModal({isaddnewexpertModalvisible,setisaddNewExpertModalvi
           setisaddNewExpertModalvisible(true)
         })
       }
+      onClose()
     }
     return (
         <>

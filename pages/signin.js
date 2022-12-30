@@ -43,7 +43,7 @@ export default function ClientSignUp(){
 					<Text fontSize='2.5rem' fontFamily='ClearSans-bold'><span style={{borderBottom:"4px solid #009393",borderRadius:"3px"}}>Sign</span> In</Text>
 					<Text color='grey'>Welcome back, Please sign in to your account.</Text>
 					<Flex direction='column' gap='2'>
-						<Text fontWeight='bold'>Username</Text>
+						<Text fontWeight='bold'>Email</Text>
 						<Input type='text' placeholder='Email' variant='filled' onChange={((e)=>{set_email_of_company(e.target.value)})}/>
 					</Flex>
 					<Text fontWeight='bold'>Password</Text>

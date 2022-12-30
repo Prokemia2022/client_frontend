@@ -50,8 +50,9 @@ function AddNewManufacturerModal({isaddnewmanufacturerModalvisible,setisaddnewma
       console.log(payload)
       Add_New_Manufacturer(payload).then(()=>{
         alert('success')
-        setisaddnewmanufacturerModalvisible(true)
+        setisaddnewmanufacturerModalvisible(false)
       })
+      onClose()
     }
 
     return (

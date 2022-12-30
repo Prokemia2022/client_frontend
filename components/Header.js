@@ -82,7 +82,7 @@ function Header({products_data,distributors_data,manufacturers_data,industries_d
 					{searchbaractive ? <SearchOffIcon onClick={(()=>{setsearchbaractive(false)})}/> : <SearchIcon onClick={(()=>{setsearchbaractive(true)})}/>}
 					{signedin? 
 						<FavoriteBorderIcon onClick={(()=>{router.push('/favorite')})}/> : 
-						<Button onClick={(()=>{router.push('/account/1')})} bg='#009393' color='#fff' >Sign Up</Button>}
+						<Button onClick={(()=>{router.push('/account/1')})} bg='#009393' color='#fff' >Free Sign Up</Button>}
 					<Menu >
 					<Flex bg={signedin?'#009393':'#fff'} align='center' gap='1' p='1' borderRadius='5' color={signedin?'#fff':'#000'} align='center'>
 						{signedin?<Text ml='1' fontSize='12px'>{user}</Text>:null}
@@ -122,7 +122,7 @@ function Header({products_data,distributors_data,manufacturers_data,industries_d
 					</Menu>
 				</Flex>
 			</Flex>
-			{searchbaractive ? <Search products_data={products_data} distributors_data={distributors_data} manufacturers_data={manufacturers_data} industries_data={industries_data} technologies_data={technologies_data}/> : null}			
+			{searchbaractive ? <Search setsearchbaractive={setsearchbaractive}/> : null}			
 		</Flex>
 	)
 }

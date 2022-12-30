@@ -32,32 +32,42 @@ function _Home(){
 
 	const get_Products_Data=async()=>{
 		await Get_Products().then((response)=>{
-			set_products_data(response.data)
-			console.log(response.data)
+			const data = response?.data
+			const result_data = data.filter((item)=> item.verification_status)
+			set_products_data(result_data)
+			console.log(result_data)
 		})
 	}
 	const get_Industries_Data=async()=>{
 		await Get_Industries().then((response)=>{
-			set_industries_data(response.data)
-			console.log(response.data)
+			const data = response?.data
+			const result_data = data.filter((item)=> item.verification_status)
+			set_industries_data(result_data)
+			console.log(result_data)
 		})
 	}
 	const get_Technologies_Data=async()=>{
 		await Get_Technologies().then((response)=>{
-			set_technologies_data(response.data)
-			console.log(response.data)
+			const data = response?.data
+			const result_data = data.filter((item)=> item.verification_status)
+			set_technologies_data(result_data)
+			console.log(result_data)
 		})
 	}
 	const get_Distributors_Data=async()=>{
 		await Get_Distributors().then((response)=>{
-			set_distributors_data(response.data)
-			console.log(response.data)
+			const data = response?.data
+			const result_data = data.filter((item)=> item.verification_status)
+			set_distributors_data(result_data)
+			console.log(result_data)
 		})
 	}
 	const get_Manufacturers_Data=async()=>{
 		await Get_Manufacturers().then((response)=>{
-			set_manufacturers_data(response.data)
-			console.log(response.data)
+			const data = response?.data
+			const result_data = data.filter((item)=> item.verification_status)
+			set_manufacturers_data(result_data)
+			console.log(result_data)
 		})
 	}
 	return(
@@ -77,7 +87,7 @@ function _Home(){
 				<Flex direction='column' gap='2' w='100%'>
 					<Text mb='0' borderBottom='2px solid #000' fontFamily='ClearSans-Bold' fontSize='24px'>Industries</Text>
 					<Flex wrap='Wrap' direction='' w='100%'>
-						{industries_data?.map((item)=>{
+						{industries_data?.slice(0,6).map((item)=>{
 							return(
 								<Flex key={item.id} w='170px' h='225px' m='1' position='relative' onClick={(()=>{router.push(`/products/${item.title}`)})}>
 									<Image borderRadius='10px' objectFit='cover' src="../images (1).jpeg" alt='next' boxShadow='dark-lg'/>
@@ -91,7 +101,7 @@ function _Home(){
 				<Flex direction='column' gap='2' w='100%'>
 					<Text mb='0' borderBottom='2px solid #000' fontFamily='ClearSans-Bold' fontSize='24px'>Technologies</Text>
 					<Flex wrap='Wrap' direction='' w='100%'>
-						{technologies_data?.map((item)=>{
+						{technologies_data?.slice(0,8).map((item)=>{
 							return(
 								<Flex key={item.id} w='170px' h='225px' m='1' position='relative'>
 									<Image borderRadius='10px' objectFit='cover' src="../images (1).jpeg" alt='next' boxShadow='dark-lg'/>
@@ -103,7 +113,7 @@ function _Home(){
 					<Button bg='#009393' color='#fff' onClick={(()=>{router.push(`/Technologies/all`)})}>Explore All Technologies</Button>
 				</Flex>
 				<Text fontSize='24px' fontFamily='ClearSans-Bold' borderBottom='1px solid #000'>Featured Products</Text>
-				{products_data.map((content)=>{
+				{products_data.slice(0,4).map((content)=>{
 					return(
 						<div key={content.id} style={{margin:'5px'}} key={content.id}>
 							<ProductItem content={content}/>
@@ -111,7 +121,7 @@ function _Home(){
 					)
 				})}
 				<Text fontSize='24px' fontFamily='ClearSans-Bold' borderBottom='1px solid #000'>Top Distributors </Text>
-				{distributors_data.map((distributor)=>{
+				{distributors_data.slice(0,4).map((distributor)=>{
 					return(
 						<Flex direction='column' bg='#eee' p='1' mb='1' key={distributor.id}>
 							<Text mb='0' fontSize='20px' fontFamily='ClearSans-Bold'>{distributor.company_name}</Text>
@@ -130,7 +140,7 @@ function _Home(){
 					)
 				})}
 				<Text fontSize='24px' fontFamily='ClearSans-Bold' borderBottom='1px solid #000'>Top Manufacturers </Text>
-				{manufacturers_data.map((manufacturer)=>{
+				{manufacturers_data.slice(0,4).map((manufacturer)=>{
 					return(
 						<Flex direction='column' bg='#eee' mb='1' p='1' key={manufacturer._id}>
 							<Text mb='0' fontSize='20px' fontFamily='ClearSans-Bold'>{manufacturer.company_name}</Text>

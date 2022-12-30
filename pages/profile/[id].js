@@ -198,10 +198,6 @@ const EditProfile=({setedit,client_data})=>{
 						<Text>Address</Text>
 						<Input type='text' placeholder={client_data.address_of_company} variant='filled' onChange={((e)=>{set_address_of_company(e.target.value)})}/>
 					</Flex>
-					<Flex direction='column'>
-						<Text>Role of main Contact</Text>
-						<Input type='text' variant='filled'/>
-					</Flex>
 					<Button onClick={handle_Edit_Profile} bg='#009393' color='#fff'>Save</Button>
 				</Flex>
 			</Flex>

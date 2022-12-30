@@ -48,22 +48,31 @@ function Explore(){
 			<Header/>
 			<Flex p='2' direction='column' gap='2'>
 				<Text fontSize='28px' fontFamily='ClearSans-Bold' borderBottom='1px solid #000' >{categ.id}</Text>
-				{products_data.map((item)=>{
-					return(
-						<Flex position='relative' gap='2' align='center' onClick={(()=>{router.push(`/product/${item._id}`)})} bg='#eee' p='2' borderRadius='5' boxShadow='lg' cursor='pointer'>
-							<Image w='50px' h='50px' borderRadius='10px' objectFit='cover' src="../images (1).jpeg" alt='next' />
-							<Flex direction='column'>
-								<Text fontSize='16px' fontFamily='ClearSans-Bold'>{item.name_of_product}</Text>
-								<Text fontSize='16px'>{item.industry}</Text>
-							</Flex>
-						</Flex>
-					)
-				})}
+				{products_data.length === 0?
+					<Flex bg='#eee' p='2' justify='center' align='center' h='40vh' boxShadow='lg'>
+						<Text>No products have been listed under this category</Text>
+					</Flex>
+					:
+					<>
+						{products_data.map((item)=>{
+							return(
+								<Flex position='relative' gap='2' align='center' onClick={(()=>{router.push(`/product/${item._id}`)})} bg='#eee' p='2' borderRadius='5' boxShadow='lg' cursor='pointer'>
+									<Image w='50px' h='50px' borderRadius='10px' objectFit='cover' src="../images (1).jpeg" alt='next' />
+									<Flex direction='column'>
+										<Text fontSize='16px' fontFamily='ClearSans-Bold'>{item.name_of_product}</Text>
+										<Text fontSize='16px'>{item.industry}</Text>
+									</Flex>
+								</Flex>
+							)
+						})}
+					</>
+				}
 			</Flex>
-			<Text fontSize='24px' fontFamily='ClearSans-Bold' borderBottom='1px solid #000'> Featured Distributors </Text>
+			<Flex p='2' direction='column' gap='2'>
+				<Text fontSize='24px' fontFamily='ClearSans-Bold' borderBottom='1px solid #000'> Featured Distributors </Text>
 				{distributors_data.map((distributor)=>{
 					return(
-						<Flex direction='column' bg='#eee' p='1' mb='1' key={distributor.id}>
+						<Flex direction='column' bg='#eee' p='1' mb='1' key={distributor.id} borderRadius='5' boxShadow='lg'>
 							<Text mb='0' fontSize='20px' fontFamily='ClearSans-Bold'>{distributor.company_name}</Text>
 							<Text mb='0' >Industry: </Text>
 							<Flex>
@@ -82,7 +91,7 @@ function Explore(){
 				<Text fontSize='24px' fontFamily='ClearSans-Bold' borderBottom='1px solid #000'> Featured Manufacturers </Text>
 				{manufacturers_data.map((manufacturer)=>{
 					return(
-						<Flex direction='column' bg='#eee' mb='1' p='1' key={manufacturer._id}>
+						<Flex direction='column' bg='#eee' mb='1' p='1' key={manufacturer._id} borderRadius='5' boxShadow='lg'>
 							<Text mb='0' fontSize='20px' fontFamily='ClearSans-Bold'>{manufacturer.company_name}</Text>
 							<Text mb='0' >Industry: </Text>
 							<Flex wrap='flex'>
@@ -98,6 +107,7 @@ function Explore(){
 						</Flex>
 					)
 				})}
+			</Flex>
 		</Flex>
 	)
 }

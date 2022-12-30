@@ -31,7 +31,7 @@ function DashboardMenu({setCurrentValue,distributor_data}){
 			<AddNewExpertsModal isaddnewexpertModalvisible={isaddnewexpertModalvisible} setisaddNewExpertModalvisible={setisaddNewExpertModalvisible} id={id}/>
 			<AddNewManufacturer isaddnewmanufacturerModalvisible={isaddnewmanufacturerModalvisible} setisaddnewmanufacturerModalvisible={setisaddnewmanufacturerModalvisible} id={id}/>
 			<Flex gap='3'>
-				<LocationCityIcon style={{fontSize:'150px',backgroundColor:"",borderRadius:'150px',padding:'10px'}}/>
+				<LocationCityIcon style={{fontSize:'150px',padding:'10px'}}/>
 				<Flex direction='column' gap='2' bg='#eee' p='2' w='100%' borderRadius='8' boxShadow='lg'>
 					<Text fontSize='28px' fontWeight='bold' color='#009393'>{distributor_data.first_name} {distributor_data.last_name}</Text>
 					<Text>company_name: {distributor_data.company_name}</Text>
@@ -72,7 +72,7 @@ function DashboardMenu({setCurrentValue,distributor_data}){
 						</Flex>
 					:
 					<Flex direction='column' p='1' gap='2'>
-						{experts?.map((item)=>{
+						{experts?.slice(0,3).map((item)=>{
 							return(
 								<Flex p='3' bg='#eee' borderRadius='5px' direction='column'>
 									<Text>{item.name}</Text>
@@ -83,22 +83,6 @@ function DashboardMenu({setCurrentValue,distributor_data}){
 						<Button bg='#009393' color='#fff' onClick={(()=>{setisaddNewExpertModalvisible(true)})}>Add a new Expert</Button>
 					</Flex>
 				}
-				</Flex>
-			</Flex>
-			<Flex direction='column' gap='2'>
-				<Flex justify='space-between' align='center' borderBottom='1px solid #000'>
-					<Text fontWeight='bold' fontSize='20px'>Products</Text>
-					<Text color='#009393' fontWeight='bold' onClick={(()=>{setCurrentValue('inventory')})} cursor='pointer'>view all</Text>
-				</Flex>
-				<Flex direction='column' gap='2'>
-					<Flex p='3' bg='#eee' borderRadius='5px' direction='column'>
-						<Text>Cereals</Text>
-						<Text>Agriculture</Text>
-					</Flex>
-					<Flex p='3' bg='#eee' borderRadius='5px' direction='column'>
-						<Text>Fertilisers</Text>
-						<Text>Agriculture</Text>
-					</Flex>
 				</Flex>
 			</Flex>
 		</Flex>
@@ -161,3 +145,23 @@ const AddNewTechnology=({setaddnewTech})=>{
 		</Flex>
 	)
 }
+
+/**
+<Flex direction='column' gap='2'>
+	<Flex justify='space-between' align='center' borderBottom='1px solid #000'>
+		<Text fontWeight='bold' fontSize='20px'>Products</Text>
+		<Text color='#009393' fontWeight='bold' onClick={(()=>{setCurrentValue('inventory')})} cursor='pointer'>view all</Text>
+	</Flex>
+	<Flex direction='column' gap='2'>
+		<Flex p='3' bg='#eee' borderRadius='5px' direction='column'>
+			<Text>Cereals</Text>
+			<Text>Agriculture</Text>
+		</Flex>
+		<Flex p='3' bg='#eee' borderRadius='5px' direction='column'>
+			<Text>Fertilisers</Text>
+			<Text>Agriculture</Text>
+		</Flex>
+	</Flex>
+</Flex>
+
+*/

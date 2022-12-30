@@ -35,28 +35,44 @@ function CreateInvoiceModal({iscreateinvoiceModalvisible,setiscreateinvoiceModal
       HandleModalOpen();
     },[iscreateinvoiceModalvisible])
 
+    //client_information
     const [name_of_client,set_name_of_client]=useState('');
+    const [company_name_of_client,set_company_name_of_client]=useState('');
+    const [mobile_of_client,set_mobile_of_client]=useState('');    
     const [email_of_client,set_email_of_client]=useState('');
+    const [location_of_client,set_location_of_client]=useState('');
+    //product information
     const [name_of_product,set_name_of_product]=useState('');
     const [volume_of_items,set_volume_of_items]=useState('');
     const [unit_price,set_unit_price]=useState('');
-    const [creator_id,set_creator_id]=useState('');
     const total = volume_of_items * unit_price
 
+    const salesperson_name = salesperson_data.first_name + ' ' + salesperson_data.last_name
     const payload = {
+      //creator-info
+      creator_id: salesperson_data._id,
+      creator_name: salesperson_name,
+      email_of_creator: salesperson_data.email_of_salesperson,
+      mobile_of_creator: salesperson_data.mobile_of_salesperson,
+      //client-info
       name_of_client,
+      company_name_of_client,
+      mobile_of_client,
       email_of_client,
+      location_of_client,
+      //product info
       name_of_product,
       volume_of_items,
       unit_price,
-      creator_id: salesperson_data._id,
       total
     }
 
     const create_order=async()=>{
+      console.log(payload)
       await Create_Order(payload).then(()=>{
         alert('order created successfully')
       })
+      onClose()
     }
     return (
           <>
@@ -69,6 +85,7 @@ function CreateInvoiceModal({iscreateinvoiceModalvisible,setiscreateinvoiceModal
                 <ModalCloseButton />
                 <ModalBody>
                   <Stack spacing={4}>
+                    
                     <Flex direction='column'>
                       <Text>Name of Client</Text>
                       <Input type='text' placeholder='Name of Client' variant='filled' onChange={((e)=>{set_name_of_client(e.target.value)})}/>
@@ -77,6 +94,19 @@ function CreateInvoiceModal({iscreateinvoiceModalvisible,setiscreateinvoiceModal
                       <Text>Email of Client:</Text>
                       <Input type='Email' placeholder='Email of Client' variant='filled' onChange={((e)=>{set_email_of_client(e.target.value)})}/>
                     </Flex>
+                    <Flex direction='column'>
+                      <Text>Mobile of Client</Text>
+                      <Input type='text' placeholder='Mobile of Client' variant='filled' onChange={((e)=>{set_mobile_of_client(e.target.value)})}/>
+                    </Flex>
+                    <Flex direction='column'>
+                      <Text>Company location of Client</Text>
+                      <Input type='text' placeholder='company location of Client' variant='filled' onChange={((e)=>{set_location_of_client(e.target.value)})}/>
+                    </Flex>
+                    <Flex direction='column'>
+                      <Text>Company Name of Client</Text>
+                      <Input type='text' placeholder='Company Name of Client' variant='filled' onChange={((e)=>{set_company_name_of_client(e.target.value)})}/>
+                    </Flex>
+
                     <Flex direction='column'>
                       <Text>Name of Product:</Text>
                       <Input type='text' placeholder='Name of product' variant='filled' onChange={((e)=>{set_name_of_product(e.target.value)})}/>

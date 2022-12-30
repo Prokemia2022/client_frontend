@@ -68,10 +68,10 @@ function All(){
 				{categ.category === 'Industries'?
 					<Flex direction='column' gap='2' w='100%'>
 						<Text fontSize='28px' fontFamily='ClearSans-Bold' borderBottom='1px solid #000' >{categ.category}</Text>
-						<Flex wrap='Wrap' direction='column' w='100%'>
+						<Flex wrap='Wrap' w='100%'>
 							{industries_data?.map((item)=>{
 								return(
-									<Flex w='170px' h='225px' m='1' position='relative' onClick={(()=>{router.push(`/products/${item.title}`)})}>
+									<Flex w='170px' h='225px' m='1' position='relative' cursor='pointer' onClick={(()=>{router.push(`/products/${item.title}`)})}>
 										<Image borderRadius='10px' objectFit='cover' src="../images (1).jpeg" alt='next'/>
 										<Text mb='0' position='absolute' top='10px' left='10px' fontSize='20px' color='#fff' fontFamily='ClearSans-Bold'>{item.title}</Text>
 									</Flex>
@@ -82,10 +82,10 @@ function All(){
 				:
 					<Flex direction='column' gap='2' w='100%'>
 						<Text fontSize='28px' fontFamily='ClearSans-Bold' borderBottom='1px solid #000' >{categ.category}</Text>
-						<Flex wrap='Wrap' direction='column' w='100%'>
+						<Flex wrap='Wrap' w='100%'>
 							{technologies_data?.map((item)=>{
 								return(
-									<Flex w='170px' h='225px' m='1' position='relative'>
+									<Flex w='170px' h='225px' m='1' position='relative' cursor='pointer' onClick={(()=>{router.push(`/products/${item.title}`)})} boxShadow='lg'>
 										<Image borderRadius='10px' objectFit='cover' src="../images (1).jpeg" alt='next'/>
 										<Text mb='0' position='absolute' top='10px' left='10px' fontSize='20px' color='#fff' fontFamily='ClearSans-Bold'>{item.title}</Text>
 									</Flex>

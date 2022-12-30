@@ -106,7 +106,7 @@ export default Settings;
 const EditProfile=({setedit,salesperson_data})=>{
 	const [first_name,set_first_name]=useState(salesperson_data.first_name);
 	const [last_name,set_last_name]=useState(salesperson_data.last_name);
-	const [mobile,set_mobile]=useState(salesperson_data.mobile);
+	const [mobile,set_mobile]=useState(salesperson_data.mobile_of_salesperson);
 	const [address,set_address]=useState(salesperson_data.address);
 	const [company_name,set_company_name]=useState(salesperson_data.company_name);
 
@@ -143,7 +143,7 @@ const EditProfile=({setedit,salesperson_data})=>{
 					</Flex>
 					<Flex direction='column'>
 						<Text>Mobile</Text>
-						<Input type='tel' placeholder={salesperson_data.mobile_of_company} variant='filled' onChange={((e)=>{set_mobile(e.target.value)})}/>
+						<Input type='tel' placeholder={salesperson_data.mobile_of_salesperson} variant='filled' onChange={((e)=>{set_mobile(e.target.value)})}/>
 					</Flex>
 					<Flex direction='column'>
 						<Text>Company_name</Text>
@@ -151,13 +151,12 @@ const EditProfile=({setedit,salesperson_data})=>{
 					</Flex>
 					<Flex direction='column'>
 						<Text>Address</Text>
-						<Input type='text' placeholder={salesperson_data.address_of_company} variant='filled' onChange={((e)=>{set_address(e.target.value)})}/>
+						<Input type='text' placeholder={salesperson_data.address} variant='filled' onChange={((e)=>{set_address(e.target.value)})}/>
 					</Flex>
-					<Flex direction='column'>
-						<Text>Role of main Contact</Text>
-						<Input type='text' variant='filled'/>
+					<Flex gap='2'>
+						<Button onClick={handle_Edit_Profile} bg='#009393' color='#fff' flex='1'>Save</Button>
+						<Button onClick={(()=>{setedit(false)})} bg='#fff' color='#000' border='1px solid red' flex='1'>Cancel</Button>
 					</Flex>
-					<Button onClick={handle_Edit_Profile} bg='#009393' color='#fff'>Save</Button>
 				</Flex>
 			</Flex>
 	)
