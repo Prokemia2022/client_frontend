@@ -7,7 +7,7 @@ import styles from '../../styles/Home.module.css';
 import Header from '../../components/Header';
 import Add_Product from '../api/product/add_product.js'
 
-import {storage} from '../components/firebase.js';
+import {storage} from '../../components/firebase.js';
 import {ref,uploadBytes,getDownloadURL} from 'firebase/storage';
 import { v4 } from "uuid";
 
