@@ -7,7 +7,7 @@ function Manufacturers({distributor_data}){
 	const router = useRouter();
 	const [isaddnewmanufacturerModalvisible,setisaddnewmanufacturerModalvisible]=useState(false);
 	const [manufacturers,set_manufacturers]=useState(distributor_data?.manufacturers)
-	const id = distributor_data._id
+	const id = distributor_data?._id
 	return(
 		<Flex direction='column' gap='2' p='2' w='100%'>
 			<AddNewManufacturer isaddnewmanufacturerModalvisible={isaddnewmanufacturerModalvisible} setisaddnewmanufacturerModalvisible={setisaddnewmanufacturerModalvisible} id={id}/>

@@ -7,7 +7,7 @@ function Experts({distributor_data}){
 	const router = useRouter();
 	const [isaddnewexpertModalvisible,setisaddNewExpertModalvisible]=useState(false);
 	const [experts,set_experts]=useState(distributor_data?.experts)
-	const id = distributor_data._id
+	const id = distributor_data?._id
 	return (
 		<Flex direction='column' gap='3' p='2' w='100%'>
 			<AddNewExpertsModal isaddnewexpertModalvisible={isaddnewexpertModalvisible} setisaddNewExpertModalvisible={setisaddNewExpertModalvisible} id={id} acc_type='distributor'/>

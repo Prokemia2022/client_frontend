@@ -22,18 +22,6 @@ function Product(){
 		})
 	}
 
-	// useEffect(()=>{
-	// 	get_Data(payload)
-	// 	// console.log(payload)
-	// 	// if (!payload || payload?._id === undefined || !product_data){
-	// 	// 	alert("missing info could not fetch data")
-	// 	// 	//router.reload()
-	// 	// }else{
-	// 	// 	console.log(payload)
-	// 	// 	get_Data(payload)
-	// 	// }
-	// },[])
-
 	return(
 		<Flex direction='column'>
 			<Header />
@@ -78,7 +66,7 @@ const Edit_Info=({product_data})=>{
 	let [verification_status,set_verification_status]=useState(product_data?.verification_status);
 
 	let payload = {
-		_id: product_data._id,
+		_id: product_data?._id,
 		name_of_product,
 		email_of_lister,
 		listed_by_id,
@@ -118,31 +106,31 @@ const Edit_Info=({product_data})=>{
 				<Text fontSize='32px' fontWeight='bold'>Edit Product</Text>
 				<Flex direction='column'>
 					<Text>Name</Text>
-					<Input type='text' placeholder={product_data.name_of_product} variant='filled' onChange={((e)=>{set_name_of_product(e.target.value)})}/>
+					<Input type='text' placeholder={product_data?.name_of_product} variant='filled' onChange={((e)=>{set_name_of_product(e.target.value)})}/>
 				</Flex>
 				<Flex direction='column'>
 					<Text>Manufactured by:</Text>
-					<Input type='text' placeholder={product_data.email_of_lister} variant='filled' onChange={((e)=>{set_manufactured_by(e.target.value)})}/>
+					<Input type='text' placeholder={product_data?.email_of_lister} variant='filled' onChange={((e)=>{set_manufactured_by(e.target.value)})}/>
 				</Flex>
 				<Flex direction='column'>
 					<Text>Distributed by</Text>
-					<Input type='text' placeholder={product_data.distributed_by} variant='filled' onChange={((e)=>{set_distributed_by(e.target.value)})}/>
+					<Input type='text' placeholder={product_data?.distributed_by} variant='filled' onChange={((e)=>{set_distributed_by(e.target.value)})}/>
 				</Flex>
 				<Flex direction='column'>
 					<Text>Manufactured date</Text>
-					<Input type='date' placeholder={product_data.manufactured_date} variant='filled' onChange={((e)=>{set_manufactured_date(e.target.value)})}/>
+					<Input type='date' placeholder={product_data?.manufactured_date} variant='filled' onChange={((e)=>{set_manufactured_date(e.target.value)})}/>
 				</Flex>
 				<Flex direction='column'>
 					<Text>Description</Text>
-					<Textarea type='text' placeholder={product_data.description_of_product} variant='filled' onChange={((e)=>{set_description_of_product(e.target.value)})}/>
+					<Textarea type='text' placeholder={product_data?.description_of_product} variant='filled' onChange={((e)=>{set_description_of_product(e.target.value)})}/>
 				</Flex>
 				<Flex direction='column'>
 					<Text>Chemical name</Text>
-					<Input type='text' placeholder={product_data.chemical_name} variant='filled' onChange={((e)=>{set_chemical_name(e.target.value)})}/>
+					<Input type='text' placeholder={product_data?.chemical_name} variant='filled' onChange={((e)=>{set_chemical_name(e.target.value)})}/>
 				</Flex>
 				<Flex direction='column' gap='2'>
 					<Text fontFamily='ClearSans-Bold'>Industry</Text>
-					<Select variant='filled' placeholder={product_data.industry} onChange={((e)=>{set_industry(e.target.value)})}>
+					<Select variant='filled' placeholder={product_data?.industry} onChange={((e)=>{set_industry(e.target.value)})}>
 			          <option value='personalcare'>Personal Care</option>
 			          <option value='hi&i'>H I & I</option>
 			          <option value='building&construction'>Building and Construction</option>
@@ -151,18 +139,18 @@ const Edit_Info=({product_data})=>{
 				</Flex>
 				<Flex direction='column' gap='3'>
 					<Text fontFamily='ClearSans-Bold'>Technology</Text>
-					<Select variant='filled' placeholder={product_data.technology} onChange={((e)=>{set_technology(e.target.value)})}>
+					<Select variant='filled' placeholder={product_data?.technology} onChange={((e)=>{set_technology(e.target.value)})}>
 			          <option value='pharmaceuticals'>Pharmaceuticals</option>
 			          <option value='cosmetics'>Cosmetics</option>
 			        </Select>
 				</Flex>
 				<Flex direction='column'>
 					<Text>Function</Text>
-					<Input type='text' placeholder={product_data.function} variant='filled' onChange={((e)=>{set_product_function(e.target.value)})}/>
+					<Input type='text' placeholder={product_data?.function} variant='filled' onChange={((e)=>{set_product_function(e.target.value)})}/>
 				</Flex>
 				<Flex direction='column'>
 					<Text>Brand</Text>
-					<Input type='text' placeholder={product_data.brand} variant='filled' onChange={((e)=>{set_brand(e.target.value)})}/>
+					<Input type='text' placeholder={product_data?.brand} variant='filled' onChange={((e)=>{set_brand(e.target.value)})}/>
 				</Flex>
 				<Flex direction='column'>
 					<Text>expiry date</Text>
@@ -182,19 +170,19 @@ const Edit_Info=({product_data})=>{
 				</Flex>
 				<Flex direction='column'>
 					<Text>Features & Benefits</Text>
-					<Input type='text' placeholder={product_data.features_of_product} variant='filled' onChange={((e)=>{set_features_of_product(e.target.value)})}/>
+					<Input type='text' placeholder={product_data?.features_of_product} variant='filled' onChange={((e)=>{set_features_of_product(e.target.value)})}/>
 				</Flex>
 				<Flex direction='column'>
 					<Text>Application</Text>
-					<Input type='text' placeholder={product_data.application_of_product} variant='filled' onChange={((e)=>{set_application_of_product(e.target.value)})}/>
+					<Input type='text' placeholder={product_data?.application_of_product} variant='filled' onChange={((e)=>{set_application_of_product(e.target.value)})}/>
 				</Flex>
 				<Flex direction='column'>
 					<Text>Packaging</Text>
-					<Input type='text' placeholder={product_data.packaging_of_product} variant='filled' onChange={((e)=>{set_packaging_of_product(e.target.value)})}/>
+					<Input type='text' placeholder={product_data?.packaging_of_product} variant='filled' onChange={((e)=>{set_packaging_of_product(e.target.value)})}/>
 				</Flex>
 				<Flex direction='column'>
 					<Text>Storage & Handling</Text>
-					<Input type='text' placeholder={product_data.storage_of_product} variant='filled' onChange={((e)=>{set_storage_of_product(e.target.value)})}/>
+					<Input type='text' placeholder={product_data?.storage_of_product} variant='filled' onChange={((e)=>{set_storage_of_product(e.target.value)})}/>
 				</Flex>
 				<Flex direction='column'>
 					<Text>List as Short on Expiry</Text>

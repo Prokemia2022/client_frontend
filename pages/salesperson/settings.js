@@ -63,10 +63,10 @@ function Settings({salesperson_data}){
 				<Flex direction='column' gap='2'>
 					<Flex gap='3' direction='column'>
 						<Flex direction='column' gap='1' w='100%' bg='#eee' p='2' borderRadius='5' boxShadow='dark-lg'>
-							<Text  p='1' borderRadius='5' fontSize='24px' fontWeight='bold' color='#009393'>{salesperson_data.first_name} {salesperson_data.last_name}</Text>
-							<Text p='1' borderRadius='5'>Email: {salesperson_data.email_of_salesperson}</Text>
-							<Text p='1' borderRadius='5'>Mobile: {salesperson_data.mobile_of_salesperson}</Text>
-							<Text p='1' borderRadius='5'>Address: {salesperson_data.address}</Text>
+							<Text  p='1' borderRadius='5' fontSize='24px' fontWeight='bold' color='#009393'>{salesperson_data?.first_name} {salesperson_data?.last_name}</Text>
+							<Text p='1' borderRadius='5'>Email: {salesperson_data?.email_of_salesperson}</Text>
+							<Text p='1' borderRadius='5'>Mobile: {salesperson_data?.mobile_of_salesperson}</Text>
+							<Text p='1' borderRadius='5'>Address: {salesperson_data?.address}</Text>
 						</Flex>
 						<Button onClick={(()=>{setedit(true)})} bg='#009393' color='#fff'>Edit Profile</Button>	
 					</Flex>
@@ -104,14 +104,14 @@ function Settings({salesperson_data}){
 export default Settings;
 
 const EditProfile=({setedit,salesperson_data})=>{
-	const [first_name,set_first_name]=useState(salesperson_data.first_name);
-	const [last_name,set_last_name]=useState(salesperson_data.last_name);
-	const [mobile,set_mobile]=useState(salesperson_data.mobile_of_salesperson);
-	const [address,set_address]=useState(salesperson_data.address);
-	const [company_name,set_company_name]=useState(salesperson_data.company_name);
+	const [first_name,set_first_name]=useState(salesperson_data?.first_name);
+	const [last_name,set_last_name]=useState(salesperson_data?.last_name);
+	const [mobile,set_mobile]=useState(salesperson_data?.mobile_of_salesperson);
+	const [address,set_address]=useState(salesperson_data?.address);
+	const [company_name,set_company_name]=useState(salesperson_data?.company_name);
 
 	const payload = {
-		_id: salesperson_data._id,
+		_id: salesperson_data?._id,
 		first_name,
 		last_name,
 		mobile,
@@ -135,23 +135,23 @@ const EditProfile=({setedit,salesperson_data})=>{
 			<Flex direction='column' gap='3' w='100%'>
 					<Flex direction='column'>
 						<Text>First_Name</Text>
-						<Input type='text' placeholder={salesperson_data.first_name} variant='filled' onChange={((e)=>{set_first_name(e.target.value)})}/>
+						<Input type='text' placeholder={salesperson_data?.first_name} variant='filled' onChange={((e)=>{set_first_name(e.target.value)})}/>
 					</Flex>
 					<Flex direction='column'>
 						<Text>Last_Name</Text>
-						<Input type='text' placeholder={salesperson_data.last_name} variant='filled' onChange={((e)=>{set_last_name(e.target.value)})}/>
+						<Input type='text' placeholder={salesperson_data?.last_name} variant='filled' onChange={((e)=>{set_last_name(e.target.value)})}/>
 					</Flex>
 					<Flex direction='column'>
 						<Text>Mobile</Text>
-						<Input type='tel' placeholder={salesperson_data.mobile_of_salesperson} variant='filled' onChange={((e)=>{set_mobile(e.target.value)})}/>
+						<Input type='tel' placeholder={salesperson_data?.mobile_of_salesperson} variant='filled' onChange={((e)=>{set_mobile(e.target.value)})}/>
 					</Flex>
 					<Flex direction='column'>
 						<Text>Company_name</Text>
-						<Input type='text' placeholder={salesperson_data.company_name} variant='filled' onChange={((e)=>{set_company_name(e.target.value)})}/>
+						<Input type='text' placeholder={salesperson_data?.company_name} variant='filled' onChange={((e)=>{set_company_name(e.target.value)})}/>
 					</Flex>
 					<Flex direction='column'>
 						<Text>Address</Text>
-						<Input type='text' placeholder={salesperson_data.address} variant='filled' onChange={((e)=>{set_address(e.target.value)})}/>
+						<Input type='text' placeholder={salesperson_data?.address} variant='filled' onChange={((e)=>{set_address(e.target.value)})}/>
 					</Flex>
 					<Flex gap='2'>
 						<Button onClick={handle_Edit_Profile} bg='#009393' color='#fff' flex='1'>Save</Button>

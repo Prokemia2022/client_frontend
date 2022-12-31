@@ -20,7 +20,7 @@ function Product(){
 	const [issampleModalvisible,setissampleModalvisible]=useState(false);
 
 	const payload = {
-		_id : id.id
+		_id : id?.id
 	}
 	const [product_data,set_product_data]=useState('')
 
@@ -31,7 +31,7 @@ function Product(){
 		})
 	}
 	useEffect(()=>{
-		if (!payload || payload._id === 'undefined'){
+		if (!payload || id === undefined){
 			alert("missing info could not fetch data")
 			router.back()
 		}else{
@@ -40,7 +40,7 @@ function Product(){
 		}
 	},[payload])
 	
-	let manufactured_date = new Date(product_data.manufactured_date).toLocaleDateString()
+	let manufactured_date = new Date(product_data?.manufactured_date).toLocaleDateString()
 	return(
 		<Flex  direction='column'>
 			<QuotationModal isquotationModalvisible={isquotationModalvisible} setisquotationModalvisible={setisquotationModalvisible}/>

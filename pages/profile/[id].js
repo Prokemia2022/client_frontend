@@ -64,7 +64,7 @@ function Settings(){
 		_id: id.id
 	}
 	const Handle_Delete_Client=async()=>{
-		if(payload && payload._id !== 'undefined'){
+		if(payload && id !== undefined){
 			await Delete_Client(payload).then(()=>{
 				cookies.remove('user_token', { path: '/' });
 				router.push("/")
@@ -79,19 +79,19 @@ function Settings(){
 		<Flex direction='column' gap='2'>
 			<Header/>
 			<Flex p='2' direction='column' gap='2' w='100%'>
-				<Text fontSize='34px' fontWeight='bold'>Welcome,<br/> {client_data.first_name} {client_data.last_name}</Text>
+				<Text fontSize='34px' fontWeight='bold'>Welcome,<br/> {client_data?.first_name} {client_data?.last_name}</Text>
 				{edit ?
 					<EditProfile setedit={setedit} client_data={client_data}/>
 				:
 					<Flex direction='column' gap='2'>
 						<Flex gap='3' direction='column'>
 							<Flex direction='column' gap='1' w='100%' bg='#eee' p='2' borderRadius='5' boxShadow='dark-lg'>
-								<Text p='1' borderRadius='5'>Email: {client_data.email_of_company}</Text>
-								<Text p='1' borderRadius='5'>Mobile: {client_data.mobile_of_company}</Text>	
-								<Text p='1' borderRadius='5'>Gender: {client_data.gender}</Text>
-								<Text p='1' borderRadius='5'>Company name: {client_data.company_name}</Text>
-								<Text p='1' borderRadius='5'>Position: {client_data.position}</Text>
-								<Text p='1' borderRadius='5'>Address: {client_data.address}</Text>
+								<Text p='1' borderRadius='5'>Email: {client_data?.email_of_company}</Text>
+								<Text p='1' borderRadius='5'>Mobile: {client_data?.mobile_of_company}</Text>	
+								<Text p='1' borderRadius='5'>Gender: {client_data?.gender}</Text>
+								<Text p='1' borderRadius='5'>Company name: {client_data?.company_name}</Text>
+								<Text p='1' borderRadius='5'>Position: {client_data?.position}</Text>
+								<Text p='1' borderRadius='5'>Address: {client_data?.address}</Text>
 								
 							</Flex>
 							<Button onClick={(()=>{setedit(true)})} bg='#009393' color='#fff'>Edit Profile</Button>	
@@ -131,17 +131,17 @@ function Settings(){
 export default Settings;
 
 const EditProfile=({setedit,client_data})=>{
-	const [first_name,set_first_name]=useState(client_data.first_name);
-	const [last_name,set_last_name]=useState(client_data.last_name);
-	const [email_of_company,set_email_of_company]=useState(client_data.email_of_company);
-	const [mobile_of_company,set_mobile_of_company]=useState(client_data.mobile_of_company);
-	const [address_of_company,set_address_of_company]=useState(client_data.address_of_company);
-	const [company_name,set_company_name]=useState(client_data.company_name);
-	const [gender,set_gender]=useState(client_data.gender);
-	const [position,set_position]=useState(client_data.position);
+	const [first_name,set_first_name]=useState(client_data?.first_name);
+	const [last_name,set_last_name]=useState(client_data?.last_name);
+	const [email_of_company,set_email_of_company]=useState(client_data?.email_of_company);
+	const [mobile_of_company,set_mobile_of_company]=useState(client_data?.mobile_of_company);
+	const [address_of_company,set_address_of_company]=useState(client_data?.address_of_company);
+	const [company_name,set_company_name]=useState(client_data?.company_name);
+	const [gender,set_gender]=useState(client_data?.gender);
+	const [position,set_position]=useState(client_data?.position);
 
 	const payload = {
-		_id: client_data._id,
+		_id: client_data?._id,
 		first_name,
 		last_name,
 		email_of_company,
@@ -168,23 +168,23 @@ const EditProfile=({setedit,client_data})=>{
 			<Flex direction='column' gap='3' w='100%'>
 					<Flex direction='column'>
 						<Text>First_Name</Text>
-						<Input type='text' placeholder={client_data.first_name} variant='filled' onChange={((e)=>{set_first_name(e.target.value)})}/>
+						<Input type='text' placeholder={client_data?.first_name} variant='filled' onChange={((e)=>{set_first_name(e.target.value)})}/>
 					</Flex>
 					<Flex direction='column'>
 						<Text>Last_Name</Text>
-						<Input type='text' placeholder={client_data.last_name} variant='filled' onChange={((e)=>{set_last_name(e.target.value)})}/>
+						<Input type='text' placeholder={client_data?.last_name} variant='filled' onChange={((e)=>{set_last_name(e.target.value)})}/>
 					</Flex>
 					<Flex direction='column'>
 						<Text>Mobile</Text>
-						<Input type='tel' placeholder={client_data.mobile_of_company} variant='filled' onChange={((e)=>{set_mobile_of_company(e.target.value)})}/>
+						<Input type='tel' placeholder={client_data?.mobile_of_company} variant='filled' onChange={((e)=>{set_mobile_of_company(e.target.value)})}/>
 					</Flex>
 					<Flex direction='column'>
 						<Text>Company_name</Text>
-						<Input type='text' placeholder={client_data.company_name} variant='filled' onChange={((e)=>{set_company_name(e.target.value)})}/>
+						<Input type='text' placeholder={client_data?.company_name} variant='filled' onChange={((e)=>{set_company_name(e.target.value)})}/>
 					</Flex>
 					<Flex direction='column'>
 						<Text>Position</Text>
-						<Input type='text' placeholder={client_data.position} variant='filled' onChange={((e)=>{set_position(e.target.value)})}/>
+						<Input type='text' placeholder={client_data?.position} variant='filled' onChange={((e)=>{set_position(e.target.value)})}/>
 					</Flex>
 					<Flex direction='column'>
 						<Text>Gender</Text>
@@ -196,7 +196,7 @@ const EditProfile=({setedit,client_data})=>{
 					</Flex>
 					<Flex direction='column'>
 						<Text>Address</Text>
-						<Input type='text' placeholder={client_data.address_of_company} variant='filled' onChange={((e)=>{set_address_of_company(e.target.value)})}/>
+						<Input type='text' placeholder={client_data?.address_of_company} variant='filled' onChange={((e)=>{set_address_of_company(e.target.value)})}/>
 					</Flex>
 					<Button onClick={handle_Edit_Profile} bg='#009393' color='#fff'>Save</Button>
 				</Flex>

@@ -17,13 +17,13 @@ function Salesperson({setCurrentValue,salesperson_data}){
 	const router = useRouter();
 	const [hubactive,sethubactive]=useState(false);
 	const [edit,setedit]=useState(false);
-	const annonymous = salesperson_data.account_status;
+	const annonymous = salesperson_data?.account_status;
 	const [iscreateinvoiceModalvisible,setiscreateinvoiceModalvisible]=useState(false);
 
 	console.log(annonymous)
 	const handle_annonymous_status=async()=>{
 		const payload = {
-			_id: salesperson_data._id,
+			_id: salesperson_data?._id,
 			account_status: !annonymous
 		}
 		await Edit_Salesperson(payload).then(()=>{
@@ -37,11 +37,11 @@ function Salesperson({setCurrentValue,salesperson_data}){
 				<CreateInvoiceModal iscreateinvoiceModalvisible={iscreateinvoiceModalvisible} setiscreateinvoiceModalvisible={setiscreateinvoiceModalvisible} salesperson_data={salesperson_data}/>
 				<Flex p='2' direction='column' gap='2' w='100%' overflowY='scroll' h='100vh'>
 					<Flex gap='4' justify='space-between'>
-						<Text fontSize='42px' fontFamily='ClearSans-bold'>Welcome,<br/> {salesperson_data.first_name} {salesperson_data.last_name}</Text>
+						<Text fontSize='42px' fontFamily='ClearSans-bold'>Welcome,<br/> {salesperson_data?.first_name} {salesperson_data?.last_name}</Text>
 						<Flex gap='2' direction='column'>
 							<Flex gap='2'>
 								<Switch value={annonymous} size='md' onChange={handle_annonymous_status}/>
-								<Text fontSize='sm' w='100px' fontWeight='bold' color={annonymous == true ? '#009393' : '#000'}>{annonymous == true ? 'Annonymous' : `${salesperson_data.email_of_salesperson}`}</Text>
+								<Text fontSize='sm' w='100px' fontWeight='bold' color={annonymous == true ? '#009393' : '#000'}>{annonymous == true ? 'Annonymous' : `${salesperson_data?.email_of_salesperson}`}</Text>
 							</Flex>
 							{annonymous === true ?  								
 							<Flex boxShadow='dark-lg' bg='#fff' w='150px' h='100px' direction='column' align='center' justify='center' borderRadius='5'>

@@ -112,7 +112,7 @@ function _Home(){
 					<Button bg='#009393' color='#fff' onClick={(()=>{router.push(`/Technologies/all`)})}>Explore All Technologies</Button>
 				</Flex>
 				<Text fontSize='24px' fontFamily='ClearSans-Bold' borderBottom='1px solid #000'>Featured Products</Text>
-				{products_data.slice(0,4).map((content)=>{
+				{products_data?.slice(0,4).map((content)=>{
 					return(
 						<div key={content.id} style={{margin:'5px'}} >
 							<ProductItem content={content}/>
@@ -120,7 +120,7 @@ function _Home(){
 					)
 				})}
 				<Text fontSize='24px' fontFamily='ClearSans-Bold' borderBottom='1px solid #000'>Top Distributors </Text>
-				{distributors_data.slice(0,4).map((distributor)=>{
+				{distributors_data?.slice(0,4).map((distributor)=>{
 					return(
 						<Flex direction='column' bg='#eee' p='1' mb='1' key={distributor.id}>
 							<Text mb='0' fontSize='20px' fontFamily='ClearSans-Bold'>{distributor.company_name}</Text>
@@ -139,7 +139,7 @@ function _Home(){
 					)
 				})}
 				<Text fontSize='24px' fontFamily='ClearSans-Bold' borderBottom='1px solid #000'>Top Manufacturers </Text>
-				{manufacturers_data.slice(0,4).map((manufacturer)=>{
+				{manufacturers_data?.slice(0,4).map((manufacturer)=>{
 					return(
 						<Flex direction='column' bg='#eee' mb='1' p='1' key={manufacturer._id}>
 							<Text mb='0' fontSize='20px' fontFamily='ClearSans-Bold'>{manufacturer.company_name}</Text>

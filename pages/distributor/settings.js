@@ -29,13 +29,13 @@ function Settings({distributor_data}){
 	const [account,setAccount]=useState('distributor');
 
 	const [edit,setedit]=useState(false);
-	const [new_password,set_new_password]=useState(distributor_data.password)
+	const [new_password,set_new_password]=useState(distributor_data?.password)
 	const old_password = distributor_data?.password
 
 	const cookies = new Cookies();
 
 	const payload = {
-		_id : distributor_data._id,
+		_id : distributor_data?._id,
 	}
 
 	const Handle_Change_Password=async()=>{
@@ -63,13 +63,13 @@ function Settings({distributor_data}){
 				<Flex direction='column' gap='2'>
 					<Flex gap='3' direction='column'>
 						<Flex direction='column' gap='1' w='100%' bg='#eee' p='2' borderRadius='5' boxShadow='dark-lg'>
-							<Text  p='1' borderRadius='5' fontSize='24px' fontWeight='bold' color='#009393'>{distributor_data.first_name} {distributor_data.last_name}</Text>
-							<Text p='1' borderRadius='5'>Email: {distributor_data.email_of_company}</Text>
-							<Text p='1' borderRadius='5'>Mobile: {distributor_data.mobile_of_company}</Text>	
+							<Text  p='1' borderRadius='5' fontSize='24px' fontWeight='bold' color='#009393'>{distributor_data?.first_name} {distributor_data?.last_name}</Text>
+							<Text p='1' borderRadius='5'>Email: {distributor_data?.email_of_company}</Text>
+							<Text p='1' borderRadius='5'>Mobile: {distributor_data?.mobile_of_company}</Text>	
 							<Text p='1' borderRadius='5'>Alex@distributor.com</Text>
 							<Text p='1' borderRadius='5'>Manager</Text>
-							<Text p='1' borderRadius='5'>Address: {distributor_data.address_of_company}</Text>
-							<Text p='1' borderRadius='5'>Description: {distributor_data.description}</Text>
+							<Text p='1' borderRadius='5'>Address: {distributor_data?.address_of_company}</Text>
+							<Text p='1' borderRadius='5'>Description: {distributor_data?.description}</Text>
 						</Flex>
 						<Button onClick={(()=>{setedit(true)})} bg='#009393' color='#fff'>Edit Profile</Button>	
 					</Flex>
@@ -107,15 +107,15 @@ function Settings({distributor_data}){
 export default Settings;
 
 const EditProfile=({setedit,distributor_data})=>{
-	const [first_name,set_first_name]=useState(distributor_data.first_name);
-	const [last_name,set_last_name]=useState(distributor_data.last_name);
-	const [mobile_of_company,set_mobile_of_company]=useState(distributor_data.mobile_of_company);
-	const [address_of_company,set_address_of_company]=useState(distributor_data.address_of_company);
-	const [company_name,set_company_name]=useState(distributor_data.company_name);
-	const [description,set_description]=useState(distributor_data.description);
+	const [first_name,set_first_name]=useState(distributor_data?.first_name);
+	const [last_name,set_last_name]=useState(distributor_data?.last_name);
+	const [mobile_of_company,set_mobile_of_company]=useState(distributor_data?.mobile_of_company);
+	const [address_of_company,set_address_of_company]=useState(distributor_data?.address_of_company);
+	const [company_name,set_company_name]=useState(distributor_data?.company_name);
+	const [description,set_description]=useState(distributor_data?.description);
 
 	const payload = {
-		_id: distributor_data._id,
+		_id: distributor_data?._id,
 		first_name,
 		last_name,
 		mobile_of_company,
@@ -140,27 +140,27 @@ const EditProfile=({setedit,distributor_data})=>{
 			<Flex direction='column' gap='3' w='100%'>
 					<Flex direction='column'>
 						<Text>First_Name</Text>
-						<Input type='text' placeholder={distributor_data.first_name} variant='filled' onChange={((e)=>{set_first_name(e.target.value)})}/>
+						<Input type='text' placeholder={distributor_data?.first_name} variant='filled' onChange={((e)=>{set_first_name(e.target.value)})}/>
 					</Flex>
 					<Flex direction='column'>
 						<Text>Last_Name</Text>
-						<Input type='text' placeholder={distributor_data.last_name} variant='filled' onChange={((e)=>{set_last_name(e.target.value)})}/>
+						<Input type='text' placeholder={distributor_data?.last_name} variant='filled' onChange={((e)=>{set_last_name(e.target.value)})}/>
 					</Flex>
 					<Flex direction='column'>
 						<Text>Mobile</Text>
-						<Input type='tel' placeholder={distributor_data.mobile_of_company} variant='filled' onChange={((e)=>{set_mobile_of_company(e.target.value)})}/>
+						<Input type='tel' placeholder={distributor_data?.mobile_of_company} variant='filled' onChange={((e)=>{set_mobile_of_company(e.target.value)})}/>
 					</Flex>
 					<Flex direction='column'>
 						<Text>Company_name</Text>
-						<Input type='text' placeholder={distributor_data.company_name} variant='filled' onChange={((e)=>{set_company_name(e.target.value)})}/>
+						<Input type='text' placeholder={distributor_data?.company_name} variant='filled' onChange={((e)=>{set_company_name(e.target.value)})}/>
 					</Flex>
 					<Flex direction='column'>
 						<Text>Description</Text>
-						<Input type='text' placeholder={distributor_data.description} variant='filled' onChange={((e)=>{set_description(e.target.value)})}/>
+						<Input type='text' placeholder={distributor_data?.description} variant='filled' onChange={((e)=>{set_description(e.target.value)})}/>
 					</Flex>
 					<Flex direction='column'>
 						<Text>Address</Text>
-						<Input type='text' placeholder={distributor_data.address_of_company} variant='filled' onChange={((e)=>{set_address_of_company(e.target.value)})}/>
+						<Input type='text' placeholder={distributor_data?.address_of_company} variant='filled' onChange={((e)=>{set_address_of_company(e.target.value)})}/>
 					</Flex>
 					<Flex direction='column'>
 						<Text>Role of main Contact</Text>

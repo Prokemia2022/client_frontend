@@ -10,7 +10,7 @@ import Get_Manufacturers from '../api/auth/manufacturer/get_manufacturers.js'
 function Explore(){
 	const router = useRouter()
 	const categ = router.query;
-	console.log(categ.id)
+	console.log(categ?.id)
 	const [products_data,set_products_data]=useState([]);
 	const [distributors_data,set_distributors_data]=useState([])
 	const [manufacturers_data,set_manufacturers_data]=useState([])
@@ -19,7 +19,6 @@ function Explore(){
 		get_Products_Data()
 		get_Distributors_Data()
 		get_Manufacturers_Data()
-		console.log(products_data)
 	},[categ])
 
 	const get_Products_Data=async()=>{
@@ -48,13 +47,13 @@ function Explore(){
 			<Header/>
 			<Flex p='2' direction='column' gap='2'>
 				<Text fontSize='28px' fontFamily='ClearSans-Bold' borderBottom='1px solid #000' >{categ.id}</Text>
-				{products_data.length === 0?
+				{products_data?.length === 0?
 					<Flex bg='#eee' p='2' justify='center' align='center' h='40vh' boxShadow='lg'>
 						<Text>No products have been listed under this category</Text>
 					</Flex>
 					:
 					<>
-						{products_data.map((item)=>{
+						{products_data?.map((item)=>{
 							return(
 								<Flex key={item._id} position='relative' gap='2' align='center' onClick={(()=>{router.push(`/product/${item._id}`)})} bg='#eee' p='2' borderRadius='5' boxShadow='lg' cursor='pointer'>
 									<Image w='50px' h='50px' borderRadius='10px' objectFit='cover' src="../images (1).jpeg" alt='next' />
@@ -70,7 +69,7 @@ function Explore(){
 			</Flex>
 			<Flex p='2' direction='column' gap='2'>
 				<Text fontSize='24px' fontFamily='ClearSans-Bold' borderBottom='1px solid #000'> Featured Distributors </Text>
-				{distributors_data.map((distributor)=>{
+				{distributors_data?.map((distributor)=>{
 					return(
 						<Flex direction='column' bg='#eee' p='1' mb='1' key={distributor.id} borderRadius='5' boxShadow='lg'>
 							<Text mb='0' fontSize='20px' fontFamily='ClearSans-Bold'>{distributor.company_name}</Text>
@@ -89,7 +88,7 @@ function Explore(){
 					)
 				})}
 				<Text fontSize='24px' fontFamily='ClearSans-Bold' borderBottom='1px solid #000'> Featured Manufacturers </Text>
-				{manufacturers_data.map((manufacturer)=>{
+				{manufacturers_data?.map((manufacturer)=>{
 					return(
 						<Flex direction='column' bg='#eee' mb='1' p='1' key={manufacturer._id} borderRadius='5' boxShadow='lg'>
 							<Text mb='0' fontSize='20px' fontFamily='ClearSans-Bold'>{manufacturer.company_name}</Text>

@@ -13,7 +13,7 @@ function Sales({salesperson_data}){
 	const [iscreateinvoiceModalvisible,setiscreateinvoiceModalvisible]=useState(false);
 
 	const payload = {
-		_id : salesperson_data._id
+		_id : salesperson_data?._id
 	}
 
 	useEffect(()=>{
@@ -28,7 +28,7 @@ function Sales({salesperson_data}){
 		await Get_Orders(payload).then((response)=>{
 			console.log(response.data)
 			let data = response.data
-			const result_data = data.filter((item)=> item.creator_id?.includes(salesperson_data._id))
+			const result_data = data.filter((item)=> item.creator_id?.includes(salesperson_data?._id))
 			const result = result_data.filter((item)=> item.name_of_product?.toLowerCase().includes(searchquery) || item._id?.includes(searchquery))
 			set_orders(result)
 		})

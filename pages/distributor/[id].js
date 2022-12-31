@@ -36,7 +36,7 @@ function Distributor(){
 			console.log(details)
 			const payload = {
 				email_of_company : details?.email,
-				_id: details.id
+				_id: details?.id
 			}
 			get_Data(payload)
 		}

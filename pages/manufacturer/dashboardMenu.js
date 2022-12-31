@@ -21,7 +21,7 @@ function DashboardMenu({setCurrentValue,manufacturer_data}){
 
 	const router = useRouter();
 
-	const id = manufacturer_data._id
+	const id = manufacturer_data?._id
 
 	return (
 		<Flex p='1' direction='column' gap='4' w='100%' overflowY='scroll' h='100vh'>
@@ -31,16 +31,16 @@ function DashboardMenu({setCurrentValue,manufacturer_data}){
 			<Flex gap='3'>
 				<LocationCity style={{fontSize:'150px',backgroundColor:"",borderRadius:'150px',padding:'10px'}}/>
 				<Flex direction='column' gap='2' bg='#eee' p='2' w='100%' borderRadius='8' boxShadow='lg'>
-					<Text fontSize='28px' fontWeight='bold' color='#009393'>{manufacturer_data.first_name} {manufacturer_data.last_name}</Text>
-					<Text>company_name: {manufacturer_data.company_name}</Text>
-					<Text>email: {manufacturer_data.email_of_company}</Text>
-					<Text>mobile: {manufacturer_data.mobile_of_company}</Text>	
-					<Text>Address: {manufacturer_data.address_of_company}</Text>
+					<Text fontSize='28px' fontWeight='bold' color='#009393'>{manufacturer_data?.first_name} {manufacturer_data?.last_name}</Text>
+					<Text>company_name: {manufacturer_data?.company_name}</Text>
+					<Text>email: {manufacturer_data?.email_of_company}</Text>
+					<Text>mobile: {manufacturer_data?.mobile_of_company}</Text>	
+					<Text>Address: {manufacturer_data?.address_of_company}</Text>
 				</Flex>
 			</Flex>
 			<Flex direction='column' gap='2' bg='#eee' p='2' w='100%' borderRadius='8' boxShadow='lg'>
 					<Text fontSize='24px' fontWeight='bold' color='#009393'>Description</Text>
-					<Text>{manufacturer_data.description}</Text>
+					<Text>{manufacturer_data?.description}</Text>
 				</Flex>
 			<Flex gap='3' direction='column'>
 				<Button bg='#009393' color='#fff' onClick={(()=>{router.push('/product/add_product')})}><Add/>Add new Product</Button>
