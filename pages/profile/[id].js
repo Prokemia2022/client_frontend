@@ -20,6 +20,8 @@ function Settings(){
 	const [show, setShow] = useState(false);
   	const handleClick = () => setShow(!show);
 
+  	const id = router.query
+  	
 	const payload = {
 		_id: id.id
 	}
@@ -29,7 +31,7 @@ function Settings(){
 	const [edit,setedit]=useState(false);
 	const [currentValue,setcurrentValue]=useState('');
 	const router = useRouter()
-	const id = router.query
+	
 
 	const cookies = new Cookies();
 	const token = cookies.get('user_token');
