@@ -43,7 +43,7 @@ function Inventory({distributor_data}){
 				</Flex>
 				:
 				<>
-					{products_data.map((product)=>{
+					{products_data?.map((product)=>{
 						return(
 							<div key={product._id} style={{margin:'5px'}}>
 								<Item product={product} router={router}/>
@@ -68,17 +68,17 @@ const Item=({router,product})=>{
 						<DoneAllIcon/>
 					</Flex>
 					:null}
-				<Text color='#009393' fontWeight='bold' fontSize="24px">{product.name_of_product}</Text>
+				<Text color='#009393' fontWeight='bold' fontSize="24px">{product?.name_of_product}</Text>
 				<Flex gap='2'>
 					<Text fontWeight='bold'>Industry:</Text>
-					<Text>{product.industry}</Text>
+					<Text>{product?.industry}</Text>
 				</Flex>
 				<Flex gap='2'>
 					<Text fontWeight='bold'>Technology:</Text>
-					<Text>{product.technology}</Text>
+					<Text>{product?.technology}</Text>
 				</Flex>
 			</Flex>
-			<Text w='60px' fontWeight='bold' bg='#fff' p='2' color='#009393' cursor='pointer' onClick={(()=>{router.push(`/distributor/product/${product._id}`)})}>View product</Text>
+			<Text w='60px' fontWeight='bold' bg='#fff' p='2' color='#009393' cursor='pointer' onClick={(()=>{router.push(`/distributor/product/${product?._id}`)})}>View product</Text>
 		</Flex>
 	)
 }

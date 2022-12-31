@@ -12,14 +12,14 @@ function Manufacturers({distributor_data}){
 		<Flex direction='column' gap='2' p='2' w='100%'>
 			<AddNewManufacturer isaddnewmanufacturerModalvisible={isaddnewmanufacturerModalvisible} setisaddnewmanufacturerModalvisible={setisaddnewmanufacturerModalvisible} id={id}/>
 			<Text fontSize='32px' fontWeight='bold'>Manufacturers</Text>
-			{manufacturers.length === 0 ?
+			{manufacturers?.length === 0 ?
 					<Flex justify='center' align='center' h='40vh' direction='column' gap='2'>
 						<Text>You have not listed any manufacturers</Text>
 						<Button bg='#009393' color='#fff' onClick={(()=>{setisaddnewmanufacturerModalvisible(true)})}>Add new Manufacturer</Button>
 					</Flex>
 				:
 				<Flex direction='column' p='1' gap='2' overflowY='scroll' h='85vh'>
-					{manufacturers.map((item)=>{
+					{manufacturers?.map((item)=>{
 						return(
 							<Flex p='2' key={item.id} bg='#eee' borderRadius='5px' direction='column'>
 							  <Text fontSize='24px' fontWeight='bold'>{item.name}</Text>

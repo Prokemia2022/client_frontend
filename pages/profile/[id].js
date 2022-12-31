@@ -20,6 +20,10 @@ function Settings(){
 	const [show, setShow] = useState(false);
   	const handleClick = () => setShow(!show);
 
+	const payload = {
+		_id: id.id
+	}
+	
 	const [isaddnewproductModalvisible,setisaddnewProductModalvisible]=useState(false);
 	const [active,setActive]=useState(false);
 	const [edit,setedit]=useState(false);
@@ -60,9 +64,6 @@ function Settings(){
 		// })
 	}
 
-	const payload = {
-		_id: id.id
-	}
 	const Handle_Delete_Client=async()=>{
 		if(payload && id !== undefined){
 			await Delete_Client(payload).then(()=>{

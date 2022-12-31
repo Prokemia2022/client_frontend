@@ -53,7 +53,7 @@ function Sales({salesperson_data}){
 				</Flex>
 			:
 				<>
-					{orders_data.filter((item)=> item.order_status?.includes(sort_value)).map((order)=>{
+					{orders_data?.filter((item)=> item.order_status?.includes(sort_value)).map((order)=>{
 						return(
 							<Item key={order._id} order={order}/>
 						)
@@ -66,16 +66,16 @@ function Sales({salesperson_data}){
 
 export default Sales;
 
-const Item=({order,})=>{
+const Item=({order})=>{
 	return(
 		<Flex boxShadow='lg' p='2' bg='#fff' borderRadius='5px' direction='column' position='relative' border='2px dashed #009393'>
-			<Text fontSize='20px' fontWeight='bold'>Order Id: {order._id}</Text>
-			<Text>Product Name: {order.name_of_product}</Text>
-			<Text>Unit Price: {order.unit_price}</Text>
-			<Text>Volume: {order.volume_of_items}</Text>	
-			<Text>Email of Client: {order.name_of_client}</Text>	
-			<Text>date: {order.createdAt}</Text>	
-			<Text>Order Status: <span style={{color:'orange'}}>{order.order_status}</span></Text>	
+			<Text fontSize='20px' fontWeight='bold'>Order Id: {order?._id}</Text>
+			<Text>Product Name: {order?.name_of_product}</Text>
+			<Text>Unit Price: {order?.unit_price}</Text>
+			<Text>Volume: {order?.volume_of_items}</Text>	
+			<Text>Email of Client: {order?.name_of_client}</Text>	
+			<Text>date: {order?.createdAt}</Text>	
+			<Text>Order Status: <span style={{color:'orange'}}>{order?.order_status}</span></Text>	
 		</Flex>
 	)
 }

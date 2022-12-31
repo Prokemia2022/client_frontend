@@ -47,13 +47,13 @@ function CreateInvoiceModal({iscreateinvoiceModalvisible,setiscreateinvoiceModal
     const [unit_price,set_unit_price]=useState('');
     const total = volume_of_items * unit_price
 
-    const salesperson_name = salesperson_data.first_name + ' ' + salesperson_data.last_name
+    const salesperson_name = salesperson_data?.first_name + ' ' + salesperson_data?.last_name
     const payload = {
       //creator-info
-      creator_id: salesperson_data._id,
+      creator_id: salesperson_data?._id,
       creator_name: salesperson_name,
-      email_of_creator: salesperson_data.email_of_salesperson,
-      mobile_of_creator: salesperson_data.mobile_of_salesperson,
+      email_of_creator: salesperson_data?.email_of_salesperson,
+      mobile_of_creator: salesperson_data?.mobile_of_salesperson,
       //client-info
       name_of_client,
       company_name_of_client,

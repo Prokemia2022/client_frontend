@@ -37,16 +37,18 @@ function SalesPerson(){
 				email_of_company : details?.email,
 				_id: details?.id
 			}
-			get_Data(payload)
-		}
-	},[payload])
-	const get_Data=async(payload)=>{
-		console.log(payload)
-		await Get_Salesperson(payload).then((response)=>{
+			Get_Salesperson(payload).then((response)=>{
 			console.log(response.data)
 			set_salesperson_data(response.data)
-		})
-	}
+		})		}
+	},[payload])
+	// const get_Data=async(payload)=>{
+	// 	console.log(payload)
+	// 	await Get_Salesperson(payload).then((response)=>{
+	// 		console.log(response.data)
+	// 		set_salesperson_data(response.data)
+	// 	})
+	// }
 	if (currentvalue == 'sales')
 	{   
 		return(

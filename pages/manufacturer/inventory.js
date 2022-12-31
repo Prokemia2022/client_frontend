@@ -36,15 +36,15 @@ function Inventory({manufacturer_data}){
 				</Select>
 				<Input placeholder='search products by name, industry' onChange={((e)=>{set_searchquery(e.target.value)})}/>
 			</Flex>
-			{products_data.length === 0?
+			{products_data?.length === 0?
 				<Flex justify='center' align='center' h='40vh' direction='column' gap='2'>
 					<Text textAlign='center' fontSize='32px' fontWeight='bold' color='gray'>You have not listed any products<br/>or<br/>Your product is awaiting approval</Text>
 				</Flex>
 			:
 				<>
-				{products_data.map((product)=>{
+				{products_data?.map((product)=>{
 					return(
-						<div key={product._id} style={{margin:'5px'}}>
+						<div key={product?._id} style={{margin:'5px'}}>
 							<Item product={product} router={router}/>
 						</div>
 					)
@@ -67,17 +67,17 @@ const Item=({router,product})=>{
 						<DoneAllIcon/>
 					</Flex>
 					:null}
-				<Text color='#009393' fontWeight='bold' fontSize="24px">{product.name_of_product}</Text>
+				<Text color='#009393' fontWeight='bold' fontSize="24px">{product?.name_of_product}</Text>
 				<Flex gap='2'>
 					<Text fontWeight='bold'>Industry:</Text>
-					<Text>{product.industry}</Text>
+					<Text>{product?.industry}</Text>
 				</Flex>
 				<Flex gap='2'>
 					<Text fontWeight='bold'>Technology:</Text>
-					<Text>{product.technology}</Text>
+					<Text>{product?.technology}</Text>
 				</Flex>
 			</Flex>
-			<Text w='60px' fontWeight='bold' bg='#fff' p='2' color='#009393' cursor='pointer' onClick={(()=>{router.push(`/distributor/product/${product._id}`)})}>View product</Text>
+			<Text w='60px' fontWeight='bold' bg='#fff' p='2' color='#009393' cursor='pointer' onClick={(()=>{router.push(`/distributor/product/${product?._id}`)})}>View product</Text>
 		</Flex>
 	)
 }
