@@ -33,16 +33,16 @@ function DashboardMenu({setCurrentValue,distributor_data}){
 			<Flex gap='3'>
 				<LocationCityIcon style={{fontSize:'150px',padding:'10px'}}/>
 				<Flex direction='column' gap='2' bg='#eee' p='2' w='100%' borderRadius='8' boxShadow='lg'>
-					<Text fontSize='28px' fontWeight='bold' color='#009393'>{distributor_data.?first_name} {distributor_data.?last_name}</Text>
-					<Text>company_name: {distributor_data.?company_name}</Text>
-					<Text>email: {distributor_data.?email_of_company}</Text>
-					<Text>mobile: {distributor_data.?mobile_of_company}</Text>	
-					<Text>Address: {distributor_data.?address_of_company}</Text>
+					<Text fontSize='28px' fontWeight='bold' color='#009393'>{distributor_data?.first_name} {distributor_data?.last_name}</Text>
+					<Text>company_name: {distributor_data?.company_name}</Text>
+					<Text>email: {distributor_data?.email_of_company}</Text>
+					<Text>mobile: {distributor_data?.mobile_of_company}</Text>	
+					<Text>Address: {distributor_data?.address_of_company}</Text>
 				</Flex>
 			</Flex>
 			<Flex direction='column' gap='2' bg='#eee' p='2' w='100%' borderRadius='8' boxShadow='lg'>
 					<Text fontSize='24px' fontWeight='bold' color='#009393'>Description</Text>
-					<Text>{distributor_data.?description}</Text>
+					<Text>{distributor_data?.description}</Text>
 				</Flex>
 			<Flex gap='3' wrap='Wrap'>
 				<Button bg='#009393' color='#fff' onClick={(()=>{router.push('/product/add_product')})}>Add new Product</Button>
