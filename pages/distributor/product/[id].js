@@ -18,7 +18,7 @@ import Get_Product from '../../api/product/get_product.js';
 import Delete_Product from '../../api/product/delete_product.js';
 import Edit_Product from '../../api/product/edit_product.js';
 
-import {storage} from '../../firebase';
+import {storage} from '../../components/firebase';
 import {ref,uploadBytes,getDownloadURL} from 'firebase/storage';
 import { v4 } from "uuid";
 
