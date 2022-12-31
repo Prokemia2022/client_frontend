@@ -17,7 +17,14 @@ import Change_Password from '../api/auth/distributor/change_password.js'
 import Delete_Client from '../api/auth/client/delete_client_account.js'
 
 function Settings(){
-	const [show, setShow] = useState(false);
+
+	const [isaddnewproductModalvisible,setisaddnewProductModalvisible]=useState(false);
+	const [active,setActive]=useState(false);
+	const [edit,setedit]=useState(false);
+	const [currentValue,setcurrentValue]=useState('');
+	const router = useRouter()
+	
+		const [show, setShow] = useState(false);
   	const handleClick = () => setShow(!show);
 
   	const id = router.query
@@ -26,12 +33,6 @@ function Settings(){
 		_id: id.id
 	}
 
-	const [isaddnewproductModalvisible,setisaddnewProductModalvisible]=useState(false);
-	const [active,setActive]=useState(false);
-	const [edit,setedit]=useState(false);
-	const [currentValue,setcurrentValue]=useState('');
-	const router = useRouter()
-	
 
 	const cookies = new Cookies();
 	const token = cookies.get('user_token');
