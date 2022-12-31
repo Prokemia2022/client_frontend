@@ -41,7 +41,7 @@ function SalesPerson(){
 			console.log(response.data)
 			set_salesperson_data(response.data)
 		})		}
-	},[payload])
+	},[])
 	// const get_Data=async(payload)=>{
 	// 	console.log(payload)
 	// 	await Get_Salesperson(payload).then((response)=>{

@@ -23,13 +23,14 @@ function Settings(){
 	const payload = {
 		_id: id.id
 	}
-	
+
 	const [isaddnewproductModalvisible,setisaddnewProductModalvisible]=useState(false);
 	const [active,setActive]=useState(false);
 	const [edit,setedit]=useState(false);
 	const [currentValue,setcurrentValue]=useState('');
 	const router = useRouter()
 	const id = router.query
+
 	const cookies = new Cookies();
 	const token = cookies.get('user_token');
  
@@ -46,17 +47,20 @@ function Settings(){
 				email_of_company : details?.email,
 				_id: details.id
 			}
-			get_Data(payload)
+			Get_Client(payload).then((response)=>{
+				console.log(response.data)
+				set_client_data(response.data)
+			})
 		}
 	},[payload])
 	
-	const get_Data=async(payload)=>{
-		console.log(payload)
-		await Get_Client(payload).then((response)=>{
-			console.log(response.data)
-			set_client_data(response.data)
-		})
-	}
+	// const get_Data=async(payload)=>{
+	// 	console.log(payload)
+	// 	await Get_Client(payload).then((response)=>{
+	// 		console.log(response.data)
+	// 		set_client_data(response.data)
+	// 	})
+	// }
 	const Handle_Change_Password=async()=>{
 		alert('success')
 		// await Change_Password(password_payload).then(()=>{
@@ -65,7 +69,7 @@ function Settings(){
 	}
 
 	const Handle_Delete_Client=async()=>{
-		if(payload && id !== undefined){
+		if(!payload && id !== undefined){
 			await Delete_Client(payload).then(()=>{
 				cookies.remove('user_token', { path: '/' });
 				router.push("/")
