@@ -81,7 +81,7 @@ function Header({products_data,distributors_data,manufacturers_data,industries_d
 				<Flex align='center' gap='2'>
 					{searchbaractive ? <SearchOffIcon onClick={(()=>{setsearchbaractive(false)})}/> : <SearchIcon onClick={(()=>{setsearchbaractive(true)})}/>}
 					{signedin? 
-						<FavoriteBorderIcon onClick={(()=>{router.push('/favorite')})}/> : 
+						null:
 						<Button onClick={(()=>{router.push('/account/1')})} bg='#009393' color='#fff' >Free Sign Up</Button>}
 					<Menu >
 					<Flex bg={signedin?'#009393':'#fff'} align='center' gap='1' p='1' borderRadius='5' color={signedin?'#fff':'#000'}>
@@ -142,7 +142,7 @@ const navigation=[
 	},
 	// {
 	// 	id:3,
-	// 	title:'Find Experts/Consultants',
+	// 	title:'Find Experts/Consultants',<FavoriteBorderIcon onClick={(()=>{router.push('/favorite')})}/> : 
 	// 	link:'/experts'
 	// },	
 	{

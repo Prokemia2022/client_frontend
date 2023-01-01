@@ -1,8 +1,14 @@
 import axios from 'axios';
-//import Cookies from 'universal-cookie'; http://localhost:5000/ https://prokemia-client.herokuapp.com/
-
 
 export default async function Get_Industries() {
-    const result = await axios.get("https://prokemia-client.herokuapp.com/api/get_industries")
-    return result
+	const env = process.env.NODE_ENV
+    console.log(env)
+    if(env == "development"){
+        const result = await axios.get("http://localhost:5000/api/get_industries")
+    	return result
+    }
+    else if (env == "production"){
+    	const result = await axios.get(`https://prokemia-clientserver-production.up.railway.app/api/get_industries`)
+    	return result
+    }
 }

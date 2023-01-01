@@ -1,7 +1,14 @@
 import axios from 'axios';
-//import Cookies from 'universal-cookie';
 
 export default async function Get_Technologies() {
-    const result = await axios.get("http://localhost:5000/api/get_technologies")
-    return result
+	const env = process.env.NODE_ENV
+    console.log(env)
+    if(env == "development"){
+        const result = await axios.get("http://localhost:5000/api/get_technologies")
+    	return result
+    }
+    else if (env == "production"){
+    	const result = await axios.get(`https://prokemia-clientserver-production.up.railway.app/api/get_technologies`)
+    	return result
+    }
 }
