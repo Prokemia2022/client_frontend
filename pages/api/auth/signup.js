@@ -26,7 +26,7 @@ export default async function SignUp(payload) {
     }
     else if (env == "production"){
         const cookies = new Cookies();
-        const result = await axios.post(`https://prokemia-clientserver-production.up.railway.app/api/signin`,payload)
+        const result = await axios.post(`https://prokemia-clientserver-production.up.railway.app/api/signup`,payload)
         if(result.status === 201){
             return result
         }else{
