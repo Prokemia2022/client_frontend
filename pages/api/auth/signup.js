@@ -3,6 +3,7 @@ const jwt = require('jsonwebtoken');
 import Cookies from 'universal-cookie';
 
 export default async function SignUp(payload) {
+    const env = process.env.NODE_ENV
     if(env == "development"){
         const cookies = new Cookies();
         const result = await axios.post("http://localhost:5000/api/signup",payload)
