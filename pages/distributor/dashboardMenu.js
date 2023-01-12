@@ -1,5 +1,5 @@
 import React,{useState} from 'react'
-import {Flex,Text,Input,Button} from '@chakra-ui/react'
+import {Flex,Text,Input,Button,Image} from '@chakra-ui/react'
 import {useRouter} from 'next/router'
 import LocationCityIcon from '@mui/icons-material/LocationCity'
 import AddNewProduct from '../../components/modals/AddNewProduct.js';
@@ -28,10 +28,14 @@ function DashboardMenu({setCurrentValue,distributor_data}){
 	return (
 		<Flex p='1' direction='column' gap='4' w='100%' overflowY='scroll' h='100vh'>
 			<AddNewProduct isaddnewproductModalvisible={isaddnewproductModalvisible} setisaddnewProductModalvisible={setisaddnewProductModalvisible}/>
-			<AddNewExpertsModal isaddnewexpertModalvisible={isaddnewexpertModalvisible} setisaddNewExpertModalvisible={setisaddNewExpertModalvisible} id={id}/>
+			<AddNewExpertsModal isaddnewexpertModalvisible={isaddnewexpertModalvisible} setisaddNewExpertModalvisible={setisaddNewExpertModalvisible} id={id} acc_type='distributor'/>
 			<AddNewManufacturer isaddnewmanufacturerModalvisible={isaddnewmanufacturerModalvisible} setisaddnewmanufacturerModalvisible={setisaddnewmanufacturerModalvisible} id={id}/>
 			<Flex gap='3'>
-				<LocationCityIcon style={{fontSize:'150px',padding:'10px'}}/>
+				{distributor_data?.profile_photo_url == ''? 
+					<LocationCityIcon style={{fontSize:'150px',padding:'10px'}}/> 
+				: 
+					<Image boxSize='200px' src={distributor_data?.profile_photo_url} alt='profile photo' boxShadow='lg'/>
+				}
 				<Flex direction='column' gap='2' bg='#eee' p='2' w='100%' borderRadius='8' boxShadow='lg'>
 					<Text fontSize='28px' fontWeight='bold' color='#009393'>{distributor_data?.first_name} {distributor_data?.last_name}</Text>
 					<Text>company_name: {distributor_data?.company_name}</Text>

@@ -1,7 +1,7 @@
 //modules imports
 import React,{useState} from 'react';
 import {useRouter} from 'next/router';
-import {Flex,Text,Button,Input,InputGroup,InputRightElement} from '@chakra-ui/react';
+import {Flex,Text,Button,Input,InputGroup,InputRightElement,Image} from '@chakra-ui/react';
 import bcrypt from 'bcryptjs';
 import Cookies from 'universal-cookie';
 //icons-imports
@@ -16,6 +16,10 @@ import {Room,Visibility,VisibilityOff} from '@mui/icons-material'
 import Edit_Manufacturer from '../api/auth/manufacturer/edit_manufacturer.js'
 // import Change_Password from '../api/auth/distributor/change_password.js'
 import Delete_Manufacturer from '../api/auth/manufacturer/delete_manufacturer_account.js'
+//utils
+import {storage} from '../../components/firebase.js';
+import {ref,uploadBytes,getDownloadURL} from 'firebase/storage';
+import { v4 } from "uuid";
 
 function Settings({manufacturer_data}){
 	const [show, setShow] = useState(false);
@@ -105,12 +109,15 @@ function Settings({manufacturer_data}){
 export default Settings;
 
 const EditProfile=({setedit,manufacturer_data})=>{
+	const cookies = new Cookies();
 	const [first_name,set_first_name]=useState(manufacturer_data?.first_name);
 	const [last_name,set_last_name]=useState(manufacturer_data?.last_name);
 	const [mobile_of_company,set_mobile_of_company]=useState(manufacturer_data?.mobile_of_company);
 	const [address_of_company,set_address_of_company]=useState(manufacturer_data?.address_of_company);
 	const [company_name,set_company_name]=useState(manufacturer_data?.company_name);
 	const [description,set_description]=useState(manufacturer_data?.description);
+	const [profile_photo,set_profile_photo]=useState('');
+	const [profile_photo_url,set_profile_photo_url]=useState(manufacturer_data?.profile_photo_url);
 
 	const payload = {
 		_id: manufacturer_data?._id,
@@ -119,7 +126,39 @@ const EditProfile=({setedit,manufacturer_data})=>{
 		mobile_of_company,
 		address_of_company,
 		company_name,
-		description
+		description,
+		profile_photo_url
+	}
+	const profile_upload_function=async()=>{
+		console.log(profile_photo)
+		await handle_profile_image_upload().then((res)=>{
+			if (res == null || res == undefined){
+				alert('err')
+			}else{
+				const img_payload = {
+					_id: manufacturer_data?._id,
+					profile_photo_url: res
+				}
+				Edit_Manufacturer(img_payload).then(()=>{
+					console.log(img_payload)
+					alert('successfully uploaded image')
+					setedit(false)
+				})
+			}
+		})
+	}
+	const handle_profile_image_upload=async()=>{
+		if (profile_photo.name == undefined){
+			alert('could not process file, try re-uploading again.')
+			return (null)
+		}else{
+			console.log(profile_photo.name)
+			const profile_photo_documentRef = ref(storage, `profile_photo/${profile_photo?.name + v4()}`);
+			const snapshot= await uploadBytes(profile_photo_documentRef,profile_photo)
+			const file_url = await getDownloadURL(snapshot.ref)
+			cookies.set('profile_photo_url', file_url, { path: '/' });
+			return file_url
+		}
 	}
 	const handle_Edit_Profile=async()=>{
 		await Edit_Manufacturer(payload).then(()=>{
@@ -131,10 +170,18 @@ const EditProfile=({setedit,manufacturer_data})=>{
 	}
 	return(	
 		<Flex gap='3' direction='column' overflowY='scroll' h='80vh'>
-			<Flex gap='2' align='center'>
-				<LocationCityIcon style={{fontSize:'150px',backgroundColor:"#eee",borderRadius:'150px'}} />
-				<Text>Edit profile Photo</Text>
-			</Flex>
+			{manufacturer_data?.profile_photo_url == ''? 
+				<LocationCityIcon style={{fontSize:'150px',padding:'10px'}}/> 
+			: 
+				<Flex gap='2' >
+					<Image boxSize='200px' src={manufacturer_data?.profile_photo_url} alt='profile photo' boxShadow='lg' objectFit='cover'/>
+					<Flex direction='column' gap='2'>
+						<Text>Select Image to set as Profile Image</Text>
+						<Input type='file' placeholder='Select Image to set as Profile Image' accept='.jpg,.png,.jpeg' variant='filled' onChange={((e)=>{set_profile_photo(e.target.files[0])})}/>
+						<Button bg='#009393' color='#fff' onClick={profile_upload_function}>Upload profile photo</Button>
+					</Flex>
+				</Flex>
+			}
 			<Flex direction='column' gap='3' w='100%'>
 					<Flex direction='column'>
 						<Text>First_Name</Text>
@@ -160,11 +207,10 @@ const EditProfile=({setedit,manufacturer_data})=>{
 						<Text>Address</Text>
 						<Input type='text' placeholder={manufacturer_data?.address_of_company} variant='filled' onChange={((e)=>{set_address_of_company(e.target.value)})}/>
 					</Flex>
-					<Flex direction='column'>
-						<Text>Role of main Contact</Text>
-						<Input type='text' variant='filled'/>
+					<Flex gap='2' >
+						<Button onClick={handle_Edit_Profile} bg='#009393' color='#fff' flex='1'>Save</Button>
+						<Button onClick={(()=>{setedit(false)})} bg='#fff' border='1px solid red' color='#000' flex='1'>Cancel</Button>						
 					</Flex>
-					<Button onClick={handle_Edit_Profile} bg='#009393' color='#fff'>Save</Button>
 				</Flex>
 			</Flex>
 	)

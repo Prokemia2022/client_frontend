@@ -33,9 +33,9 @@ export default function ClientSignUp(){
 	return(
 		<Flex direction='column'>
 			<Header/>
-			<Flex h='100vh' className={styles.SigninBody}>
-				<Flex className={styles.authSection} gap='2' p='8'>
-					<Text w='40vw'  fontSize='4rem' color='#fff' fontFamily='ClearSans-bold'>Welcome Back!</Text>
+			<Flex className={styles.SignupBody}>
+				<Flex className={styles.authSection} gap='2'>
+					<Text w='100%' fontSize='3rem' color='#fff' fontFamily='ClearSans-bold'>Welcome Back!</Text>
 					<Text color='#fff'>Dont Have an Account?</Text>
 					<Text mt='-2' onClick={(()=>{router.push('/account')})} textDecoration='3px solid #fff underline' cursor='pointer' fontFamily='ClearSans-bold' fontSize='22px' color="#000">Sign Up now.</Text>
 				</Flex>

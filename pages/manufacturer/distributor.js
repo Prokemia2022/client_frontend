@@ -12,12 +12,13 @@ function Distributors({manufacturer_data}){
 	const [infoactive,setinfoActive]=useState(false);
 	//const [distributors,set_distributors]=useState(manufacturer_data?.distributors)
 	const distributors = manufacturer_data?.distributors
+	console.log(distributors)
 	const id = manufacturer_data?._id
 
 	return(
 		<Flex direction='column' gap='2' p='2' w='100%'  overflowY='scroll' h='100vh'>
 			<AddNewDistributor isaddnewdistributorModalvisible={isaddnewdistributorModalvisible} setisaddnewdistributorModalvisible={setisaddnewdistributorModalvisible} id={id}/>
-			<FindDistributors isfinddistributorModalvisible={isfinddistributorModalvisible} setisfinddistributorModalvisible={setisfinddistributorModalvisible} id={id}/>
+			<FindDistributors isfinddistributorModalvisible={isfinddistributorModalvisible} setisfinddistributorModalvisible={setisfinddistributorModalvisible} id={id} manufacturer_data={manufacturer_data}/>
 			<Text fontSize='32px' fontWeight='bold'>Distributors</Text>
 			{distributors?.length === 0 ?
 					<Flex justify='center' align='center' h='40vh' direction='column' gap='2'>
@@ -67,9 +68,10 @@ export default Distributors;
 const Distributor=({item})=>{
 	return(
 		<Flex p='2' bg='#eee' borderRadius='5px' direction='column'>
-		  <Text fontSize='24px' fontWeight='bold'>INCI Company</Text>
-		  <Text>inci.sales@inci.com</Text>
-		  <Text>0759233322</Text>
+		  <Text fontSize='24px' fontWeight='bold'>{item?.name}</Text>
+		  <Text>Email: {item?.email}</Text>
+		  <Text>mobile: {item?.mobile}</Text>
+		  <Text>Industry:{item?.industry}</Text>
 				<Flex gap='2'>
 				<Text>Edit</Text>
 				<Text color='red' cursor='pointer'>Remove</Text>

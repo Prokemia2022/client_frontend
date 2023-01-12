@@ -40,12 +40,14 @@ function AddNewExpertsModal({isaddnewexpertModalvisible,setisaddNewExpertModalvi
     const [mobile,set_mobile]=useState('')
     const [email,set_email]=useState('')
     const [role,set_role]=useState('');
+    const [description,set_description]=useState('');
 
     const payload = {
       _id: id,
       name,
       mobile,
       email,
+      description,
       role
     }
 
@@ -54,12 +56,12 @@ function AddNewExpertsModal({isaddnewexpertModalvisible,setisaddNewExpertModalvi
       if(acc_type === 'distributor')
         Add_New_Expert(payload).then(()=>{
           alert('success')
-          setisaddNewExpertModalvisible(true)
+          setisaddNewExpertModalvisible(false)
         })
       else{
         Add_New_Expert_Manufacturer(payload).then(()=>{
           alert('success')
-          setisaddNewExpertModalvisible(true)
+          setisaddNewExpertModalvisible(false)
         })
       }
       onClose()
@@ -86,6 +88,10 @@ function AddNewExpertsModal({isaddnewexpertModalvisible,setisaddNewExpertModalvi
                   <Flex direction='column'>
                     <Text>Position/Role</Text>
                     <Input type='text' placeholder='Position' variant='filled' onChange={((e)=>{set_role(e.target.value)})}/>
+                  </Flex>
+                  <Flex direction='column'>
+                    <Text>Description</Text>
+                    <Textarea type='text' placeholder='Position' variant='filled' onChange={((e)=>{set_description(e.target.value)})}/>
                   </Flex>
                   <Flex direction='column'>
                     <Text>Mobile</Text>

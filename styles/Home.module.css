@@ -21,6 +21,38 @@
 		  0px 0px 80px rgba(0, 0, 0, 0.2)
 		;
 }
+.loading{
+    height: 90vh;
+    width: 90vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .div{
+      width: 2rem;
+      height: 2rem;
+      margin: 2rem 0.3rem;
+      background-color: #009393;
+      border-radius: 50%;
+      animation: 0.9s bounce infinite alternate;
+      color: black;
+      
+  }
+  .div:nth-child(2) {
+    animation-delay: 0.3s;
+  }
+  
+  .div:nth-child(3) {
+    animation-delay: 0.6s;
+  }
+  
+  @keyframes bounce {
+    to {
+      opacity: 0.3;
+      transform: translate3d(0, -1rem, 0);
+    }
+  }
 .promotext{
 	width: 50%;
 }
@@ -79,27 +111,30 @@
 background: #2193b0;  /* fallback for old browsers */
 background: -webkit-linear-gradient(to left, #6dd5ed, #2193b0);  /* Chrome 10-25, Safari 5.1-6 */
 background: linear-gradient(to left, #6dd5ed, #2193b0); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+display: flex;
+flex-direction: row;
+justify-content: center;
+height: 100vh;
 }
 .SignupBody{
 background: rgb(0,147,147);
 background: linear-gradient(90deg, rgba(0,147,147,1) 51%, rgba(237,248,248,1) 100%);
+display: flex;
+flex-direction: row;
+justify-content: center;
+height: 100vh;
 }
 .authSection{
 	display: flex;
-	padding: auto;
 	justify-content: center;
 	flex-direction: column;
-	height: 100%;
-	width: 100%;
+	flex: 1;
+	padding: 15px;
 }
 .authForm{
+	justify-content: center;
 	background-color: #fff;
-	position: absolute;
-	top: 30vh;
-	right: 10%;
-	height: ;
-	width: 500px;
-	border-radius: 10px;
+	width: 50%;
 	padding: 15px;
 	box-shadow:
 		0px 0px 1.2px rgba(0, 0, 0, 0.051),
@@ -172,11 +207,12 @@ background: linear-gradient(90deg, rgba(0,147,147,1) 51%, rgba(237,248,248,1) 10
 .SearchIcon{
 	display: none;
 }
-@media screen and (max-width: 60em) {
+/*@media screen and (max-width: 60em) {
   .authSection{
     display: none;
   }
-}
+}*/
+
 @media screen and (max-width: 48em) {
 	.filterbody{
 		width: 95vw;
@@ -188,7 +224,6 @@ background: linear-gradient(90deg, rgba(0,147,147,1) 51%, rgba(237,248,248,1) 10
     }
     .authsection1{
     	display: none;
-    	width: 100%
     }
     .promoimg{
     	display: none;
@@ -231,12 +266,21 @@ background: linear-gradient(90deg, rgba(0,147,147,1) 51%, rgba(237,248,248,1) 10
 	left: 0px;
 	z-index: 1
 }
+.SigninBody{
+	flex-direction: column;
+	height: 100vh
+}
+.SignupBody{
+	flex-direction: column;
+	height: 100%
+}
 .authSection{
-	display: none;
+	flex: 0;
 }
 .authForm{
-	right: 20px;
-	width: 90vw;
+	width:90%;
+	margin: 5%;
+	border-radius: 10px
 }
 .feedbackBody{
 	flex-direction: column-reverse;

@@ -1,7 +1,7 @@
 //modules imports
 import React,{useState,useEffect} from 'react';
 import {useRouter} from 'next/router';
-import {Flex,Text,Button,Input,InputGroup,InputRightElement,Select} from '@chakra-ui/react';
+import {Flex,Text,Button,Input,InputGroup,InputRightElement,Select,Image} from '@chakra-ui/react';
 import bcrypt from 'bcryptjs';
 import Cookies from 'universal-cookie';
 import jwt_decode from "jwt-decode";
@@ -15,6 +15,10 @@ import Get_Client from '../api/auth/client/get_client.js'
 import Edit_Client from '../api/auth/client/edit_client.js'
 import Change_Password from '../api/auth/distributor/change_password.js'
 import Delete_Client from '../api/auth/client/delete_client_account.js'
+//utils
+import {storage} from '../../components/firebase.js';
+import {ref,uploadBytes,getDownloadURL} from 'firebase/storage';
+import { v4 } from "uuid";
 
 function Settings(){
 
@@ -55,7 +59,7 @@ function Settings(){
 				set_client_data(response.data)
 			})
 		}
-	},[payload])
+	},[])
 	
 	// const get_Data=async(payload)=>{
 	// 	console.log(payload)
@@ -139,6 +143,7 @@ function Settings(){
 export default Settings;
 
 const EditProfile=({setedit,client_data})=>{
+	const cookies = new Cookies();
 	const [first_name,set_first_name]=useState(client_data?.first_name);
 	const [last_name,set_last_name]=useState(client_data?.last_name);
 	const [email_of_company,set_email_of_company]=useState(client_data?.email_of_company);
@@ -147,6 +152,8 @@ const EditProfile=({setedit,client_data})=>{
 	const [company_name,set_company_name]=useState(client_data?.company_name);
 	const [gender,set_gender]=useState(client_data?.gender);
 	const [position,set_position]=useState(client_data?.position);
+	const [profile_photo,set_profile_photo]=useState('');
+	const [profile_photo_url,set_profile_photo_url]=useState(client_data?.profile_photo_url);
 
 	const payload = {
 		_id: client_data?._id,
@@ -158,7 +165,42 @@ const EditProfile=({setedit,client_data})=>{
 		company_name,
 		gender,
 		position,
+		profile_photo_url
 	}
+
+	const profile_upload_function=async()=>{
+		console.log(profile_photo)
+		await handle_profile_image_upload().then((res)=>{
+			if (res == null || res == undefined){
+				alert('err')
+			}else{
+				const img_payload = {
+					_id: client_data?._id,
+					profile_photo_url: res
+				}
+				Edit_Client(img_payload).then(()=>{
+					console.log(img_payload)
+					alert('successfully uploaded image')
+					setedit(false)
+				})
+			}
+		})
+	}
+
+	const handle_profile_image_upload=async()=>{
+		if (profile_photo.name == undefined){
+			alert('could not process file, try re-uploading again.')
+			return (null)
+		}else{
+			console.log(profile_photo.name)
+			const profile_photo_documentRef = ref(storage, `profile_photo/${profile_photo?.name + v4()}`);
+			const snapshot= await uploadBytes(profile_photo_documentRef,profile_photo)
+			const file_url = await getDownloadURL(snapshot.ref)
+			cookies.set('profile_photo_url', file_url, { path: '/' });
+			return file_url
+		}
+	}
+
 	const handle_Edit_Profile=async()=>{
 		await Edit_Client(payload).then(()=>{
 			console.log(payload)
@@ -169,10 +211,25 @@ const EditProfile=({setedit,client_data})=>{
 	}
 	return(	
 		<Flex gap='3' direction='column' overflowY='scroll' h='80vh'>
-			<Flex gap='2' align='center'>
-				<AccountCircleIcon style={{fontSize:'150px',backgroundColor:"#eee",borderRadius:'150px'}} />
-				<Text>Edit profile Photo</Text>
-			</Flex>
+			{client_data?.profile_photo_url == '' || !client_data?.profile_photo_url? 
+				<Flex gap='2' >
+					<AccountCircleIcon style={{fontSize:'150px',backgroundColor:"#eee",borderRadius:'150px'}} />
+					<Flex direction='column' gap='2'>
+						<Text>Select Image to set as Profile Image</Text>
+						<Input type='file' placeholder='Select Image to set as Profile Image' accept='.jpg,.png,.jpeg' variant='filled' onChange={((e)=>{set_profile_photo(e.target.files[0])})}/>
+						<Button bg='#009393' color='#fff' onClick={profile_upload_function}>Upload profile photo</Button>
+					</Flex>
+				</Flex>
+			: 
+				<Flex gap='2' >
+					<Image boxSize='200px' src={client_data?.profile_photo_url} alt='profile photo' boxShadow='lg' objectFit='cover'/>
+					<Flex direction='column' gap='2'>
+						<Text>Select Image to change Profile Image</Text>
+						<Input type='file' placeholder='Select Image to set as Profile Image' accept='.jpg,.png,.jpeg' variant='filled' onChange={((e)=>{set_profile_photo(e.target.files[0])})}/>
+						<Button bg='#009393' color='#fff' onClick={profile_upload_function}>Upload profile photo</Button>
+					</Flex>
+				</Flex>
+			}
 			<Flex direction='column' gap='3' w='100%'>
 					<Flex direction='column'>
 						<Text>First_Name</Text>

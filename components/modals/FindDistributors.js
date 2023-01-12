@@ -20,7 +20,7 @@ import {
 import { useEffect,useState } from 'react';
 import Manufacturer_request from '../../pages/api/auth/manufacturer/manufacturer_request.js'
 
-function FindDistributors({isfinddistributorModalvisible,setisfinddistributorModalvisible,id}){
+function FindDistributors({isfinddistributorModalvisible,setisfinddistributorModalvisible,manufacturer_data,id}){
     const { isOpen, onOpen, onClose } = useDisclosure();
 
     const HandleModalOpen=()=>{
@@ -45,7 +45,8 @@ function FindDistributors({isfinddistributorModalvisible,setisfinddistributorMod
       industry,
       technology,
       region,
-      description
+      description,
+      name_of_requester : manufacturer_data.company_name 
     }
 
     const handle_make_request=()=>{

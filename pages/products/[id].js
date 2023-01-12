@@ -56,7 +56,7 @@ function Explore(){
 						{products_data?.map((item)=>{
 							return(
 								<Flex key={item._id} position='relative' gap='2' align='center' onClick={(()=>{router.push(`/product/${item._id}`)})} bg='#eee' p='2' borderRadius='5' boxShadow='lg' cursor='pointer'>
-									<Image w='50px' h='50px' borderRadius='10px' objectFit='cover' src="../images (1).jpeg" alt='next' />
+									<Image w='50px' h='50px' borderRadius='10px' objectFit='cover' src="../Pro.png" alt='next' />
 									<Flex direction='column'>
 										<Text fontSize='16px' fontFamily='ClearSans-Bold'>{item.name_of_product}</Text>
 										<Text fontSize='16px'>{item.industry}</Text>

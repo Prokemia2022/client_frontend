@@ -15,11 +15,12 @@ function Inventory({manufacturer_data}){
 		//console.log(manufacturer_data)
 	},[])
 
+
 	const get_Data=async()=>{
 		await Get_Products().then((response)=>{
 			console.log(response.data)
 			let data = response.data
-			const result_data = data.filter((item)=> item.verification_status && item.email_of_lister?.includes(email))
+			const result_data = data.filter((item)=> item.verification_status && item.email_of_lister?.includes(manufacturer_data?.email_of_company))
 			const result = result_data.filter((item)=> item.name_of_product?.toLowerCase().includes(searchquery) || item.industry?.toLowerCase().includes(searchquery) || item.technology?.toLowerCase().includes(searchquery))
 			console.log(result)
 			set_products_data(result)
@@ -77,7 +78,7 @@ const Item=({router,product})=>{
 					<Text>{product?.technology}</Text>
 				</Flex>
 			</Flex>
-			<Text w='60px' fontWeight='bold' bg='#fff' p='2' color='#009393' cursor='pointer' onClick={(()=>{router.push(`/distributor/product/${product?._id}`)})}>View product</Text>
+			<Text w='60px' fontWeight='bold' bg='#fff' p='2' color='#009393' cursor='pointer' onClick={(()=>{router.push(`/product/edit_config/${product?._id}`)})}>View product</Text>
 		</Flex>
 	)
 }

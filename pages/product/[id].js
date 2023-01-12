@@ -1,5 +1,5 @@
 import React,{useState,useEffect} from 'react'
-import {Flex,Text,Button,Link} from '@chakra-ui/react'
+import {Flex,Text,Button,Link,useToast} from '@chakra-ui/react'
 import {useRouter} from 'next/router'
 import FileDownloadIcon from '@mui/icons-material/FileDownload';
 import LanguageIcon from '@mui/icons-material/Language';
@@ -16,6 +16,7 @@ import DoneAllOutlinedIcon from '@mui/icons-material/DoneAllOutlined';
 function Product(){
 	const router = useRouter();
 	const id = router.query;
+	const toast = useToast()
 	const [isquotationModalvisible,setisquotationModalvisible]=useState(false);
 	const [issampleModalvisible,setissampleModalvisible]=useState(false);
 
@@ -31,16 +32,19 @@ function Product(){
 		})
 	}
 	useEffect(()=>{
-		if (!payload || id === undefined){
-			alert("missing info could not fetch data")
+		if (!payload._id == undefined || id.id === undefined){
+			toast({
+              title: '',
+              description: 'This link is broken,',
+              status: 'info',
+              isClosable: true,
+            });
 			router.back()
 		}else{
 			console.log(payload)
 			get_Data(payload)
 		}
-	},[payload])
-	
-	let manufactured_date = new Date(product_data?.manufactured_date).toLocaleDateString()
+	},[id])
 	return(
 		<Flex  direction='column'>
 			<QuotationModal isquotationModalvisible={isquotationModalvisible} setisquotationModalvisible={setisquotationModalvisible}/>
@@ -58,14 +62,6 @@ function Product(){
 				<Flex>
 					<Text>Manufactured by:</Text>
 					<Text color='grey'>{product_data?.manufactured_by}</Text>
-				</Flex>
-				<Flex>
-					<Text>Manufactured date:</Text>
-					<Text color='grey'>{manufactured_date}</Text>
-				</Flex>
-				<Flex>
-					<Text>Expired by:</Text>
-					<Text color='grey'>{product_data?.manufactured_date}</Text>
 				</Flex>
 				<Flex>
 					<Text>Distributed by:</Text>

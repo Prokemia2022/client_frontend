@@ -25,6 +25,7 @@ function Experts({distributor_data}){
 								<Text>Name: {item.name}</Text>
 								<Text>Mobile: {item.mobile}</Text>
 								<Text>Role: {item.role}</Text>
+								<Text>Description: {item.description}</Text>
 								<Flex gap='2'>
 									<Text>Edit</Text>
 									<Text color='red'>delete</Text>

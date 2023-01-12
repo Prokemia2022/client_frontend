@@ -22,14 +22,18 @@ function DashboardMenu({setCurrentValue,manufacturer_data}){
 	const router = useRouter();
 
 	const id = manufacturer_data?._id
-
+ 
 	return (
 		<Flex p='1' direction='column' gap='4' w='100%' overflowY='scroll' h='100vh'>
 			<AddNewProduct isaddnewproductModalvisible={isaddnewproductModalvisible} setisaddnewProductModalvisible={setisaddnewProductModalvisible}/>
 			<AddNewExpertsModal isaddnewexpertModalvisible={isaddnewexpertModalvisible} setisaddNewExpertModalvisible={setisaddNewExpertModalvisible} id={id} acc_type='manufacturer'/>
 			<AddNewDistributor isaddnewdistributorModalvisible={isaddnewdistributorModalvisible} setisaddnewdistributorModalvisible={setisaddnewdistributorModalvisible} id={id}/>
 			<Flex gap='3'>
-				<LocationCity style={{fontSize:'150px',backgroundColor:"",borderRadius:'150px',padding:'10px'}}/>
+				{manufacturer_data?.profile_photo_url == '' || !manufacturer_data?.profile_photo_url ? 
+					<LocationCity style={{fontSize:'150px',padding:'10px'}}/> 
+				: 
+					<Image boxSize='200px' src={manufacturer_data?.profile_photo_url} alt='profile photo' boxShadow='lg'/>
+				}
 				<Flex direction='column' gap='2' bg='#eee' p='2' w='100%' borderRadius='8' boxShadow='lg'>
 					<Text fontSize='28px' fontWeight='bold' color='#009393'>{manufacturer_data?.first_name} {manufacturer_data?.last_name}</Text>
 					<Text>company_name: {manufacturer_data?.company_name}</Text>
@@ -66,10 +70,12 @@ export default DashboardMenu;
 
 
 const AddNewIndustry=({setaddnewInd})=>{
-	const [suggest_industry,set_suggest_industry]=useState(false);
+	const [suggest_industry,set_suggest_industry]=useState('');
+	const [description,set_description]=useState('');
 
 	const payload = {
-		title: suggest_industry
+		title: suggest_industry,
+		description
 	}
 
 	const handle_suggest_industry=async()=>{
@@ -82,11 +88,13 @@ const AddNewIndustry=({setaddnewInd})=>{
 	}
 
 	return(
-		<Flex direction='column' gap='2' bg='#eee' p='2'>
+		<Flex direction='column' gap='2' bg='#eee' p='2' boxShadow='lg'>
 			<Text fontWeight='bold'>Suggest Industry</Text>
 			<Input bg='#fff' type='text' placeholder='Suggest industry' onChange={((e)=>{set_suggest_industry(e.target.value)})}/>
+			<Text fontWeight='bold'>Description</Text>
+			<Input bg='#fff' type='text' placeholder='describe industry' onChange={((e)=>{set_description(e.target.value)})}/>
 			<Flex gap='2'>
-				<Button bg='#009393' onClick={handle_suggest_industry}>Submit</Button>
+				<Button color='#fff' bg='#009393' onClick={handle_suggest_industry}>Submit</Button>
 				<Button bg='#fff' border='1px solid red' onClick={(()=>{setaddnewInd(false)})}>Cancel</Button>
 			</Flex>
 		</Flex>
@@ -95,16 +103,18 @@ const AddNewIndustry=({setaddnewInd})=>{
 
 const AddNewTechnology=({setaddnewTech})=>{
 	const [suggest_technology,set_suggest_technology]=useState(false);
+	const [description,set_description]=useState('');
 
 	const payload = {
-		title: suggest_technology
+		title: suggest_technology,
+		description
 	}
 
 	const handle_suggest_technology=async()=>{
 		setaddnewTech(false)
 		console.log(payload)
 
-		await Suggest_Technology().then((response)=>{
+		await Suggest_Technology(payload).then((response)=>{
 			alert("success")
 		})
 	}
@@ -112,8 +122,10 @@ const AddNewTechnology=({setaddnewTech})=>{
 		<Flex direction='column' gap='2' bg='#eee' p='2'>
 			<Text fontWeight='bold'>Suggest Technology</Text>
 			<Input bg='#fff' type='text' placeholder='Suggest technology' onChange={((e)=>{set_suggest_technology(e.target.value)})}/>
+			<Text fontWeight='bold'>Description</Text>
+			<Input bg='#fff' type='text' placeholder='describe description' onChange={((e)=>{set_description(e.target.value)})}/>
 			<Flex gap='2'>
-				<Button bg='#009393' onClick={handle_suggest_technology}>Submit</Button>
+				<Button color='#fff' bg='#009393' onClick={handle_suggest_technology}>Submit</Button>
 				<Button bg='#fff' border='1px solid red' onClick={(()=>{setaddnewTech(false)})}>Cancel</Button>
 			</Flex>
 		</Flex>

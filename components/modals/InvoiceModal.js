@@ -46,6 +46,10 @@ function CreateInvoiceModal({iscreateinvoiceModalvisible,setiscreateinvoiceModal
     const [volume_of_items,set_volume_of_items]=useState('');
     const [unit_price,set_unit_price]=useState('');
     const total = volume_of_items * unit_price
+    //payment & delivery info
+    const [delivery_terms,set_delivery_terms]=useState('');
+    const [payment_terms,set_payment_terms]=useState('');
+    const [delivery_date,set_delivery_date]=useState('');
 
     const salesperson_name = salesperson_data?.first_name + ' ' + salesperson_data?.last_name
     const payload = {
@@ -64,7 +68,11 @@ function CreateInvoiceModal({iscreateinvoiceModalvisible,setiscreateinvoiceModal
       name_of_product,
       volume_of_items,
       unit_price,
-      total
+      total,
+      //payment&delivery
+      delivery_date,
+      delivery_terms,
+      payment_terms
     }
 
     const create_order=async()=>{
@@ -72,6 +80,7 @@ function CreateInvoiceModal({iscreateinvoiceModalvisible,setiscreateinvoiceModal
       await Create_Order(payload).then(()=>{
         alert('order created successfully')
       })
+      setiscreateinvoiceModalvisible(false)
       onClose()
     }
     return (
@@ -118,6 +127,18 @@ function CreateInvoiceModal({iscreateinvoiceModalvisible,setiscreateinvoiceModal
                     <Flex direction='column'>
                       <Text>Unit Price</Text>
                       <Input type='number' placeholder='Enter Price per item' variant='filled' onChange={((e)=>{set_unit_price(e.target.value)})}/>
+                    </Flex>
+                    <Flex direction='column'>
+                      <Text>Delivery_terms:</Text>
+                      <Input variant='filled' placeholder='Define The terms for delivery of the items' onChange={((e)=>{set_delivery_terms(e.target.value)})}/>
+                    </Flex>
+                    <Flex direction='column'>
+                      <Text>Delivery_date</Text>
+                      <Input type='date' variant='filled' placeholder='date product to be delivered' onChange={((e)=>{set_delivery_date(e.target.value)})}/>
+                    </Flex>
+                    <Flex direction='column'>
+                      <Text>Payment_terms:</Text>
+                      <Input variant='filled' placeholder='Enter mode of payment' onChange={((e)=>{set_payment_terms(e.target.value)})}/>
                     </Flex>
                     <Flex direction='column'>
 	                    <Text fontSize='14px'>- by creating this invoice you acknowledge that Prokemia will formally trade on behalf </Text>

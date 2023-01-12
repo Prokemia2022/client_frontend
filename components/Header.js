@@ -12,7 +12,7 @@ import {Flex,
 		Menu,
 	    MenuButton,
 	    MenuList,
-	    MenuItem,MenuDivider,Center} from '@chakra-ui/react'
+	    MenuItem,MenuDivider,Center,Image} from '@chakra-ui/react'
 //icon import
 import {Close,Add,HorizontalRule,ArrowForward} from '@mui/icons-material';
 import MenuOpenIcon from '@mui/icons-material/MenuOpen';
@@ -22,6 +22,10 @@ import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 //components import
 import Search from './Search.js'
 import styles from '../styles/Home.module.css';
+import Get_Client from '../pages/api/auth/client/get_client.js'
+import Get_Distributor from '../pages/api/auth/distributor/get_distributor.js'
+import Get_Manufacturer from '../pages/api/auth/manufacturer/get_manufacturer.js'
+import Get_Salesperson from '../pages/api/auth/salesperson/get_salesperson_client.js'
 
 
 function Header({products_data,distributors_data,manufacturers_data,industries_data,technologies_data}){
@@ -31,7 +35,8 @@ function Header({products_data,distributors_data,manufacturers_data,industries_d
 	
 	const [user,setuser]=useState('');
 	const [acc_type,set_acc_type]=useState('');
-	const [uid,set_uid]=useState('')
+	const [uid,set_uid]=useState('');
+	const [profile_photo_url,set_profile_photo_url]=useState('')
 
 
 	const router = useRouter();
@@ -52,11 +57,12 @@ function Header({products_data,distributors_data,manufacturers_data,industries_d
 				_id: uid
 			}
 			console.log(user)
+			handle_Fetch_Profile_Photo(payload)
 		}else{
 			setsignedin(false)
 			//alert("could not get user id")
 		}
-	},[])
+	},[token,acc_type])
 	const handleProfile=()=>{
 		if(acc_type === 'sales')
 			router.push(`/salesperson/${uid}`)
@@ -66,6 +72,29 @@ function Header({products_data,distributors_data,manufacturers_data,industries_d
 			router.push(`/distributor/${uid}`)
 		if(acc_type === 'manufacturer')
 			router.push(`/manufacturer/${uid}`)
+	}
+	const handle_Fetch_Profile_Photo=async(payload)=>{
+		console.log(payload,acc_type)
+		if(acc_type === 'sales')
+			await Get_Salesperson(payload).then((res)=>{
+				set_profile_photo_url(res.data?.profile_photo_url)
+				console.log(res.data?.profile_photo_url)
+			})
+		if(acc_type === 'client')
+			await Get_Client(payload).then((res)=>{
+				set_profile_photo_url(res.data?.profile_photo_url)
+				console.log(res.data)
+			})
+		if(acc_type === 'distributor')
+			await Get_Distributor(payload).then((res)=>{
+				set_profile_photo_url(res.data?.profile_photo_url)
+				console.log(res.data?.profile_photo_url)
+			})
+		if(acc_type === 'manufacturer')
+			await Get_Manufacturer(payload).then((res)=>{
+				set_profile_photo_url(res.data?.profile_photo_url)
+				console.log(res.data?.profile_photo_url)
+			})
 	}
 
 	const handle_LogOut=()=>{
@@ -84,20 +113,29 @@ function Header({products_data,distributors_data,manufacturers_data,industries_d
 						null:
 						<Button onClick={(()=>{router.push('/account/1')})} bg='#009393' color='#fff' >Free Sign Up</Button>}
 					<Menu >
-					<Flex bg={signedin?'#009393':'#fff'} align='center' gap='1' p='1' borderRadius='5' color={signedin?'#fff':'#000'}>
-						{signedin?<Text ml='1' fontSize='12px'>{user}</Text>:null}
-						<MenuButton as={Button} rounded={'full'} variant={'link'} cursor={'pointer'} minW={0} pt='1' color={signedin?'#fff':'#000'}>
+					<Flex align='center' gap='1' p='1' borderRadius='5'>
+						{signedin?
+							<Flex bg='#009393' boxShadow='lg' p='2' align='center' gap='1' borderRadius='5' color='#fff'>
+								<Text ml='1' fontSize='14px' >{user}</Text>
+							</Flex>
+							:null}
+						<MenuButton as={Button} rounded={'full'} variant={'link'} cursor={'pointer'} minW={0} pt='1' color='#000'>
 							<MenuOpenIcon style={{fontSize:'24px'}}/>
 						</MenuButton>
 					</Flex>
 						<MenuList alignItems={'center'} p='2'>
 							<Flex align='center' gap='2'>
 								<Script src="https://cdn.lordicon.com/xdjxvujz.js"></Script>
-								<lord-icon src="https://cdn.lordicon.com/dklbhvrt.json" trigger="loop" delay="7000" style={{marginTop:'20px',width:'70px',height:"70px",}} >
-								</lord-icon>
+								{profile_photo_url == '' || !profile_photo_url ?
+									<lord-icon src="https://cdn.lordicon.com/dklbhvrt.json" trigger="loop" delay="7000" style={{marginTop:'20px',width:'70px',height:"70px",}} >
+									</lord-icon>
+								:
+									<Image src={profile_photo_url} alt='pp' boxSize='60px' objectFit='cover' borderRadius='5'/>
+								}
 								{signedin? 
 									<Flex direction='column' gap='1'>
 										<Text>{user}</Text>
+										<Text fontSize='12px' color='grey'>{user?.email_of_company}</Text>
 										<Text color='#009393' cursor='pointer' onClick={handleProfile}>view profile</Text>
 									</Flex> 
 									: 

@@ -89,8 +89,8 @@ function _Home(){
 						{industries_data?.slice(0,6).map((item)=>{
 							return(
 								<Flex key={item.id} w='170px' h='225px' m='1' position='relative' onClick={(()=>{router.push(`/products/${item.title}`)})}>
-									<Image borderRadius='10px' objectFit='cover' src="../images (1).jpeg" alt='next' boxShadow='dark-lg'/>
-									<Text mb='0' position='absolute' top='10px' left='10px' fontSize='20px' color='#fff' fontFamily='ClearSans-Bold'>{item.title}</Text>
+									<Image borderRadius='10px' objectFit='cover' src={item?.cover_image == ''? "../Pro.png":item?.cover_image} alt='photo' boxShadow='dark-lg' w='100%'/>
+									<Text bg='rgb(192,192,192,0.6)' p='1' m='2' mb='0' borderRadius='5' position='absolute' top='10px' left='10px' fontSize='20px' color='#000' fontFamily='ClearSans-Bold'>{item.title}</Text>
 								</Flex>
 							)
 						})}
@@ -103,8 +103,8 @@ function _Home(){
 						{technologies_data?.slice(0,8).map((item)=>{
 							return(
 								<Flex key={item.id} w='170px' h='225px' m='1' position='relative'>
-									<Image borderRadius='10px' objectFit='cover' src="../images (1).jpeg" alt='next' boxShadow='dark-lg'/>
-									<Text mb='0' position='absolute' top='10px' left='10px' fontSize='20px' color='#fff' fontFamily='ClearSans-Bold'>{item.title}</Text>
+									<Image borderRadius='10px' objectFit='cover' src={item?.cover_image == ''? "../Pro.png":item?.cover_image} alt='photo' boxShadow='dark-lg' w='100%'/>
+									<Text bg='rgb(192,192,192,0.6)' p='1' m='2' mb='0' borderRadius='5' position='absolute' top='10px' left='10px' fontSize='20px' color='#000' fontFamily='ClearSans-Bold'>{item.title}</Text>
 								</Flex>
 							)
 						})}
@@ -203,143 +203,6 @@ const Filter=()=>{
 		</Flex>
 	)
 }
-const products=[
-	{
-		id:1,
-		name:"Cereals",
-		img:"../images.jpeg",
-		distributor:'Itaconix'
-	},
-	{
-		id:2,
-		name:"Corn",
-		img:"../download.jpeg",
-		distributor:'Du point'
-	},
-	{
-		id:3,
-		name:"Beans",
-		img:"../download (1).jpeg",
-		distributor:'Du point'
-	},
-]
-
-const categories=[
-	{
-		title:'Industries',
-		contents:[
-			{
-				id:'1',
-				name:"Adhesives",
-				img:"./images.jpeg",
-			},
-			{
-				id:'2',
-				name:"Agriculture",
-				img:"../download.jpeg",
-			},
-			{
-				id:'3',
-				name:"Food and Nutrition",
-				img:"./download (1).jpeg",
-			},
-			{
-				id:'4',
-				name:"Pharmaceuticals",
-				img:"../images (1).jpeg",
-			},
-			{
-				id:'5',
-				name:"Personal Care",
-				img:"./download (2).jpeg",
-			},
-			{
-				id:'6',
-				name:"Electrical & Electronics",
-				img:"./download (3).jpeg",
-			},
-			{
-				id:'7',
-				name:"Paintings & Coatings",
-				img:"./images (2).jpeg",
-			},
-			{
-				id:'8',
-				name:"Printing & Labelling",
-				img:"./download (4).jpeg",
-			}]
-	},
-	{
-		title:'Technologies',
-		contents:[
-			{
-				id:'1',
-				name:"AgroChemicals",
-				img:"../download.jpeg",
-			},
-			{
-				id:'2',
-				name:"Cosmetics ingredients",
-				img:"../images (3).jpeg",
-			},
-			{
-				id:'3',
-				name:"Lab ingredients",
-				img:"./download (6).jpeg",
-			},
-			{
-				id:'4',
-				name:"Pharmaceuticals",
-				img:"../images (1).jpeg",
-			},
-			{
-				id:'5',
-				name:"Paints",
-				img:"./images (2).jpeg",
-			}]
-	},
-]
-
-const distributors=[
-	{
-		id:'1',
-		name:'IMCD',
-		industries:['Personal Care','H I &I','Building and Construction',]
-	},
-	{
-		id:'2',
-		name:'Carst and Walker',
-		industries:['Personal Care','H I &I']
-	},
-	{
-		id:'3',
-		name:'Azelis',
-		industries:['Personal Care','H I &I','Building and Construction',]
-	},
-	{
-		id:'4',
-		name:'Brentag',
-		industries:['Personal Care','H I &I','Building and Construction',]
-	},
-]
-
-const manufacturers=[
-	{
-		id:'1',
-		name:'Crda Inc.',
-		industries:['Personal Care','H I &I']
-	},
-	{
-		id:'2',
-		name:'BASF',
-		industries:['Personal Care','H I &I']
-	},
-	{
-		id:'3',
-		name:'Du Pont',
-		industries:['Personal Care','Building and Construction',]
-	},
-]
 
 const numbers=[
 	{
@@ -407,8 +270,8 @@ const Promo=({router})=>{
 const ProductItem=({content,categ})=>{
 	const router = useRouter();
 	return(
-		<Flex position='relative' gap='2' align='center' onClick={(()=>{router.push(`/product/${content.name}`)})}>
-			<Image w='50px' h='50px' borderRadius='10px' objectFit='cover' src='../images.jpeg' alt='next'/>
+		<Flex position='relative' gap='2' align='center' boxShadow='lg' cursor='pointer' onClick={(()=>{router.push(`/product/${content._id}`)})}>
+			<Image w='50px' h='50px' borderRadius='10px' objectFit='cover' src='../Pro.png' lt='next'/>
 			<Flex direction='column'>
 				<Text fontSize='16px' fontFamily='ClearSans-Bold'>{content.name_of_product}</Text>
 				<Text fontSize='14px'>distributed by: {content.distributed_by}</Text>

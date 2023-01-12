@@ -22,6 +22,7 @@ import Add_New_Distributor from '../../pages/api/auth/manufacturer/add_new_distr
 
 function AddNewDistributorModal({isaddnewdistributorModalvisible,setisaddnewdistributorModalvisible,id}){
     const { isOpen, onOpen, onClose } = useDisclosure();
+    const toast  =useToast();
 
     const HandleModalOpen=()=>{
       if(isaddnewdistributorModalvisible !== true){
@@ -37,20 +38,28 @@ function AddNewDistributorModal({isaddnewdistributorModalvisible,setisaddnewdist
 
     const [name,set_name]=useState('')
     const [mobile,set_mobile]=useState('')
-    const [email,set_email]=useState('')
+    const [email,set_email]=useState('');
+    const [industry,set_industry]=useState('')
 
     const payload = {
       _id: id,
       name,
       mobile,
       email,
+      industry
     }
 
     const handle_add_new_distributor=()=>{
       console.log(payload)
       Add_New_Distributor(payload).then(()=>{
-        alert('success')
-        setisaddnewdistributorModalvisible(true)
+        toast({
+          title: '',
+          description: `${payload.name} has been added`,
+          status: 'success',
+          isClosable: true,
+        });
+        setisaddnewdistributorModalvisible(false)
+        onClose()
       })
     }
 
@@ -76,6 +85,10 @@ function AddNewDistributorModal({isaddnewdistributorModalvisible,setisaddnewdist
               <Flex direction='column'>
                 <Text>Mobile</Text>
                 <Input type='tel' placeholder='Mobile' variant='filled' onChange={((e)=>{set_mobile(e.target.value)})}/>
+              </Flex>
+              <Flex direction='column'>
+                <Text>Industries the distributor specializes in</Text>
+                <Input type='text' placeholder='Use a comma to separate multiple Industries' variant='filled' onChange={((e)=>{set_industry(e.target.value)})}/>
               </Flex>
               <Button bg='#009393' borderRadius='0' color='#fff' onClick={handle_add_new_distributor}>Add new Distributor</Button>
             </Stack>
