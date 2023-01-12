@@ -46,7 +46,7 @@ function FindDistributors({isfinddistributorModalvisible,setisfinddistributorMod
       technology,
       region,
       description,
-      name_of_requester : manufacturer_data.company_name 
+      name_of_requester : manufacturer_data?.company_name 
     }
 
     const handle_make_request=()=>{

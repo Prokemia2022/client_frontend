@@ -39,35 +39,35 @@ export default function UploadFile({prod_payload,handle_add_new_product,set_islo
 	const [formulation_document_uploaded,set_formulation_document_uploaded]=useState(false);
 //payload
 	const payload = {
-		name_of_product:prod_payload.name_of_product,
-		email_of_lister: prod_payload.email_of_lister,
-		listed_by_id : prod_payload.listed_by_id,
-		short_on_expiry : prod_payload.short_on_expiry,
-		manufactured_by:prod_payload.manufactured_by,
-		distributed_by :prod_payload.distributed_by,
-		description_of_product: prod_payload.description_of_product,
-		chemical_name :prod_payload.chemical_name,
-		function : prod_payload.function,
-		brand : prod_payload.brand,
-		features_of_product : prod_payload.features_of_product,
-		application_of_product: prod_payload.application_of_product,
-		packaging_of_product : prod_payload.packaging_of_product,
-		storage_of_product: prod_payload.storage_of_product,
+		name_of_product:prod_payload?.name_of_product,
+		email_of_lister: prod_payload?.email_of_lister,
+		listed_by_id : prod_payload?.listed_by_id,
+		short_on_expiry : prod_payload?.short_on_expiry,
+		manufactured_by:prod_payload?.manufactured_by,
+		distributed_by :prod_payload?.distributed_by,
+		description_of_product: prod_payload?.description_of_product,
+		chemical_name :prod_payload?.chemical_name,
+		function : prod_payload?.function,
+		brand : prod_payload?.brand,
+		features_of_product : prod_payload?.features_of_product,
+		application_of_product: prod_payload?.application_of_product,
+		packaging_of_product : prod_payload?.packaging_of_product,
+		storage_of_product: prod_payload?.storage_of_product,
 
 		data_sheet_url,
 		safety_data_sheet_url,
 		formulation_document_url,
 
-		industry: prod_payload.industry,
-		technology: prod_payload.technology,
-		website_link: prod_payload.website_link
+		industry: prod_payload?.industry,
+		technology: prod_payload?.technology,
+		website_link: prod_payload?.website_link
 	}
 
 	const handle_data_sheet_file_upload=async()=>{
-		if (data_sheet.name == undefined){
+		if (data_sheet?.name == undefined){
 			return alert('could not process file, try again.')
 		}else{
-			console.log(data_sheet.name)
+			console.log(data_sheet?.name)
 			const data_sheet_documentRef = ref(storage, `data_sheet/${data_sheet?.name + v4()}`);
 			const snapshot= await uploadBytes(data_sheet_documentRef,data_sheet)
 			set_data_sheet_uploaded(true)
@@ -78,10 +78,10 @@ export default function UploadFile({prod_payload,handle_add_new_product,set_islo
 	}
 
 	const handle_safety_sheet_file_upload=async()=>{
-		if (safety_data_sheet.name == undefined){
+		if (safety_data_sheet?.name == undefined){
 			return alert('could not process file, try re-uploading again.')  
 		}else{
-			console.log(safety_data_sheet.name)
+			console.log(safety_data_sheet?.name)
 			const safety_data_sheet_documentRef = ref(storage, `safety_data_sheet/${safety_data_sheet?.name + v4()}`);
 			const snapshot= await uploadBytes(safety_data_sheet_documentRef,safety_data_sheet)
 			const file_url = await getDownloadURL(snapshot.ref)
@@ -92,10 +92,10 @@ export default function UploadFile({prod_payload,handle_add_new_product,set_islo
 	}
 
 	const handle_formulation_document_file_upload=async()=>{
-		if (formulation_document.name == undefined){
+		if (formulation_document?.name == undefined){
 			return alert('could not process file, try re-uploading again.')
 		}else{
-			console.log(formulation_document.name)
+			console.log(formulation_document?.name)
 			const formulation_document_documentRef = ref(storage, `formulation_document/${formulation_document?.name + v4()}`);
 			const snapshot= await uploadBytes(formulation_document_documentRef,formulation_document)
 			const file_url = await getDownloadURL(snapshot.ref)
@@ -127,14 +127,14 @@ export default function UploadFile({prod_payload,handle_add_new_product,set_islo
 	}
 	const Add_Product_Function=async()=>{
 		console.log(payload)
-		if ((payload.data_sheet_url == '') || (payload.safety_data_sheet_url == '') || (payload.formulation_document_url == '')){
+		if ((payload?.data_sheet_url == '') || (payload?.safety_data_sheet_url == '') || (payload?.formulation_document_url == '')){
 			set_data_sheet_url(cookies.get("data_sheet_url"))
 			set_safety_data_sheet_url(cookies.get("safety_data_sheet_url"))
 			set_formulation_document_url(cookies.get("formulation_document_url"))
 			set_is_retry(true)
 		}else{
 			await Add_New_Product(payload).then(()=>{
-				alert(`${payload.name_of_product} has been created`)
+				alert(`${payload?.name_of_product} has been created`)
 				router.back()
 				set_isloading(false)
 			}).then(()=>{
@@ -153,7 +153,7 @@ export default function UploadFile({prod_payload,handle_add_new_product,set_islo
 		<Flex direction='column' w='90vw' boxShadow='lg' p='1' gap='2'>
 			<Text color='#009393' fontSize='24px' fontWeight='bold'>Upload Documents</Text>
 			{data_sheet_uploaded?
-				<Uploaded name={data_sheet.name}/>
+				<Uploaded name={data_sheet?.name}/>
 				:
 				<Flex direction='column'>
 					<Text>Data Sheet</Text>
@@ -161,7 +161,7 @@ export default function UploadFile({prod_payload,handle_add_new_product,set_islo
 				</Flex>
 			}
 			{safety_data_sheet_uploaded?
-				<Uploaded name={safety_data_sheet.name}/>
+				<Uploaded name={safety_data_sheet?.name}/>
 				:
 				<Flex direction='column'>
 					<Text>Formulation Document</Text>
@@ -169,7 +169,7 @@ export default function UploadFile({prod_payload,handle_add_new_product,set_islo
 				</Flex>
 			}
 			{formulation_document_uploaded?
-				<Uploaded name={formulation_document.name}/>
+				<Uploaded name={formulation_document?.name}/>
 				:
 				<Flex direction='column'>
 					<Text>Safety Data Sheet</Text>
@@ -180,7 +180,6 @@ export default function UploadFile({prod_payload,handle_add_new_product,set_islo
 				<Button p='2' color='#fff' flex='1' bg='#000' onClick={Add_Product_Function}>Complete</Button>
 				:
 				<Flex m='2' gap='2' color='#fff' direction='column'>
-					
 					<Flex gap='2'>
 						<Button flex='1' bg='#009393' onClick={handle_File_Upload} disabled={is_submitting?true:false}>Upload Documents</Button>	
 						<Button flex='1' bg='#000' onClick={handle_add_new_product} disabled={is_submitting?true:false}>Skip for now <ArrowRightAltIcon/></Button>
