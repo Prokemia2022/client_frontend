@@ -13,7 +13,7 @@ function Inventory({manufacturer_data}){
 	useEffect(()=>{
 		get_Data()
 		//console.log(manufacturer_data)
-	},[])
+	},[searchquery])
 
 
 	const get_Data=async()=>{
@@ -21,7 +21,7 @@ function Inventory({manufacturer_data}){
 			console.log(response.data)
 			let data = response.data
 			const result_data = data.filter((item)=> item.verification_status && item.email_of_lister?.includes(manufacturer_data?.email_of_company))
-			const result = result_data.filter((item)=> item.name_of_product?.toLowerCase().includes(searchquery) || item.industry?.toLowerCase().includes(searchquery) || item.technology?.toLowerCase().includes(searchquery))
+			const result = result_data.filter((item)=> item.name_of_product?.toLowerCase().includes(searchquery.toLowerCase()) || item.industry?.toLowerCase().includes(searchquery.toLowerCase()) || item.technology?.toLowerCase().includes(searchquery.toLowerCase()))
 			console.log(result)
 			set_products_data(result)
 		})
@@ -32,8 +32,7 @@ function Inventory({manufacturer_data}){
 			<Flex gap='2'>
 				<Select w='150px' placeholder='sort'>
 					<option>A-Z</option>
-					<option>z-A</option>
-					<option>by date</option>
+					<option>Z-A</option>
 				</Select>
 				<Input placeholder='search products by name, industry' onChange={((e)=>{set_searchquery(e.target.value)})}/>
 			</Flex>

@@ -181,7 +181,7 @@ export default function UploadFile({prod_payload,handle_add_new_product,set_islo
 				:
 				<Flex m='2' gap='2' color='#fff' direction='column'>
 					<Flex gap='2'>
-						<Button flex='1' bg='#009393' onClick={handle_File_Upload} disabled={is_submitting?true:false}>Upload Documents</Button>	
+						<Button flex='1' bg='#009393' onClick={handle_File_Upload} disabled={data_sheet == '' || safety_data_sheet == '' || formulation_document == '' || is_submitting?true:false}>Upload Documents</Button>	
 						<Button flex='1' bg='#000' onClick={handle_add_new_product} disabled={is_submitting?true:false}>Skip for now <ArrowRightAltIcon/></Button>
 					</Flex>
 					<Button flex='1' p='2' bg='#fff' border='1px solid grey' onClick={(()=>{set_isfileupload(false)})} disabled={is_submitting?true:false} color='#000'>Go back to editing</Button>

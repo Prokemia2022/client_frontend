@@ -49,20 +49,40 @@ function AddNewDistributorModal({isaddnewdistributorModalvisible,setisaddnewdist
       industry
     }
 
-    const handle_add_new_distributor=()=>{
-      console.log(payload)
-      Add_New_Distributor(payload).then(()=>{
+    const verify_inputs=()=>{
+      if (name == '' || mobile == '' || email == '' || industry == ''){
         toast({
-          title: '',
-          description: `${payload.name} has been added`,
-          status: 'success',
-          isClosable: true,
-        });
-        setisaddnewdistributorModalvisible(false)
-        onClose()
-      })
+            title: '',
+            description: `All inputs are required.`,
+            status: 'info',
+            isClosable: true,
+          });
+      }else if (name != '' && mobile != '' && email != '' && industry != ''){
+        handle_add_new_distributor()
+      }
     }
-
+    
+    const handle_add_new_distributor=async()=>{
+      console.log(payload)
+      await Add_New_Distributor(payload).then(()=>{
+          toast({
+            title: '',
+            description: `${name} has been added as a distributor.`,
+            status: 'success',
+            isClosable: true,
+          });
+        }).then(()=>{
+          setisaddnewdistributorModalvisible(false)
+        }).catch((err)=>{
+          toast({
+            title: '',
+            description: err.response.data,
+            status: 'error',
+            isClosable: true,
+          });
+        })
+      onClose()
+    }
     return (
       <>
         <Modal isOpen={isOpen} onClose={onClose}>
@@ -90,7 +110,7 @@ function AddNewDistributorModal({isaddnewdistributorModalvisible,setisaddnewdist
                 <Text>Industries the distributor specializes in</Text>
                 <Input type='text' placeholder='Use a comma to separate multiple Industries' variant='filled' onChange={((e)=>{set_industry(e.target.value)})}/>
               </Flex>
-              <Button bg='#009393' borderRadius='0' color='#fff' onClick={handle_add_new_distributor}>Add new Distributor</Button>
+              <Button bg='#009393' borderRadius='0' color='#fff' onClick={verify_inputs}>Add new Distributor</Button>
             </Stack>
           </ModalBody>
         </ModalContent>

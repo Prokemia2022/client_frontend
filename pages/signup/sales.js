@@ -43,11 +43,11 @@ export default function SalesSignUp(){
   		})
   		//console.log(payload)
   	}
-  	useEffect(()=>{
-		if(token || token !== null){
-			router.back()
-		}
-	},[])
+ //  	useEffect(()=>{
+	// 	if(token || token !== null){
+	// 		router.back()
+	// 	}
+	// },[])
 
 	return(
 		<Flex direction='column'>
@@ -60,11 +60,11 @@ export default function SalesSignUp(){
 				<Flex className={styles.authForm} gap='2' direction='column'>
 					<Text w='100%' textAlign='center' fontSize='2rem' fontFamily='ClearSans-bold'><span style={{borderBottom:"4px solid #009393",borderRadius:"3px"}}>Sign</span> Up</Text>
 					<Flex gap='2'>
-						<Flex direction='column' gap='2'>
+						<Flex direction='column' gap='2' flex='1'>
 							<Text>First-Name</Text>
 							<Input type='text' placeholder='First-Name' variant='filled' required onChange={((e)=>{set_first_name(e.target.value)})}/>
 						</Flex>
-						<Flex direction='column' gap='2'>
+						<Flex direction='column' gap='2' flex='1'>
 							<Text>Last-Name</Text>
 							<Input type='text' placeholder='Last-Name' variant='filled' required onChange={((e)=>{set_last_name(e.target.value)})}/>
 						</Flex>

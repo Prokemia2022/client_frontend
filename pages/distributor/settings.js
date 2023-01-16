@@ -1,7 +1,7 @@
 //modules imports
 import React,{useState} from 'react';
 import {useRouter} from 'next/router';
-import {Flex,Text,Button,Input,InputGroup,InputRightElement,Image} from '@chakra-ui/react';
+import {Flex,Text,Button,Input,InputGroup,InputRightElement,Image,useToast} from '@chakra-ui/react';
 import bcrypt from 'bcryptjs';
 import Cookies from 'universal-cookie';
 //icons-imports
@@ -11,32 +11,29 @@ import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import {Room,Visibility,VisibilityOff} from '@mui/icons-material'
 //components imports
-
+import Delete_Account_Modal from '../../components/modals/accounts/delete_account_modal.js'
 //api-calls
 import Edit_Distributor from '../api/auth/distributor/edit_distributor.js'
 import Change_Password from '../api/auth/distributor/change_password.js'
-import Delete_Distributor from '../api/auth/distributor/delete_distributor_account.js'
 //utils
 import {storage} from '../../components/firebase.js';
 import {ref,uploadBytes,getDownloadURL} from 'firebase/storage';
 import { v4 } from "uuid";
  
 function Settings({distributor_data}){
+	//utils
+	const router = useRouter();
+	const cookies = new Cookies();
+	//states
 	const [show, setShow] = useState(false);
   	const handleClick = () => setShow(!show);
 
-	const [active,setActive]=useState(false);
-	const [currentValue,setcurrentValue]=useState('');
-
-	const router = useRouter();
-
-	const [account,setAccount]=useState('distributor');
+  	const [is_delete_account_Modalvisible,set_is_delete_account_Modalvisible]=useState(false)
+	//functions
+	//api calls
 
 	const [edit,setedit]=useState(false);
-	const [new_password,set_new_password]=useState(distributor_data?.password)
-	const old_password = distributor_data?.password
-
-	const cookies = new Cookies();
+	const [new_password,set_new_password]=useState(distributor_data?.password)	
 
 	const payload = {
 		_id : distributor_data?._id,
@@ -49,17 +46,9 @@ function Settings({distributor_data}){
 		// })
 	}
 
-	const Handle_Delete_Distributor=async()=>{
-		await Delete_Distributor(payload).then(()=>{
-			cookies.remove('user_token', { path: '/' });
-			router.push("/")
-			alert('success')
-			
-		})
-	}
-
 	return(
 		<Flex p='2' direction='column' gap='2' w='100%' overflowY='scroll' h='100vh'>
+			<Delete_Account_Modal is_delete_account_Modalvisible={is_delete_account_Modalvisible} set_is_delete_account_Modalvisible={set_is_delete_account_Modalvisible} distributor_data={distributor_data} acc_type='distributors'/>
 			<Text fontSize='34px' textDecoration='1px solid underline #009393' fontWeight='bold'>MyProfile</Text>
 			{edit ?
 				<EditProfile setedit={setedit} distributor_data={distributor_data}/>
@@ -99,7 +88,7 @@ function Settings({distributor_data}){
 						<Text fontSize='20px' color='red' fontWeight='bold' >Delete Account</Text>
 						<Flex direction='column'>
 							<Text>By deleting your account , all your information, products and activities in our platform will be erased as your account will be permamnetly deleted and will not be restored.</Text>
-							<Button bg='#ff' border='1px solid red' onClick={Handle_Delete_Distributor}>Delete Account</Button>
+							<Button bg='#ff' border='1px solid red' onClick={(()=>{set_is_delete_account_Modalvisible(true)})}>Delete Account</Button>
 						</Flex>
 					</Flex>
 				</Flex>
@@ -111,7 +100,13 @@ function Settings({distributor_data}){
 export default Settings;
 
 const EditProfile=({setedit,distributor_data})=>{
+	//utils
 	const cookies = new Cookies();
+	const toast = useToast();
+	//states
+	//apis
+	//functions
+	
 	const [first_name,set_first_name]=useState(distributor_data?.first_name);
 	const [last_name,set_last_name]=useState(distributor_data?.last_name);
 	const [mobile_of_company,set_mobile_of_company]=useState(distributor_data?.mobile_of_company);
@@ -133,28 +128,56 @@ const EditProfile=({setedit,distributor_data})=>{
 	}
 
 	const profile_upload_function=async()=>{
+		/**handles uploads profile image functions to firebase storage**/
 		console.log(profile_photo)
-		await handle_profile_image_upload().then((res)=>{
-			if (res == null || res == undefined){
-				alert('err')
-			}else{
-				const img_payload = {
-					_id: distributor_data?._id,
-					profile_photo_url: res
+		if (profile_photo == ''){
+			toast({
+				title: '',
+				description: 'Missing image details',
+				status: 'info',
+				isClosable: true,
+			});
+		}else{
+			await handle_profile_image_upload().then((res)=>{
+				if (res == null || res == undefined || !res){
+					return;
+				}else{
+					const img_payload = {
+						_id: distributor_data?._id,
+						profile_photo_url: res
+					}
+					Edit_Distributor(img_payload).then(()=>{
+						toast({
+							title: '',
+							description: 'successfuly updated your profile photo',
+							status: 'success',
+							isClosable: true,
+						});
+					}).then(()=>{
+						setedit(false)
+					}).catch((err)=>{
+						toast({
+							title: '',
+							description: `${err.response.data}`,
+							status: 'error',
+							isClosable: true,
+						});
+					})
 				}
-				Edit_Distributor(img_payload).then(()=>{
-					console.log(img_payload)
-					alert('successfully uploaded image')
-					setedit(false)
-				})
-			}
-		})
+			})
+		}
 	}
 
 	const handle_profile_image_upload=async()=>{
+		/**uploads profile image to firebase storage**/
 		if (profile_photo.name == undefined){
-			alert('could not process file, try re-uploading again.')
-			return (null)
+			toast({
+				title: 'upload process cancelled',
+				description: 'could not find image selected',
+				status: 'info',
+				isClosable: true,
+			});
+			return;
 		}else{
 			console.log(profile_photo.name)
 			const profile_photo_documentRef = ref(storage, `profile_photo/${profile_photo?.name + v4()}`);
@@ -166,27 +189,46 @@ const EditProfile=({setedit,distributor_data})=>{
 	}
 
 	const handle_Edit_Profile=async()=>{
-			console.log(payload)
-			await Edit_Distributor(payload).then(()=>{
-				console.log(payload)
-				alert('success')
-				setedit(false)
-			})
+		await Edit_Distributor(payload).then(()=>{
+			toast({
+				title: '',
+				description: 'Your account has been edited successfully, refresh to see changes',
+				status: 'success',
+				isClosable: true,
+			});
+		}).then(()=>{
+			//console.log(payload)
+			setedit(false)
+		}).catch((err)=>{
+			toast({
+				title: '',
+				description: `${err.response.data}`,
+				status: 'error',
+				isClosable: true,
+			});
+		})
 	}
 	return(	
 		<Flex gap='3' direction='column' overflowY='scroll' h='80vh'>
-			{distributor_data?.profile_photo_url == ''? 
-					<LocationCityIcon style={{fontSize:'150px',padding:'10px'}}/> 
-				: 
-					<Flex gap='2' >
-						<Image boxSize='200px' src={distributor_data?.profile_photo_url} alt='profile photo' boxShadow='lg' objectFit='cover'/>
-						<Flex direction='column' gap='2'>
-							<Text>Select Image to set as Profile Image</Text>
-							<Input type='file' placeholder='Select Image to set as Profile Image' accept='.jpg,.png,.jpeg' variant='filled' onChange={((e)=>{set_profile_photo(e.target.files[0])})}/>
-							<Button bg='#009393' color='#fff' onClick={profile_upload_function}>Upload profile photo</Button>
-						</Flex>
+			{distributor_data?.profile_photo_url == '' || !distributor_data?.profile_photo_url? 
+				<Flex gap='2' >
+					<AccountCircleIcon style={{fontSize:'150px',backgroundColor:"#eee",borderRadius:'150px'}} />
+					<Flex direction='column' gap='2'>
+						<Text>Select Image to set as Profile Image</Text>
+						<Input type='file' placeholder='Select Image to set as Profile Image' accept='.jpg,.png,.jpeg' variant='filled' onChange={((e)=>{set_profile_photo(e.target.files[0])})}/>
+						<Button bg='#009393' color='#fff' onClick={profile_upload_function} disabled={profile_photo == ''? true: false}>Upload profile photo</Button>
 					</Flex>
-				}
+				</Flex>
+			: 
+				<Flex gap='2' >
+					<Image boxSize='200px' src={distributor_data?.profile_photo_url} alt='profile photo' boxShadow='lg' objectFit='cover'/>
+					<Flex direction='column' gap='2'>
+						<Text>Select Image to change Profile Image</Text>
+						<Input type='file' placeholder='Select Image to set as Profile Image' accept='.jpg,.png,.jpeg' variant='filled' onChange={((e)=>{set_profile_photo(e.target.files[0])})}/>
+						<Button bg='#009393' color='#fff' onClick={profile_upload_function} disabled={profile_photo == ''? true: false}>Change profile photo</Button>
+					</Flex>
+				</Flex>
+			}
 			<Flex direction='column' gap='3' w='100%'>
 					<Flex direction='column'>
 						<Text>First_Name</Text>

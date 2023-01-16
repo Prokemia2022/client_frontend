@@ -108,7 +108,7 @@ const Result=({products_data,distributors_data,manufacturers_data,industries_dat
 					<Text w='50%' textAlign='center'>We could not find products that match your search</Text>
 				</Flex>
 				:
-				<Flex direction='column' p='1' gap='2'  overflowY='scroll'>
+				<Flex direction='column' p='1' gap='2'>
 					{products_data?.map((item)=>{
 						return(
 							<Flex key={item._id} position='relative' gap='2' align='center' onClick={(()=>{router.push(`/product/${item._id}`);setsearchbaractive(false);set_active(false)})} bg='#fff' p='1' borderRadius='5' boxShadow='lg'>

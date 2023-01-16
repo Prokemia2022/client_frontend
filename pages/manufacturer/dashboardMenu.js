@@ -2,7 +2,7 @@
 import React,{useState} from 'react';
 import {useRouter} from 'next/router';
 /*chakea-ui*/
-import {Flex,Text,Input,Button,Image} from '@chakra-ui/react';
+import {Flex,Text,Input,Button,Image,useToast} from '@chakra-ui/react';
 /*icons*/
 import {LocationCity,Add} from '@mui/icons-material/';
 /*modals*/
@@ -70,29 +70,46 @@ export default DashboardMenu;
 
 
 const AddNewIndustry=({setaddnewInd})=>{
-	const [suggest_industry,set_suggest_industry]=useState('');
-	const [description,set_description]=useState('');
+	const toast = useToast();
+	const [suggest_industry,set_suggest_industry]=useState(false);
 
 	const payload = {
-		title: suggest_industry,
-		description
+		title: suggest_industry
 	}
 
 	const handle_suggest_industry=async()=>{
+		if (suggest_industry == ''){
+			toast({
+              title: '',
+              description: `Ensure all inputs are filled`,
+              status: 'info',
+              isClosable: true,
+            });
+            return;
+		}else{
+			await Suggest_Industry().then((response)=>{
+				toast({
+	              title: '',
+	              description: `${payload.title} has been suggested successfully.`,
+	              status: 'success',
+	              isClosable: true,
+	            });
+			}).catch((err)=>{
+				toast({
+	              title: '',
+	              description: err.response.data,
+	              status: 'error',
+	              isClosable: true,
+	            });
+			})
+		}
 		setaddnewInd(false)
-		console.log(payload)
-
-		await Suggest_Industry(payload).then((response)=>{
-			alert("success")
-		})
 	}
 
 	return(
-		<Flex direction='column' gap='2' bg='#eee' p='2' boxShadow='lg'>
+		<Flex direction='column' gap='2' bg='#eee' p='2'>
 			<Text fontWeight='bold'>Suggest Industry</Text>
 			<Input bg='#fff' type='text' placeholder='Suggest industry' onChange={((e)=>{set_suggest_industry(e.target.value)})}/>
-			<Text fontWeight='bold'>Description</Text>
-			<Input bg='#fff' type='text' placeholder='describe industry' onChange={((e)=>{set_description(e.target.value)})}/>
 			<Flex gap='2'>
 				<Button color='#fff' bg='#009393' onClick={handle_suggest_industry}>Submit</Button>
 				<Button bg='#fff' border='1px solid red' onClick={(()=>{setaddnewInd(false)})}>Cancel</Button>
@@ -102,51 +119,50 @@ const AddNewIndustry=({setaddnewInd})=>{
 }
 
 const AddNewTechnology=({setaddnewTech})=>{
+	const toast = useToast();
 	const [suggest_technology,set_suggest_technology]=useState(false);
-	const [description,set_description]=useState('');
 
 	const payload = {
-		title: suggest_technology,
-		description
+		title: suggest_technology
 	}
 
 	const handle_suggest_technology=async()=>{
+		if (suggest_technology == ''){
+			toast({
+              title: '',
+              description: `Ensure all inputs are filled`,
+              status: 'info',
+              isClosable: true,
+            });
+            return;
+		}else{
+			await Suggest_Technology().then((response)=>{
+				toast({
+	              title: '',
+	              description: `${payload.title} has been suggested successfully.`,
+	              status: 'success',
+	              isClosable: true,
+	            });
+			}).catch((err)=>{
+				toast({
+	              title: '',
+	              description: err.response.data,
+	              status: 'error',
+	              isClosable: true,
+	            });
+			})
+		}
 		setaddnewTech(false)
-		console.log(payload)
-
-		await Suggest_Technology(payload).then((response)=>{
-			alert("success")
-		})
 	}
+
 	return(
 		<Flex direction='column' gap='2' bg='#eee' p='2'>
 			<Text fontWeight='bold'>Suggest Technology</Text>
 			<Input bg='#fff' type='text' placeholder='Suggest technology' onChange={((e)=>{set_suggest_technology(e.target.value)})}/>
-			<Text fontWeight='bold'>Description</Text>
-			<Input bg='#fff' type='text' placeholder='describe description' onChange={((e)=>{set_description(e.target.value)})}/>
 			<Flex gap='2'>
 				<Button color='#fff' bg='#009393' onClick={handle_suggest_technology}>Submit</Button>
 				<Button bg='#fff' border='1px solid red' onClick={(()=>{setaddnewTech(false)})}>Cancel</Button>
 			</Flex>
 		</Flex>
-	)
-}
-
-
-const ProductItem=({router})=>{
-	return(
-		<Flex p='2' bg='#eee' m='2' borderRadius='5px' direction='column'>
-			<Image bg='#fff' w='100%' h='50px' borderRadius='5px' alt='photo'/>
-			<Text color='#009393' fontWeight='bold' fontSize="24px">Cereal</Text>
-			<Flex gap='2'>
-				<Text fontWeight='bold'>Industry:</Text>
-				<Text>Agriculture</Text>
-			</Flex>
-			<Flex gap='2'>
-				<Text fontWeight='bold'>Technology:</Text>
-				<Text>crops</Text>
-			</Flex>
-			<Text fontWeight='bold' bg='#fff' p='2' color='#009393' cursor='pointer' onClick={(()=>{router.push(`/manufacturer/product/cereals`)})}>View product -&gt;  </Text>
-			</Flex>
 	)
 }

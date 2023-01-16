@@ -165,9 +165,9 @@ const Navbar=({setCurrentValue,currentvalue,setActive})=>{
 		<Flex p='2' gap='3' className={styles.consoleNavigation} cursor='pointer'>
 			{navItems.map((content)=>{
 				return (
-					<Flex key={content.id} color='#009393' align='center' p='2' gap='1' className={styles.consoleNavItem} onClick={(()=>{setCurrentValue(content.link)})}>
+					<Flex key={content.id} color={currentvalue === content.title.toLowerCase() ? '#009393': '#fff'} align='center' p='2' gap='1' className={styles.consoleNavItem} onClick={(()=>{setCurrentValue(content.link)})}>
 						{content.icon}
-						<Text fontSize='20px' color={currentvalue === content.title.toLowerCase() ? '#009393': '#000'} p='1.5' mb='0'>{content.title}</Text>
+						<Text fontSize='20px' color={currentvalue === content.title.toLowerCase() ? '#009393': '#fff'} p='1.5' mb='0'>{content.title}</Text>
 					</Flex>
 				)
 			})}

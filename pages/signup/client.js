@@ -1,55 +1,82 @@
 //modules imports
 import React,{useState,useEffect} from 'react'
-import {Flex,Center,Text,Button,Input,InputGroup,InputRightElement} from '@chakra-ui/react'
+import {Flex,Text,Button,Input,InputGroup,InputRightElement,useToast} from '@chakra-ui/react'
 import {useRouter} from 'next/router'
 import Cookies from 'universal-cookie';
-import jwt_decode from "jwt-decode";
 //components imports
 import styles from '../../styles/Home.module.css'
 import Header from '../../components/Header.js';
 //icon imports
-import {Room,Visibility,VisibilityOff} from '@mui/icons-material'
+import {Visibility,VisibilityOff} from '@mui/icons-material'
 //api calls
 import SignUp from '../api/auth/signup.js'
 
 
 export default function ClientSignUp(){
-	const [show, setShow] = useState(false);
-  	const handleClick = () => setShow(!show);
-
-  	const router = useRouter();
-  	const [first_name, set_first_name] = useState('');
-  	const [last_name, set_last_name] = useState('');
-  	const [password, set_password] = useState('');
-  	const [email_of_company, set_email_of_company] = useState('');
-
-  	const payload = {
-  		first_name,
-  		last_name,
-  		password,
-  		email_of_company,
-  		acc_type: 'client'
-  	}
-
-  	const cookies = new Cookies();
+	//utils
+	const router = useRouter();
+	const cookies = new Cookies();
 	const token = cookies.get('user_token');
+	const toast = useToast();
+	//apis
+	//states
+	const [show, setShow] = useState(false); //handle state to toggle password
+	const handleClick = () => setShow(!show); //handle state to toggle view of password
 
-  	const handle_Sign_Up=async()=>{
-  		await SignUp(payload).then((response)=>{
-  			if(response.status === 201){
-  				return alert(response.data)
-  			}
-  			else{
-  				router.push(`/profile/${response.data._id}`)
-  			}
-  		})
-  		//console.log(payload)
-  	}
-	useEffect(()=>{
-		if(token || token !== null){
-			router.back()
+	const [first_name, set_first_name] = useState('');
+	const [last_name, set_last_name] = useState('');
+	const [password, set_password] = useState('');
+	const [email_of_company, set_email_of_company] = useState('');
+
+	const payload = {
+		first_name,
+		last_name,
+		password,
+		email_of_company,
+		acc_type: 'client'
+	}
+	//functions
+	const Verify_Inputs=()=>{
+		if (password && first_name && last_name && email_of_company){
+			handle_Sign_Up()
+		}else if(!password || !first_name || !last_name || !email_of_company){
+			toast({
+				title: '',
+				description: 'All inputs are required',
+				status: 'info',
+				isClosable: true,
+			});
 		}
-	},[])
+	}
+	const handle_Sign_Up=async()=>{
+		await SignUp(payload).then((response)=>{
+			if(response.status === 201){
+				toast({
+					title: '',
+					description: `${response.data}`,
+					status: 'error',
+					isClosable: true,
+				});
+			}
+			else{
+				toast({
+					title: '',
+					description: 'Successfully Created an account',
+					status: 'success',
+					isClosable: true,
+				});
+				router.push(`/profile/${response.data._id}`)
+			}
+		}).catch((err)=>{
+			toast({
+				title: '',
+				description: `${err.response.data}`,
+				status: 'error',
+				isClosable: true,
+			});
+		})
+	}
+	
 	return(
 		<Flex direction='column'>
 			<Header/>
@@ -92,7 +119,7 @@ export default function ClientSignUp(){
 						</InputRightElement>
 					</InputGroup>
 					<Text fontSize={'11px'}>By Signing up you agree to our <a href="t&c" target="_blank" rel="noopener noreferrer" style={{color:'#009393'}}> terms&conditions</a > and our <a href="privacy_policy" target="_blank" rel="noopener noreferrer" style={{color:'#009393'}}>privacy policy</a>.</Text>
-					<Button bg='#009393' color='#fff' onClick={handle_Sign_Up}>Create Account</Button>
+					<Button bg='#009393' color='#fff' onClick={Verify_Inputs}>Create Account</Button>
 				</Flex>
 			</Flex>				
 		</Flex>

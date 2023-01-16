@@ -1,40 +1,57 @@
+//modules
 import React,{useState,useEffect} from 'react';
-import {useRouter} from 'next/router';
-import {Flex,Text,Button,Input,Switch} from '@chakra-ui/react';
+import {Flex,Text,Button,Input,Switch,useToast} from '@chakra-ui/react';
+//api calls
+import Edit_Salesperson from '../api/auth/salesperson/edit_salesperson_account.js';
+//icons
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
-import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
-import Header from '../../components/Header.js';
-import CreateInvoiceModal from '../../components/modals/InvoiceModal.js';
 import SecurityOutlinedIcon from '@mui/icons-material/SecurityOutlined';
 import ReceiptOutlinedIcon from '@mui/icons-material/ReceiptOutlined';
 import Groups2OutlinedIcon from '@mui/icons-material/Groups2Outlined';
-import Edit_Salesperson from '../api/auth/salesperson/edit_salesperson_account.js'
+//components
+import Header from '../../components/Header.js';
+//utils
+import {useRouter} from 'next/router';
 
-function Salesperson({setCurrentValue,salesperson_data}){
-	const [active,setActive]=useState(false);
-	const [currentValue,setcurrentValue]=useState('');
+export default function Salesperson({setCurrentValue,salesperson_data}){
+	//utils
 	const router = useRouter();
-	const [hubactive,sethubactive]=useState(false);
-	const [edit,setedit]=useState(false);
-	const annonymous = salesperson_data?.account_status;
-	const [iscreateinvoiceModalvisible,setiscreateinvoiceModalvisible]=useState(false);
-
-	console.log(annonymous)
+	const toast = useToast();
+	//states
+	const annonymous = salesperson_data?.account_status;  //current status for the salesperson i.e annonymous or not
+	//functions
 	const handle_annonymous_status=async()=>{
 		const payload = {
 			_id: salesperson_data?._id,
 			account_status: !annonymous
 		}
 		await Edit_Salesperson(payload).then(()=>{
-			console.log(payload)
-			alert('success')
-			router.reload()
+			//console.log(payload)
+			toast({
+				title: '',
+				description: 'Your account status has changed',
+				status: 'info',
+				isClosable: true,
+			});
+		}).then(()=>{
+			const timeout = setTimeout(()=>{
+				router.reload()
+			},3000)
+
+			return ()=>{
+				clearTimeout(timeout);
+			}
+		}).catch((err)=>{
+			toast({
+				title: '',
+				description: `${err.response.data}`,
+				status: 'error',
+				isClosable: true,
+			});
 		})
 	}
 	return(
 			<Flex direction='column' w='100%'>
-				<CreateInvoiceModal iscreateinvoiceModalvisible={iscreateinvoiceModalvisible} setiscreateinvoiceModalvisible={setiscreateinvoiceModalvisible} salesperson_data={salesperson_data}/>
 				<Flex p='2' direction='column' gap='2' w='100%' overflowY='scroll' h='100vh'>
 					<Flex gap='4' justify='space-between'>
 						<Text fontSize='42px' fontFamily='ClearSans-bold'>Welcome,<br/> {salesperson_data?.first_name} {salesperson_data?.last_name}</Text>
@@ -53,7 +70,7 @@ function Salesperson({setCurrentValue,salesperson_data}){
 					</Flex>
 					<Flex p='2' direction='column' gap='2' >
 									<Flex gap='2'>
-										<Flex _hover={{transform:"scale(1.02)",transition:'ease-out 1s all',bg:'#009393',color:'#fff'}} cursor='pointer' onClick={(()=>{setiscreateinvoiceModalvisible(true)})} bg='#fff' boxShadow='dark-lg' border='px dashed #009393' direction='column' align='center' justify='center' p='2' gap='2' w='175px' h='150px' borderRadius='5'>
+										<Flex _hover={{transform:"scale(1.02)",transition:'ease-out 1s all',bg:'#009393',color:'#fff'}} cursor='pointer' onClick={(()=>{setCurrentValue('sale')})} bg='#fff' boxShadow='dark-lg' border='px dashed #009393' direction='column' align='center' justify='center' p='2' gap='2' w='175px' h='150px' borderRadius='5'>
 											<ReceiptOutlinedIcon/>
 											<Text>Initiate Sales</Text>
 										</Flex>
@@ -74,5 +91,3 @@ function Salesperson({setCurrentValue,salesperson_data}){
 			</Flex>
 	)
 }
-
-export default Salesperson;

@@ -119,31 +119,40 @@ function Product(){
 
 	//add new product without documents function
 	const handle_add_new_product=async()=>{
-		console.log(payload)
-		set_isloading(true)
-		set_isfileupload(false)
-		setTimeout(()=>{
-			Add_Product(payload).then(()=>{
-					toast({
-		              title: '',
-		              description: `${payload.name_of_product} has been created`,
-		              status: 'success',
-		              isClosable: true,
-		            });
-					router.back()
-					set_isloading(false)
-				}).catch((err)=>{
-					toast({
-	                    title: 'could not create a new product',
-	                    description: err,
-	                    status: 'error',
-	                    isClosable: true,
-	                })
-	                set_isloading(false)
-				})
+		if (name_of_product == '' || name_of_product != ''){
+			toast({
+              title: '',
+              description: `Ensure all inputs are filled`,
+              status: 'info',
+              isClosable: true,
+            });
+		}else{
 			console.log(payload)
-		},5000)
-		set_isloading(false)
+			set_isloading(true)
+			set_isfileupload(false)
+			setTimeout(()=>{
+				Add_Product(payload).then(()=>{
+						toast({
+			              title: '',
+			              description: `${payload.name_of_product} has been created`,
+			              status: 'success',
+			              isClosable: true,
+			            });
+						router.back()
+						set_isloading(false)
+					}).catch((err)=>{
+						toast({
+		                    title: 'could not create a new product',
+		                    description: err,
+		                    status: 'error',
+		                    isClosable: true,
+		                })
+		                set_isloading(false)
+					})
+				console.log(payload)
+			},5000)
+			set_isloading(false)
+		}
 	}
 	return(
 		<Flex direction='column'>

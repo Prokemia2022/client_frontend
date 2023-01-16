@@ -93,10 +93,10 @@
 	flex-direction: column;
 }
 .consoleNavItem{
-	background-color:#fff;
 	border-bottom: 1px solid #000;
 	border-radius: 5px;
 	font-weight:bold;
+	width: 100%;
 }
 .consoleNavItem:hover{
 	transform:scale(1.05);
@@ -254,7 +254,7 @@ height: 100vh;
       display: none; 
 }
 .consoleNavItem{
-	background-color:#eee;
+	background-color: #090F14;
 	border-bottom: none;
 }
 .consolebody{

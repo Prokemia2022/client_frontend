@@ -1,35 +1,71 @@
+//modules import
 import React,{useState} from 'react'
-import {Flex,Center,Text,Button,Input,InputGroup,InputRightElement} from '@chakra-ui/react'
-import styles from '../styles/Home.module.css'
-import {Room,Visibility,VisibilityOff} from '@mui/icons-material'
-import {useRouter} from 'next/router'
-import Header from '../components/Header.js';
+import {Flex,Text,Button,Input,InputGroup,InputRightElement,useToast} from '@chakra-ui/react'
+//api calls
 import SignIn from './api/auth/signin.js'
+//components import
+import Header from '../components/Header.js';
+//icons
+import {Visibility,VisibilityOff} from '@mui/icons-material'
+//utils
+import {useRouter} from 'next/router'
+import styles from '../styles/Home.module.css'
 
-export default function ClientSignUp(){
-	const [show, setShow] = useState(false);
-  	const handleClick = () => setShow(!show);
-  	const router = useRouter();
+export default function UserSignIn(){
+	//utils
+	const router = useRouter();
+	const toast = useToast()
+	//states
+	const [show, setShow] = useState(false); //handle state to toggle password
+	const handleClick = () => setShow(!show); //handle state to toggle view of password
 
-  	const [password,setpassword]=useState('');
-  	const [email_of_company,set_email_of_company]=useState('');
+	const [password,setpassword]=useState(''); //password input
+	const [email_of_company,set_email_of_company]=useState(''); //email input
 
-  	const payload = {
-  		password,
-  		email_of_company
-  	}
-  	let route = '';
+	const payload = {
+		password,
+		email_of_company
+	}
+	//function
+	const handleSignIn=async()=>{
+		if(password && email_of_company){
+			await SignIn(payload).then((res)=>{
+				//console.log(res)
+				toast({
+					title: '',
+					description: 'Successfully Signed in',
+					status: 'success',
+					isClosable: true,
+				});
+			}).then(()=>{
+				router.back()
+			}).catch((err)=>{
+				//console.log(err)
+				toast({
+					title: '',
+					description: `${err.response.data}`,
+					status: 'error',
+					isClosable: true,
+				});
+			})
+			//console.log(payload)
+		}else if(!password || !email_of_company){
+			toast({
+				title: '',
+				description: 'All inputs are required',
+				status: 'info',
+				isClosable: true,
+			});
+		}else{
+			toast({
+				title: '',
+				description: 'error while signing in',
+				status: 'error',
+				isClosable: true,
+			});
+		}
+	}
 
-  	const handleSignIn=async()=>{
-  		if(password){
-	  		await SignIn(payload).then(()=>{
-	  			router.back()
-	  		})
-  			console.log(payload)
-  		}else{
-  			alert('all inputs are required')
-  		}
-  	}
 	return(
 		<Flex direction='column'>
 			<Header/>
@@ -69,22 +105,3 @@ export default function ClientSignUp(){
 		</Flex>
 	)
 }
-
-const passwords=[
-	{
-		acc:'client',
-		password:'client'
-	},
-	{
-		acc:'sales',
-		password:'sales'
-	},
-	{
-		acc:'distributor',
-		password:'distributor'
-	},
-	{
-		acc:'manufacturer',
-		password:'manufacturer'
-	},
-]

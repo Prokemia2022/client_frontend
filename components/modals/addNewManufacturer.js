@@ -21,6 +21,7 @@ import { useEffect,useState } from 'react';
 import Add_New_Manufacturer from '../../pages/api/auth/distributor/add_new_manufacturer.js'
 
 function AddNewManufacturerModal({isaddnewmanufacturerModalvisible,setisaddnewmanufacturerModalvisible,id}){
+    const toast = useToast();
     const { isOpen, onOpen, onClose } = useDisclosure();
 
     const HandleModalOpen=()=>{
@@ -46,12 +47,38 @@ function AddNewManufacturerModal({isaddnewmanufacturerModalvisible,setisaddnewma
       email,
     }
 
+    const verify_inputs=()=>{
+      if (name == '' || mobile == '' || email == ''){
+        toast({
+            title: '',
+            description: `All inputs are required.`,
+            status: 'info',
+            isClosable: true,
+          });
+      }else if (name != '' && mobile != '' && email != ''){
+        handle_add_new_manufacturer()
+      }
+    }
+
     const handle_add_new_manufacturer=()=>{
       console.log(payload)
       Add_New_Manufacturer(payload).then(()=>{
-        alert('success')
-        setisaddnewmanufacturerModalvisible(false)
-      })
+          toast({
+            title: '',
+            description: `${name} has been added as a manufacturer.`,
+            status: 'success',
+            isClosable: true,
+          });
+        }).then(()=>{
+          setisaddnewmanufacturerModalvisible(false)
+        }).catch((err)=>{
+          toast({
+            title: '',
+            description: err.response.data,
+            status: 'error',
+            isClosable: true,
+          });
+        })
       onClose()
     }
 
@@ -78,7 +105,7 @@ function AddNewManufacturerModal({isaddnewmanufacturerModalvisible,setisaddnewma
                     <Text>Mobile</Text>
                     <Input type='tel' placeholder='Mobile' variant='filled' onChange={((e)=>{set_mobile(e.target.value)})}/>
                   </Flex>
-                  <Button bg='#009393' borderRadius='0' color='#fff' onClick={handle_add_new_manufacturer}>Add new Manufacturer</Button>
+                  <Button bg='#009393' borderRadius='0' color='#fff' onClick={verify_inputs}>Add new Manufacturer</Button>
                 </Stack>
               </ModalBody>
             </ModalContent>

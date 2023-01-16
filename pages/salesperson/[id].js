@@ -12,9 +12,10 @@ import Settings from './settings.js'
 import Sales from './sales.js';
 import DashboardMenu from './dashboardMenu.js';
 import Hub from './hub.js';
+import Sale from './initiate_sale_form.js'
 /*icons*/
 import SettingsIcon from '@mui/icons-material/Settings';
-import {LocationCity,Dashboard,Folder,Groups2,Groups} from '@mui/icons-material';
+import {LocationCity,Dashboard,Folder,Groups2,Groups,PostAdd} from '@mui/icons-material';
 import WorkspacePremiumOutlinedIcon from '@mui/icons-material/WorkspacePremiumOutlined';
 import MarkUnreadChatAltOutlinedIcon from '@mui/icons-material/MarkUnreadChatAltOutlined';
 //api calls
@@ -82,6 +83,17 @@ function SalesPerson(){
 					</Flex>
 				</Flex>
 			)
+	}else if (currentvalue == 'sale')
+	{
+		return(
+				<Flex direction='column' gap='2'>
+					<Header/>
+					<Flex className={styles.consolebody}>
+						<Navbar currentvalue={currentvalue} setCurrentValue={setCurrentValue}/>
+						<Sale setCurrentValue={setCurrentValue} salesperson_data={salesperson_data}/>
+					</Flex>
+				</Flex>
+			)
 	}else{
 		return(
 			<Flex direction='column' gap='2'>
@@ -98,26 +110,32 @@ function SalesPerson(){
 export default SalesPerson
 
 const navItems = [
- {
+{
  	id:1,
+	 title:'New_sale',
+	 link:'sale',
+	 icon:<PostAdd/>,
+ },
+ {
+ 	id:2,
 	 title:'Dashboard',
 	 link:'dashboard',
 	 icon:<Dashboard/>,
  },
  {
- 	id:2,
+ 	id:3,
 	 title:'Sales',
 	 link:'sales',
 	 icon:<Folder/>,
  },
  {
- 	id:3,
+ 	id:4,
 	 title:'Hub',
 	 link:'hub',
 	 icon:<MarkUnreadChatAltOutlinedIcon/>,
  },
  {
- 	id:4,
+ 	id:5,
 	 title:'Settings',
 	 link:'settings',
 	 icon:<SettingsIcon/>,
@@ -129,9 +147,9 @@ const Navbar=({setCurrentValue,currentvalue,setActive})=>{
 		<Flex p='2' gap='3' className={styles.consoleNavigation} cursor='pointer'>
 			{navItems.map((content)=>{
 				return (
-					<Flex key={content.id} color='#009393' align='center' p='2' gap='3' className={styles.consoleNavItem} onClick={(()=>{setCurrentValue(content.link)})}>
+					<Flex key={content.id} bg={currentvalue === content.title.toLowerCase() ? '#009393': '#fff'} color={currentvalue === content.title.toLowerCase() ? '#fff': '#000'} align='center' p='2' gap='3' className={styles.consoleNavItem} onClick={(()=>{setCurrentValue(content.link)})}>
 						{content.icon}
-						<Text fontSize='20px'  color={currentvalue === content.title.toLowerCase() ? '#009393': '#000'} p='1.5' mb='0'>{content.title}</Text>
+						<Text fontSize='20px' p='1.5' mb='0'>{content.title}</Text>
 					</Flex>
 				)
 			})}

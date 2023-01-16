@@ -22,6 +22,7 @@ import Add_New_Expert from '../../pages/api/auth/distributor/add_new_expert.js'
 import Add_New_Expert_Manufacturer from '../../pages/api/auth/manufacturer/add_new_expert.js'
 
 function AddNewExpertsModal({isaddnewexpertModalvisible,setisaddNewExpertModalvisible,id,acc_type}){
+    const toast = useToast();
     const { isOpen, onOpen, onClose } = useDisclosure();
 
     const HandleModalOpen=()=>{
@@ -51,17 +52,55 @@ function AddNewExpertsModal({isaddnewexpertModalvisible,setisaddNewExpertModalvi
       role
     }
 
+    const verify_inputs=()=>{
+      if (name == '' || mobile == '' || email == '' || role == ''){
+        toast({
+            title: '',
+            description: `All inputs are required.`,
+            status: 'info',
+            isClosable: true,
+          });
+      }else if (name != '' && mobile != '' && email != '' && role != ''){
+        handle_add_new_expert()
+      }
+    }
     const handle_add_new_expert=()=>{
       console.log(payload)
       if(acc_type === 'distributor')
         Add_New_Expert(payload).then(()=>{
-          alert('success')
+          toast({
+            title: '',
+            description: `${name} has been added as an expert.`,
+            status: 'success',
+            isClosable: true,
+          });
+        }).then(()=>{
           setisaddNewExpertModalvisible(false)
+        }).catch((err)=>{
+          toast({
+            title: '',
+            description: err.response.data,
+            status: 'error',
+            isClosable: true,
+          });
         })
       else{
         Add_New_Expert_Manufacturer(payload).then(()=>{
-          alert('success')
+          toast({
+            title: '',
+            description: `${name} has been added as an expert.`,
+            status: 'success',
+            isClosable: true,
+          });
+        }).then(()=>{
           setisaddNewExpertModalvisible(false)
+        }).catch((err)=>{
+          toast({
+            title: '',
+            description: err.response.data,
+            status: 'error',
+            isClosable: true,
+          });
         })
       }
       onClose()
@@ -91,13 +130,13 @@ function AddNewExpertsModal({isaddnewexpertModalvisible,setisaddNewExpertModalvi
                   </Flex>
                   <Flex direction='column'>
                     <Text>Description</Text>
-                    <Textarea type='text' placeholder='Position' variant='filled' onChange={((e)=>{set_description(e.target.value)})}/>
+                    <Textarea type='text' placeholder='Description' variant='filled' onChange={((e)=>{set_description(e.target.value)})}/>
                   </Flex>
                   <Flex direction='column'>
                     <Text>Mobile</Text>
                     <Input type='tel' placeholder='Mobile' variant='filled' onChange={((e)=>{set_mobile(e.target.value)})}/>
                   </Flex>
-                  <Button bg='#009393' borderRadius='0' color='#fff' onClick={handle_add_new_expert}>Add new Expert</Button>
+                  <Button bg='#009393' borderRadius='0' color='#fff' onClick={verify_inputs}>Add new Expert</Button>
                 </Stack>
               </ModalBody>
             </ModalContent>

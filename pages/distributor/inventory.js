@@ -21,7 +21,9 @@ function Inventory({distributor_data}){
 			let data = response.data
 			const email = distributor_data?.email_of_company
 			const result_data = data.filter((item)=> item.verification_status && item.email_of_lister?.includes(email))
-			const result = result_data.filter((item)=> item.name_of_product?.toLowerCase().includes(searchquery) || item.industry?.toLowerCase().includes(searchquery) || item.technology?.toLowerCase().includes(searchquery))
+			const result = result_data.filter((item)=>  item.name_of_product?.toLowerCase().includes(searchquery.toLowerCase()) ||
+			 											item.industry?.toLowerCase().includes(searchquery.toLowerCase()) ||
+			 											item.technology?.toLowerCase().includes(searchquery.toLowerCase()))
 			console.log(result)
 			set_products_data(result)
 		})
