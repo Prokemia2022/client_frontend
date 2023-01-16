@@ -115,8 +115,8 @@ function Header({products_data,distributors_data,manufacturers_data,industries_d
 					<Menu >
 					<Flex align='center' gap='1' p='1' borderRadius='5'>
 						{signedin?
-							<Flex bg='#009393' boxShadow='lg' p='2' align='center' gap='1' borderRadius='5' color='#fff'>
-								<Text ml='1' fontSize='14px' >{user}</Text>
+							<Flex bg='#009393' boxShadow='lg' p='2' align='center' gap='1' borderRadius='5' color='#fff' onClick={handleProfile}>
+								<Text ml='1' fontSize='14px' >{user[0]}{user[1]}{user[2]}{user[3]}{user[4]}{user[5]}{user[6]}{user[7]}</Text>
 							</Flex>
 							:null}
 						<MenuButton as={Button} rounded={'full'} variant={'link'} cursor={'pointer'} minW={0} pt='1' color='#000'>
