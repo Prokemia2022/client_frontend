@@ -46,7 +46,7 @@ function DashboardMenu({setCurrentValue,manufacturer_data}){
 			email: manufacturer_data.email_of_company,
 			code: code
 		}
-		await axios.post("http://localhost:5001/api/email_verification",email_payload).then(()=>{
+		await axios.post("https://prokemiaemailsmsserver-production.up.railway.app/api/email_verification",email_payload).then(()=>{
 			router.push(`/verify/${'manufacturer'}/${manufacturer_data._id}`)
 		})
 	}
