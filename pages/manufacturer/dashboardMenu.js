@@ -2,7 +2,7 @@
 import React,{useState} from 'react';
 import {useRouter} from 'next/router';
 /*chakea-ui*/
-import {Flex,Text,Input,Button,Image,useToast} from '@chakra-ui/react';
+import {Flex,Text,Input,Button,Image,useToast,Textarea} from '@chakra-ui/react';
 /*icons*/
 import {LocationCity,Add} from '@mui/icons-material/';
 /*modals*/
