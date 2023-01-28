@@ -69,7 +69,7 @@ function DashboardMenu({setCurrentValue,manufacturer_data}){
 					<Text>Address: {manufacturer_data?.address_of_company}</Text>
 				</Flex>
 			</Flex>
-			{manufacturer_data.valid_email_status == false || !manufacturer_data.valid_email_status?
+			{manufacturer_data?.valid_email_status == false || !manufacturer_data?.valid_email_status?
 				<Flex direction='column' gap='3' w='100%' bg='' p='2' borderRadius='5'>
 					<Text fontSize='28px'fontWeight='bold' color='#009393'>Verify your email.</Text>
 					<Text >Get access to all features and be an active user on our platform by verifying your email.</Text>
