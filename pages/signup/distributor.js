@@ -26,6 +26,8 @@ export default function DistributorSignUp(){
   	const [password, set_password] = useState('');
   	const [email_of_company, set_email_of_company] = useState('');
 
+  	const [issubmitting,set_issubmitting]=useState(false);
+
   	const payload = {
   		company_name,
   		password,
@@ -34,6 +36,7 @@ export default function DistributorSignUp(){
   	}
 	//functions
 	const Verify_Inputs=()=>{
+		set_issubmitting(true)
 		if (password && company_name && email_of_company){
 			handle_Sign_Up()
 		}else if(!password || !company_name || !email_of_company){
@@ -108,7 +111,7 @@ export default function DistributorSignUp(){
 						</InputRightElement>
 					</InputGroup>
 					<Text fontSize={'11px'}>By Signing up you agree to our <a href="t&c" target="_blank" rel="noopener noreferrer" style={{color:'#009393'}}> terms&conditions</a > and our <a href="privacy_policy" target="_blank" rel="noopener noreferrer" style={{color:'#009393'}}>privacy policy</a>.</Text>
-					<Button bg='#000' color='#fff' onClick={Verify_Inputs}>Create Distributor Account</Button>
+					<Button bg='#000' color='#fff' onClick={Verify_Inputs} disabled={issubmitting? true:false}>Create Distributor Account</Button>
 				</Flex>
 			</Flex>
 		</Flex>

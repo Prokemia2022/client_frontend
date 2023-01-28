@@ -20,6 +20,7 @@ import Delete_Client from '../api/auth/client/delete_client_account.js'
 import {storage} from '../../components/firebase.js';
 import {ref,uploadBytes,getDownloadURL} from 'firebase/storage';
 import { v4 } from "uuid";
+import axios from 'axios';
 
 function Settings(){
 	//utils
@@ -78,26 +79,60 @@ function Settings(){
 			Get_Client_Data(payload)
 		}
 	},[token])
+
+	const [code,set_code]=useState(false);
+
+	const Generate_Code=async()=>{
+  		const characters = '0123456789';
+  		const result = ''
+  		const charactersLength = characters.length
+
+  		for (const i = 0;i<6;i++){
+  			result += characters.charAt(Math.floor(Math.random() * charactersLength));
+  		}
+  		cookies.set('verification_code', result, { path: '/' });
+  		return result
+  	}
 	
-	
+	const handle_verify_email=async()=>{
+		const code = await Generate_Code()
+		const email_payload={
+			email: client_data.email_of_company,
+			code: code
+		}
+		await axios.post("https://prokemiaemailsmsserver-production.up.railway.app/api/email_verification",email_payload).then(()=>{
+			router.push(`/verify/${'client'}/${client_data._id}`)
+		})
+	}
 	return(
 		<Flex direction='column' gap='2'>
 			<Header/>
 			<Flex p='2' direction='column' gap='2' w='100%'>
 				<Delete_Account_Modal is_delete_account_Modalvisible={is_delete_account_Modalvisible} set_is_delete_account_Modalvisible={set_is_delete_account_Modalvisible} client_data={client_data} acc_type='client'/>
 				<Text fontSize='34px' fontWeight='bold'>Welcome,<br/> {client_data?.first_name} {client_data?.last_name}</Text>
+				{client_data.valid_email_status == false || !client_data.valid_email_status?
+					<Flex direction='column' gap='3' w='100%' bg='' p='2' borderRadius='5'>
+						<Text fontSize='28px'fontWeight='bold' color='#009393'>Verify your email.</Text>
+						<Text >Get access to all features and be an active user on our platform by verifying your email.</Text>
+						<Text >It wont take more than a minute.</Text>
+						<Flex gap='2'>
+							<Button bg='#fff' border='1px solid #000' color='#000' onClick={handle_verify_email}>Verify Email</Button>
+						</Flex>
+					</Flex>
+				: null
+				}
 				{edit ?
 					<EditProfile setedit={setedit} client_data={client_data}/>
 				:
 					<Flex direction='column' gap='2'>
 						<Flex gap='3' direction='column'>
 							<Flex direction='column' gap='1' w='100%' bg='#eee' p='2' borderRadius='5' boxShadow='dark-lg'>
-								<Text p='1' borderRadius='5'>Email: {client_data?.email_of_company}</Text>
-								<Text p='1' borderRadius='5'>Mobile: {client_data?.mobile_of_company}</Text>	
-								<Text p='1' borderRadius='5'>Gender: {client_data?.gender}</Text>
-								<Text p='1' borderRadius='5'>Company name: {client_data?.company_name}</Text>
-								<Text p='1' borderRadius='5'>Position: {client_data?.position}</Text>
-								<Text p='1' borderRadius='5'>Address: {client_data?.address}</Text>
+								<Text>Email: {client_data?.email_of_company}</Text>
+								<Text>Mobile: {client_data?.mobile_of_company}</Text>	
+								<Text>Gender: {client_data?.gender}</Text>
+								<Text>Company name: {client_data?.company_name}</Text>
+								<Text>Position: {client_data?.position}</Text>
+								<Text>Address: {client_data?.address}</Text>
 							</Flex>
 							<Button onClick={(()=>{setedit(true)})} bg='#009393' color='#fff'>Edit Profile</Button>
 						</Flex>

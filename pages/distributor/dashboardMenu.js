@@ -1,5 +1,5 @@
 import React,{useState} from 'react'
-import {Flex,Text,Input,Button,Image,useToast} from '@chakra-ui/react'
+import {Flex,Text,Input,Button,Image,useToast,Textarea} from '@chakra-ui/react'
 import {useRouter} from 'next/router'
 import LocationCityIcon from '@mui/icons-material/LocationCity'
 import AddNewProduct from '../../components/modals/AddNewProduct.js';
@@ -7,6 +7,8 @@ import AddNewExpertsModal from '../../components/modals/addNewExperts.js';
 import AddNewManufacturer from '../../components/modals/addNewManufacturer.js';
 import Suggest_Industry from '../api/control/suggest_industry.js'
 import Suggest_Technology from '../api/control/suggest_technology.js'
+import axios from 'axios';
+import Cookies from 'universal-cookie';
 
 function DashboardMenu({setCurrentValue,distributor_data}){
 	const [isaddnewproductModalvisible,setisaddnewProductModalvisible]=useState(false);
@@ -18,6 +20,7 @@ function DashboardMenu({setCurrentValue,distributor_data}){
 	const [addnewTech,setaddnewTech]=useState(false);
 
 	const router = useRouter();
+	const cookies = new Cookies();
 
 	const [experts,set_experts]=useState(distributor_data?.experts)
 	const [industries,set_industries]=useState(distributor_data?.industries)
@@ -25,6 +28,31 @@ function DashboardMenu({setCurrentValue,distributor_data}){
 	const [manufacturers,set_manufacturers]=useState(distributor_data?.manufacturers)
 
 	const id = distributor_data?._id
+
+	const [code,set_code]=useState(false);
+
+	const Generate_Code=async()=>{
+  		const characters = '0123456789';
+  		const result = ''
+  		const charactersLength = characters.length
+
+  		for (const i = 0;i<6;i++){
+  			result += characters.charAt(Math.floor(Math.random() * charactersLength));
+  		}
+  		cookies.set('verification_code', result, { path: '/' });
+  		return result
+  	}
+	
+	const handle_verify_email=async()=>{
+		const code = await Generate_Code()
+		const email_payload={
+			email: distributor_data.email_of_company,
+			code: code
+		}
+		await axios.post("https://prokemiaemailsmsserver-production.up.railway.app/api/email_verification",email_payload).then(()=>{
+			router.push(`/verify/${'distributor'}/${distributor_data._id}`)
+		})
+	}
 	return (
 		<Flex p='1' direction='column' gap='4' w='100%' overflowY='scroll' h='100vh'>
 			<AddNewProduct isaddnewproductModalvisible={isaddnewproductModalvisible} setisaddnewProductModalvisible={setisaddnewProductModalvisible}/>
@@ -44,6 +72,17 @@ function DashboardMenu({setCurrentValue,distributor_data}){
 					<Text>Address: {distributor_data?.address_of_company}</Text>
 				</Flex>
 			</Flex>
+			{distributor_data.valid_email_status == false || !distributor_data.valid_email_status?
+				<Flex direction='column' gap='3' w='100%' bg='' p='2' borderRadius='5'>
+					<Text fontSize='28px'fontWeight='bold' color='#009393'>Verify your email.</Text>
+					<Text >Get access to all features and be an active user on our platform by verifying your email.</Text>
+					<Text >It wont take more than a minute.</Text>
+					<Flex gap='2'>
+						<Button bg='#fff' border='1px solid #000' color='#000' onClick={handle_verify_email}>Verify Email</Button>
+					</Flex>
+				</Flex>
+			: null
+			}
 			<Flex direction='column' gap='2' bg='#eee' p='2' w='100%' borderRadius='8' boxShadow='lg'>
 					<Text fontSize='24px' fontWeight='bold' color='#009393'>Description</Text>
 					<Text>{distributor_data?.description}</Text>
@@ -70,14 +109,16 @@ export default DashboardMenu;
 
 const AddNewIndustry=({setaddnewInd})=>{
 	const toast = useToast();
-	const [suggest_industry,set_suggest_industry]=useState(false);
+	const [suggest_industry_title,set_suggest_industry_title]=useState(false);
+	const [suggest_industry_description,set_suggest_industry_description]=useState(false);
 
 	const payload = {
-		title: suggest_industry
+		title: suggest_industry_title,
+		description: suggest_industry_description
 	}
 
 	const handle_suggest_industry=async()=>{
-		if (suggest_industry == ''){
+		if (suggest_industry_title == '' || suggest_industry_description == ''){
 			toast({
               title: '',
               description: `Ensure all inputs are filled`,
@@ -86,11 +127,11 @@ const AddNewIndustry=({setaddnewInd})=>{
             });
             return;
 		}else{
-			await Suggest_Industry().then((response)=>{
+			await Suggest_Industry(payload).then((response)=>{
 				toast({
 	              title: '',
 	              description: `${payload.title} has been suggested successfully.`,
-	              status: 'success',
+	              status: 'info',
 	              isClosable: true,
 	            });
 			}).catch((err)=>{
@@ -108,7 +149,8 @@ const AddNewIndustry=({setaddnewInd})=>{
 	return(
 		<Flex direction='column' gap='2' bg='#eee' p='2'>
 			<Text fontWeight='bold'>Suggest Industry</Text>
-			<Input bg='#fff' type='text' placeholder='Suggest industry' onChange={((e)=>{set_suggest_industry(e.target.value)})}/>
+			<Input bg='#fff' type='text' placeholder='Title of Industry' onChange={((e)=>{set_suggest_industry_title(e.target.value)})}/>
+			<Textarea bg='#fff' type='text' placeholder='description of Industry' onChange={((e)=>{set_suggest_industry_description(e.target.value)})}/>
 			<Flex gap='2'>
 				<Button color='#fff' bg='#009393' onClick={handle_suggest_industry}>Submit</Button>
 				<Button bg='#fff' border='1px solid red' onClick={(()=>{setaddnewInd(false)})}>Cancel</Button>
@@ -119,14 +161,16 @@ const AddNewIndustry=({setaddnewInd})=>{
 
 const AddNewTechnology=({setaddnewTech})=>{
 	const toast = useToast();
-	const [suggest_technology,set_suggest_technology]=useState(false);
+	const [suggest_technology_title,set_suggest_technology_title]=useState(false);
+	const [suggest_technology_description,set_suggest_technology_description]=useState(false);
 
 	const payload = {
-		title: suggest_technology
+		title: suggest_technology_title,
+		description: suggest_technology_description
 	}
 
 	const handle_suggest_technology=async()=>{
-		if (suggest_technology == ''){
+		if (suggest_technology_title == '' || suggest_technology_description == ''){
 			toast({
               title: '',
               description: `Ensure all inputs are filled`,
@@ -135,11 +179,11 @@ const AddNewTechnology=({setaddnewTech})=>{
             });
             return;
 		}else{
-			await Suggest_Technology().then((response)=>{
+			await Suggest_Technology(payload).then((response)=>{
 				toast({
 	              title: '',
 	              description: `${payload.title} has been suggested successfully.`,
-	              status: 'success',
+	              status: 'info',
 	              isClosable: true,
 	            });
 			}).catch((err)=>{
@@ -157,7 +201,8 @@ const AddNewTechnology=({setaddnewTech})=>{
 	return(
 		<Flex direction='column' gap='2' bg='#eee' p='2'>
 			<Text fontWeight='bold'>Suggest Technology</Text>
-			<Input bg='#fff' type='text' placeholder='Suggest technology' onChange={((e)=>{set_suggest_technology(e.target.value)})}/>
+			<Input bg='#fff' type='text' placeholder='Title of Technology' onChange={((e)=>{set_suggest_technology_title(e.target.value)})}/>
+			<Textarea bg='#fff' type='text' placeholder='description of Technology' onChange={((e)=>{set_suggest_technology_description(e.target.value)})}/>
 			<Flex gap='2'>
 				<Button color='#fff' bg='#009393' onClick={handle_suggest_technology}>Submit</Button>
 				<Button bg='#fff' border='1px solid red' onClick={(()=>{setaddnewTech(false)})}>Cancel</Button>
@@ -165,23 +210,3 @@ const AddNewTechnology=({setaddnewTech})=>{
 		</Flex>
 	)
 }
-
-/**
-<Flex direction='column' gap='2'>
-	<Flex justify='space-between' align='center' borderBottom='1px solid #000'>
-		<Text fontWeight='bold' fontSize='20px'>Products</Text>
-		<Text color='#009393' fontWeight='bold' onClick={(()=>{setCurrentValue('inventory')})} cursor='pointer'>view all</Text>
-	</Flex>
-	<Flex direction='column' gap='2'>
-		<Flex p='3' bg='#eee' borderRadius='5px' direction='column'>
-			<Text>Cereals</Text>
-			<Text>Agriculture</Text>
-		</Flex>
-		<Flex p='3' bg='#eee' borderRadius='5px' direction='column'>
-			<Text>Fertilisers</Text>
-			<Text>Agriculture</Text>
-		</Flex>
-	</Flex>
-</Flex>
-
-*/

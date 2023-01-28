@@ -1,5 +1,5 @@
 import React,{useState,useEffect} from 'react'
-import {Flex,Text,Button,Input,Textarea,Select,Checkbox,Link} from '@chakra-ui/react'
+import {Flex,Text,Button,Input,Textarea,Select,Checkbox,Link,useToast} from '@chakra-ui/react'
 import {useRouter} from 'next/router'
 import FileDownloadIcon from '@mui/icons-material/FileDownload';
 import LanguageIcon from '@mui/icons-material/Language';
@@ -15,7 +15,7 @@ import DeleteProductModal from '../../../components/modals/DeleteProduct.js';
 import ListProductShortExpiryModal from '../../../components/modals/ListProductShortExpiry.js';
 import DoneAllOutlinedIcon from '@mui/icons-material/DoneAllOutlined';
 import Get_Product from '../../api/product/get_product.js';
-import Delete_Product from '../../api/product/delete_product.js';
+//import Delete_Product from '../../api/product/delete_product.js';
 import Edit_Product from '../../api/product/edit_product.js';
 
 import {storage} from '../../../components/firebase';
@@ -24,13 +24,15 @@ import { v4 } from "uuid";
 
 function Product(){
 	const router = useRouter();
+	const toast = useToast();
 	const id = router.query;
 
 	const [isquotationModalvisible,setisquotationModalvisible]=useState(false);
 	const [issampleModalvisible,setissampleModalvisible]=useState(false);
 	const [iseditproductModalvisible,setiseditProductModalvisible]=useState(false);
-	const [isdeleteproductModalvisible,setisdeleteProductModalvisible]=useState(false);
+	//const [isdeleteproductModalvisible,setisdeleteProductModalvisible]=useState(false);
 	const [isshortexpproductModalvisible,setisshortexpproductModalvisible]=useState(false);
+	const [is_delete_product_Modalvisible,set_is_delete_product_Modalvisible]=useState(false);
 	
 	const [edit,set_edit]=useState(false)
 	const payload = {
@@ -45,27 +47,28 @@ function Product(){
 		})
 	}
 	useEffect(()=>{
-		if (!payload || payload._id === 'undefined'){
-			alert("missing info could not fetch data")
+		if (!id.id || id.id === undefined){
+			toast({
+				title: '',
+				description: `broken link, we are redirecting you`,
+				status: 'info',
+				isClosable: true,
+			});
 			router.back()
 		}else{
 			console.log(payload)
 			get_Data(payload)
 		}
-	},[payload])
-	const handle_Delete_Product=async()=>{
-		await Delete_Product(payload).then(()=>{
-			router.back()
-			alert("successfuly deleted")
-		})
-	}
+	},[])
 	return(
 		<Flex direction='column'>
 			<Header />
+			
 			{edit?
 				<Edit_Info product_data={product_data}/>
 				:
 				<Flex direction='column'>
+				<DeleteProductModal is_delete_product_Modalvisible={is_delete_product_Modalvisible} set_is_delete_product_Modalvisible={set_is_delete_product_Modalvisible} product_data={product_data}/>
 				<Flex p='2' direction='column' gap='2' className={styles.productsection1} position='relative' flex='1'>
 					<Flex position='absolute' top='1' right='1' p='1' bg='#009393' borderRadius='5' color='#fff'>
 						<DoneAllOutlinedIcon />
@@ -121,7 +124,7 @@ function Product(){
 					<Text textAlign='center'>or</Text>
 					<Button bg='#eee' borderRadius='0' border='1px solid #000' p='1' onClick={(()=>{set_edit(true)})}>Edit Product</Button>
 					<Button bg='#eee' borderRadius='0' border='1px solid #000' p='1'>List as short Expiry</Button>
-					<Button bg='#eee' color='red' borderRadius='0' border='1px solid red' p='1' onClick={handle_Delete_Product}>Delete Product</Button>
+					<Button bg='#fff' color='red' border='1px solid red' p='1' onClick={(()=>{set_is_delete_product_Modalvisible(true)})}>Delete Product</Button>
 				</Flex>
 				</Flex>
 			}

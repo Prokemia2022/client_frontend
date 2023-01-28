@@ -28,6 +28,8 @@ export default function ClientSignUp(){
 	const [password, set_password] = useState('');
 	const [email_of_company, set_email_of_company] = useState('');
 
+	const [issubmitting,set_issubmitting]=useState(false);
+
 	const payload = {
 		first_name,
 		last_name,
@@ -37,8 +39,33 @@ export default function ClientSignUp(){
 	}
 	//functions
 	const Verify_Inputs=()=>{
+		set_issubmitting(true)
+		//check if email format is maintained
+		const validRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+		const gmailRegex = /([a-zA-Z0-9]+)([\.{1}])?([a-zA-Z0-9]+)\@gmail([\.])com/g
+		const yahooRegex = /^[^@]+@(yahoo|ymail|rocketmail)\.(com|in|co\.uk)$/i
+
 		if (password && first_name && last_name && email_of_company){
-			handle_Sign_Up()
+			if (!email_of_company.match(validRegex)){
+				toast({
+					title: '',
+					description: 'Use a valid email format e.g example@company.com',
+					status: 'info',
+					isClosable: true,
+				});
+				return;
+			}else if(email_of_company.match(gmailRegex) || email_of_company.match(yahooRegex)){
+				toast({
+					title: '',
+					description: 'Use a company email to create an account',
+					status: 'info',
+					isClosable: true,
+				});
+				return;
+			}
+			else{
+				handle_Sign_Up()
+			}
 		}else if(!password || !first_name || !last_name || !email_of_company){
 			toast({
 				title: '',
@@ -119,7 +146,7 @@ export default function ClientSignUp(){
 						</InputRightElement>
 					</InputGroup>
 					<Text fontSize={'11px'}>By Signing up you agree to our <a href="t&c" target="_blank" rel="noopener noreferrer" style={{color:'#009393'}}> terms&conditions</a > and our <a href="privacy_policy" target="_blank" rel="noopener noreferrer" style={{color:'#009393'}}>privacy policy</a>.</Text>
-					<Button bg='#009393' color='#fff' onClick={Verify_Inputs}>Create Account</Button>
+					<Button bg='#009393' color='#fff' onClick={Verify_Inputs} disabled={issubmitting? true:false}>Create Account</Button>
 				</Flex>
 			</Flex>				
 		</Flex>

@@ -47,8 +47,8 @@ function Product(){
 	},[id])
 	return(
 		<Flex  direction='column'>
-			<QuotationModal isquotationModalvisible={isquotationModalvisible} setisquotationModalvisible={setisquotationModalvisible}/>
-			<SampleModal issampleModalvisible={issampleModalvisible} setissampleModalvisible={setissampleModalvisible}/>
+			<QuotationModal isquotationModalvisible={isquotationModalvisible} setisquotationModalvisible={setisquotationModalvisible} product_data={product_data}/>
+			<SampleModal issampleModalvisible={issampleModalvisible} setissampleModalvisible={setissampleModalvisible} product_data={product_data}/>
 			<Header/>
 			<Flex direction='column' gap='2' className={styles.productbody}>
 			<Flex p='2' direction='column' gap='2' className={styles.productsection1} position='relative'>
@@ -95,11 +95,13 @@ function Product(){
 				</Flex>
 			</Flex>
 				<Flex p='2' gap='2' direction='column' w='100%'>
-					<Button color='#000' borderRadius='0' bg='#e5e5e5'><FavoriteIcon />Add to WishList</Button>
+					
 					<Button color='#fff' borderRadius='0' bg='#009393' onClick={(()=>{setisquotationModalvisible(true)})}><DescriptionIcon />Request Quotation</Button>
 					<Button color='#fff' borderRadius='0' bg='#000' onClick={(()=>{setissampleModalvisible(true)})}><DescriptionIcon />Request Sample</Button>
 					<Text textAlign='center'>or</Text>
-					<Button bg='#fff' borderRadius='0' border='1px solid #000' p='1'>Contact</Button>
+					<Button bg='#fff' borderRadius='0' border='1px solid #000' p='1'>
+	                    <Link href={`mailto: ${product_data?.email_of_lister}`} isExternal>contact</Link>
+	                </Button>
 					<Link href={product_data?.website_link_to_Seller} bg='grey' borderRadius='5' boxShadow='lg' color='#fff' align='center' p='1' isExternal fontSize='20px'>Website link</Link>
 				</Flex>
 			</Flex>
@@ -108,3 +110,5 @@ function Product(){
 }
 
 export default Product;
+
+/**<Button color='#000' borderRadius='0' bg='#e5e5e5'><FavoriteIcon />Add to WishList</Button>**/

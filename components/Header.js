@@ -19,6 +19,7 @@ import MenuOpenIcon from '@mui/icons-material/MenuOpen';
 import SearchIcon from '@mui/icons-material/Search';
 import SearchOffIcon from '@mui/icons-material/SearchOff';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 //components import
 import Search from './Search.js'
 import styles from '../styles/Home.module.css';
@@ -116,7 +117,8 @@ function Header({products_data,distributors_data,manufacturers_data,industries_d
 					<Flex align='center' gap='1' p='1' borderRadius='5'>
 						{signedin?
 							<Flex bg='#009393' boxShadow='lg' p='2' align='center' gap='1' borderRadius='5' color='#fff' onClick={handleProfile}>
-								<Text ml='1' fontSize='14px' >{user[0]}{user[1]}{user[2]}{user[3]}{user[4]}{user[5]}{user[6]}{user[7]}</Text>
+								{profile_photo_url == '' || !profile_photo_url? <AccountCircleIcon/> : <Image src={profile_photo_url} boxSize='20px'/>}
+								<Text ml='1' fontSize='14px' >{user[0]}{user[1]}{user[2]}{user[3]}{user[4]}..</Text>
 							</Flex>
 							:null}
 						<MenuButton as={Button} rounded={'full'} variant={'link'} cursor={'pointer'} minW={0} pt='1' color='#000'>
@@ -144,6 +146,13 @@ function Header({products_data,distributors_data,manufacturers_data,industries_d
 									</Flex> 
 								}
 							</Flex>
+							{acc_type == 'distributor' || acc_type == 'manufacturer'?
+								<Flex mt='2' bg='#009393' color='#fff' p='2' gap='2' onClick={(()=>{router.push(`/product/add_product`)})}>
+									<Add/>
+									<Text mb='0' >Add a new product</Text>
+								</Flex>
+								:null
+							}
 							{navigation.map((nav)=>{
 								return(
 									<Flex mt='2' key={nav.id} direction='column' p='2' gap='2' onClick={(()=>{router.push(`${nav.link}`)})}>

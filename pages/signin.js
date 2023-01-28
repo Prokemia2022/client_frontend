@@ -22,12 +22,15 @@ export default function UserSignIn(){
 	const [password,setpassword]=useState(''); //password input
 	const [email_of_company,set_email_of_company]=useState(''); //email input
 
+	const [issubmitting,set_issubmitting]=useState(false);
+
 	const payload = {
 		password,
 		email_of_company
 	}
 	//function
 	const handleSignIn=async()=>{
+		set_issubmitting(true)
 		if(password && email_of_company){
 			await SignIn(payload).then((res)=>{
 				//console.log(res)
@@ -64,6 +67,7 @@ export default function UserSignIn(){
 				isClosable: true,
 			});
 		}
+		set_issubmitting(false)
 	}
 
 	return(
@@ -99,7 +103,7 @@ export default function UserSignIn(){
 						</InputRightElement>
 					</InputGroup>
 					<Text cursor='pointer' fontSize='14px' color='red'> Forgot Password?</Text>
-					<Button bg='#009393' color='#fff' onClick={handleSignIn}>Sign In</Button>
+					<Button bg='#009393' color='#fff' onClick={handleSignIn} disabled={issubmitting? true:false}>Sign In</Button>
 				</Flex>
 			</Flex>
 		</Flex>

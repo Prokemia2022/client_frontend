@@ -124,36 +124,18 @@ function _Home(){
 					return(
 						<Flex direction='column' bg='#eee' p='1' mb='1' key={distributor.id}>
 							<Text mb='0' fontSize='20px' fontFamily='ClearSans-Bold'>{distributor.company_name}</Text>
-							<Text mb='0' >Industry: </Text>
-							<Flex>
-							{distributor.industries?.map((ind)=>{
-								return(
-									<Flex key={ind.id}>
-										<Text mb='0' fontSize='14px'>{ind},</Text>
-									</Flex>
-								)
-							})}
-							</Flex>
-							<Text mb='0' fontSize='14px' color='#009393' cursor='pointer'> click to view &gt;&gt; </Text>
+							<Text mb='0' >{distributor.description}</Text>
+							<Text mb='0' fontSize='14px' color='#009393' cursor='pointer' onClick={(()=>{router.push(`/account/distributor/${distributor._id}`)})}> view &gt;&gt; </Text>
 						</Flex>
 					)
 				})}
 				<Text fontSize='24px' fontFamily='ClearSans-Bold' borderBottom='1px solid #000'>Top Manufacturers </Text>
 				{manufacturers_data?.slice(0,4).map((manufacturer)=>{
 					return(
-						<Flex direction='column' bg='#eee' mb='1' p='1' key={manufacturer._id}>
+						<Flex direction='column' bg='#eee' mb='1' p='1' key={manufacturer._id} gap='2'>
 							<Text mb='0' fontSize='20px' fontFamily='ClearSans-Bold'>{manufacturer.company_name}</Text>
-							<Text mb='0' >Industry: </Text>
-							<Flex wrap='flex'>
-								{manufacturer.industries?.map((ind)=>{
-									return(
-										<Flex key={ind.id}>
-											<Text mb='0' fontSize='14px'>{ind},</Text>
-										</Flex>
-									)
-								})}
-							</Flex>
-							<Text mb='0' fontSize='14px' color='#009393' cursor='pointer'> click to view &gt;&gt; </Text>
+							<Text mb='0' overflow='hidden' h='20px'>{manufacturer.description}</Text>
+							<Text mb='0' fontSize='14px' color='#009393' cursor='pointer' onClick={(()=>{router.push(`/account/manufacturer/${manufacturer._id}`)})}> view &gt;&gt; </Text>
 						</Flex>
 					)
 				})}

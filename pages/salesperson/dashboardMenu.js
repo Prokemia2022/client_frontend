@@ -12,11 +12,14 @@ import Groups2OutlinedIcon from '@mui/icons-material/Groups2Outlined';
 import Header from '../../components/Header.js';
 //utils
 import {useRouter} from 'next/router';
+import axios from 'axios'
+import Cookies from 'universal-cookie';
 
 export default function Salesperson({setCurrentValue,salesperson_data}){
 	//utils
 	const router = useRouter();
 	const toast = useToast();
+	const cookies = new Cookies();
 	//states
 	const annonymous = salesperson_data?.account_status;  //current status for the salesperson i.e annonymous or not
 	//functions
@@ -50,9 +53,43 @@ export default function Salesperson({setCurrentValue,salesperson_data}){
 			});
 		})
 	}
+
+	const Generate_Code=async()=>{
+  		const characters = '0123456789';
+  		const result = ''
+  		const charactersLength = characters.length
+
+  		for (const i = 0;i<6;i++){
+  			result += characters.charAt(Math.floor(Math.random() * charactersLength));
+  		}
+  		cookies.set('verification_code', result, { path: '/' });
+  		return result
+  	}
+	
+	const handle_verify_email=async()=>{
+		const code = await Generate_Code()
+		const email_payload={
+			email: salesperson_data.email_of_salesperson,
+			code: code
+		}
+		await axios.post("https://prokemiaemailsmsserver-production.up.railway.app/api/email_verification",email_payload).then(()=>{
+			router.push(`/verify/${'salesperson'}/${salesperson_data._id}`)
+		})
+	}
 	return(
 			<Flex direction='column' w='100%'>
 				<Flex p='2' direction='column' gap='2' w='100%' overflowY='scroll' h='100vh'>
+				{salesperson_data.valid_email_status == false || !salesperson_data.valid_email_status?
+						<Flex direction='column' gap='3' w='100%' bg='' p='2' borderRadius='5'>
+							<Text fontSize='28px'fontWeight='bold' color='#009393'>Verify your email.</Text>
+							<Text >Get access to all features and be an active user on our platform by verifying your email.</Text>
+							<Text >It wont take more than a minute.</Text>
+							<Flex gap='2'>
+								<Button bg='#fff' border='1px solid #000' color='#000' onClick={handle_verify_email}>Verify Email</Button>
+							</Flex>
+						</Flex>
+					: null
+					}
 					<Flex gap='4' justify='space-between'>
 						<Text fontSize='42px' fontFamily='ClearSans-bold'>Welcome,<br/> {salesperson_data?.first_name} {salesperson_data?.last_name}</Text>
 						<Flex gap='2' direction='column'>

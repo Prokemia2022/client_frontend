@@ -34,16 +34,12 @@ export default function Search({setsearchbaractive}){
 		await Get_Products().then((response)=>{
 			const data = response?.data
 			const result_data = data.filter((item)=> item.verification_status)
-			const result = result_data.filter((item) => item.name_of_product?.toLowerCase().includes(search_value) ||
-														item.industry?.toLowerCase().includes(search_value) || 
-														item.technology?.toLowerCase().includes(search_value) ||
-														item.function?.toLowerCase().includes(search_value) ||
-														item.function?.includes(search_value) ||
-														item.chemical_name?.toLowerCase().includes(search_value) ||
-														item.chemical_name?.includes(search_value) ||
-														item.name_of_product?.includes(search_value) ||
-														item.industry?.includes(search_value) || 
-														item.technology?.includes(search_value))
+			const result = result_data.filter((item) => item.name_of_product?.toLowerCase().includes(search_value.toLowerCase()) ||
+														item.industry?.toLowerCase().includes(search_value.toLowerCase()) || 
+														item.function?.toLowerCase().includes(search_value.toLowerCase()) ||
+														item.chemical_name?.toLowerCase().includes(search_value.toLowerCase()) ||
+														item.email_of_lister?.toLowerCase().includes(search_value.toLowerCase()) ||
+														item.technology?.toLowerCase().includes(search_value.toLowerCase()))
 			set_products_data(result)
 			console.log(result)
 		})
@@ -112,10 +108,10 @@ const Result=({products_data,distributors_data,manufacturers_data,industries_dat
 					{products_data?.map((item)=>{
 						return(
 							<Flex key={item._id} position='relative' gap='2' align='center' onClick={(()=>{router.push(`/product/${item._id}`);setsearchbaractive(false);set_active(false)})} bg='#fff' p='1' borderRadius='5' boxShadow='lg'>
-								<Image w='50px' h='50px' borderRadius='10px' objectFit='cover' src='../Pro.png' alt='next'/>
+								<Image w='50px' h='50px' borderRadius='10px' objectFit='cover' src='../../Pro.png' alt='next'/>
 								<Flex direction='column'>
-									<Text fontSize='16px' fontFamily='ClearSans-Bold'>{item.name_of_product}</Text>
-									<Text fontSize='14px'>distributed by: {item.distributed_by}</Text>
+									<Text fontSize='16px' fontFamily='ClearSans-Bold' color='#009393'>{item.name_of_product}</Text>
+									<Text fontSize='14px'>{item.distributed_by}</Text>
 								</Flex>
 							</Flex>
 						)
@@ -131,11 +127,11 @@ const Result=({products_data,distributors_data,manufacturers_data,industries_dat
 				<Flex direction='column' p='1' gap='2'>
 					{distributors_data?.slice(0,2).map((item)=>{
 						return(
-							<Flex key={item._id} position='relative' gap='2' align='center' bg='#fff' p='1' borderRadius='5' boxShadow='lg'>
-								<Image w='50px' h='50px' borderRadius='10px' objectFit='cover' src='../Pro.png' alt='next'/>
+							<Flex key={item._id} position='relative' gap='2' align='center' bg='#fff' p='1' borderRadius='5' boxShadow='lg' onClick={(()=>{router.push(`/account/distributor/${item?._id}`)})}>
+								<Image w='50px' h='50px' borderRadius='10px' objectFit='cover' src={item?.profile_photo_url == '' || !item?.profile_photo_url? '../../Pro.png' : item?.profile_photo_url} alt='next'/>
 								<Flex direction='column'>
-									<Text mb='0' fontSize='16px' fontFamily='ClearSans-Bold'>{item.company_name}</Text>
-									<Text fontSize='14px' w='380px' h='40px' overflow='hidden' whiteSpace='no-wrap'>Description by: {item.description}</Text>
+									<Text mb='0' fontSize='16px' fontFamily='ClearSans-Bold' color='#009393'>{item.company_name}</Text>
+									<Text fontSize='14px' w='90%' h='40px' overflow='hidden' whiteSpace='no-wrap'>{item.description}</Text>
 								</Flex>
 							</Flex>
 						)
@@ -151,11 +147,11 @@ const Result=({products_data,distributors_data,manufacturers_data,industries_dat
 				<Flex direction='column' p='1' gap='2'>
 					{manufacturers_data?.slice(0,2).map((item)=>{
 						return(
-							<Flex key={item._id} position='relative' gap='2' align='center' bg='#fff' p='1' borderRadius='5' boxShadow='lg'>
-								<Image w='50px' h='50px' borderRadius='10px' objectFit='cover' src='../Pro.png' alt='next'/>
+							<Flex key={item._id} position='relative' gap='2' align='center' bg='#fff' p='1' borderRadius='5' boxShadow='lg' onClick={(()=>{router.push(`/account/manufacturer/${item?._id}`)})}>
+								<Image w='50px' h='50px' borderRadius='10px' objectFit='cover' src={item?.profile_photo_url == ''? '../Pro.png' : item?.profile_photo_url} alt='next'/>
 								<Flex direction='column'>
-									<Text mb='0' fontSize='16px' fontFamily='ClearSans-Bold'>{item.company_name}</Text>
-									<Text fontSize='14px' w='380px' h='40px' overflow='hidden' whiteSpace='no-wrap'>Description by: {item.description}</Text>
+									<Text mb='0' fontSize='16px' fontFamily='ClearSans-Bold' color='#009393'>{item.company_name}</Text>
+									<Text fontSize='14px' w='90%' p='' h='40px' overflow='hidden' whiteSpace='no-wrap'>{item.description}</Text>
 								</Flex>
 							</Flex>
 						)

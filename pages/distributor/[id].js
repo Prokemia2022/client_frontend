@@ -46,6 +46,7 @@ function Distributor(){
 		await Get_Distributor(payload).then((response)=>{
 			console.log(response.data)
 			set_distributor_data(response.data)
+			cookies.set('is_acc_verified', response.data.valid_email_status, { path: '/' });
 		})
 	}
 	if (currentvalue == 'inventory')

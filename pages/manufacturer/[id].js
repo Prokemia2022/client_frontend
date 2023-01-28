@@ -47,6 +47,7 @@ function Manufacturer(){
 		await Get_Manufacturer(payload).then((response)=>{
 			console.log(response.data)
 			set_manufacturer_data(response.data)
+			cookies.set('is_acc_verified', response.data.valid_email_status, { path: '/' });
 		})
 	}
 

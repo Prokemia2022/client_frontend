@@ -22,6 +22,7 @@ function Product(){
 		const toast = useToast();
 		const router = useRouter();
 		const cookies = new Cookies();
+
 	//useEffects
 		useEffect(()=>{
 			get_Industries_Data()
@@ -106,12 +107,17 @@ function Product(){
 		website_link
 	}
 
+	const [verified_user_status,set_verified_user_status]=useState(false)
+
 	useEffect(()=>{
 		if(token){
 			const details = jwt_decode(token)
 			console.log(details)
 			set_email_of_lister(details?.email)
 			set_listed_by_id(details.id)
+			const status = cookies.get('is_acc_verified')
+			console.log(status)
+			set_verified_user_status(status)
 		}else{
 			alert('you must be signed in to create an account')
 		}
@@ -119,7 +125,8 @@ function Product(){
 
 	//add new product without documents function
 	const handle_add_new_product=async()=>{
-		if (name_of_product == '' || name_of_product != ''){
+		console.log(name_of_product)
+		if (name_of_product == '' || !name_of_product){
 			toast({
               title: '',
               description: `Ensure all inputs are filled`,
@@ -168,6 +175,11 @@ function Product(){
 					:
 						<Flex className={styles.productbody} direction='column' p='3' gap='3'>
 							<Text fontSize='32px' fontWeight='bold'>Add New Product</Text>
+							{verified_user_status === false || verified_user_status == 'undefined'?
+								<Text bg='#009393' p='2' borderRadius='5' color='#fff'>Your account is not verified, verify account first to start selling on prokemia.</Text>
+								:
+								null
+							}
 							<Flex direction='column'>
 								<Text>Name/Title of product</Text>
 								<Input type='text' placeholder='Name of product/Brand' variant='filled' onChange={((e)=>{set_name_of_product(e.target.value)})}/>
@@ -250,8 +262,8 @@ function Product(){
 						        </Select>
 							</Flex>
 							<Flex gap='2'>
-								<Button flex='1' bg='#009393' borderRadius='0' color='#fff' onClick={handle_add_new_product} disabled={isloading?true:false}>Save and add product</Button>
-				                <Button flex='1' bg='#000' borderRadius='0' color='#fff' onClick={(()=>{set_isfileupload(true)})} disabled={isloading?true:false}>Continue to upload files</Button>
+								<Button flex='1' bg='#009393' borderRadius='0' color='#fff' onClick={handle_add_new_product} disabled={isloading || verified_user_status === false || verified_user_status == 'undefined'?true:false}>Save and add product</Button>
+				                <Button flex='1' bg='#000' borderRadius='0' color='#fff' onClick={(()=>{set_isfileupload(true)})} disabled={isloading || verified_user_status === false || verified_user_status == 'undefined'?true:false}>Continue to upload files</Button>
 				            </Flex>
 			                <Button bg='#eee' borderRadius='0' color='red' onClick={(()=>{router.back()})} disabled={isloading?true:false}>Cancel</Button>
 						</Flex>

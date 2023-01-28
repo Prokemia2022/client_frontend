@@ -28,14 +28,16 @@ export default function All(){
 	/**fetch industries */
 	const get_Industries_Data=async()=>{
 		await Get_Industries().then((response)=>{
-			set_industries_data(response.data)
-			//console.log(response.data)
+			const result = response?.data.filter((item)=> item?.verification_status)
+			set_industries_data(result)
+			//console.log(result)
 		})
 	}
 	/**fetch technologies */
 	const get_Technologies_Data=async()=>{
 		await Get_Technologies().then((response)=>{
-			set_technologies_data(response.data)
+			const result = response?.data.filter((item)=> item?.verification_status)
+			set_technologies_data(result)
 			//console.log(response.data)
 		})
 	}
