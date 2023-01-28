@@ -79,7 +79,7 @@ export default function Salesperson({setCurrentValue,salesperson_data}){
 	return(
 			<Flex direction='column' w='100%'>
 				<Flex p='2' direction='column' gap='2' w='100%' overflowY='scroll' h='100vh'>
-				{salesperson_data.valid_email_status == false || !salesperson_data.valid_email_status?
+				{salesperson_data.?valid_email_status == false || !salesperson_data?.valid_email_status?
 						<Flex direction='column' gap='3' w='100%' bg='' p='2' borderRadius='5'>
 							<Text fontSize='28px'fontWeight='bold' color='#009393'>Verify your email.</Text>
 							<Text >Get access to all features and be an active user on our platform by verifying your email.</Text>

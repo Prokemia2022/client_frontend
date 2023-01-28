@@ -110,7 +110,7 @@ function Settings(){
 			<Flex p='2' direction='column' gap='2' w='100%'>
 				<Delete_Account_Modal is_delete_account_Modalvisible={is_delete_account_Modalvisible} set_is_delete_account_Modalvisible={set_is_delete_account_Modalvisible} client_data={client_data} acc_type='client'/>
 				<Text fontSize='34px' fontWeight='bold'>Welcome,<br/> {client_data?.first_name} {client_data?.last_name}</Text>
-				{client_data.valid_email_status == false || !client_data.valid_email_status?
+				{client_data?.valid_email_status == false || !client_data?.valid_email_status?
 					<Flex direction='column' gap='3' w='100%' bg='' p='2' borderRadius='5'>
 						<Text fontSize='28px'fontWeight='bold' color='#009393'>Verify your email.</Text>
 						<Text >Get access to all features and be an active user on our platform by verifying your email.</Text>
