@@ -28,7 +28,7 @@ function Product(){
 	const get_Data=async(payload)=>{
 		await Get_Product(payload).then((response)=>{
 			set_product_data(response.data)
-			console.log(response.data)
+			//console.log(response.data)
 		})
 	}
 	useEffect(()=>{
@@ -41,7 +41,7 @@ function Product(){
             });
 			router.back()
 		}else{
-			console.log(payload)
+			//console.log(payload)
 			get_Data(payload)
 		}
 	},[id])
@@ -70,7 +70,10 @@ function Product(){
 				<Flex direction='column'>
 					<Text color='#000' fontWeight='bold'>Description</Text>
 					<Text>{product_data?.description_of_product}</Text>
-					<Text mt='4'>{product_data?.chemical_name}</Text>
+				</Flex>
+				<Flex>
+					<Text>chemical_name:</Text>
+					<Text>{product_data?.chemical_name}</Text>
 				</Flex>
 				<Flex direction='column' gap='2' mt='2'>
 					<Link href={product_data?.data_sheet} bg='grey' borderRadius='5' boxShadow='lg' color='#fff' align='center' p='1' isExternal fontSize='20px'>Product Data Sheet</Link>

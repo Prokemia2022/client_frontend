@@ -102,7 +102,7 @@ export default function UserSignIn(){
 							</Button>
 						</InputRightElement>
 					</InputGroup>
-					<Text cursor='pointer' fontSize='14px' color='red'> Forgot Password?</Text>
+					<Text cursor='pointer' fontSize='14px' color='red' onClick={(()=>{router.push('/password_reset')})}> Forgot Password?</Text>
 					<Button bg='#009393' color='#fff' onClick={handleSignIn} disabled={issubmitting? true:false}>Sign In</Button>
 				</Flex>
 			</Flex>

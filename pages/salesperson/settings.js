@@ -40,11 +40,8 @@ function Settings({salesperson_data}){
 		_id : salesperson_data?._id,
 	}
 
-	const Handle_Change_Password=async()=>{
-		alert('success')
-		// await Change_Password(password_payload).then(()=>{
-		// 	alert('success')
-		// })
+const Handle_Change_Password=async()=>{
+		router.push("/password_reset")
 	}
 
 	return(

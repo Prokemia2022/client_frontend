@@ -1,6 +1,6 @@
 //modules import
 import React,{useState,useEffect} from 'react';
-import {Flex,Text,Center,Image} from '@chakra-ui/react';
+import {Flex,Text,Center,Image,useToast} from '@chakra-ui/react';
 //components import
 import Header from '../../components/Header.js';
 //api calls imports
@@ -17,7 +17,8 @@ export default function All(){
 	//utils
 	const router = useRouter();
 	let categ = router.query;
-	console.log(categ)
+	const toast = useToast();
+	//console.log(categ)
 	//apis
 	//states
 	const [industries_data,set_industries_data]=useState([])
@@ -30,7 +31,7 @@ export default function All(){
 		await Get_Industries().then((response)=>{
 			const result = response?.data.filter((item)=> item?.verification_status)
 			set_industries_data(result)
-			//console.log(result)
+			////console.log(result)
 		})
 	}
 	/**fetch technologies */
@@ -38,21 +39,21 @@ export default function All(){
 		await Get_Technologies().then((response)=>{
 			const result = response?.data.filter((item)=> item?.verification_status)
 			set_technologies_data(result)
-			//console.log(response.data)
+			////console.log(response.data)
 		})
 	}
 	/**fetch distributors */
 	const get_Distributors_Data=async()=>{
 		await Get_Distributors().then((response)=>{
 			set_distributors_data(response.data)
-			//console.log(response.data)
+			////console.log(response.data)
 		})
 	}
 	/**fetch manufacturers */
 	const get_Manufacturers_Data=async()=>{
 		await Get_Manufacturers().then((response)=>{
 			set_manufacturers_data(response.data)
-			//console.log(response.data)
+			////console.log(response.data)
 		})
 	}
 	//useEffects
@@ -62,13 +63,18 @@ export default function All(){
 			router.back()
 		}
 		if(categ.category === 'Industries'){
-			//console.log('1')
+			////console.log('1')
 			get_Industries_Data()
 		}else if(categ.category === 'Technologies'){
-			//console.log('2')
+			////console.log('2')
 			get_Technologies_Data()
 		}else{
-			alert('error')
+			toast({
+				title: '',
+				description: `broken link, redirecting`,
+				status: 'info',
+				isClosable: true,
+			});
 			router.back()
 		}
 		get_Distributors_Data()
@@ -81,7 +87,7 @@ export default function All(){
 			<Flex direction='column' gap='2' p='2'>
 				{categ?.category === 'Industries'?
 					<Flex direction='column' gap='2' w='100%'>
-						<Text fontSize='28px' fontFamily='ClearSans-Bold' borderBottom='1px solid #000' >{categ?.category}</Text>
+						<Text fontSize='28px' fontFamily='ClearSans-Bold' >{categ?.category}</Text>
 						<Flex wrap='Wrap' w='100%'>
 							{industries_data?.map((item)=>{
 								return(
@@ -108,54 +114,28 @@ export default function All(){
 						</Flex>
 					</Flex>
 				}
-				<Center>
-					<Flex direction='column'>
-						<Text textAlign='center' fontSize='20px' fontFamily='ClearSans-Bold'>Want to find a specific product?</Text>
-						<Text textAlign='center'>Click to </Text>
-						<Flex cursor='pointer' align='center' color='#009393' justify='center'>
-							<Text >Try our deep search feature</Text>
-							<ArrowForwardIcon/>
-						</Flex>
-					</Flex>
-				</Center>
-				<Text fontSize='24px' fontFamily='ClearSans-Bold' borderBottom='1px solid #000'> Featured Distributors </Text>
-				{distributors_data.map((distributor)=>{
-					return(
-						<Flex direction='column' bg='#eee' p='1' mb='1' key={distributor.id}>
-							<Text mb='0' fontSize='20px' fontFamily='ClearSans-Bold'>{distributor.company_name}</Text>
-							<Text mb='0' >Industry: </Text>
-							<Flex>
-							{distributor.industries?.map((ind)=>{
-								return(
-									<Flex key={ind.id}>
-										<Text mb='0' fontSize='14px'>{ind},</Text>
-									</Flex>
-								)
-							})}
+				<Flex p='2' direction='column' gap='2'>
+					<Text color='#009393' fontSize='24px'> Featured Distributors </Text>
+					{distributors_data?.slice(0,4).map((distributor)=>{
+						return(
+							<Flex direction='column' bg='#eee' p='1' mb='1' key={distributor._id}>
+								<Text mb='0' fontSize='20px'>{distributor.company_name}</Text>
+								<Text mb='0' >{distributor.description}</Text>
+								<Text mb='0' fontSize='14px' color='#009393' cursor='pointer' onClick={(()=>{router.push(`/account/distributor/${distributor._id}`)})}> view &gt;&gt; </Text>
 							</Flex>
-							<Text mb='0' fontSize='14px' color='#009393' cursor='pointer'> click to view &gt;&gt; </Text>
-						</Flex>
-					)
-				})}
-				<Text fontSize='24px' fontFamily='ClearSans-Bold' borderBottom='1px solid #000'> Featured Manufacturers </Text>
-				{manufacturers_data.map((manufacturer)=>{
-					return(
-						<Flex direction='column' bg='#eee' mb='1' p='1' key={manufacturer._id}>
-							<Text mb='0' fontSize='20px' fontFamily='ClearSans-Bold'>{manufacturer.company_name}</Text>
-							<Text mb='0' >Industry: </Text>
-							<Flex wrap='flex'>
-								{manufacturer.industries?.map((ind)=>{
-									return(
-										<Flex key={ind.id}>
-											<Text mb='0' fontSize='14px'>{ind},</Text>
-										</Flex>
-									)
-								})}
+						)
+					})}
+					<Text color='#009393' fontSize='24px'>Featured Manufacturers </Text>
+					{manufacturers_data?.slice(0,4).map((manufacturer)=>{
+						return(
+							<Flex direction='column' bg='#eee' mb='1' p='1' key={manufacturer._id} gap='2'>
+								<Text mb='0' fontSize='20px' fontFamily='ClearSans-Bold'>{manufacturer.company_name}</Text>
+								<Text mb='0' overflow='hidden' h='20px'>{manufacturer.description}</Text>
+								<Text mb='0' fontSize='14px' color='#009393' cursor='pointer' onClick={(()=>{router.push(`/account/manufacturer/${manufacturer._id}`)})}> view &gt;&gt; </Text>
 							</Flex>
-							<Text mb='0' fontSize='14px' color='#009393' cursor='pointer'> click to view &gt;&gt; </Text>
-						</Flex>
-					)
-				})}
+						)
+					})}
+				</Flex>
 				</Flex>
 		</Flex>
 	)

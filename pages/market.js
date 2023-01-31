@@ -1,21 +1,43 @@
 import React,{useState,useEffect}from 'react'
 import {Flex,Image,Text,Input,Button,Select} from '@chakra-ui/react'
+import SearchIcon from '@mui/icons-material/Search';
 import {useRouter} from 'next/router';
 import Header from '../components/Header.js';
 import Get_Products from './api/product/get_products.js'
 
-function ShortOnExpiry(){
+export default function Market(){
 	const router = useRouter();
-	const [products_data,set_products_data]=useState([])
+	const [products_data,set_products_data]=useState([]);
+	const [search_query,set_search_query] = useState('');
+	const [sort,set_sort]=useState('desc')
+
 	useEffect(()=>{
 		get_Products_Data()
 		//console.log(products_data)
-	},[])
+	},[sort,search_query])
 	const get_Products_Data=async()=>{
 		await Get_Products().then((response)=>{
 			const data = response.data
-			const result = data.filter(item => {return item.short_on_expiry})
-			set_products_data(result)
+			//console.log(data)
+			const result = data.filter(item => {return !item.short_on_expiry})
+			const result_data = result?.filter((item) => 	item?.industry.includes(search_query) ||
+															item?.technology.includes(search_query) ||
+															item?.email_of_lister.includes(search_query) ||
+															item?.name_of_product.toLowerCase().includes(search_query) ||
+															item?.brand.toLowerCase().includes(search_query) ||
+															item?.function.toLowerCase().includes(search_query) ||
+															item?.chemical_name.toLowerCase().includes(search_query) ||
+															item?.features_of_product.toLowerCase().includes(search_query) ||
+															item?.manufactured_by.includes(search_query) ||
+															item?.description_of_product.toLowerCase().includes(search_query))		
+			//console.log(result_data)
+			if (sort == 'desc'){
+				const sorted_result = result_data.sort((a, b) => a.name_of_product.localeCompare(b.name_of_product))	
+				set_products_data(sorted_result)
+			}else{
+				const sorted_result = result_data.sort((a, b) => b.name_of_product.localeCompare(a.name_of_product))
+				set_products_data(sorted_result)
+			}
 		})
 	}
 	return(
@@ -24,48 +46,60 @@ function ShortOnExpiry(){
 			<Flex direction='column' gap='2' p='2' w='100%' overflowY='scroll' h='100vh'>
 				<Text fontSize='32px' fontWeight='bold' textDecoration='3px solid #009393 underline'>MarketPlace</Text>
 				<Text>Find products listed by other companies, that are looking to dispatch their excess or products expiring soon.</Text>
-				<Text color='#009393'>Want to list your products?<span style={{fontWeight:'bold',cursor:'pointer'}} onClick={(()=>{router.push('/profile/1')})}>Click here</span>.</Text>
-				<Flex gap='2'>
-					<Select w='150px' placeholder='sort'>
-						<option>A-Z</option>
-						<option>z-A</option>
-						<option>by date</option>
+				<Text color='#009393'>Want to list your products?<span style={{fontWeight:'bold',cursor:'pointer'}} onClick={(()=>{router.push('/product/add_product')})}>Click here</span>.</Text>
+				<Flex gap='2' p='2' align='center'>
+					<Select placeholder='sort' w='100px' onChange={((e)=>{set_sort(e.target.value)})}> 
+						<option value='desc'>A - Z</option>
+						<option value='asc'>Z - A</option>
 					</Select>
-					<Input placeholder='search products by name, industry'/>
+					<Flex gap='2' p='2' flex='1'>
+						<Input placeholder='search Products by Name, Industry, Technology...' bg='#fff' flex='1' onChange={((e)=>{set_search_query(e.target.value)})}/>
+						<Button bg='#009393' color='#fff'><SearchIcon /></Button>
+					</Flex>
 				</Flex>
-				{products_data.map((item)=>{
-					return(
-						<div key={item.id} style={{margin:'5px'}}>
-							<Product router={router} item={item}/>
-						</div>
-					)
-				})}
+				{products_data.length === 0? 
+					<Flex h='60vh' bg='#eee' borderRadius='5' m='2' align='center' justify='center'>
+						<Text fontSize='28px' color='grey'>There are no products listed, that are expiring soon</Text>
+					</Flex>
+				:
+					<Flex wrap='Wrap' h='90vh' overflowY='scroll'>
+						{products_data.map((item)=>{
+							return(
+								<div key={item._id} style={{margin:'5px'}}>
+									<Product router={router} item={item}/>
+								</div>
+							)
+						})}
+					</Flex>
+				}
 			</Flex>
 		</Flex>
 	)
 }
 
-export default ShortOnExpiry;
-
 const Product=({router,item})=>{
 	return(
-		<Flex boxShadow='dark-lg' bg='#fff' borderRadius='5px' direction='column' m='1' w='45%' position='relative' h='300px'>
+		<Flex boxShadow='lg' bg='#fff' borderRadius='5px' direction='column' m='2' w='350px' position='relative' h='350px' justify='space-between'>
 			<Flex p='2' direction='column' w='100%' gap='2'>
-				<Text color='#009393' fontWeight='bold' fontSize="32px">{item.name_of_product}</Text>
+				<Text color='#009393' fontWeight='bold' fontSize="24px" w='100%'>{item?.name_of_product}</Text>
 				<Flex direction='column'>
 					<Text fontWeight='bold'>Industry:</Text>
-					<Text>{item.industry}</Text>
+					<Text>{item?.industry}</Text>
 				</Flex>
-				<Flex gap='2' direction='column'>
+				<Flex direction='column'>
 					<Text fontWeight='bold'>Technology:</Text>
-					<Text>{item.technology}</Text>
+					<Text>{item?.technology}</Text>
 				</Flex>
-				<Flex gap='2' direction='column'>
-					<Text fontWeight='bold'>Expired by Date:</Text>
-					<Text>{item.manufactured_date}</Text>
+				<Flex direction='column'>
+					<Text fontWeight='bold'>Brand:</Text>
+					<Text>{item?.brand}</Text>
 				</Flex>
-				<Text fontWeight='bold' p='1' cursor='pointer' onClick={(()=>{router.push(`/product/${item._id}`)})} border='1px solid #009393'>View product</Text>
+				<Flex direction='column'>
+					<Text fontWeight='bold'>Manufactured by:</Text>
+					<Text>{item?.manufactured_by}</Text>
+				</Flex>
 			</Flex>
+			<Button m='1' color='#fff' bg='#009393' p='1' cursor='pointer' onClick={(()=>{router.push(`/product/${item?._id}`)})} border='1px solid #009393'>View product</Button>
 		</Flex>
 	)
 }

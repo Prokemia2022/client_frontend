@@ -25,11 +25,11 @@ import jwt_decode from "jwt-decode";
 function QuotationModal({isquotationModalvisible,setisquotationModalvisible,product_data}){
     const { isOpen, onOpen, onClose } = useDisclosure();
     
-    //console.log(isaddingreviewgModalvisible);
+    ////console.log(isaddingreviewgModalvisible);
 
     const HandleModalOpen=()=>{
       if(isquotationModalvisible !== true){
-        //console.log('damn')
+        ////console.log('damn')
       }else{
 
         onOpen();
@@ -48,7 +48,7 @@ function QuotationModal({isquotationModalvisible,setisquotationModalvisible,prod
   useEffect(()=>{
     if(token){
       const details = jwt_decode(token)
-      console.log(details)
+//      console.log(details)
       setuser(details?.email)
     }
   },[token])
@@ -70,9 +70,9 @@ function QuotationModal({isquotationModalvisible,setisquotationModalvisible,prod
       await axios.post("https://prokemiaemailsmsserver-production.up.railway.app/api/quotation_email",payload).then(()=>{
         alert("sent")
       }).catch((err)=>{
-        console.log(err)
+//        console.log(err)
       })
-      console.log(payload)
+//      console.log(payload)
     }
     return (
       <>

@@ -10,7 +10,7 @@ import Verify_Distributor_Account from '../../api/auth/distributor/verify_distri
 import Verify_Manufacturer_Account from '../../api/auth/manufacturer/verify_manufacturer_account.js'
 import Verify_SalesPerson_Account from '../../api/auth/salesperson/verify_salesperson_account.js'
 
-export default function Valiating_Email_Account(){
+export default function Validating_Email_Account(){
 	const cookies = new Cookies();
 	const toast = useToast();
   	const router = useRouter();
@@ -22,8 +22,8 @@ export default function Valiating_Email_Account(){
   		set_code(retrieved_verification_code)
   	},[])
   	const [active,set_active]=useState(false);
-  	const [code,set_code]=useState(false);
-  	const [confirmation_code,set_confirmation_code]=useState(false);
+  	const [code,set_code]=useState();
+  	const [confirmation_code,set_confirmation_code]=useState();
 
   	const Compare_Codes=()=>{
   		if (code === confirmation_code){
@@ -32,7 +32,12 @@ export default function Valiating_Email_Account(){
   			})
   		}else{
   			console.log(confirmation_code)
-  			alert("Wrong Code")
+  			toast({
+          title: '',
+          description: `wrong code `,
+          status: 'error',
+          isClosable: true,
+        });
   		}
   	}
 

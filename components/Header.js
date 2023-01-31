@@ -47,7 +47,7 @@ function Header({products_data,distributors_data,manufacturers_data,industries_d
 	useEffect(()=>{
 		if(token){
 			const details = jwt_decode(token)
-			console.log(details)
+			////console.log(details)
 			setsignedin(true)
 			set_acc_type(details?.acc_type)
 			setuser(details?.email)
@@ -57,7 +57,7 @@ function Header({products_data,distributors_data,manufacturers_data,industries_d
 				email_of_company : details?.email,
 				_id: uid
 			}
-			console.log(user)
+			////console.log(user)
 			handle_Fetch_Profile_Photo(payload)
 		}else{
 			setsignedin(false)
@@ -75,26 +75,26 @@ function Header({products_data,distributors_data,manufacturers_data,industries_d
 			router.push(`/manufacturer/${uid}`)
 	}
 	const handle_Fetch_Profile_Photo=async(payload)=>{
-		console.log(payload,acc_type)
+		////console.log(payload,acc_type)
 		if(acc_type === 'sales')
 			await Get_Salesperson(payload).then((res)=>{
 				set_profile_photo_url(res.data?.profile_photo_url)
-				console.log(res.data?.profile_photo_url)
+				////console.log(res.data?.profile_photo_url)
 			})
 		if(acc_type === 'client')
 			await Get_Client(payload).then((res)=>{
 				set_profile_photo_url(res.data?.profile_photo_url)
-				console.log(res.data)
+				////console.log(res.data)
 			})
 		if(acc_type === 'distributor')
 			await Get_Distributor(payload).then((res)=>{
 				set_profile_photo_url(res.data?.profile_photo_url)
-				console.log(res.data?.profile_photo_url)
+				////console.log(res.data?.profile_photo_url)
 			})
 		if(acc_type === 'manufacturer')
 			await Get_Manufacturer(payload).then((res)=>{
 				set_profile_photo_url(res.data?.profile_photo_url)
-				console.log(res.data?.profile_photo_url)
+				////console.log(res.data?.profile_photo_url)
 			})
 	}
 
@@ -153,6 +153,14 @@ function Header({products_data,distributors_data,manufacturers_data,industries_d
 								</Flex>
 								:null
 							}
+							{acc_type == 'distributor' || acc_type == 'manufacturer'?
+								null
+								:
+								<Flex mt='2' direction='column' p='2' gap='2' onClick={(()=>{router.push('/account/2')})}>
+									<Text mb='0' >Sell and Market your Products</Text>
+									<Divider/>
+								</Flex>
+							}
 							{navigation.map((nav)=>{
 								return(
 									<Flex mt='2' key={nav.id} direction='column' p='2' gap='2' onClick={(()=>{router.push(`${nav.link}`)})}>
@@ -182,18 +190,18 @@ const navigation=[
 		title:'Explore industries',
 		link:`/Industries/all`
 	},
-	{
-		id:2,
-		title:'Sell and Market your Products',
-		link:'/account/2'
-	},
+	// {
+	// 	id:2,
+	// 	title:'Sell and Market your Products',
+	// 	link:'/account/2'
+	// },
 	// {
 	// 	id:3,
 	// 	title:'Find Experts/Consultants',<FavoriteBorderIcon onClick={(()=>{router.push('/favorite')})}/> : 
 	// 	link:'/experts'
 	// },	
 	{
-		id:3,
+		id:2,
 		title:'Marketplace',
 		link:'/market'
 	},

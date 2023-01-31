@@ -34,7 +34,7 @@ function _Home(){
 			const data = response?.data
 			const result_data = data.filter((item)=> item.verification_status)
 			set_products_data(result_data)
-			console.log(result_data)
+			//console.log(result_data)
 		})
 	}
 	const get_Industries_Data=async()=>{
@@ -42,7 +42,7 @@ function _Home(){
 			const data = response?.data
 			const result_data = data.filter((item)=> item.verification_status)
 			set_industries_data(result_data)
-			console.log(result_data)
+			//console.log(result_data)
 		})
 	}
 	const get_Technologies_Data=async()=>{
@@ -50,7 +50,7 @@ function _Home(){
 			const data = response?.data
 			const result_data = data.filter((item)=> item.verification_status)
 			set_technologies_data(result_data)
-			console.log(result_data)
+			//console.log(result_data)
 		})
 	}
 	const get_Distributors_Data=async()=>{
@@ -58,7 +58,7 @@ function _Home(){
 			const data = response?.data
 			const result_data = data.filter((item)=> item.verification_status)
 			set_distributors_data(result_data)
-			console.log(result_data)
+			//console.log(result_data)
 		})
 	}
 	const get_Manufacturers_Data=async()=>{
@@ -66,7 +66,7 @@ function _Home(){
 			const data = response?.data
 			const result_data = data.filter((item)=> item.verification_status)
 			set_manufacturers_data(result_data)
-			console.log(result_data)
+			//console.log(result_data)
 		})
 	}
 	return(
@@ -74,21 +74,20 @@ function _Home(){
 			<Header products_data={products_data} distributors_data={distributors_data} manufacturers_data={manufacturers_data} industries_data={industries_data} technologies_data={technologies_data}/>
 			<Image h='400px' w='100vw' objectFit='cover' src='../2.png' alt='next' />
 			<Flex p='2' direction='column'>
-				<Flex mt='-350px' direction='column' gap='3' w='100%' p='3'>
+				<Flex mt='-350px' direction='column' gap='3' w='100%' p='2'>
 						<Text mb='0' fontFamily='ClearSans-Bold' fontSize='36px' >The Marketplace for ingredients,Polymers and Chemistry.</Text>
 						<Text mb='0' cursor='pointer' w='80%'>Search, Learn, Engage ,sample , quote and purchase from thousands of distributors - all in one platform.Access all easily.</Text>
-						
 				</Flex>			
 				<Flex direction='column' p='2'>
 					<Text mb='0' fontSize='18px'>Do not know what you are looking for?</Text>
 					<Text mb='0' fontSize='16px' onClick={(()=>{router.push('/experts')})} color='#009393' cursor='pointer'>Click to ask our Experts</Text>
 				</Flex>
 				<Flex direction='column' gap='2' w='100%'>
-					<Text mb='0' borderBottom='2px solid #000' fontFamily='ClearSans-Bold' fontSize='24px'>Industries</Text>
+					<Text mb='0' fontFamily='ClearSans-Bold' fontSize='24px'>Industries</Text>
 					<Flex wrap='Wrap' direction='' w='100%'>
 						{industries_data?.slice(0,6).map((item)=>{
 							return(
-								<Flex key={item.id} w='170px' h='225px' m='1' position='relative' onClick={(()=>{router.push(`/products/${item.title}`)})}>
+								<Flex cursor='pointer' key={item._id} w='170px' h='225px' m='1' position='relative' onClick={(()=>{router.push(`/products/${item.title}`)})}>
 									<Image borderRadius='10px' objectFit='cover' src={item?.cover_image == ''? "../Pro.png":item?.cover_image} alt='photo' boxShadow='dark-lg' w='100%'/>
 									<Text bg='rgb(192,192,192,0.6)' p='1' m='2' mb='0' borderRadius='5' position='absolute' top='10px' left='10px' fontSize='20px' color='#000' fontFamily='ClearSans-Bold'>{item.title}</Text>
 								</Flex>
@@ -98,11 +97,11 @@ function _Home(){
 					<Button bg='#009393' color='#fff' onClick={(()=>{router.push(`/Industries/all`)})}>Explore All industries</Button>
 				</Flex>
 				<Flex direction='column' gap='2' w='100%'>
-					<Text mb='0' borderBottom='2px solid #000' fontFamily='ClearSans-Bold' fontSize='24px'>Technologies</Text>
+					<Text mb='0' fontFamily='ClearSans-Bold' fontSize='24px'>Technologies</Text>
 					<Flex wrap='Wrap' direction='' w='100%'>
 						{technologies_data?.slice(0,8).map((item)=>{
 							return(
-								<Flex key={item.id} w='170px' h='225px' m='1' position='relative'>
+								<Flex cursor='pointer' key={item._id} w='170px' h='225px' m='1' position='relative' onClick={(()=>{router.push(`/products/${item.title}`)})}>
 									<Image borderRadius='10px' objectFit='cover' src={item?.cover_image == ''? "../Pro.png":item?.cover_image} alt='photo' boxShadow='dark-lg' w='100%'/>
 									<Text bg='rgb(192,192,192,0.6)' p='1' m='2' mb='0' borderRadius='5' position='absolute' top='10px' left='10px' fontSize='20px' color='#000' fontFamily='ClearSans-Bold'>{item.title}</Text>
 								</Flex>
@@ -111,25 +110,25 @@ function _Home(){
 					</Flex>
 					<Button bg='#009393' color='#fff' onClick={(()=>{router.push(`/Technologies/all`)})}>Explore All Technologies</Button>
 				</Flex>
-				<Text fontSize='24px' fontFamily='ClearSans-Bold' borderBottom='1px solid #000'>Featured Products</Text>
+				<Text mt='4' fontSize='24px' fontFamily='ClearSans-Bold'>Featured Products</Text>
 				{products_data?.slice(0,4).map((content)=>{
 					return(
-						<div key={content.id} style={{margin:'5px'}} >
+						<div key={content._id} style={{margin:'5px'}} >
 							<ProductItem content={content}/>
 						</div>
 					)
 				})}
-				<Text fontSize='24px' fontFamily='ClearSans-Bold' borderBottom='1px solid #000'>Top Distributors </Text>
+				<Text  mt='4' fontSize='24px' fontFamily='ClearSans-Bold'>Top Distributors </Text>
 				{distributors_data?.slice(0,4).map((distributor)=>{
 					return(
-						<Flex direction='column' bg='#eee' p='1' mb='1' key={distributor.id}>
+						<Flex direction='column' bg='#eee' p='1' mb='1' key={distributor._id}>
 							<Text mb='0' fontSize='20px' fontFamily='ClearSans-Bold'>{distributor.company_name}</Text>
 							<Text mb='0' >{distributor.description}</Text>
 							<Text mb='0' fontSize='14px' color='#009393' cursor='pointer' onClick={(()=>{router.push(`/account/distributor/${distributor._id}`)})}> view &gt;&gt; </Text>
 						</Flex>
 					)
 				})}
-				<Text fontSize='24px' fontFamily='ClearSans-Bold' borderBottom='1px solid #000'>Top Manufacturers </Text>
+				<Text  mt='4' fontSize='24px' fontFamily='ClearSans-Bold'>Top Manufacturers </Text>
 				{manufacturers_data?.slice(0,4).map((manufacturer)=>{
 					return(
 						<Flex direction='column' bg='#eee' mb='1' p='1' key={manufacturer._id} gap='2'>
@@ -162,30 +161,6 @@ function _Home(){
 
 export default _Home;
 
-const Filter=()=>{
-	return(
-		<Flex className={styles.filterbody} direction='column' gap='2'>
-			<Flex direction='column' gap='2'>
-				<Text mb='0' fontFamily='ClearSans-Bold'>Industry</Text>
-				<Select variant='filled' placeholder='Select Industry'>
-		          <option value='personalcare'>Personal Care</option>
-		          <option value='hi&i'>H I & I</option>
-		          <option value='building&construction'>Building and Construction</option>
-		          <option value='food&nutrition'>Food and Nutrition</option>
-		        </Select>
-			</Flex>
-			<Flex direction='column' gap='3'>
-				<Text mb='0' fontFamily='ClearSans-Bold'>Technology</Text>
-				<Select variant='filled' placeholder='Select Technology'>
-		          <option value='pharmaceuticals'>Pharmaceuticals</option>
-		          <option value='cosmetics'>Cosmetics</option>
-		        </Select>
-			</Flex>
-			<Button bg='#009393' color='#fff' fontFamily='ClearSans-Bold'>Search Product</Button>
-		</Flex>
-	)
-}
-
 const numbers=[
 	{
 		id:'1',
@@ -206,44 +181,16 @@ const numbers=[
 		icon:<CloudDownloadIcon/>,
 	},
 ]
-const Categories=({item})=>{
-	const router = useRouter();
-	return(
-		<Flex direction='column' gap='2' w='100%'>
-			<Text mb='0' borderBottom='2px solid #000' fontFamily='ClearSans-Bold' fontSize='24px'>{item.title}</Text>
-			<Flex wrap='Wrap'>
-				{item.contents.map((content)=>{
-					return(
-						<Flex key={content.id} >
-							<Item content={content} item={item}/>
-						</Flex>
-					)
-				})}
-			</Flex>
-			<Button bg='#009393' color='#fff' onClick={(()=>{router.push(`/${item.title}/all`)})}>Explore More {item.title}</Button>
-		</Flex>
-	)
-}
-
-const Item=({content,item})=>{
-	const router = useRouter();
-	return(
-		<Flex w='170px' h='225px' m='1' position='relative' onClick={(()=>{router.push(`/${item.title}/${content.name}`)})}>
-			<Image borderRadius='10px' objectFit='cover' src={content.img} alt='next'/>
-			<Text mb='0' position='absolute' top='10px' left='10px' fontSize='20px' color='#fff' fontFamily='ClearSans-Bold'>{content.name}</Text>
-		</Flex>
-	)
-}
 
 const Promo=({router})=>{
 	return(
 		<Flex bg='#000' p='2' borderRadius='5'>
 			<Flex className={styles.promotext} p='2' direction='column' color='#fff' gap='3'>
 				<Text mb='0'  fontSize='48px'>Want to Sell Products?</Text>
-				<Text mb='0'  >Register as a Manufacturer or Distributor to start marketing your products in Africa on Prokemia</Text>
+				<Text mb='0'  >Register as a Manufacturer or Distributor to start marketing your products in Africa.</Text>
 				<Text  mb='0' >Boost your sales and access a wide market for your company or business.</Text>
 				<Button bg='#000' border='1px solid #fff'>Request a demo <PlayArrowIcon /></Button>
-				<Button bg='#009393' color='#fff' borderRadius='0' onClick={(()=>{router.push('/account')})}>Create an Account</Button>
+				<Button bg='#009393' color='#fff' borderRadius='0' onClick={(()=>{router.push('/account/1')})}>Create an Account</Button>
 			</Flex>
 		</Flex>
 	)

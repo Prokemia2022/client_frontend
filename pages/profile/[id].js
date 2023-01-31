@@ -43,10 +43,7 @@ function Settings(){
 	const handleClick = () => setShow(!show);
 
 	const Handle_Change_Password=async()=>{
-		alert('success')
-		// await Change_Password(password_payload).then(()=>{
-		// 	alert('success')
-		// })
+		router.push("/password_reset")
 	}
 	//api calls'
 	

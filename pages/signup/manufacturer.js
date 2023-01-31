@@ -35,7 +35,17 @@ export default function ManufacturerSignUp(){
 	//functions
 	const Verify_Inputs=()=>{
 		if (password && company_name && email_of_company){
-			handle_Sign_Up()
+			if (!email_of_company.match(validRegex)){
+				toast({
+					title: '',
+					description: 'Use a valid email format e.g example@company.com',
+					status: 'info',
+					isClosable: true,
+				});
+				return;
+			}else{
+				handle_Sign_Up()
+			}
 		}else if(!password || !company_name || !email_of_company){
 			toast({
 				title: '',

@@ -25,11 +25,11 @@ import jwt_decode from "jwt-decode";
 function SampleModal({issampleModalvisible,setissampleModalvisible,product_data}){
     const { isOpen, onOpen, onClose } = useDisclosure();
     
-    //console.log(isaddingreviewgModalvisible);
+    ////console.log(isaddingreviewgModalvisible);
 
     const HandleModalOpen=()=>{
       if(issampleModalvisible !== true){
-        //console.log('damn')
+        ////console.log('damn')
       }else{
 
         onOpen();
@@ -48,7 +48,7 @@ function SampleModal({issampleModalvisible,setissampleModalvisible,product_data}
   useEffect(()=>{
     if(token){
       const details = jwt_decode(token)
-      console.log(details)
+      //console.log(details)
       setuser(details?.email)
     }
   },[token])
@@ -70,9 +70,9 @@ function SampleModal({issampleModalvisible,setissampleModalvisible,product_data}
       await axios.post("https://prokemiaemailsmsserver-production.up.railway.app/api/sample_email",payload).then(()=>{
         alert("sent")
       }).catch((err)=>{
-        console.log(err)
+        //console.log(err)
       })
-      console.log(payload)
+      //console.log(payload)
     }
 
     return (
@@ -81,8 +81,8 @@ function SampleModal({issampleModalvisible,setissampleModalvisible,product_data}
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>
-            <Text>Request Quotation</Text>
-            <Text fontSize='14px'>Please fill out the form below to prepare your quote</Text>
+            <Text>Request Sample</Text>
+            <Text fontSize='14px'>Please fill out the form below to prepare your sample</Text>
           </ModalHeader>
           <ModalCloseButton />
           <ModalBody>

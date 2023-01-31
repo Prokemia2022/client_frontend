@@ -34,11 +34,22 @@ export default function DistributorSignUp(){
   		email_of_company,
   		acc_type: 'distributor'
   	}
+  	const validRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
 	//functions
 	const Verify_Inputs=()=>{
 		set_issubmitting(true)
 		if (password && company_name && email_of_company){
-			handle_Sign_Up()
+			if (!email_of_company.match(validRegex)){
+				toast({
+					title: '',
+					description: 'Use a valid email format e.g example@company.com',
+					status: 'info',
+					isClosable: true,
+				});
+				return;
+			}else{
+				handle_Sign_Up()
+			}
 		}else if(!password || !company_name || !email_of_company){
 			toast({
 				title: '',

@@ -17,7 +17,7 @@ function Explore(){
 	//utils
 	const router = useRouter();
 	const categ = router.query; //gets the category object in the query i.e industry/technology
-	console.log(categ?.id)
+	//console.log(categ?.id)
 	const category_title = categ?.id
 	//states
 	const [products_data,set_products_data]=useState([]);
@@ -35,7 +35,7 @@ function Explore(){
 		await Get_Products().then((response)=>{
 			const data = response?.data
 			const result = data.filter((item)=> item?.industry.includes(categ?.id) || item?.technology.includes(categ?.id))
-			//console.log(response.data)
+			////console.log(response.data)
 			set_products_data(result)
 		})
 	}
@@ -44,32 +44,32 @@ function Explore(){
 		await Get_Manufacturers().then((response)=>{
 			// const res
 			set_manufacturers_data(response?.data)
-			//console.log(response.data)
+			////console.log(response.data)
 		})
 	}
 	/**fetch distributors */
 	const get_Distributors_Data=async()=>{
 		await Get_Distributors().then((response)=>{
 			set_distributors_data(response.data)
-			//console.log(response.data)
+			////console.log(response.data)
 		})
 	}
 	const get_Industry_data=async()=>{
 		await Get_Industries().then((res)=>{
-			console.log(res.data)
+			//console.log(res.data)
 			const industry = res.data
-			const filtered_result = industry.filter((item)=> item?.title?.toLowerCase().includes(category_title.toLowerCase()))
+			const filtered_result = industry.filter((item)=> item?.title?.toLowerCase().includes(category_title?.toLowerCase()))
 			set_industry_data(...filtered_result)
-			console.log(...filtered_result)
+			//console.log(...filtered_result)
 		})
 	}
 	const get_Technology_data=async()=>{
 		await Get_Technologies().then((res)=>{
-			console.log(res.data)
+			//console.log(res.data)
 			const technology = res.data
-			const {filtered_result} = technology.filter((item)=> item?.title?.toLowerCase().includes(category_title.toLowerCase()))
+			const {filtered_result} = technology.filter((item)=> item?.title?.toLowerCase().includes(category_title?.toLowerCase()))
 			set_technology_data(filtered_result)
-			console.log(filtered_result)
+			//console.log(filtered_result)
 		})
 	}
 	//useEffects
@@ -80,13 +80,13 @@ function Explore(){
 		get_Technology_data()
 		get_Industry_data()
 	},[categ])
-	//console.log(industry_data)
+	////console.log(industry_data)
 	return(
 		<Flex direction='column'>
 			<Header/>
 			<Flex p='2' direction='column' gap='2'>
-				<Flex borderBottom='1px solid #000' direction='column'>
-					<Text fontSize='28px' fontFamily='ClearSans-Bold'>{category_title}</Text>
+				<Flex direction='column'>
+					<Text fontSize='32px' fontFamily='ClearSans-Bold'>{category_title}</Text>
 					<Text>{industry_data == undefined? technology_data?.description : industry_data?.description}</Text>
 				</Flex>
 				{products_data?.length === 0?
@@ -110,17 +110,17 @@ function Explore(){
 				}
 			</Flex>
 			<Flex p='2' direction='column' gap='2'>
-				<Text fontSize='24px' fontFamily='ClearSans-Bold' borderBottom='1px solid #000'> Featured Distributors </Text>
+				<Text color='#009393' fontSize='24px'> Featured Distributors </Text>
 				{distributors_data?.slice(0,4).map((distributor)=>{
 					return(
-						<Flex direction='column' bg='#eee' p='1' mb='1' key={distributor.id}>
-							<Text mb='0' fontSize='20px' fontFamily='ClearSans-Bold'>{distributor.company_name}</Text>
+						<Flex direction='column' bg='#eee' p='1' mb='1' key={distributor._id}>
+							<Text mb='0' fontSize='20px'>{distributor.company_name}</Text>
 							<Text mb='0' >{distributor.description}</Text>
 							<Text mb='0' fontSize='14px' color='#009393' cursor='pointer' onClick={(()=>{router.push(`/account/distributor/${distributor._id}`)})}> view &gt;&gt; </Text>
 						</Flex>
 					)
 				})}
-				<Text fontSize='24px' fontFamily='ClearSans-Bold' borderBottom='1px solid #000'>Featured Manufacturers </Text>
+				<Text color='#009393' fontSize='24px'>Featured Manufacturers </Text>
 				{manufacturers_data?.slice(0,4).map((manufacturer)=>{
 					return(
 						<Flex direction='column' bg='#eee' mb='1' p='1' key={manufacturer._id} gap='2'>

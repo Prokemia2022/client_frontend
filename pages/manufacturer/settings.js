@@ -41,10 +41,7 @@ function Settings({manufacturer_data}){
 	}
 
 	const Handle_Change_Password=async()=>{
-		alert('success')
-		// await Change_Password(password_payload).then(()=>{
-		// 	alert('success')
-		// })
+		router.push("/password_reset")
 	}
 
 	return(
