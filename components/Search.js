@@ -27,7 +27,6 @@ export default function Search({setsearchbaractive}){
 		get_Technologies_Data()
 		get_Distributors_Data()
 		get_Manufacturers_Data()
-
 	},[search_value])
 
 	const get_Products_Data=async()=>{
@@ -39,9 +38,10 @@ export default function Search({setsearchbaractive}){
 														item.function?.toLowerCase().includes(search_value.toLowerCase()) ||
 														item.chemical_name?.toLowerCase().includes(search_value.toLowerCase()) ||
 														item.email_of_lister?.toLowerCase().includes(search_value.toLowerCase()) ||
+														item.manufactured_by?.toLowerCase().includes(search_value.toLowerCase()) ||
 														item.technology?.toLowerCase().includes(search_value.toLowerCase()))
 			set_products_data(result)
-			console.log(result)
+			//console.log(result)
 		})
 	}
 	const get_Industries_Data=async()=>{
@@ -50,7 +50,7 @@ export default function Search({setsearchbaractive}){
 			const result_data = data.filter((item)=> item.verification_status)
 			const result = result_data.filter(item => item.title?.toLowerCase().includes(search_value) || item.title?.includes(search_value))
 			set_industries_data(result)
-			console.log(result)
+			//console.log(result)
 		})
 	}
 	const get_Technologies_Data=async()=>{
@@ -59,7 +59,7 @@ export default function Search({setsearchbaractive}){
 			const result_data = data.filter((item)=> item.verification_status)
 			const result = result_data.filter(item => item.title?.toLowerCase().includes(search_value) || item.title?.includes(search_value))
 			set_technologies_data(result)
-			console.log(result)
+			//console.log(result)
 		})
 	}
 	const get_Distributors_Data=async()=>{
@@ -68,7 +68,7 @@ export default function Search({setsearchbaractive}){
 			const result_data = data.filter((item)=> item.verification_status)
 			const result = result_data.filter(item => item.company_name?.toLowerCase().includes(search_value) || item.company_name?.includes(search_value))
 			set_distributors_data(result)
-			console.log(result)
+			//console.log(result)
 		})
 	}
 	const get_Manufacturers_Data=async()=>{
@@ -77,7 +77,7 @@ export default function Search({setsearchbaractive}){
 			const result_data = data.filter((item)=> item.verification_status)
 			const result = result_data.filter(item => item.company_name?.toLowerCase().includes(search_value) || item.company_name?.includes(search_value))
 			set_manufacturers_data(result)
-			console.log(result)
+			//console.log(result)
 		})
 	}
 	return(
@@ -94,7 +94,7 @@ export default function Search({setsearchbaractive}){
 }
 
 const Result=({products_data,distributors_data,manufacturers_data,industries_data,technologies_data,set_active,setsearchbaractive})=>{
-	console.log(distributors_data,products_data,manufacturers_data,technologies_data,industries_data)
+	//console.log(distributors_data,products_data,manufacturers_data,technologies_data,industries_data)
 	const router = useRouter()
 	return(
 		<Flex className={styles.ResultsBar} direction='column' bg='#eee' p='2' borderRadius='10' boxShadow='dark-lg' overflowY='scroll' h='50vh'>
@@ -148,7 +148,7 @@ const Result=({products_data,distributors_data,manufacturers_data,industries_dat
 					{manufacturers_data?.slice(0,2).map((item)=>{
 						return(
 							<Flex key={item._id} position='relative' gap='2' align='center' bg='#fff' p='1' borderRadius='5' boxShadow='lg' onClick={(()=>{router.push(`/account/manufacturer/${item?._id}`)})}>
-								<Image w='50px' h='50px' borderRadius='10px' objectFit='cover' src={item?.profile_photo_url == ''? '../Pro.png' : item?.profile_photo_url} alt='next'/>
+								<Image w='50px' h='50px' borderRadius='10px' objectFit='cover' src={item?.profile_photo_url == ''? '../../Pro.png' : item?.profile_photo_url} alt='next'/>
 								<Flex direction='column'>
 									<Text mb='0' fontSize='16px' fontFamily='ClearSans-Bold' color='#009393'>{item.company_name}</Text>
 									<Text fontSize='14px' w='90%' p='' h='40px' overflow='hidden' whiteSpace='no-wrap'>{item.description}</Text>

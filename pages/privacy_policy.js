@@ -1,8 +1,8 @@
 import React from 'react'
-import {Flex,Text,Heading} from '@chakra-ui/react'
+import {Flex,Text,Heading,Link} from '@chakra-ui/react'
 import Header from '../components/Header.js';
 
-function TC(){
+export default function privacy_policy(){
 	return(
 		<Flex direction='column'>
 			<Header/>
@@ -10,9 +10,9 @@ function TC(){
 			<Heading textAlign='center'>PRIVACY POLICY</Heading>
 
 			<Text>We at Prokem Specialty (ProKemia) respect your privacy. This Privacy Policy is established to inform the users of ProKemia (Prokem Specialty, ProKemia, “the Company” “We”, “Us”) Website, App and services of collection, processing, sharing and storing of your personal data.</Text>
-			<Text>TWe are committed to conducting our business in accordance with these principles in order to ensure that the privacy of personal information is protected and maintained. Unless stated otherwise, this Privacy Policy applies when you visit or use the Company website, App or services (our platforms). By accessing the platforms, you agree to be bound by the terms of this Privacy Policy</Text>
+			<Text>We are committed to conducting our business in accordance with these principles in order to ensure that the privacy of personal information is protected and maintained. Unless stated otherwise, this Privacy Policy applies when you visit or use the Company website, App or services (our platforms). By accessing the platforms, you agree to be bound by the terms of this Privacy Policy</Text>
 			<Text>This statement should be read together with the applicable data protection laws and regulations and the Terms and Conditions of ProKemia’s services and App. </Text>
-			<Text fontWeight='bold'>UPDATE MESSAGE: This Terms & Conditions Policy was last updated on 5th October 2022.</Text>
+			<Text fontWeight='bold'>UPDATE MESSAGE: This Terms & Conditions Policy was last updated on 11th February 2023.</Text>
 
 			<Text mt='1' fontWeight='bold' fontSize='20px'> Our Responsibilities</Text>
 			<Text>It is the policy of The Company to maintain an environment that promotes ethical and responsible conduct in all online network activities. The Company recognizes its legal and ethical obligation to protect your personal information and Data in that regard. To this end, The Company reserves the right and recognizes its obligation to:</Text>
@@ -69,13 +69,11 @@ function TC(){
 			<Text>The amendments to the Privacy Policy shall take effect from the date of publication on The Company’s website. You will be deemed to have been made aware of, will be subject to, and will be deemed to have accepted the changes in any revised Privacy Policy after the date such revised Privacy Policy is published on the Company website or when a notice is served through the app or by email.</Text>
 			
 			<Text mt='1' fontWeight='bold' fontSize='20px'>Contact Us</Text>
-			<Text>Please send your feedback, comments, and requests for technical support by email: app@prokemia.com or  +254 20 2525265</Text>
+			<Text>Please send your feedback, comments, and requests for technical support by email: <Link color='#009393' href={`mailto: help@prokemia.com`} isExternal>help@prokemia.com</Link> or  +254 20 2525265</Text>
 		</Flex>
 		</Flex>
 	)
 }
-
-export default TC;
 
 const responsibility=
 [

@@ -1,5 +1,5 @@
 import React,{useState} from 'react';
-import {Flex,Center,Text,Button,Input,InputGroup,InputRightElement,Image,Textarea} from '@chakra-ui/react';
+import {Flex,Center,Text,Button,Input,InputGroup,InputRightElement,Image,Textarea,useToast} from '@chakra-ui/react';
 import styles from '../styles/Home.module.css';
 import {Room,Visibility,VisibilityOff} from '@mui/icons-material';
 import {useRouter} from 'next/router';
@@ -10,7 +10,8 @@ import StarRateIcon from '@mui/icons-material/StarRate';
 export default function ClientSignUp(){
 	const [active, setActive] = useState(false);
   	const router = useRouter();
-
+  	const toast = useToast();
+  	
   	const [name,setname]=useState('');
   	const [email,setemail]=useState('');
   	const [feedback,setfeedback]=useState('');
@@ -26,12 +27,35 @@ export default function ClientSignUp(){
 	}
 
 	const Handle_Create_Feedback=async()=>{
-		console.log(payload)
-		await Create_Feedback(payload).then((response)=>{
-			alert('success')
-			set_rate(5)
-			setActive(false)
-		})
+		const validRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+  		if (!email.match(validRegex)){
+  			toast({
+				title: '',
+				description: 'Use a valid email format e.g example@company.com',
+				status: 'info',
+				isClosable: true,
+			});
+			return;
+  		}else{
+	  		console.log(payload)
+			await Create_Feedback(payload).then((response)=>{
+				toast({
+		          title: '',
+		          description: `your feeback has been submitted`,
+		          status: 'info',
+		          isClosable: true,
+		        });
+		        set_rate(5)
+				setActive(false)
+			}).catch((err)=>{
+				toast({
+		          title: '',
+		          description: `Could not submit your feedback. Try again.`,
+		          status: 'error',
+		          isClosable: true,
+		        });
+			})
+	  	}
 	}
 	return(
 		<Flex direction='column'>

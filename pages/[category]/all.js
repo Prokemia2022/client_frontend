@@ -45,14 +45,18 @@ export default function All(){
 	/**fetch distributors */
 	const get_Distributors_Data=async()=>{
 		await Get_Distributors().then((response)=>{
-			set_distributors_data(response.data)
+			const data = response?.data
+			const result_data = data.filter((item)=> item?.verification_status && !item?.suspension_status)
+			set_distributors_data(result_data)
 			////console.log(response.data)
 		})
 	}
 	/**fetch manufacturers */
 	const get_Manufacturers_Data=async()=>{
 		await Get_Manufacturers().then((response)=>{
-			set_manufacturers_data(response.data)
+			const data = response?.data
+			const result_data = data.filter((item)=> item?.verification_status && !item?.suspension_status)
+			set_manufacturers_data(result_data)
 			////console.log(response.data)
 		})
 	}

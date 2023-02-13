@@ -142,7 +142,8 @@ export default function UploadFile({prod_payload,handle_add_new_product,set_islo
 				cookies.remove('safety_data_sheet_url',{ path: '/' });
 				cookies.remove('formulation_document_url',{ path: '/' });
 			}).catch((err)=>{
-				alert('could not create a new product')
+				console.log(err)
+				alert(err.response.data)
 			    set_isloading(false)
 			    router.back()
 			})

@@ -48,10 +48,10 @@ const Form=()=>{
 		})
 	}
 	return(
-		<Flex gap='2' direction='column' w='300px' color='#fff'>
+		<Flex gap='2' direction='column' w='300px' color='#fff' >
 			<Flex direction='column' gap='2'>
 				<Text mb='0' fontWeight='bold' fontSize='24px' color='#009393'>Get the early access.</Text>
-				<Flex>
+				<Flex bg='#fff' borderRadius='5'>
 					<Input bg='#fff' color='#000'borderRadius='5px 0 0px 5px' type='email' placeholder='Email' variant='filled' onChange={((e)=>{set_email(e.target.value)})}/>
 					<Button borderRadius='0px 5px 5px 0px' bg='#009393' onClick={handle_register}>Submit</Button>
 				</Flex>

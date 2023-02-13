@@ -67,11 +67,31 @@ function SampleModal({issampleModalvisible,setissampleModalvisible,product_data}
     }
 
     const handle_submit_sample_request=async()=>{
-      await axios.post("https://prokemiaemailsmsserver-production.up.railway.app/api/sample_email",payload).then(()=>{
-        alert("sent")
-      }).catch((err)=>{
-        //console.log(err)
-      })
+      if ((amount == 0) || (description_for_use == '') || (unit == '')){
+        toast({
+            title: '',
+            description: 'All inputs are required',
+            status: 'info',
+            isClosable: true,
+          });
+      }else{
+        await axios.post("https://prokemiaemailsmsserver-production.up.railway.app/api/sample_email",payload).then(()=>{
+          toast({
+            title: '',
+            description: 'Your sample request has been sent',
+            status: 'info',
+            isClosable: true,
+          });
+          onClose()
+        }).catch((err)=>{
+          toast({
+            title: '',
+            description: 'We could not create a sample request.',
+            status: 'error',
+            isClosable: true,
+          });
+        })
+      }
       //console.log(payload)
     }
 

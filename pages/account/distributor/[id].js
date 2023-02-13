@@ -34,12 +34,12 @@ function Distributor(){
 	//api calls
 	const get_distributor_data=async(payload)=>{
 		await Get_Distributor(payload).then((response)=>{
-			console.log(response)
+			//console.log(response)
 			set_distributor_data(response?.data)
 			const email = response?.data?.email_of_company
 			get_products_data(email)
 		}).catch((err)=>{
-			//console.log(err)
+			////console.log(err)
 			toast({
 				title: '',
 				description: `${err}`,
@@ -51,11 +51,11 @@ function Distributor(){
 	const get_products_data=async(email)=>{
 		await Get_Products().then((response)=>{
 			const data = response?.data
-			const result = data?.filter((item)=> item?.email_of_lister.toLowerCase().includes(email))
+			const result = data?.filter((item)=> item?.email_of_lister.toLowerCase().includes(email.toLowerCase()))
 			set_products(result)
-			console.log(result)
+			//console.log(result)
 		}).catch((err)=>{
-			//console.log(err)
+			////console.log(err)
 			toast({
 				title: '',
 				description: `${err.data}`,
@@ -83,27 +83,11 @@ function Distributor(){
 			<Header />
 			<Flex direction='column' p='2'>
 				<Flex p='1' direction='column' gap='2'>
-					<Flex gap='2' p='2'>
-						{distributor_data?.profile_photo_url == '' || !distributor_data?.profile_photo_url? 
-							<Flex gap='2' >
-								<AccountCircleIcon style={{fontSize:'150px',backgroundColor:"#eee",borderRadius:'150px'}} />
-							</Flex>
-						: 
-							<Flex gap='2' >
-								<Image borderRadius='5' boxSize='150px' src={distributor_data?.profile_photo_url} alt='profile photo' boxShadow='lg' objectFit='cover'/>
-							</Flex>
-						}
-					</Flex>
-					<Flex direction='column' bg='#eee' p='2' borderRadius='5' boxShadow='lg' gap='2'>
-							<Text>Email: {distributor_data?.email_of_company}</Text>
-							<Text>Mobile:{distributor_data?.mobile_of_company}</Text>
-							<Text>Address: {distributor_data?.address_of_company}</Text>
-					</Flex>
+					<Text fontSize='24px' fontWeight='bold'>{distributor_data?.company_name}</Text>
 					<Flex direction='column'>
-						<Text fontSize='20px' fontWeight='bold' borderBottom='1px solid #000'>Description</Text>
 						{distributor_data?.description === ''? 
-							<Flex justify='center' align='center' h='15vh'>
-								<Text>The User has not created a bio/description</Text>
+							<Flex align='center' justify='center' bg='#eee' h='20vh' p='3' borderRadius='5' boxShadow='lg'>
+								<Text>The User has not added a bio</Text>
 							</Flex>
 							:
 							<Flex mt='2' bg='#eee' p='2' borderRadius='5' boxShadow='lg' gap='2'>
@@ -112,46 +96,29 @@ function Distributor(){
 						}
 					</Flex>
 					{products?.length === 0?
-						<Flex align='center' justify='center' bg='#eee' h='10vh' p='3'>
-							<Text w='50%' textAlign='center'>This Account has not listed any product yet</Text>
+						<Flex align='center' justify='center' bg='#eee' h='40vh' p='3' borderRadius='5' boxShadow='lg'>
+							<Text w='50%' textAlign='center'>No products have been listed under by this account.</Text>
 						</Flex>
 						:
-						<Flex wrap='Wrap' gap='2'>
+						<Flex direction='column' gap='2' h='50vh' overflowY='scroll'>
+							<Text fontWeight='bold'>Products</Text>
 							{products?.map((item)=>{
 								return(
-									<ProductItem key={item?._id} item={item}/>
-								)
-							})}
-						</Flex>
-					}
-					<Flex direction='column' gap='2'>
-						<Text fontSize='20px' fontWeight='bold' borderBottom='1px solid #000'>Experts</Text>
-						{distributor_data?.experts?.length === 0 ?
-							<Flex justify='center' align='center' h='15vh'>
-								<Text>The User has not added experts to this profile.</Text>
-							</Flex>
-						:
-						<Flex m='1' p='' borderRadius='5' gap='3' direction='column'> 
-							{distributor_data?.experts?.map((item)=>{
-								return(
-									<Flex key={item._id} direction='' bg='#eee' p='2' borderRadius='5' boxShadow='lg' cursor='pointer'>
+									<Flex key={item?._id} position='relative' gap='2' align='center' boxShadow='lg' cursor='pointer' onClick={(()=>{router.push(`/product/${item?._id}`)})}>
+										<Image w='50px' h='50px' borderRadius='10px' objectFit='cover' src='../../Pro.png' alt='next'/>
 										<Flex direction='column'>
-											<Text fontWeight='bold'>Name: {item.name}</Text>
-											<Text >Email: {item.email}</Text>
-											<Text>Mobile: {item.mobile}</Text>
-											<Text>Role: {item.role}</Text>
-											<Text>Description: {item.description}</Text>
+											<Text color='#009393' fontSize='16px' fontFamily='ClearSans-Bold'>{item?.name_of_product}</Text>
+											<Text fontSize='14px'>distributed by: {item?.distributed_by}</Text>
 										</Flex>
 									</Flex>
 								)
 							})}
 						</Flex>
-						}
-					</Flex>
+					}
 					<Flex p='2' gap='2'>
-						<Button flex='1' bg='#009393' color='#fff'>
-		                    <Link href={`mailto: ${distributor_data?.email_of_company}`} isExternal>Email Distributor</Link>
-		                </Button>
+						<Link w='100vw' p='2' borderRadius='5' textAlign='center' bg='#009393' color='#fff' href={`mailto: ${distributor_data?.email_of_company}`} isExternal>
+		                    Contact Us
+		                </Link>
 					</Flex>
 				</Flex>
 			</Flex>
@@ -164,8 +131,8 @@ export default Distributor;
 const ProductItem=({item,})=>{
 	const router = useRouter();
 	return(
-		<Flex position='relative' gap='2' align='center' boxShadow='lg' cursor='pointer' onClick={(()=>{router.push(`/product/${item._id}`)})}>
-			<Image w='50px' h='50px' borderRadius='10px' objectFit='cover' src='../Pro.png' lt='next'/>
+		<Flex flex='1' gap='2' align='center' boxShadow='lg' cursor='pointer' onClick={(()=>{router.push(`/product/${item._id}`)})}>
+			<Image w='50px' h='50px' borderRadius='10px' objectFit='cover' src='../Pro.png' alt='next'/>
 			<Flex direction='column'>
 				<Text fontSize='16px' fontFamily='ClearSans-Bold'>{item.name_of_product}</Text>
 				<Text fontSize='14px'>distributed by: {item.distributed_by}</Text>

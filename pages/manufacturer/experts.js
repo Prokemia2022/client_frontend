@@ -14,7 +14,6 @@ function Experts({manufacturer_data}){
 		<Flex direction='column' gap='3' p='2' w='100%'>
 			<AddNewExpertsModal isaddnewexpertModalvisible={isaddnewexpertModalvisible} setisaddNewExpertModalvisible={setisaddNewExpertModalvisible} id={id} acc_type='manufacturer'/>
 			<Text fontSize='32px' fontWeight='bold'>Experts</Text>
-			<Button bg='#009393' color='#fff' p='5' onClick={(()=>{setisaddNewExpertModalvisible(true)})}>Add a new Expert</Button>
 			{manufacturer_data?.experts?.length === 0 ?
 					<Flex justify='center' align='center' h='40vh' direction='column' gap='2'>
 						<Text>You have not listed any experts</Text>
@@ -22,6 +21,7 @@ function Experts({manufacturer_data}){
 					</Flex>
 				:
 				<Flex direction='column' p='1' gap='2' overflowY='scroll' h='80vh'>
+					<Button bg='#009393' color='#fff' p='5' onClick={(()=>{setisaddNewExpertModalvisible(true)})}>Add a new Expert</Button>
 					{manufacturer_data?.experts?.map((item)=>{
 						return(
 							<Expert_Item  key={item._id} item={item} id={manufacturer_data?._id}/>

@@ -85,7 +85,7 @@ export default function Password_Reset(){
 	return(
 		<Flex direction='column'>
 			<Header/>
-			<Flex p='2' align='center' justify='center' direction='column' p='2' gap='2' h='90vh' >
+			<Flex align='center' justify='center' direction='column' p='2' gap='2' h='90vh' >
 				<Text fontSize='28px' fontWeight='bold'>Password Reset</Text>
 				{active?
 					<Flex direction='column' gap='3'>

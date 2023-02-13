@@ -32,6 +32,7 @@ export default function ManufacturerSignUp(){
   		email_of_company,
   		acc_type: 'manufacturer'
   	}
+  	const validRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
 	//functions
 	const Verify_Inputs=()=>{
 		if (password && company_name && email_of_company){
@@ -39,6 +40,14 @@ export default function ManufacturerSignUp(){
 				toast({
 					title: '',
 					description: 'Use a valid email format e.g example@company.com',
+					status: 'info',
+					isClosable: true,
+				});
+				return;
+			}else if(email_of_company.match(gmailRegex) || email_of_company.match(yahooRegex)){
+				toast({
+					title: '',
+					description: 'Use a company email to create an account',
 					status: 'info',
 					isClosable: true,
 				});
@@ -88,7 +97,7 @@ export default function ManufacturerSignUp(){
 			<Header/>
 			<Flex className={styles.SignupBody}>
 				<Flex className={styles.authSection} gap='2'>
-					<Text w='100%' fontSize='2.5rem' color='#fff' fontFamily='ClearSans-bold'><span style={{borderBottom:"3px solid #fff",borderRadius:"3px"}}>Welcome </span>to ProKemia</Text>
+					<Text w='100%' fontSize='2.5rem' color='#fff' fontFamily='ClearSans-bold' >Welcome to Pro<span style={{color:"#000"}}>Kemia</span> </Text>
 					<Text w='100%' fontWeight='bold'>Find a market for your produced products.We help connect you to clients in search of similar products.Products will be showcased to our marketplace for clients to search for.</Text>
 				</Flex>
 				<Flex className={styles.authForm} gap='2' direction='column'>

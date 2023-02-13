@@ -41,7 +41,7 @@ export default function UserSignIn(){
 					isClosable: true,
 				});
 			}).then(()=>{
-				router.back()
+				router.push('/')
 			}).catch((err)=>{
 				//console.log(err)
 				toast({
@@ -77,7 +77,7 @@ export default function UserSignIn(){
 				<Flex className={styles.authSection} gap='2'>
 					<Text w='100%' fontSize='3rem' color='#fff' fontFamily='ClearSans-bold'>Welcome Back!</Text>
 					<Text color='#fff'>Dont Have an Account?</Text>
-					<Text mt='-2' onClick={(()=>{router.push('/account')})} textDecoration='3px solid #fff underline' cursor='pointer' fontFamily='ClearSans-bold' fontSize='22px' color="#000">Sign Up now.</Text>
+					<Text mt='-2' onClick={(()=>{router.push('/account/1')})} textDecoration='3px solid #fff underline' cursor='pointer' fontFamily='ClearSans-bold' fontSize='22px' color="#000">Sign Up now.</Text>
 				</Flex>
 				<Flex className={styles.authForm} gap='2' direction='column'>
 					<Text fontSize='2.5rem' fontFamily='ClearSans-bold'><span style={{borderBottom:"4px solid #009393",borderRadius:"3px"}}>Sign</span> In</Text>

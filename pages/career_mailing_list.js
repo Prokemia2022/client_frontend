@@ -1,5 +1,5 @@
 import React,{useState} from 'react';
-import {Flex,Center,Text,Button,Input,InputGroup,InputRightElement,Image,Textarea} from '@chakra-ui/react';
+import {Flex,Center,Text,Button,Input,InputGroup,InputRightElement,Image,Textarea,useToast} from '@chakra-ui/react';
 import styles from '../styles/Home.module.css';
 import {Room,Visibility,VisibilityOff} from '@mui/icons-material';
 import {useRouter} from 'next/router';
@@ -9,6 +9,7 @@ import Create_Career_mailing_list from './api/control/create_career_mailing_list
 export default function Career_mailing_list(){
 	const [active, setActive] = useState(false);
   	const router = useRouter();
+  	const toast = useToast();
 
   	const [name,setname]=useState('');
   	const [email,setemail]=useState('');
@@ -21,9 +22,35 @@ export default function Career_mailing_list(){
 	}
 
 	const Handle_Register=async()=>{
-		await Create_Career_mailing_list(payload).then((response)=>{
-			alert('success')
-		})
+		const validRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+  		if (!email.match(validRegex)){
+  			toast({
+				title: '',
+				description: 'Use a valid email format e.g example@company.com',
+				status: 'info',
+				isClosable: true,
+			});
+			return;
+  		}else{
+	  		console.log(payload)
+			await Create_Career_mailing_list(payload).then((response)=>{
+				toast({
+					title: '',
+					description: `We have added your email to our mailing list.`,
+					status: 'success',
+					isClosable: true,
+				});
+				router.back()
+			}).catch((err)=>{
+					toast({
+			          title: '',
+			          description: `Could not submit your feedback. Try again.`,
+			          status: 'error',
+			          isClosable: true,
+			        });
+			})
+	  	}
+		
 	}
 	return(
 		<Flex direction='column'>

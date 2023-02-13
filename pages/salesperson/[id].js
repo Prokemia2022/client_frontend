@@ -1,6 +1,6 @@
 //modules import
 import React,{useState,useEffect} from 'react';
-import {Flex,Text,Button,Input} from '@chakra-ui/react';
+import {Flex,Text,Button,Input,useToast} from '@chakra-ui/react';
 import {useRouter} from 'next/router';
 import Cookies from 'universal-cookie';
 import jwt_decode from "jwt-decode";
@@ -24,32 +24,33 @@ import Get_Salesperson from '../api/auth/salesperson/get_salesperson_client.js'
 function SalesPerson(){
 	const [currentvalue,setCurrentValue] = useState('dashboard')
 	const cookies = new Cookies();
+	const toast = useToast()
 	const token = cookies.get('user_token');
 
 	const [salesperson_data,set_salesperson_data]=useState("");
 
 	useEffect(()=>{
 		if(!token){
-			alert('could not get user_id')
+			toast({
+				title: '',
+				description: `broken link, we are redirecting you`,
+				status: 'info',
+				isClosable: true,
+			});
+			router.back()
 		}else{
 			const details = jwt_decode(token)
-			console.log(details)
+			//console.log(details)
 			const payload = {
 				email_of_company : details?.email,
 				_id: details?.id
 			}
 			Get_Salesperson(payload).then((response)=>{
-			console.log(response.data)
+			//console.log(response.data)
 			set_salesperson_data(response.data)
 		})		}
 	},[])
-	// const get_Data=async(payload)=>{
-	// 	console.log(payload)
-	// 	await Get_Salesperson(payload).then((response)=>{
-	// 		console.log(response.data)
-	// 		set_salesperson_data(response.data)
-	// 	})
-	// }
+
 	if (currentvalue == 'sales')
 	{   
 		return(

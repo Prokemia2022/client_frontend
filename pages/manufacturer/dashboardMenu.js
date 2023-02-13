@@ -51,21 +51,20 @@ function DashboardMenu({setCurrentValue,manufacturer_data}){
 		})
 	}
 	return (
-		<Flex p='1' direction='column' gap='4' w='100%' overflowY='scroll' h='100vh'>
+		<Flex p='2' direction='column' gap='4' w='100%' overflowY='scroll' h='100vh'>
 			<AddNewProduct isaddnewproductModalvisible={isaddnewproductModalvisible} setisaddnewProductModalvisible={setisaddnewProductModalvisible}/>
 			<AddNewExpertsModal isaddnewexpertModalvisible={isaddnewexpertModalvisible} setisaddNewExpertModalvisible={setisaddNewExpertModalvisible} id={id} acc_type='manufacturer'/>
 			<AddNewDistributor isaddnewdistributorModalvisible={isaddnewdistributorModalvisible} setisaddnewdistributorModalvisible={setisaddnewdistributorModalvisible} id={id}/>
 			<Flex gap='3'>
-				{manufacturer_data?.profile_photo_url == '' || !manufacturer_data?.profile_photo_url ? 
-					<LocationCity style={{fontSize:'150px',padding:'10px'}}/> 
+				{manufacturer_data?.profile_photo_url == ''? 
+					<LocationCityIcon style={{fontSize:'150px',padding:'10px'}}/> 
 				: 
-					<Image boxSize='200px' src={manufacturer_data?.profile_photo_url} alt='profile photo' boxShadow='lg'/>
+					<Image boxSize='150px' src={manufacturer_data?.profile_photo_url} alt='profile photo' boxShadow='lg'/>
 				}
 				<Flex direction='column' gap='2' bg='#eee' p='2' w='100%' borderRadius='8' boxShadow='lg'>
-					<Text fontSize='28px' fontWeight='bold' color='#009393'>{manufacturer_data?.first_name} {manufacturer_data?.last_name}</Text>
-					<Text>company_name: {manufacturer_data?.company_name}</Text>
-					<Text>email: {manufacturer_data?.email_of_company}</Text>
-					<Text>mobile: {manufacturer_data?.mobile_of_company}</Text>	
+					<Text fontSize='28px' fontWeight='bold' color='#009393'>{manufacturer_data?.company_name}</Text>
+					<Text>Email: {manufacturer_data?.email_of_company}</Text>
+					<Text>Mobile: {manufacturer_data?.mobile_of_company}</Text>	
 					<Text>Address: {manufacturer_data?.address_of_company}</Text>
 				</Flex>
 			</Flex>

@@ -95,7 +95,7 @@ function AddNewManufacturerModal({isaddnewmanufacturerModalvisible,setisaddnewma
                 <Stack spacing={4}>
                   <Flex direction='column'>
                     <Text>Name</Text>
-                    <Input type='text' placeholder='Name of Expert' variant='filled' onChange={((e)=>{set_name(e.target.value)})}/>
+                    <Input type='text' placeholder='Name of Manufacturer' variant='filled' onChange={((e)=>{set_name(e.target.value)})}/>
                   </Flex>
                   <Flex direction='column'>
                     <Text>Email:</Text>

@@ -49,12 +49,15 @@ function DashboardMenu({setCurrentValue,distributor_data}){
 			email: distributor_data.email_of_company,
 			code: code
 		}
+		//https://prokemiaemailsmsserver-production.up.railway.app/api/email_verification
 		await axios.post("https://prokemiaemailsmsserver-production.up.railway.app/api/email_verification",email_payload).then(()=>{
 			router.push(`/verify/${'distributor'}/${distributor_data._id}`)
+		}).catch((err)=>{
+			console.log(err)
 		})
 	}
 	return (
-		<Flex p='1' direction='column' gap='4' w='100%' overflowY='scroll' h='100vh'>
+		<Flex p='2' direction='column' gap='4' w='100%' overflowY='scroll' h='100vh'>
 			<AddNewProduct isaddnewproductModalvisible={isaddnewproductModalvisible} setisaddnewProductModalvisible={setisaddnewProductModalvisible}/>
 			<AddNewExpertsModal isaddnewexpertModalvisible={isaddnewexpertModalvisible} setisaddNewExpertModalvisible={setisaddNewExpertModalvisible} id={id} acc_type='distributor'/>
 			<AddNewManufacturer isaddnewmanufacturerModalvisible={isaddnewmanufacturerModalvisible} setisaddnewmanufacturerModalvisible={setisaddnewmanufacturerModalvisible} id={id}/>
@@ -62,13 +65,12 @@ function DashboardMenu({setCurrentValue,distributor_data}){
 				{distributor_data?.profile_photo_url == ''? 
 					<LocationCityIcon style={{fontSize:'150px',padding:'10px'}}/> 
 				: 
-					<Image boxSize='200px' src={distributor_data?.profile_photo_url} alt='profile photo' boxShadow='lg'/>
+					<Image boxSize='150px' src={distributor_data?.profile_photo_url} alt='profile photo' boxShadow='lg'/>
 				}
 				<Flex direction='column' gap='2' bg='#eee' p='2' w='100%' borderRadius='8' boxShadow='lg'>
-					<Text fontSize='28px' fontWeight='bold' color='#009393'>{distributor_data?.first_name} {distributor_data?.last_name}</Text>
-					<Text>company_name: {distributor_data?.company_name}</Text>
-					<Text>email: {distributor_data?.email_of_company}</Text>
-					<Text>mobile: {distributor_data?.mobile_of_company}</Text>	
+					<Text fontSize='28px' fontWeight='bold' color='#009393'>{distributor_data?.company_name}</Text>
+					<Text>Email: {distributor_data?.email_of_company}</Text>
+					<Text>Mobile: {distributor_data?.mobile_of_company}</Text>	
 					<Text>Address: {distributor_data?.address_of_company}</Text>
 				</Flex>
 			</Flex>
@@ -87,7 +89,7 @@ function DashboardMenu({setCurrentValue,distributor_data}){
 					<Text fontSize='24px' fontWeight='bold' color='#009393'>Description</Text>
 					<Text>{distributor_data?.description}</Text>
 			</Flex>
-			<Flex gap='3' wrap='Wrap'>
+			<Flex gap='3' direction='column'>
 				<Button bg='#009393' color='#fff' onClick={(()=>{router.push('/product/add_product')})}>Add new Product</Button>
 				<Button bg='#fff' border='1px solid #000' onClick={(()=>{setisaddNewExpertModalvisible(true)})}>Add new Experts</Button>
 				<Button bg='#fff' border='1px solid #000' onClick={(()=>{setisaddnewmanufacturerModalvisible(true)})}>Add new Manufacturer</Button>

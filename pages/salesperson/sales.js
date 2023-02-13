@@ -22,13 +22,13 @@ function Sales({salesperson_data}){
 		}else{
 			get_Data(payload)
 		}
-	},[searchquery,payload])
+	},[searchquery,sort_value])
 	const get_Data=async(payload)=>{
-		console.log(payload)
+		//console.log(payload)
 		await Get_Orders(payload).then((response)=>{
-			console.log(response.data)
+			//console.log(response.data)
 			let data = response.data
-			const result_data = data.filter((item)=> item.creator_id?.includes(salesperson_data?._id))
+			const result_data = data.filter((item)=> item.email_of_creator.toLowerCase().includes(salesperson_data?.email_of_salesperson.toLowerCase()))
 			const result = result_data.filter((item)=> item.name_of_product?.toLowerCase().includes(searchquery) || item._id?.includes(searchquery))
 			set_orders(result)
 		})
@@ -36,7 +36,7 @@ function Sales({salesperson_data}){
 	return(
 		<Flex direction='column' gap='3' p='2' w='100%' overflowY='scroll' h='100vh'>
 			<CreateInvoiceModal iscreateinvoiceModalvisible={iscreateinvoiceModalvisible} setiscreateinvoiceModalvisible={setiscreateinvoiceModalvisible} salesperson_data={salesperson_data}/>
-			<Text fontSize='32px' fontWeight='bold' textDecoration='3px solid underline #009393'>Sales</Text>
+			<Text fontSize='32px' fontWeight='bold' textDecoration='3px solid underline #009393'>Sales ({orders_data?.length})</Text>
 			<Flex gap='2'>
 				<Select w='150px' placeholder='sort' onChange={((e)=>{set_sort_value(e.target.value)})}>
 					<option value='pending'>Pending </option>
@@ -74,8 +74,12 @@ const Item=({order})=>{
 			<Text>Unit Price: {order?.unit_price}</Text>
 			<Text>Volume: {order?.volume_of_items}</Text>	
 			<Text>Email of Client: {order?.name_of_client}</Text>	
-			<Text>date: {order?.createdAt}</Text>	
-			<Text>Order Status: <span style={{color:'orange'}}>{order?.order_status}</span></Text>	
+			<Text>date: {order?.createdAt}</Text>
+			<Flex>
+				<Text>Order Status:</Text>	
+				<Text color={order?.order_status == 'completed'? 'green' : 'orange'}>{order?.order_status}</Text>
+			</Flex>
+			
 		</Flex>
 	)
 }

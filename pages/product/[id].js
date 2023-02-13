@@ -10,8 +10,9 @@ import QuotationModal from '../../components/modals/Quotation.js';
 import SampleModal from '../../components/modals/Sample.js';
 import Header from '../../components/Header.js';
 import Get_Product from '../api/product/get_product.js';
-//import Delete_Product from '../api/product/delete_product.js';
+
 import DoneAllOutlinedIcon from '@mui/icons-material/DoneAllOutlined';
+import VerifiedIcon from '@mui/icons-material/Verified';
 
 function Product(){
 	const router = useRouter();
@@ -52,12 +53,14 @@ function Product(){
 			<Header/>
 			<Flex direction='column' gap='2' className={styles.productbody}>
 			<Flex p='2' direction='column' gap='2' className={styles.productsection1} position='relative'>
-				{product_data?.sponsored?
-					<Flex position='absolute' top='1' right='1' p='1' bg='#009393' borderRadius='5' color='#fff'>
-						<DoneAllOutlinedIcon />
-						<Text>{product_data?.sponsored}</Text>
+				{product_data?.sponsored ? 
+					<Flex bg='#fff' p='1' borderRadius='5' cursor='pointer' boxShadow='lg' align='center' position='absolute' top='15px' right='15px'>
+						<Text fontWeight='bold' >Featured</Text>
+						<VerifiedIcon style={{color:'gold'}}/>
 					</Flex>
-					:null}
+					:
+					null
+				}
 				<Text fontFamily='ClearSans-Bold' fontSize='32px'>{product_data?.name_of_product}</Text>
 				<Flex>
 					<Text>Manufactured by:</Text>
@@ -103,7 +106,7 @@ function Product(){
 					<Button color='#fff' borderRadius='0' bg='#000' onClick={(()=>{setissampleModalvisible(true)})}><DescriptionIcon />Request Sample</Button>
 					<Text textAlign='center'>or</Text>
 					<Button bg='#fff' borderRadius='0' border='1px solid #000' p='1'>
-	                    <Link href={`mailto: ${product_data?.email_of_lister}`} isExternal>contact</Link>
+	                    <Link href={`mailto: ${product_data?.email_of_lister}`} isExternal>contact company</Link>
 	                </Button>
 					<Link href={product_data?.website_link_to_Seller} bg='grey' borderRadius='5' boxShadow='lg' color='#fff' align='center' p='1' isExternal fontSize='20px'>Website link</Link>
 				</Flex>

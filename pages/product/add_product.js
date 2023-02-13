@@ -31,19 +31,19 @@ function Product(){
 	//apis
 	const get_Industries_Data=async()=>{
 		await Get_Industries().then((response)=>{
-			//console.log(response.data)
+			////console.log(response.data)
 			const data = response.data
 			const result = data.filter(v => v.verification_status)
-			//console.log(data.filter(v => v.verification_status))
+			////console.log(data.filter(v => v.verification_status))
 			set_industries_data(result)
 		})
 	}
 	const get_Technology_Data=async()=>{
 		await Get_Technologies().then((response)=>{
-			//console.log(response.data)
+			////console.log(response.data)
 			const data = response.data
 			const result = data.filter(v => v.verification_status)
-			//console.log(data.filter(v => v.verification_status))
+			////console.log(data.filter(v => v.verification_status))
 			set_technologies_data(result)
 		})
 	}
@@ -107,34 +107,54 @@ function Product(){
 		website_link
 	}
 
-	const [verified_user_status,set_verified_user_status]=useState(false)
+	const [verified_user_status,set_verified_user_status]=useState()
 
 	useEffect(()=>{
 		if(token){
 			const details = jwt_decode(token)
-			console.log(details)
+			//console.log(details)
 			set_email_of_lister(details?.email)
 			set_listed_by_id(details.id)
-			const status = cookies.get('is_acc_verified')
-			console.log(status)
-			set_verified_user_status(status)
+			// const status = cookies.get('is_acc_verified')
+			//// console.log(status)
+			// set_verified_user_status(status)
+			//// console.log(verified_user_status)
 		}else{
-			alert('you must be signed in to create an account')
+			toast({
+              title: 'you must be signed in to list a product.',
+              description: '',
+              status: 'info',
+              isClosable: true,
+            });
+            router.back()
 		}
 	},[token])
 
 	//add new product without documents function
 	const handle_add_new_product=async()=>{
-		console.log(name_of_product)
+		set_isloading(true)
+		const status = cookies.get('is_acc_verified')
+			//console.log(status)
+			//set_verified_user_status(status)
+			////console.log(verified_user_status)
+		
+		//console.log(name_of_product)
 		if (name_of_product == '' || !name_of_product){
-			toast({
+			return toast({
               title: '',
               description: `Ensure all inputs are filled`,
               status: 'info',
               isClosable: true,
             });
+		}else if (status == 'false'){
+			return toast({
+              title: '',
+              description: `Your account has yet to be verified`,
+              status: 'info',
+              isClosable: true,
+            });
 		}else{
-			console.log(payload)
+			//console.log(payload)
 			set_isloading(true)
 			set_isfileupload(false)
 			setTimeout(()=>{
@@ -148,15 +168,16 @@ function Product(){
 						router.back()
 						set_isloading(false)
 					}).catch((err)=>{
+						//console.log(err)
 						toast({
 		                    title: 'could not create a new product',
-		                    description: err,
+		                    description: err.response.data,
 		                    status: 'error',
 		                    isClosable: true,
 		                })
 		                set_isloading(false)
 					})
-				console.log(payload)
+				//console.log(payload)
 			},5000)
 			set_isloading(false)
 		}
@@ -175,11 +196,6 @@ function Product(){
 					:
 						<Flex className={styles.productbody} direction='column' p='3' gap='3'>
 							<Text fontSize='32px' fontWeight='bold'>Add New Product</Text>
-							{verified_user_status === false || verified_user_status == 'undefined'?
-								<Text bg='#009393' p='2' borderRadius='5' color='#fff'>Your account is not verified, verify account first to start selling on prokemia.</Text>
-								:
-								null
-							}
 							<Flex direction='column'>
 								<Text>Name/Title of product</Text>
 								<Input type='text' placeholder='Name of product/Brand' variant='filled' onChange={((e)=>{set_name_of_product(e.target.value)})}/>
@@ -262,10 +278,10 @@ function Product(){
 						        </Select>
 							</Flex>
 							<Flex gap='2'>
-								<Button flex='1' bg='#009393' borderRadius='0' color='#fff' onClick={handle_add_new_product} disabled={isloading || verified_user_status === false || verified_user_status == 'undefined'?true:false}>Save and add product</Button>
-				                <Button flex='1' bg='#000' borderRadius='0' color='#fff' onClick={(()=>{set_isfileupload(true)})} disabled={isloading || verified_user_status === false || verified_user_status == 'undefined'?true:false}>Continue to upload files</Button>
+								<Button flex='1' bg='#009393' borderRadius='0' color='#fff' onClick={handle_add_new_product} disabled={isloading? true : false}>Save and add product</Button>
+				                <Button flex='1' bg='#000' borderRadius='0' color='#fff' onClick={(()=>{set_isfileupload(true)})} disabled={isloading? true : false}>Continue to upload files</Button>
 				            </Flex>
-			                <Button bg='#eee' borderRadius='0' color='red' onClick={(()=>{router.back()})} disabled={isloading?true:false}>Cancel</Button>
+			                <Button bg='#eee' borderRadius='0' color='red' onClick={(()=>{router.back()})} disabled={isloading? true:false}>Cancel</Button>
 						</Flex>
 					}
 				</>

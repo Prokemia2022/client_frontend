@@ -24,7 +24,7 @@ import jwt_decode from "jwt-decode";
 
 function QuotationModal({isquotationModalvisible,setisquotationModalvisible,product_data}){
     const { isOpen, onOpen, onClose } = useDisclosure();
-    
+    const toast = useToast();
     ////console.log(isaddingreviewgModalvisible);
 
     const HandleModalOpen=()=>{
@@ -67,11 +67,31 @@ function QuotationModal({isquotationModalvisible,setisquotationModalvisible,prod
     }
 
     const handle_submit_quotation_request=async()=>{
-      await axios.post("https://prokemiaemailsmsserver-production.up.railway.app/api/quotation_email",payload).then(()=>{
-        alert("sent")
-      }).catch((err)=>{
-//        console.log(err)
-      })
+      if ((amount == 0) || (description_for_use == '') || (unit == '')){
+        toast({
+            title: '',
+            description: 'All inputs are required',
+            status: 'info',
+            isClosable: true,
+          });
+      }else{
+        await axios.post("https://prokemiaemailsmsserver-production.up.railway.app/api/quotation_email",payload).then(()=>{
+          toast({
+            title: '',
+            description: 'Your quotation request has been sent',
+            status: 'info',
+            isClosable: true,
+          });
+          onClose()
+        }).catch((err)=>{
+          toast({
+            title: '',
+            description: 'We could not create a quotation request.',
+            status: 'error',
+            isClosable: true,
+          });
+        })
+      }
 //      console.log(payload)
     }
     return (

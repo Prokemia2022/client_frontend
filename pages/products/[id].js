@@ -13,7 +13,7 @@ import Header from '../../components/Header.js';
 //utils
 import {useRouter} from 'next/router';
 
-function Explore(){
+export default function Products(){
 	//utils
 	const router = useRouter();
 	const categ = router.query; //gets the category object in the query i.e industry/technology
@@ -42,15 +42,18 @@ function Explore(){
 	/*fetch manufacturers */
 	const get_Manufacturers_Data=async()=>{
 		await Get_Manufacturers().then((response)=>{
-			// const res
-			set_manufacturers_data(response?.data)
+			const data = response?.data
+			const result_data = data.filter((item)=> item?.verification_status && !item?.suspension_status)
+			set_manufacturers_data(result_data)
 			////console.log(response.data)
 		})
 	}
 	/**fetch distributors */
 	const get_Distributors_Data=async()=>{
 		await Get_Distributors().then((response)=>{
-			set_distributors_data(response.data)
+			const data = response?.data
+			const result_data = data.filter((item)=> item?.verification_status && !item?.suspension_status)
+			set_distributors_data(result_data)
 			////console.log(response.data)
 		})
 	}
@@ -134,5 +137,3 @@ function Explore(){
 		</Flex>
 	)
 }
-
-export default Explore;

@@ -1,5 +1,5 @@
 import React from 'react'
-import {Flex,Text,Heading} from '@chakra-ui/react'
+import {Flex,Text,Heading,Link} from '@chakra-ui/react'
 import Header from '../components/Header.js'
 function TC(){
 	//console.log(prohibiteduses)
@@ -9,9 +9,9 @@ function TC(){
 			<Flex direction='column' gap='2' p='2'>
 			<Heading textAlign='center'>TERMS AND CONDITIONS</Heading>
 
-			<Text>These Website Terms and Conditions (“Terms”, “Terms of Service”) contained herein on this webpage, shall govern your use of this website, including all pages within this website (“Website”) located here. https://prokemia.com (together or individually “Service”) operated by Prokem Specialty (“Company”, “we”, “our”, “us”).</Text>
+			<Text>These Website Terms and Conditions (“Terms”, “Terms of Service”) contained herein on this webpage, shall govern your use of this website, including all pages within this website (“Website”) located here. <Link color='#009393' href='https://prokemia.com' isExternal>https://prokemia.com</Link> (together or individually “Service”) operated by Prokemia Specialty (“Company”, “we”, “our”, “us”).</Text>
 			<Text>These Terms apply in full force and effect to your use of this Website and by using this Website, you expressly accept all terms and conditions contained herein in full. You must not use this Website, if you have any objection to any of these Website Terms and Conditions.</Text>
-			<Text fontWeight='bold'>UPDATE MESSAGE: This Terms & Conditions Policy was last updated on 5th October 2022.</Text>
+			<Text fontWeight='bold'>UPDATE MESSAGE: This Terms & Conditions Policy was last updated on 11th February 2023.</Text>
 			<Text mt='1' fontWeight='bold' fontSize='20px'>Content</Text>
 			<Text>The Content found on or through the Service is the property of the Company or used with permission from a third party. You may not distribute, modify, transmit, reuse, download, repost, copy, or use the said Content, whether in whole or in part, for commercial purposes or for personal gain, without prior written permission from us.</Text>
 			<Text mt='1' fontWeight='bold' fontSize='20px'>Prohibited Uses</Text>
@@ -67,7 +67,7 @@ function TC(){
 			<Text mt='1' fontWeight='bold' fontSize='20px'>Acknowledgement</Text>
 			<Text>By using service or other services provided by us, you acknowledge that you have read and understood these terms of service and agree to be bound by them.</Text>
 			<Text mt='1' fontWeight='bold' fontSize='20px'>Contact Us</Text>
-			<Text>Please send your feedback, comments, and requests for technical support by email: app@prokemia.com or  +254 20 2525265</Text>
+			<Text>Please send your feedback, comments, and requests for technical support by email: <Link color='#009393' href={`mailto: help@prokemia.com`} isExternal>help@prokemia.com</Link> or  +254 20 2525265</Text>
 		</Flex>
 		</Flex>
 	)

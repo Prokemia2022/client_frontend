@@ -43,10 +43,11 @@ const Buy=({active,setActive,router})=>{
 			cursor="pointer"
 			bg='#fff'
 			w='300px'
+			justify='space-around'
 			>
 				<Text fontSize='36px' fontFamily='ClearSans-bold'>Search for Products</Text>
 				<Text>Search for products, ingredients,chemicals from our vast marketplace</Text>
-				<Text>This type of account will connect you to sellers,salespeople,distributors & manufacturers</Text>
+				<Text>We will connect you to sellers,distributors & manufacturers</Text>
 				<Button onClick={(()=>{router.push('/signup/client')})} bg='#009393' color="#fff">Create Account</Button> 
 		</Flex>
 	)
@@ -55,7 +56,7 @@ const Buy=({active,setActive,router})=>{
 const Sell=({active,setActive,router})=>{
 	return(
 		<Flex boxShadow={!active? 'dark-lg':'lg'} 
-					h=''
+					h='350px'
 					onClick={(()=>{setActive(false)})} 
 					border='0px solid #000'
 					borderRadius='10'
@@ -65,14 +66,13 @@ const Sell=({active,setActive,router})=>{
 					cursor='pointer'
 					bg='#fff'
 					w='300px'
+					justify='space-around'
 					>
 			<Text fontSize='36px' fontFamily='ClearSans-bold'>Start Selling Products</Text>
 			<Text>Sell products to thousand of users,find clients for your expiring goods or Connect with other salespeople.</Text>
-			<Text>Start Selling Now!!</Text>
-			<Button bg='#009393' color='#fff' onClick={(()=>{router.push('/signup/distributor')})}>Create a Distributor Account</Button>
-			<Button bg='#009393' color='#fff' onClick={(()=>{router.push('/signup/manufacturer')})}>Create a Manufacturer Account</Button>
-			<Text textAlign='center'>or</Text>
-			<Button bg='#000' color='#fff' onClick={(()=>{router.push('/')})}>Request a Demo</Button>
+			
+			<Button bg='#009393' color='#fff' onClick={(()=>{router.push('/signup/distributor')})}>Create a distributor account</Button>
+			<Button bg='#009393' color='#fff' onClick={(()=>{router.push('/signup/manufacturer')})}>Create a manufacturer account</Button>
 		</Flex>
 	)
 }

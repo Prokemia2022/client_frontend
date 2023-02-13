@@ -48,7 +48,7 @@ export default function Password_Reset_Function(){
   		if (code === confirmation_code){
   			set_active(!active)
   		}else{
-  			console.log(confirmation_code)
+  			//console.log(confirmation_code)
   			toast({
 	          title: '',
 	          description: `wrong code,try again `,
@@ -74,7 +74,7 @@ export default function Password_Reset_Function(){
 	  			code,
 	  			email
 	  		}
-	  		console.log(payload)
+	  		//console.log(payload)
 	  		await axios.post("https://prokemiaemailsmsserver-production.up.railway.app/api/otp_password_email",payload).then(()=>{
 				set_code_active(!code_active)
 			}).catch((err)=>{
@@ -102,7 +102,7 @@ export default function Password_Reset_Function(){
 					isClosable: true,
 				});
 				axios.post("https://prokemiaemailsmsserver-production.up.railway.app/api/changed_password_email",payload).then(()=>{
-					//set_code_active(!code_active)
+					//set_code_active(!code_active) 
 				}).catch((err)=>{
 					console.log(err)
 				})
@@ -121,7 +121,7 @@ export default function Password_Reset_Function(){
 	return(
 		<Flex direction='column'>
 			<Header/>
-			<Flex p='2' align='center' justify='center' direction='column' p='2' gap='2' h='90vh' >
+			<Flex align='center' justify='center' direction='column' p='2' gap='2' h='90vh' >
 				<Text fontSize='28px' fontWeight='bold'>Password Reset</Text>
 				{active?
 					<Flex direction='column' gap='3'>

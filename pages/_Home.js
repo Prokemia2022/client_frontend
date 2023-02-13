@@ -32,7 +32,7 @@ function _Home(){
 	const get_Products_Data=async()=>{
 		await Get_Products().then((response)=>{
 			const data = response?.data
-			const result_data = data.filter((item)=> item.verification_status)
+			const result_data = data.filter((item)=> item?.verification_status)
 			set_products_data(result_data)
 			//console.log(result_data)
 		})
@@ -40,7 +40,7 @@ function _Home(){
 	const get_Industries_Data=async()=>{
 		await Get_Industries().then((response)=>{
 			const data = response?.data
-			const result_data = data.filter((item)=> item.verification_status)
+			const result_data = data.filter((item)=> item?.verification_status)
 			set_industries_data(result_data)
 			//console.log(result_data)
 		})
@@ -48,7 +48,7 @@ function _Home(){
 	const get_Technologies_Data=async()=>{
 		await Get_Technologies().then((response)=>{
 			const data = response?.data
-			const result_data = data.filter((item)=> item.verification_status)
+			const result_data = data.filter((item)=> item?.verification_status)
 			set_technologies_data(result_data)
 			//console.log(result_data)
 		})
@@ -56,7 +56,7 @@ function _Home(){
 	const get_Distributors_Data=async()=>{
 		await Get_Distributors().then((response)=>{
 			const data = response?.data
-			const result_data = data.filter((item)=> item.verification_status)
+			const result_data = data.filter((item)=> item?.verification_status && !item?.suspension_status)
 			set_distributors_data(result_data)
 			//console.log(result_data)
 		})
@@ -64,7 +64,7 @@ function _Home(){
 	const get_Manufacturers_Data=async()=>{
 		await Get_Manufacturers().then((response)=>{
 			const data = response?.data
-			const result_data = data.filter((item)=> item.verification_status)
+			const result_data = data.filter((item)=> item?.verification_status && !item?.suspension_status)
 			set_manufacturers_data(result_data)
 			//console.log(result_data)
 		})
@@ -74,21 +74,18 @@ function _Home(){
 			<Header products_data={products_data} distributors_data={distributors_data} manufacturers_data={manufacturers_data} industries_data={industries_data} technologies_data={technologies_data}/>
 			<Image h='400px' w='100vw' objectFit='cover' src='../2.png' alt='next' />
 			<Flex p='2' direction='column'>
-				<Flex mt='-350px' direction='column' gap='3' w='100%' p='2'>
-						<Text mb='0' fontFamily='ClearSans-Bold' fontSize='36px' >The Marketplace for ingredients,Polymers and Chemistry.</Text>
+				<Flex mt='-350px' direction='column' gap='3' w='100%' p='2' mb='4'>
+						<Text mb='3' fontFamily='ClearSans-Bold' fontSize='36px' >The Marketplace for ingredients,Polymers and Chemistry.</Text>
 						<Text mb='0' cursor='pointer' w='80%'>Search, Learn, Engage ,sample , quote and purchase from thousands of distributors - all in one platform.Access all easily.</Text>
 				</Flex>			
-				<Flex direction='column' p='2'>
-					<Text mb='0' fontSize='18px'>Do not know what you are looking for?</Text>
-					<Text mb='0' fontSize='16px' onClick={(()=>{router.push('/experts')})} color='#009393' cursor='pointer'>Click to ask our Experts</Text>
-				</Flex>
+				
 				<Flex direction='column' gap='2' w='100%'>
 					<Text mb='0' fontFamily='ClearSans-Bold' fontSize='24px'>Industries</Text>
-					<Flex wrap='Wrap' direction='' w='100%'>
-						{industries_data?.slice(0,6).map((item)=>{
+					<Flex wrap='Wrap' w='100%' justify='space-around'>
+						{industries_data?.slice(0,4).map((item)=>{
 							return(
-								<Flex cursor='pointer' key={item._id} w='170px' h='225px' m='1' position='relative' onClick={(()=>{router.push(`/products/${item.title}`)})}>
-									<Image borderRadius='10px' objectFit='cover' src={item?.cover_image == ''? "../Pro.png":item?.cover_image} alt='photo' boxShadow='dark-lg' w='100%'/>
+								<Flex cursor='pointer' key={item._id} w='45%' h='225px' m='1' position='relative' onClick={(()=>{router.push(`/products/${item.title}`)})}>
+									<Image borderRadius='10px' objectFit='cover' src={item?.cover_image == ''? "../Pro.png":item?.cover_image} alt='photo' boxShadow='lg' w='100%'/>
 									<Text bg='rgb(192,192,192,0.6)' p='1' m='2' mb='0' borderRadius='5' position='absolute' top='10px' left='10px' fontSize='20px' color='#000' fontFamily='ClearSans-Bold'>{item.title}</Text>
 								</Flex>
 							)
@@ -98,11 +95,11 @@ function _Home(){
 				</Flex>
 				<Flex direction='column' gap='2' w='100%'>
 					<Text mb='0' fontFamily='ClearSans-Bold' fontSize='24px'>Technologies</Text>
-					<Flex wrap='Wrap' direction='' w='100%'>
-						{technologies_data?.slice(0,8).map((item)=>{
+					<Flex wrap='Wrap' w='100%' justify='space-around'>
+						{technologies_data?.slice(0,4).map((item)=>{
 							return(
-								<Flex cursor='pointer' key={item._id} w='170px' h='225px' m='1' position='relative' onClick={(()=>{router.push(`/products/${item.title}`)})}>
-									<Image borderRadius='10px' objectFit='cover' src={item?.cover_image == ''? "../Pro.png":item?.cover_image} alt='photo' boxShadow='dark-lg' w='100%'/>
+								<Flex cursor='pointer' key={item._id} w='45%' h='225px' m='1' position='relative' onClick={(()=>{router.push(`/products/${item.title}`)})}>
+									<Image borderRadius='10px' objectFit='cover' src={item?.cover_image == ''? "../Pro.png":item?.cover_image} alt='photo' boxShadow='lg' w='100%'/>
 									<Text bg='rgb(192,192,192,0.6)' p='1' m='2' mb='0' borderRadius='5' position='absolute' top='10px' left='10px' fontSize='20px' color='#000' fontFamily='ClearSans-Bold'>{item.title}</Text>
 								</Flex>
 							)
@@ -200,7 +197,7 @@ const ProductItem=({content,categ})=>{
 	const router = useRouter();
 	return(
 		<Flex position='relative' gap='2' align='center' boxShadow='lg' cursor='pointer' onClick={(()=>{router.push(`/product/${content._id}`)})}>
-			<Image w='50px' h='50px' borderRadius='10px' objectFit='cover' src='../Pro.png' lt='next'/>
+			<Image w='50px' h='50px' borderRadius='10px' objectFit='cover' src='../Pro.png' alt='next'/>
 			<Flex direction='column'>
 				<Text fontSize='16px' fontFamily='ClearSans-Bold'>{content.name_of_product}</Text>
 				<Text fontSize='14px'>distributed by: {content.distributed_by}</Text>

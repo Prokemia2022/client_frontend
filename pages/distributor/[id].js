@@ -33,7 +33,7 @@ function Distributor(){
 			alert('could not get user_id')
 		}else{
 			const details = jwt_decode(token)
-			console.log(details)
+			//console.log(details)
 			const payload = {
 				email_of_company : details?.email,
 				_id: details?.id
@@ -42,9 +42,9 @@ function Distributor(){
 		}
 	},[token])
 	const get_Data=async(payload)=>{
-		console.log(payload)
+		//console.log(payload)
 		await Get_Distributor(payload).then((response)=>{
-			console.log(response.data)
+			//console.log(response.data)
 			set_distributor_data(response.data)
 			cookies.set('is_acc_verified', response.data.valid_email_status, { path: '/' });
 		})

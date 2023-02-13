@@ -19,7 +19,7 @@ export default function Market(){
 		await Get_Products().then((response)=>{
 			const data = response.data
 			//console.log(data)
-			const result = data.filter(item => {return !item.short_on_expiry})
+			const result = data.filter(item => {return item.short_on_expiry})
 			const result_data = result?.filter((item) => 	item?.industry.includes(search_query) ||
 															item?.technology.includes(search_query) ||
 															item?.email_of_lister.includes(search_query) ||
@@ -62,11 +62,11 @@ export default function Market(){
 						<Text fontSize='28px' color='grey'>There are no products listed, that are expiring soon</Text>
 					</Flex>
 				:
-					<Flex wrap='Wrap' h='90vh' overflowY='scroll'>
+					<Flex direction='column'>
 						{products_data.map((item)=>{
 							return(
 								<div key={item._id} style={{margin:'5px'}}>
-									<Product router={router} item={item}/>
+									<Product_Item router={router} item={item}/>
 								</div>
 							)
 						})}
@@ -77,29 +77,14 @@ export default function Market(){
 	)
 }
 
-const Product=({router,item})=>{
+const Product_Item=({router,item})=>{
 	return(
-		<Flex boxShadow='lg' bg='#fff' borderRadius='5px' direction='column' m='2' w='350px' position='relative' h='350px' justify='space-between'>
-			<Flex p='2' direction='column' w='100%' gap='2'>
-				<Text color='#009393' fontWeight='bold' fontSize="24px" w='100%'>{item?.name_of_product}</Text>
-				<Flex direction='column'>
-					<Text fontWeight='bold'>Industry:</Text>
-					<Text>{item?.industry}</Text>
-				</Flex>
-				<Flex direction='column'>
-					<Text fontWeight='bold'>Technology:</Text>
-					<Text>{item?.technology}</Text>
-				</Flex>
-				<Flex direction='column'>
-					<Text fontWeight='bold'>Brand:</Text>
-					<Text>{item?.brand}</Text>
-				</Flex>
-				<Flex direction='column'>
-					<Text fontWeight='bold'>Manufactured by:</Text>
-					<Text>{item?.manufactured_by}</Text>
-				</Flex>
+		<Flex key={item._id} position='relative' gap='2' align='center' onClick={(()=>{router.push(`/product/${item._id}`)})} bg='#eee' p='2' borderRadius='5' boxShadow='lg' cursor='pointer'>
+			<Image w='50px' h='50px' borderRadius='10px' objectFit='cover' src="../Pro.png" alt='next' />
+			<Flex direction='column'>
+				<Text fontSize='16px' fontFamily='ClearSans-Bold'>{item.name_of_product}</Text>
+				<Text fontSize='16px'>Industry: {item.industry}</Text>
 			</Flex>
-			<Button m='1' color='#fff' bg='#009393' p='1' cursor='pointer' onClick={(()=>{router.push(`/product/${item?._id}`)})} border='1px solid #009393'>View product</Button>
 		</Flex>
 	)
 }

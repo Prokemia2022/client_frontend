@@ -14,7 +14,7 @@ function Distributors({manufacturer_data}){
 	const [infoactive,setinfoActive]=useState(true);
 	//const [distributors,set_distributors]=useState(manufacturer_data?.distributors)
 	const distributors = manufacturer_data?.distributors
-	console.log(distributors)
+	//console.log(distributors)
 	const id = manufacturer_data?._id
 
 	return(
@@ -109,7 +109,7 @@ const Distributor=({item,id,index})=>{
 			mobile: u_mobile,
 			industry: u_industry
 		}
-		console.log(edit_payload)
+		//console.log(edit_payload)
 		await Edit_Distributor_Manufacturer(edit_payload).then(()=>{
 			toast({
 				title: '',

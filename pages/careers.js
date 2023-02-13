@@ -17,7 +17,7 @@ export default function Careers(){
 	const get_Careers_Data=async()=>{
 		await Get_Careers().then((response)=>{
 			set_careers_data(response.data)
-			console.log(response.data)
+			//console.log(response.data)
 		})
 	}
 	return(
@@ -61,16 +61,8 @@ const Career_Item=({career})=>{
 				<Text>{career.description}</Text>
 			</Flex>
 			<Flex gap='2'>
-				<Text fontWeight='bold'>Description: </Text>
+				<Text fontWeight='bold'>Status: </Text>
 				<Text>{career.status}</Text>
-			</Flex>
-			<Flex gap='2'>
-				<Text fontWeight='bold'>Valid_till: </Text>
-				<Text>{career.valid_till}</Text>
-			</Flex>
-			<Flex align='center' m='1' color='#009393'>
-				<Text >Visit_Company_site</Text>
-				<OpenInNewIcon/> 
 			</Flex>
 		</Flex>
 	)

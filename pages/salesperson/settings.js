@@ -27,9 +27,7 @@ function Settings({salesperson_data}){
 	const [is_delete_account_Modalvisible,set_is_delete_account_Modalvisible]=useState(false)
 
 	const router = useRouter();
-
-
-
+	
 	const [edit,setedit]=useState(false);
 	const [new_password,set_new_password]=useState(salesperson_data?.password)
 	const old_password = salesperson_data?.password
@@ -67,6 +65,14 @@ const Handle_Change_Password=async()=>{
 							<Text p='1' borderRadius='5'>Address: {salesperson_data?.address}</Text>
 							<Button onClick={(()=>{setedit(true)})} bg='#009393' color='#fff'>Edit Profile</Button>	
 						</Flex>
+					</Flex>
+					<Flex direction='column' gap='1' w='100%' bg='#eee' p='2' borderRadius='5' boxShadow='dark-lg'>
+						<Text fontWeight='bold'>Bio</Text>
+						<Text p='1' borderRadius='5'>Bio: {salesperson_data?.bio}</Text>
+					</Flex>
+					<Flex direction='column' gap='1' w='100%' bg='#eee' p='2' borderRadius='5' boxShadow='dark-lg'>
+						<Text fontWeight='bold'>Payment Details</Text>
+						<Text p='1' borderRadius='5'>{salesperson_data?.payment_method}</Text>
 					</Flex>
 					<Flex borderBottom='1px solid #000' p='1' direction='column'>
 						<Text fontSize='20px' fontWeight='bold'>Security</Text>
@@ -109,6 +115,8 @@ const EditProfile=({setedit,salesperson_data})=>{
 	const [mobile,set_mobile]=useState(salesperson_data?.mobile_of_salesperson);
 	const [address,set_address]=useState(salesperson_data?.address);
 	const [company_name,set_company_name]=useState(salesperson_data?.company_name);
+	const [bio,set_bio]=useState(salesperson_data?.bio);
+	const [payment_method,set_payment_method]=useState(salesperson_data?.payment_method);
 	const [profile_photo,set_profile_photo]=useState('');
 	const [profile_photo_url,set_profile_photo_url]=useState(salesperson_data?.profile_photo_url);
 
@@ -118,6 +126,8 @@ const EditProfile=({setedit,salesperson_data})=>{
 		last_name,
 		mobile,
 		address,
+		bio,
+		payment_method,
 		company_name,
 		profile_photo_url
 	}
@@ -210,7 +220,7 @@ const EditProfile=({setedit,salesperson_data})=>{
 					<Flex direction='column' gap='2'>
 						<Text>Select Image to set as Profile Image</Text>
 						<Input type='file' placeholder='Select Image to set as Profile Image' accept='.jpg,.png,.jpeg' variant='filled' onChange={((e)=>{set_profile_photo(e.target.files[0])})}/>
-						<Button bg='#009393' color='#fff' onClick={profile_upload_function} disabled={profile_photo == ''? true: false}>Upload profile photo</Button>
+						<Button bg='#009393' color='#fff' onClick={profile_upload_function} disabled={profile_photo !== ''? true: false}>Upload profile photo</Button>
 					</Flex>
 				</Flex>
 			: 
@@ -233,6 +243,10 @@ const EditProfile=({setedit,salesperson_data})=>{
 						<Input type='text' placeholder={salesperson_data?.last_name} variant='filled' onChange={((e)=>{set_last_name(e.target.value)})}/>
 					</Flex>
 					<Flex direction='column'>
+						<Text>Bio</Text>
+						<Input type='tel' placeholder={salesperson_data?.bio} variant='filled' onChange={((e)=>{set_bio(e.target.value)})}/>
+					</Flex>
+					<Flex direction='column'>
 						<Text>Mobile</Text>
 						<Input type='tel' placeholder={salesperson_data?.mobile_of_salesperson} variant='filled' onChange={((e)=>{set_mobile(e.target.value)})}/>
 					</Flex>
@@ -243,6 +257,10 @@ const EditProfile=({setedit,salesperson_data})=>{
 					<Flex direction='column'>
 						<Text>Address</Text>
 						<Input type='text' placeholder={salesperson_data?.address} variant='filled' onChange={((e)=>{set_address(e.target.value)})}/>
+					</Flex>
+					<Flex direction='column'>
+						<Text>Payment method</Text>
+						<Input type='text' placeholder={salesperson_data?.payment_method} variant='filled' onChange={((e)=>{set_payment_method(e.target.value)})}/>
 					</Flex>
 					<Flex gap='2'>
 						<Button onClick={handle_Edit_Profile} bg='#009393' color='#fff' flex='1'>Save</Button>

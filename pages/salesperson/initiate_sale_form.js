@@ -113,35 +113,35 @@ export default function Sale_Form({setCurrentValue,salesperson_data}){
 			{issubmitting?
 				<Loading/>
 				:
-				<Flex direction='column' gap='3' p='2' w='100%' overflowY='scroll' h='100vh'>
+				<Flex direction='column' gap='3' p='4' w='100%' overflowY='scroll' h='100vh'>
 					<Text fontSize='28px' fontWeight='bold'>New Sale</Text>
 					<Flex direction='column'>
-					  <Text>Name of Client</Text>
-					  <Input type='text' placeholder='Name of Client' variant='filled' onChange={((e)=>{set_name_of_client(e.target.value)})}/>
+					  <Text>Company Name</Text>
+					  <Input type='text' placeholder='Company Name' variant='filled' onChange={((e)=>{set_company_name_of_client(e.target.value)})}/>
 					</Flex>
 					<Flex direction='column'>
-					  <Text>Email of Client:</Text>
-					  <Input type='Email' placeholder='Email of Client' variant='filled' onChange={((e)=>{set_email_of_client(e.target.value)})}/>
+					  <Text>Address of company</Text>
+					  <Input type='text' placeholder='location of Client' variant='filled' onChange={((e)=>{set_location_of_client(e.target.value)})}/>
 					</Flex>
 					<Flex direction='column'>
 					  <Text>Mobile of Client</Text>
 					  <Input type='text' placeholder='Mobile of Client' variant='filled' onChange={((e)=>{set_mobile_of_client(e.target.value)})}/>
 					</Flex>
 					<Flex direction='column'>
-					  <Text>Company location of Client</Text>
-					  <Input type='text' placeholder='company location of Client' variant='filled' onChange={((e)=>{set_location_of_client(e.target.value)})}/>
+					  <Text>Email of Client:</Text>
+					  <Input type='Email' placeholder='Email of Client' variant='filled' onChange={((e)=>{set_email_of_client(e.target.value)})}/>
 					</Flex>
 					<Flex direction='column'>
-					  <Text>Company Name of Client</Text>
-					  <Input type='text' placeholder='Company Name of Client' variant='filled' onChange={((e)=>{set_company_name_of_client(e.target.value)})}/>
+					  <Text>Contact person name</Text>
+					  <Input type='text' placeholder='Name of Client' variant='filled' onChange={((e)=>{set_name_of_client(e.target.value)})}/>
 					</Flex>
 					<Flex direction='column'>
 					  <Text>Name of Product:</Text>
 					  <Input type='text' placeholder='Name of product' variant='filled' onChange={((e)=>{set_name_of_product(e.target.value)})}/>
 					</Flex>
 					<Flex direction='column'>
-					  <Text>Volume of Items</Text>
-					  <Input type='number' placeholder='Volume/amount' variant='filled' onChange={((e)=>{set_volume_of_items(e.target.value)})}/>
+					  <Text>Quantity of Items</Text>
+					  <Input type='number' placeholder='Quantity/amount' variant='filled' onChange={((e)=>{set_volume_of_items(e.target.value)})}/>
 					</Flex>
 					<Flex direction='column'>
 					  <Text>Unit Price</Text>
