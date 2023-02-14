@@ -35,6 +35,8 @@ export default function DistributorSignUp(){
   		acc_type: 'distributor'
   	}
   	const validRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+  	const gmailRegex = /([a-zA-Z0-9]+)([\.{1}])?([a-zA-Z0-9]+)\@gmail([\.])com/g
+	const yahooRegex = /^[^@]+@(yahoo|ymail|rocketmail)\.(com|in|co\.uk)$/i
 	//functions
 	const Verify_Inputs=()=>{
 		set_issubmitting(true)

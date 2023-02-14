@@ -33,6 +33,8 @@ export default function ManufacturerSignUp(){
   		acc_type: 'manufacturer'
   	}
   	const validRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+  	const gmailRegex = /([a-zA-Z0-9]+)([\.{1}])?([a-zA-Z0-9]+)\@gmail([\.])com/g
+	const yahooRegex = /^[^@]+@(yahoo|ymail|rocketmail)\.(com|in|co\.uk)$/i
 	//functions
 	const Verify_Inputs=()=>{
 		if (password && company_name && email_of_company){
