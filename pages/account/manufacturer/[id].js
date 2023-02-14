@@ -130,7 +130,7 @@ const ProductItem=({item,})=>{
 	const router = useRouter();
 	return(
 		<Flex position='relative' gap='2' align='center' boxShadow='lg' cursor='pointer' onClick={(()=>{router.push(`/product/${item._id}`)})}>
-			<Image w='50px' h='50px' borderRadius='10px' objectFit='cover' src={'../../Pro.png'} lt='next'/>
+			<Image w='50px' h='50px' borderRadius='10px' objectFit='cover' src={'../../Pro.png'} alt='next'/>
 			<Flex direction='column'>
 				<Text fontSize='16px' fontFamily='ClearSans-Bold'>{item.name_of_product}</Text>
 				<Text fontSize='14px'>distributed by: {item.distributed_by}</Text>

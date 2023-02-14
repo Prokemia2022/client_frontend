@@ -57,7 +57,7 @@ function DashboardMenu({setCurrentValue,manufacturer_data}){
 			<AddNewDistributor isaddnewdistributorModalvisible={isaddnewdistributorModalvisible} setisaddnewdistributorModalvisible={setisaddnewdistributorModalvisible} id={id}/>
 			<Flex gap='3'>
 				{manufacturer_data?.profile_photo_url == ''? 
-					<LocationCityIcon style={{fontSize:'150px',padding:'10px'}}/> 
+					<LocationCity style={{fontSize:'150px',padding:'10px'}}/> 
 				: 
 					<Image boxSize='150px' src={manufacturer_data?.profile_photo_url} alt='profile photo' boxShadow='lg'/>
 				}

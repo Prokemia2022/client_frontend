@@ -62,7 +62,7 @@ function Contact(){
 						<Textarea placeholder='Message' variant='filled' type='text' onChange={((e)=>{set_message(e.target.value)})}/>
 						<Button borderRadius='0' bg='#009393' color='#fff' border onClick={handle_send}> Send </Button>
 					</Flex>
-					<Flex direction='column' color='#fff' gap='2'  bg='#000' p='2' className={styles.contactside} gap='4' fontSize='24px'>
+					<Flex direction='column' color='#fff'  bg='#000' p='2' className={styles.contactside} gap='4' fontSize='24px'>
 							<Text borderBottom='1px solid #fff' fontSize='32px'>Our Contacts</Text>
 							<Flex align='center' gap='3'>
 								<EmailIcon />
