@@ -49,7 +49,7 @@ export default function Search({setsearchbaractive}){
 		await Get_Industries().then((response)=>{
 			const data = response?.data
 			const result_data = data.filter((item)=> item.verification_status)
-			const result = result_data.filter(item => item.title?.toLowerCase().includes(search_value) || item.title?.includes(search_value))
+			const result = result_data.filter(item => item.title?.toLowerCase().includes(search_value.toLowerCase()))
 			set_industries_data(result)
 			//console.log(result)
 		})
@@ -58,7 +58,7 @@ export default function Search({setsearchbaractive}){
 		await Get_Technologies().then((response)=>{
 			const data = response?.data
 			const result_data = data.filter((item)=> item.verification_status)
-			const result = result_data.filter(item => item.title?.toLowerCase().includes(search_value) || item.title?.includes(search_value))
+			const result = result_data.filter(item => item.title?.toLowerCase().includes(search_value.toLowerCase()))
 			set_technologies_data(result)
 			//console.log(result)
 		})
@@ -67,7 +67,7 @@ export default function Search({setsearchbaractive}){
 		await Get_Distributors().then((response)=>{
 			const data = response?.data
 			const result_data = data.filter((item)=> item.verification_status)
-			const result = result_data.filter(item => item.company_name?.toLowerCase().includes(search_value) || item.company_name?.includes(search_value))
+			const result = result_data.filter(item => item.company_name?.toLowerCase().includes(search_value.toLowerCase()))
 			set_distributors_data(result)
 			//console.log(result)
 		})
@@ -76,7 +76,7 @@ export default function Search({setsearchbaractive}){
 		await Get_Manufacturers().then((response)=>{
 			const data = response?.data
 			const result_data = data.filter((item)=> item.verification_status)
-			const result = result_data.filter(item => item.company_name?.toLowerCase().includes(search_value) || item.company_name?.includes(search_value))
+			const result = result_data.filter(item => item.company_name?.toLowerCase().includes(search_value.toLowerCase()))
 			set_manufacturers_data(result)
 			//console.log(result)
 		})
