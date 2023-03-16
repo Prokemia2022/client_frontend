@@ -74,7 +74,7 @@ function _Home(){
 			<Header products_data={products_data} distributors_data={distributors_data} manufacturers_data={manufacturers_data} industries_data={industries_data} technologies_data={technologies_data}/>
 			
 			<Flex p='2' direction='column'>
-				<Flex mt='10vh' mb='50px' direction='column' gap='3' w='100%' p='2' mb='4'>
+				<Flex mt='10vh' mb='50px' direction='column' gap='3' w='100%' p='2'>
 					<Text mb='3' fontFamily='ClearSans-Bold' fontSize='36px' >The Marketplace for ingredients,Polymers and Chemistry.</Text>
 					<Text mb='0' cursor='pointer' w='80%'>Search, Learn, Engage ,sample , quote and purchase from thousands of distributors - all in one platform.Access all easily.</Text>
 				</Flex>			
