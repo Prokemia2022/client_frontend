@@ -157,7 +157,7 @@ export default function UploadFile({prod_payload,handle_add_new_product,set_islo
 				<Uploaded name={data_sheet?.name}/>
 				:
 				<Flex direction='column'>
-					<Text>Data Sheet</Text>
+					<Text>Technical Data Sheet(TDS)</Text>
 					<Input type='file' placeholder='product data sheet' variant='filled' onChange={((e)=>{set_data_sheet(e.target.files[0])})}/>
 				</Flex>
 			}
@@ -173,7 +173,7 @@ export default function UploadFile({prod_payload,handle_add_new_product,set_islo
 				<Uploaded name={formulation_document?.name}/>
 				:
 				<Flex direction='column'>
-					<Text>Safety Data Sheet</Text>
+					<Text>Material Safety Data Sheet(MSDS)</Text>
 					<Input type='file' placeholder='product safety_data_sheet sheet' variant='filled' onChange={((e)=>{set_safety_data_sheet(e.target.files[0])})}/>
 				</Flex>
 			}

@@ -191,7 +191,7 @@ function Product(){
 					</Flex>
 					<Flex gap='1'>
 						<Flex direction='column' gap='2' flex='1'>
-							<Text fontFamily='ClearSans-Bold'>Industry</Text>
+							<Text fontFamily='ClearSans-Bold'>Industry(`{product_data?.industry}`)</Text>
 							<Select variant='filled' placeholder='Select Industry' onChange={((e)=>{set_industry(e.target.value)})}>
 								{industries_data?.map((item)=>{
 										return(
@@ -202,7 +202,7 @@ function Product(){
 					        </Select>
 						</Flex>
 						<Flex direction='column' gap='3' flex='1'>
-							<Text fontFamily='ClearSans-Bold'>Technology</Text>
+							<Text fontFamily='ClearSans-Bold'>Technology(`{product_data?.technology}`)</Text>
 							<Select variant='filled' placeholder='Select Technology' onChange={((e)=>{set_technology(e.target.value)})}>
 								{technologies_data?.map((item)=>{
 									return(

@@ -45,6 +45,14 @@ function Header({products_data,distributors_data,manufacturers_data,industries_d
 	const token = cookies.get('user_token');
 	
 	useEffect(()=>{
+		const client = {
+		      width: document.documentElement.clientWidth,
+		      height: document.documentElement.clientHeight
+		}
+		//console.log(client.width)
+		if (client.width > 500){
+			setsearchbaractive(true)
+		}
 		if(token){
 			const details = jwt_decode(token)
 			////console.log(details)

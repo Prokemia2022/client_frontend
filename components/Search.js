@@ -39,6 +39,7 @@ export default function Search({setsearchbaractive}){
 														item.chemical_name?.toLowerCase().includes(search_value.toLowerCase()) ||
 														item.email_of_lister?.toLowerCase().includes(search_value.toLowerCase()) ||
 														item.manufactured_by?.toLowerCase().includes(search_value.toLowerCase()) ||
+														item.distributed_by?.toLowerCase().includes(search_value.toLowerCase()) ||
 														item.technology?.toLowerCase().includes(search_value.toLowerCase()))
 			set_products_data(result)
 			//console.log(result)
@@ -82,7 +83,7 @@ export default function Search({setsearchbaractive}){
 	}
 	return(
 		<Flex p='3' borderRadius='5'>
-			<Input borderRadius='5px 0 0 5px' placeholder='Search Product by Name, Industry, Technology' variant='filled' onChange={((e)=>{set_search_value(e.target.value);set_active(true)})}/>
+			<Input borderRadius='5px 0 0 5px' placeholder='Search for products, sellers, industries, technologies' variant='filled' onChange={((e)=>{set_search_value(e.target.value);set_active(true)})}/>
 			<Button color='#fff' bg='#009393'borderRadius='0 5px 5px 0' onClick={(()=>{setsearchbaractive(false)})}><CloseFullscreenIcon/></Button>
 			{active? 
 				<Result setsearchbaractive={setsearchbaractive} set_active={set_active} products_data={products_data} distributors_data={distributors_data} manufacturers_data={manufacturers_data} industries_data={industries_data} technologies_data={technologies_data}/> 
@@ -105,7 +106,7 @@ const Result=({products_data,distributors_data,manufacturers_data,industries_dat
 				</Flex>
 				:
 				<Flex direction='column' p='1' gap='2'>
-					{products_data?.map((item)=>{
+					{products_data?.slice(0,6).map((item)=>{
 						return(
 							<Flex key={item._id} position='relative' gap='2' align='center' onClick={(()=>{router.push(`/product/${item._id}`);setsearchbaractive(false);set_active(false)})} bg='#fff' p='1' borderRadius='5' boxShadow='lg'>
 								<Image w='50px' h='50px' borderRadius='10px' objectFit='cover' src='../../Pro.png' alt='next'/>

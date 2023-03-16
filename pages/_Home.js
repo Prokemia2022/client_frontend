@@ -72,17 +72,17 @@ function _Home(){
 	return(
 		<Flex direction='column' position='relative' gap='2'>
 			<Header products_data={products_data} distributors_data={distributors_data} manufacturers_data={manufacturers_data} industries_data={industries_data} technologies_data={technologies_data}/>
-			<Image h='400px' w='100vw' objectFit='cover' src='../2.png' alt='next' />
+			
 			<Flex p='2' direction='column'>
-				<Flex mt='-350px' direction='column' gap='3' w='100%' p='2' mb='4'>
-						<Text mb='3' fontFamily='ClearSans-Bold' fontSize='36px' >The Marketplace for ingredients,Polymers and Chemistry.</Text>
-						<Text mb='0' cursor='pointer' w='80%'>Search, Learn, Engage ,sample , quote and purchase from thousands of distributors - all in one platform.Access all easily.</Text>
+				<Flex mt='10vh' mb='50px' direction='column' gap='3' w='100%' p='2' mb='4'>
+					<Text mb='3' fontFamily='ClearSans-Bold' fontSize='36px' >The Marketplace for ingredients,Polymers and Chemistry.</Text>
+					<Text mb='0' cursor='pointer' w='80%'>Search, Learn, Engage ,sample , quote and purchase from thousands of distributors - all in one platform.Access all easily.</Text>
 				</Flex>			
 				
 				<Flex direction='column' gap='2' w='100%'>
 					<Text mb='0' fontFamily='ClearSans-Bold' fontSize='24px'>Industries</Text>
-					<Flex wrap='Wrap' w='100%' justify='space-around'>
-						{industries_data?.slice(0,4).map((item)=>{
+					<Flex wrap='Wrap' w='100%' justify='space-between'>
+						{industries_data?.slice(0,8).map((item)=>{
 							return(
 								<Flex cursor='pointer' key={item._id} w='45%' h='225px' m='1' position='relative' onClick={(()=>{router.push(`/products/${item.title}`)})}>
 									<Image borderRadius='10px' objectFit='cover' src={item?.cover_image == ''? "../Pro.png":item?.cover_image} alt='photo' boxShadow='lg' w='100%'/>
@@ -95,8 +95,8 @@ function _Home(){
 				</Flex>
 				<Flex direction='column' gap='2' w='100%'>
 					<Text mb='0' fontFamily='ClearSans-Bold' fontSize='24px'>Technologies</Text>
-					<Flex wrap='Wrap' w='100%' justify='space-around'>
-						{technologies_data?.slice(0,4).map((item)=>{
+					<Flex wrap='Wrap' w='100%' justify='space-between'>
+						{technologies_data?.slice(0,8).map((item)=>{
 							return(
 								<Flex cursor='pointer' key={item._id} w='45%' h='225px' m='1' position='relative' onClick={(()=>{router.push(`/products/${item.title}`)})}>
 									<Image borderRadius='10px' objectFit='cover' src={item?.cover_image == ''? "../Pro.png":item?.cover_image} alt='photo' boxShadow='lg' w='100%'/>

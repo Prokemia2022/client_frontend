@@ -7,6 +7,8 @@ import {useRouter} from 'next/router'
 import Add_Product from '../api/product/add_product.js'
 import Get_Technologies from '../api/control/get_technologies'
 import Get_Industries from '../api/control/get_industries';
+import Get_Distributors from '../api/auth/distributor/get_distributors';
+import Get_Manufacturers from '../api/auth/manufacturer/get_manufacturers';
 //components imports
 import Loading from '../../components/Loading.js'
 import Header from '../../components/Header';
@@ -24,38 +26,80 @@ function Product(){
 		const cookies = new Cookies();
 
 	//useEffects
-		useEffect(()=>{
-			get_Industries_Data()
-			get_Technology_Data()
-		},[])
+		
+	//utils
+	const token = cookies.get('user_token');
+	const [lister_company_name,set_lister_company_name]=useState('');
+	const [distributed_by_suggestion_query,set_distributed_by_suggestion_query]=useState('');
+	const [distributed_by_suggestion_query_modal,set_distributed_by_suggestion_query_modal]=useState(false);
+
+	const [manufactured_by_suggestion_query,set_manufactured_by_suggestion_query]=useState('');
+	const [manufactured_by_suggestion_query_modal,set_manufactured_by_suggestion_query_modal]=useState(false);
+
+	const [verified_user_status,set_verified_user_status]=useState();
+	//const [acc_type,set_acc_type]=useState('');
+
 	//apis
+	const get_Distributors_Data=async(acc_type,email)=>{
+		await Get_Distributors().then((response)=>{
+			const data = response?.data
+			const result_data = data.filter((item)=> item?.verification_status && !item?.suspension_status)
+
+			set_distributors_data(result_data.filter((item) =>item?.company_name.toLowerCase().includes(distributed_by.toLowerCase())))
+			//console.log(result_data.filter((item) =>item?.company_name.toLowerCase().includes(distributed_by.toLowerCase())))
+			//console.log(acc_type)
+			if (acc_type == 'distributor'){
+				const result = result_data.find(({ email_of_company }) => email_of_company === email);
+				set_lister_company_name(result?.company_name)
+				set_distributed_by(result?.company_name)
+				//console.log(result);
+			}
+		})
+	}
+
+	const get_Manufacturers_Data=async(acc_type,email)=>{
+		await Get_Manufacturers().then((response)=>{
+			const data = response?.data
+			const result_data = data.filter((item)=> item?.verification_status && !item?.suspension_status)
+
+			set_manufacturers_data(result_data.filter((item) =>item?.company_name.toLowerCase().includes(manufactured_by.toLowerCase())))
+			//console.log(result_data.filter((item) =>item?.company_name.toLowerCase().includes(manufactured_by.toLowerCase())))
+			//console.log(acc_type)
+			if (acc_type == 'manufacturer'){
+				const result = result_data.find(({ email_of_company }) => email_of_company === email);
+				set_lister_company_name(result?.company_name)
+				set_manufactured_by(result?.company_name)
+				//console.log(result);
+			}
+		})
+	}
+
 	const get_Industries_Data=async()=>{
 		await Get_Industries().then((response)=>{
-			////console.log(response.data)
+			//////console.log(response.data)
 			const data = response.data
 			const result = data.filter(v => v.verification_status)
-			////console.log(data.filter(v => v.verification_status))
+			//////console.log(data.filter(v => v.verification_status))
 			set_industries_data(result)
 		})
 	}
 	const get_Technology_Data=async()=>{
 		await Get_Technologies().then((response)=>{
-			////console.log(response.data)
+			//////console.log(response.data)
 			const data = response.data
 			const result = data.filter(v => v.verification_status)
-			////console.log(data.filter(v => v.verification_status))
+			//////console.log(data.filter(v => v.verification_status))
 			set_technologies_data(result)
 		})
 	}
-	//utils
-	const token = cookies.get('user_token');
-
+	
 	//useStates:
 
 //data
 	const [industries_data, set_industries_data]=useState([]);
 	const [technologies_data, set_technologies_data]=useState([]);
-
+	const [distributors_data,set_distributors_data]=useState([])
+	const [manufacturers_data,set_manufacturers_data]=useState([])
 //states
 	const [isloading,set_isloading]=useState(false)
 	const [isfileupload,set_isfileupload]=useState(false)
@@ -66,7 +110,7 @@ function Product(){
 	const [listed_by_id,set_listed_by_id]=useState("");
 	const [short_on_expiry,set_short_on_expiry]=useState(false);
 	//manufacturer information
-	const [manufactured_by,set_manufactured_by]=useState("");
+	const [manufactured_by,set_manufactured_by]=useState('');
 	//seller information
 	const [distributed_by,set_distributed_by]=useState("");
 	//website_link	
@@ -107,18 +151,20 @@ function Product(){
 		website_link
 	}
 
-	const [verified_user_status,set_verified_user_status]=useState()
+
 
 	useEffect(()=>{
 		if(token){
 			const details = jwt_decode(token)
 			//console.log(details)
 			set_email_of_lister(details?.email)
-			set_listed_by_id(details.id)
-			// const status = cookies.get('is_acc_verified')
-			//// console.log(status)
-			// set_verified_user_status(status)
-			//// console.log(verified_user_status)
+			const email=details?.email
+			set_listed_by_id(details?.id)
+			const acc_type = details?.acc_type
+			get_Industries_Data()
+			get_Technology_Data()
+			get_Distributors_Data(acc_type,email)
+			get_Manufacturers_Data(acc_type,email)
 		}else{
 			toast({
               title: 'you must be signed in to list a product.',
@@ -128,18 +174,19 @@ function Product(){
             });
             router.back()
 		}
-	},[token])
+	},[token,distributed_by_suggestion_query,manufactured_by_suggestion_query])
 
 	//add new product without documents function
 	const handle_add_new_product=async()=>{
 		set_isloading(true)
 		const status = cookies.get('is_acc_verified')
-			//console.log(status)
+			////console.log(status)
 			//set_verified_user_status(status)
-			////console.log(verified_user_status)
+			//////console.log(verified_user_status)
 		
-		//console.log(name_of_product)
-		if (name_of_product == '' || !name_of_product){
+		////console.log(name_of_product)
+		if (name_of_product == '' || !name_of_product || industry == '' || technology == '' || manufactured_by == "" || distributed_by == ""){
+			set_isloading(false)
 			return toast({
               title: '',
               description: `Ensure all inputs are filled`,
@@ -154,33 +201,35 @@ function Product(){
               isClosable: true,
             });
 		}else{
-			//console.log(payload)
+			console.log(payload)
 			set_isloading(true)
 			set_isfileupload(false)
-			setTimeout(()=>{
-				Add_Product(payload).then(()=>{
-						toast({
-			              title: '',
-			              description: `${payload.name_of_product} has been created`,
-			              status: 'success',
-			              isClosable: true,
-			            });
-						router.back()
-						set_isloading(false)
-					}).catch((err)=>{
-						//console.log(err)
-						toast({
-		                    title: 'could not create a new product',
-		                    description: err.response.data,
-		                    status: 'error',
-		                    isClosable: true,
-		                })
-		                set_isloading(false)
-					})
-				//console.log(payload)
-			},5000)
+			//console.log(payload)
+			// setTimeout(()=>{
+			// 	Add_Product(payload).then(()=>{
+			// 			toast({
+			//               title: '',
+			//               description: `${payload.name_of_product} has been created, awaiting review`,
+			//               status: 'success',
+			//               isClosable: true,
+			//             });
+			// 			router.back()
+			// 			set_isloading(false)
+			// 		}).catch((err)=>{
+			// 			////console.log(err)
+			// 			toast({
+		 //                    title: 'could not create a new product',
+		 //                    description: err.response.data,
+		 //                    status: 'error',
+		 //                    isClosable: true,
+		 //                })
+		 //                set_isloading(false)
+			// 		})
+			// 	////console.log(payload)
+			// },5000)
 			set_isloading(false)
 		}
+		set_isloading(false)
 	}
 	return(
 		<Flex direction='column'>
@@ -213,13 +262,37 @@ function Product(){
 								<Textarea type='text' placeholder='Description' variant='filled' onChange={((e)=>{set_description_of_product(e.target.value)})}/>
 							</Flex>
 							<Flex gap='2'>
-								<Flex direction='column' flex='1'>
+								<Flex direction='column' flex='1' position='relative'>
 									<Text>Manufactured by:</Text>
-									<Input type='text' placeholder='manufactured by' variant='filled' onChange={((e)=>{set_manufactured_by(e.target.value)})}/>
+									<Input type='text' value={manufactured_by} variant='filled' onChange={((e)=>{set_manufactured_by(e.target.value);set_manufactured_by_suggestion_query(e.target.value);set_manufactured_by_suggestion_query_modal(true)})}/>
+									{manufactured_by_suggestion_query !== '' && manufactured_by_suggestion_query_modal?
+										<>
+										{manufacturers_data.length === 0? null : 
+											<Flex direction='column' w='100%' h='15vh' boxShadow='dark-lg' padding='2' borderRadius='5' mt='2' position='absolute' bg='#fff' zIndex='99' top='60px' overflowY='scroll'>
+												{manufacturers_data?.map((manufacturer)=>{
+													return(
+														<Text cursor='pointer' bg='#eee' p='1' m='1' borderRadius='5' onClick={(()=>{set_manufactured_by(manufacturer?.company_name);set_manufactured_by_suggestion_query_modal(false)})} fontSize='14px' fontFamily='ClearSans-Bold'>{manufacturer.company_name}</Text>
+													)
+												})}
+											</Flex>}
+										</>
+									: null}
 								</Flex>
-								<Flex direction='column' flex='1'>
+								<Flex direction='column' flex='1' position='relative'>
 									<Text>Sold by</Text>
-									<Input type='text' placeholder='Sold by' variant='filled' onChange={((e)=>{set_distributed_by(e.target.value)})}/>
+									<Input type='text' placeholder='Sold by' value={distributed_by} variant='filled' onChange={((e)=>{set_distributed_by(e.target.value);set_distributed_by_suggestion_query(e.target.value);set_distributed_by_suggestion_query_modal(true)})} />
+									{distributed_by_suggestion_query !== '' && distributed_by_suggestion_query_modal?
+										<>
+										{distributors_data.length === 0? null : 
+											<Flex direction='column' w='100%' h='15vh' boxShadow='dark-lg' padding='2' borderRadius='5' mt='2' position='absolute' bg='#fff' zIndex='99' top='60px' overflowY='scroll'>
+												{distributors_data?.map((distributor)=>{
+													return(
+														<Text cursor='pointer' bg='#eee' p='1' m='1' borderRadius='5' onClick={(()=>{set_distributed_by(distributor?.company_name);set_distributed_by_suggestion_query_modal(false)})} fontSize='14px' fontFamily='ClearSans-Bold'>{distributor.company_name}</Text>
+													)
+												})}
+											</Flex>}
+										</>
+									: null}
 								</Flex>
 							</Flex>
 							<Flex gap='1'>
@@ -291,3 +364,16 @@ function Product(){
 }
 
 export default Product;
+
+
+
+/**
+	What am I trying to do?
+	Set the name of the company for the account that is signed in.
+	If its a manufacturer the name of the company same goes for the distributor
+	-ideas
+	Fetch the details of the account --done
+	use the details to populate the info --
+	Do not use state, it will bug me out
+
+**/

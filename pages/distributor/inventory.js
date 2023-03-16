@@ -45,7 +45,7 @@ function Inventory({distributor_data}){
 			</Flex>
 			{products_data?.length === 0?
 				<Flex justify='center' align='center' h='40vh' direction='column' gap='2'>
-					<Text textAlign='center' fontSize='32px' fontWeight='bold' color='gray'>You have not listed any products<br/>or<br/>Your product is awaiting approval</Text>
+					<Text textAlign='center' fontSize='32px' fontWeight='bold' color='gray'>You have not listed any products<br/>or<br/>Your product is awaiting review</Text>
 				</Flex>
 			:
 				<>
