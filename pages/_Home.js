@@ -84,9 +84,9 @@ function _Home(){
 					<Flex wrap='Wrap' w='100%' justify='space-between'>
 						{industries_data?.slice(0,8).map((item)=>{
 							return(
-								<Flex cursor='pointer' key={item._id} w='45%' h='225px' m='1' position='relative' onClick={(()=>{router.push(`/products/${item.title}`)})}>
+								<Flex cursor='pointer' key={item._id} w='150px' h='225px' m='1' position='relative' onClick={(()=>{router.push(`/products/${item.title}`)})}>
 									<Image borderRadius='10px' objectFit='cover' src={item?.cover_image == ''? "../Pro.png":item?.cover_image} alt='photo' boxShadow='lg' w='100%'/>
-									<Text bg='rgb(192,192,192,0.6)' p='1' m='2' mb='0' borderRadius='5' position='absolute' top='10px' left='10px' fontSize='20px' color='#000' fontFamily='ClearSans-Bold'>{item.title}</Text>
+									<Text bg='rgb(192,192,192,0.6)' p='1' m='2' mb='0' borderRadius='5' position='absolute' top='10px' left='10px' w='120px' fontSize='20px' color='#000' fontFamily='ClearSans-Bold'>{item.title}</Text>
 								</Flex>
 							)
 						})}
@@ -98,9 +98,9 @@ function _Home(){
 					<Flex wrap='Wrap' w='100%' justify='space-between'>
 						{technologies_data?.slice(0,8).map((item)=>{
 							return(
-								<Flex cursor='pointer' key={item._id} w='45%' h='225px' m='1' position='relative' onClick={(()=>{router.push(`/products/${item.title}`)})}>
+								<Flex cursor='pointer' key={item._id} w='150px' h='225px' m='1' position='relative' onClick={(()=>{router.push(`/products/${item.title}`)})}>
 									<Image borderRadius='10px' objectFit='cover' src={item?.cover_image == ''? "../Pro.png":item?.cover_image} alt='photo' boxShadow='lg' w='100%'/>
-									<Text bg='rgb(192,192,192,0.6)' p='1' m='2' mb='0' borderRadius='5' position='absolute' top='10px' left='10px' fontSize='20px' color='#000' fontFamily='ClearSans-Bold'>{item.title}</Text>
+									<Text bg='rgb(192,192,192,0.6)' p='1' m='2' mb='0' borderRadius='5' position='absolute' top='10px' left='10px' fontSize='20px' w='120px' color='#000' fontFamily='ClearSans-Bold'>{item.title}</Text>
 								</Flex>
 							)
 						})}

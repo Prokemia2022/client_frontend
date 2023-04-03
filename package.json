@@ -1,5 +1,6 @@
 {
   "name": "prokemia.web",
+  "homepage":"https://prokemia.com/",
   "version": "0.1.0",
   "private": true,
   "scripts": {
