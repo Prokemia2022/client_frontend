@@ -29,7 +29,7 @@ function Product(){
 	const get_Data=async(payload)=>{
 		await Get_Product(payload).then((response)=>{
 			set_product_data(response.data)
-			//console.log(response.data)
+			console.log(response.data)
 		})
 	}
 	useEffect(()=>{
@@ -61,42 +61,55 @@ function Product(){
 					:
 					null
 				}
-				<Text fontFamily='ClearSans-Bold' fontSize='32px'>{product_data?.name_of_product}</Text>
-				<Flex>
+				<Text fontFamily='ClearSans-Bold' fontSize='32px' color='#009393'>{product_data?.name_of_product}</Text>
+				<Flex gap='2'>
 					<Text>Manufactured by:</Text>
 					<Text color='grey'>{product_data?.manufactured_by}</Text>
 				</Flex>
-				<Flex>
+				<Flex gap='2'>
 					<Text>Distributed by:</Text>
 					<Text color='grey'>{product_data?.distributed_by}</Text>
 				</Flex>
-				<Flex direction='column'>
-					<Text color='#000' fontWeight='bold'>Description</Text>
+				<Flex gap='2'>
+					<Text>Industry:</Text>
+					<Text color='#009393' cursor='pointer' textDecoration='underline' onClick={(()=>{router.push(`/products/${product_data?.industry}`)})}>{product_data?.industry}</Text>
+				</Flex>
+				<Flex gap='2'>
+					<Text>Technology:</Text>
+					<Text color='#009393' cursor='pointer' textDecoration='underline' onClick={(()=>{router.push(`/products/${product_data?.technology}`)})}>{product_data?.technology}</Text>
+				</Flex>
+				<Text color='#000' fontWeight='bold' mt='2'>Description</Text>
+				<Flex direction='column' bg='#e5e5e5' borderRadius='5' p='2'>
 					<Text>{product_data?.description_of_product}</Text>
 				</Flex>
-				<Flex>
-					<Text>chemical_name:</Text>
+				<Text fontWeight='bold'>Chemical_name</Text>
+				<Flex direction='column' bg='#e5e5e5' borderRadius='5' p='2'>
 					<Text>{product_data?.chemical_name}</Text>
 				</Flex>
-				<Flex direction='column' gap='2' mt='2'>
-					<Link href={product_data?.data_sheet} bg='grey' borderRadius='5' boxShadow='lg' color='#fff' align='center' p='1' isExternal fontSize='20px'>Product Data Sheet</Link>
-					<Link href={product_data?.data_sheet} bg='grey' borderRadius='5' boxShadow='lg' color='#fff' align='center' p='1' isExternal fontSize='20px'>Safety Data Sheet</Link>
-					<Link href={product_data?.data_sheet} bg='grey' borderRadius='5' boxShadow='lg' color='#fff' align='center' p='1' isExternal fontSize='20px'>Formulation Document</Link>
+				<Text fontWeight='bold'>Function</Text>
+				<Flex direction='column' bg='#e5e5e5' borderRadius='5' p='2'>
+					<Text>{product_data?.function}</Text>
 				</Flex>
-				<Flex direction='column' bg='#e5e5e5' borderRadius='1' p='1'>
-					<Text fontWeight='bold'>Features & Benefits</Text>
+				<Flex direction='column' gap='2' mt='2' mb='2'>
+					<Text fontWeight='bold'>Attachments</Text>
+					{product_data?.data_sheet === ''? <Text bg='#eee' p='2' textAlign='center' borderRadius='5'>No data sheet attached</Text> : <Link href={product_data?.data_sheet} bg='grey' borderRadius='5' boxShadow='lg' color='#fff' align='center' p='1' isExternal fontSize='20px'>Product Data Sheet</Link>}
+					{product_data?.formulation_document === ''? <Text bg='#eee' p='2' textAlign='center' borderRadius='5'>No formulation document attached</Text> : <Link href={product_data?.formulation_document} bg='grey' borderRadius='5' boxShadow='lg' color='#fff' align='center' p='1' isExternal fontSize='20px'>Fomulation document</Link>}
+					{product_data?.safety_data_sheet === ''? <Text bg='#eee' p='2' textAlign='center' borderRadius='5'>No safety data sheet attached</Text> : <Link href={product_data?.safety_data_sheet} bg='grey' borderRadius='5' boxShadow='lg' color='#fff' align='center' p='1' isExternal fontSize='20px'>Safety Data Sheet</Link>}
+				</Flex>
+				<Text fontWeight='bold'>Features & Benefits</Text>
+				<Flex direction='column' bg='#e5e5e5' borderRadius='5' p='2'>
 					<Text>{product_data?.features_of_product}</Text>
 				</Flex>
-				<Flex direction='column' bg='#e5e5e5' borderRadius='1' p='1'>
-					<Text fontWeight='bold'>Applications and benefits</Text>
+				<Text fontWeight='bold'>Applications and benefits</Text>
+				<Flex direction='column' bg='#e5e5e5' borderRadius='5' p='2'>
 					<Text>{product_data?.application_of_product}</Text>
 				</Flex>
-				<Flex direction='column' bg='#e5e5e5' borderRadius='1' p='1'>
-					<Text fontWeight='bold'>Packaging</Text>
+				<Text fontWeight='bold'>Packaging</Text>
+				<Flex direction='column' bg='#e5e5e5' borderRadius='5' p='2'>
 					<Text>{product_data?.packaging_of_product}</Text>
 				</Flex>
-				<Flex direction='column' bg='#e5e5e5' borderRadius='1' p='1'>
-					<Text fontWeight='bold'>Storage & Handling</Text>
+				<Text fontWeight='bold'>Storage & Handling</Text>
+				<Flex direction='column' bg='#e5e5e5' borderRadius='5' p='2'>
 					<Text>{product_data?.storage_of_product}</Text>
 				</Flex>
 			</Flex>
@@ -108,7 +121,8 @@ function Product(){
 					<Button bg='#fff' borderRadius='0' border='1px solid #000' p='1'>
 	                    <Link href={`mailto: ${product_data?.email_of_lister}`} isExternal>contact company</Link>
 	                </Button>
-					<Link href={product_data?.website_link_to_Seller} bg='grey' borderRadius='5' boxShadow='lg' color='#fff' align='center' p='1' isExternal fontSize='20px'>Website link</Link>
+	                {product_data?.website_link_to_Seller === ''? <Text bg='#eee' p='2' textAlign='center' borderRadius='5'>Website link is not attached</Text> : <Link href={product_data?.website_link_to_Seller} bg='grey' borderRadius='5' boxShadow='lg' color='#fff' align='center' p='1' isExternal fontSize='20px'>Website link</Link>}
+					
 				</Flex>
 			</Flex>
 		</Flex>

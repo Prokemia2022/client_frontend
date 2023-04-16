@@ -105,6 +105,11 @@ function Distributor(){
 						<Text>Mobile: <span style={{fontWeight:'bold'}}>{distributor_data?.mobile_of_company}</span></Text>	
 						<Text>Address: <span style={{fontWeight:'bold'}}>{distributor_data?.address_of_company}</span></Text>
 					</Flex>
+					<Flex gap='2'>
+						<Link w='100vw' p='2' borderRadius='5' textAlign='center' bg='#009393' color='#fff' href={`mailto: ${distributor_data?.email_of_company}`} isExternal>
+		                    Contact Us
+		                </Link>
+					</Flex>
 					<Flex direction='column'>
 						<Text fontWeight='bold' fontSize='20px'>Description</Text>
 						{distributor_data?.description === ''? 
@@ -144,7 +149,7 @@ function Distributor(){
 						}
 					</Flex>
 					<Flex direction='column' gap='2'>
-						<Text fontSize='18px' fontWeight='bold' borderBottom='1px solid #000'>Industry by this Manufacturer</Text>
+						<Text fontSize='18px' fontWeight='bold' borderBottom='1px solid #000'>Industries by this Manufacturer</Text>
 						{industries?.length === 0 ?
 								<Flex justify='center' align='center' h='15vh' bg='#eee' p='2' borderRadius='5' boxShadow='lg' gap='2'>
 									<Text>The User has not seletected an industry to specialize in yet</Text>
@@ -153,7 +158,7 @@ function Distributor(){
 								<Flex direction='column'> 
 								{industries?.map((item)=>{
 									return(
-										<Industry key={item._id} item={item}/>
+										<Industry key={item.id} item={item}/>
 									)
 								})}
 							</Flex>
@@ -165,25 +170,20 @@ function Distributor(){
 						</Flex>
 						:
 						<Flex direction='column' h='50vh' overflowY='scroll'>
-							<Text fontWeight='bold'>Products</Text>
+							<Text fontWeight='bold' fontSize='24px'>Products</Text>
 							{products?.map((item)=>{
 								return(
-									<Flex key={item?._id} position='relative' gap='2' m='2' align='center' borderRadius='5' boxShadow='dark-lg' cursor='pointer' onClick={(()=>{router.push(`/product/${item?._id}`)})}>
-										<Image w='50px' h='50px' borderRadius='10px' objectFit='cover' src='../../Pro.png' alt='next'/>
-										<Flex direction='column'>
-											<Text color='#009393' fontSize='16px' fontFamily='ClearSans-Bold'>{item?.name_of_product}</Text>
-											<Text fontSize='14px'>distributed by: {item?.distributed_by}</Text>
+									<Flex key={item?._id} position='relative' gap='2' bg='#eee' m='2' align='center' borderRadius='5' boxShadow='lg' cursor='pointer' onClick={(()=>{router.push(`/product/${item?._id}`)})}>
+										<Image  boxSize='100px' objectFit='cover' src='../../Pro.png' alt='next'/>
+										<Flex direction='column' p='2' gap='2'>
+											<Text color='#009393' fontSize='20px' fontFamily='ClearSans-Bold'>{item?.name_of_product}</Text>
+											<Text fontSize='16px'>{item?.industry}</Text>
 										</Flex>
 									</Flex>
 								)
 							})}
 						</Flex>
 					}
-					<Flex p='2' gap='2'>
-						<Link w='100vw' p='2' borderRadius='5' textAlign='center' bg='#009393' color='#fff' href={`mailto: ${distributor_data?.email_of_company}`} isExternal>
-		                    Contact Us
-		                </Link>
-					</Flex>
 				</Flex>
 			</Flex>
 		</Flex>

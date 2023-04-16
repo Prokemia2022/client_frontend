@@ -21,10 +21,11 @@ export default function All(){
 	//console.log(categ)
 	//apis
 	//states
-	const [industries_data,set_industries_data]=useState([])
-	const [technologies_data,set_technologies_data]=useState([])
-	const [distributors_data,set_distributors_data]=useState([])
-	const [manufacturers_data,set_manufacturers_data]=useState([])
+	const [industries_data,set_industries_data]=useState([]);
+	const [technologies_data,set_technologies_data]=useState([]);
+	const [distributors_data,set_distributors_data]=useState([]);
+	const [manufacturers_data,set_manufacturers_data]=useState([]);
+	const [isloading,set_isloading]=useState(true);
 	//functions
 	/**fetch industries */
 	const get_Industries_Data=async()=>{
@@ -32,6 +33,8 @@ export default function All(){
 			const result = response?.data.filter((item)=> item?.verification_status)
 			set_industries_data(result)
 			////console.log(result)
+		}).then(()=>{
+			set_isloading(false)
 		})
 	}
 	/**fetch technologies */
@@ -40,6 +43,8 @@ export default function All(){
 			const result = response?.data.filter((item)=> item?.verification_status)
 			set_technologies_data(result)
 			////console.log(response.data)
+		}).then(()=>{
+			set_isloading(false)
 		})
 	}
 	/**fetch distributors */
@@ -48,7 +53,9 @@ export default function All(){
 			const data = response?.data
 			const result_data = data.filter((item)=> item?.verification_status && !item?.suspension_status)
 			set_distributors_data(result_data)
-			////console.log(response.data)
+			//console.log(result_data)
+		}).then(()=>{
+			set_isloading(false)
 		})
 	}
 	/**fetch manufacturers */
@@ -58,6 +65,8 @@ export default function All(){
 			const result_data = data.filter((item)=> item?.verification_status && !item?.suspension_status)
 			set_manufacturers_data(result_data)
 			////console.log(response.data)
+		}).then(()=>{
+			set_isloading(false)
 		})
 	}
 	//useEffects
@@ -92,224 +101,111 @@ export default function All(){
 				{categ?.category === 'Industries'?
 					<Flex direction='column' gap='2' w='100%'>
 						<Text fontSize='28px' fontFamily='ClearSans-Bold' >{categ?.category}</Text>
-						<Flex wrap='Wrap' w='100%'>
-							{industries_data?.map((item)=>{
-								return(
-									<Flex key={item._id} w='170px' h='225px' m='1' position='relative' cursor='pointer' onClick={(()=>{router.push(`/products/${item.title}`)})}>
-										<Image borderRadius='10px' objectFit='cover' src={item?.cover_image == ''? '../Pro.png':item?.cover_image} alt='next'/>
-										<Text bg='rgb(192,192,192,0.6)' p='1' m='2' mb='0' borderRadius='5' position='absolute' top='10px' left='10px' fontSize='20px' color='#000' fontFamily='ClearSans-Bold'>{item.title}</Text>
-									</Flex>
-								)
-							})}
+						<Flex wrap='Wrap' w='100%' justify='space-between'>
+							{!isloading ?
+								<>
+									{industries_data?.map((item)=>{
+										return(
+											<Flex cursor='pointer' key={item._id} w={window?.width > 500? '200px':'150px'} h='225px' m='1' position='relative' onClick={(()=>{router.push(`/products/${item.title}`)})}>
+												<Image borderRadius='10px' objectFit='cover' src={item?.cover_image == ''? "../Pro.png":item?.cover_image} alt='photo' boxShadow='lg' w='100%'/>
+												<Text bg='rgb(192,192,192,0.6)' p='1' m='2' mb='0' borderRadius='5' position='absolute' top='10px' left='10px' w='80%' fontSize='20px' color='#000' fontFamily='ClearSans-Bold'>{item.title}</Text>
+											</Flex>
+										)
+									})}
+								</>:
+								<>
+									<Item_Loading />
+									<Item_Loading />
+								</>
+							}
 						</Flex>
 					</Flex>
 				:
 					<Flex direction='column' gap='2' w='100%'>
 						<Text fontSize='28px' fontFamily='ClearSans-Bold' borderBottom='1px solid #000' >{categ.category}</Text>
-						<Flex wrap='Wrap' w='100%'>
-							{technologies_data?.map((item)=>{
-								return(
-									<Flex key={item._id} w='170px' h='225px' m='1' position='relative' cursor='pointer' onClick={(()=>{router.push(`/products/${item.title}`)})} boxShadow='lg'>
-										<Image borderRadius='10px' objectFit='cover' src={item?.cover_image == ''? '../Pro.png':item?.cover_image} alt='next'/>
-										<Text bg='rgb(192,192,192,0.6)' p='1' m='2' mb='0' borderRadius='5' position='absolute' top='10px' left='10px' fontSize='20px' color='#000' fontFamily='ClearSans-Bold'>{item.title}</Text>
-									</Flex>
-								)
-							})}
+						<Flex wrap='Wrap' w='100%' justify='space-between'>
+							{!isloading ?
+								<>
+									{technologies_data?.map((item)=>{
+										return(
+											<Flex cursor='pointer' key={item._id} w={window?.width > 500 ? '200px':'150px'} h='225px' m='1' position='relative' onClick={(()=>{router.push(`/products/${item.title}`)})}>
+												<Image borderRadius='10px' objectFit='cover' src={item?.cover_image == ''? "../Pro.png":item?.cover_image} alt='photo' boxShadow='lg' w='100%'/>
+												<Text bg='rgb(192,192,192,0.6)' p='1' m='2' mb='0' borderRadius='5' position='absolute' top='10px' left='10px' fontSize='20px' w='80%' color='#000' fontFamily='ClearSans-Bold'>{item.title}</Text>
+											</Flex>
+										)
+									})}
+								</>:
+								<>
+									<Item_Loading />
+									<Item_Loading />
+								</>
+							}
 						</Flex>
 					</Flex>
 				}
 				<Flex p='2' direction='column' gap='2'>
 					<Text color='#009393' fontSize='24px'> Featured Distributors </Text>
-					{distributors_data?.slice(0,4).map((distributor)=>{
-						return(
-							<Flex direction='column' bg='#eee' p='1' mb='1' key={distributor._id}>
-								<Text mb='0' fontSize='20px'>{distributor.company_name}</Text>
-								<Text mb='0' >{distributor.description}</Text>
-								<Text mb='0' fontSize='14px' color='#009393' cursor='pointer' onClick={(()=>{router.push(`/account/distributor/${distributor._id}`)})}> view &gt;&gt; </Text>
-							</Flex>
-						)
-					})}
+					{!isloading ?
+						<>
+							{distributors_data?.slice(0,4).map((distributor)=>{
+								return(
+									<Flex bg='#eee' mb='1' borderRadius='5' key={distributor._id} gap='2' onClick={(()=>{router.push(`/account/distributor/${distributor._id}`)})} cursor='pointer'>
+										<Image objectFit='cover' src={distributor?.profile_photo_url} boxSize='100px' alt='profilelogo'/>
+										<Flex direction='column' p='2' gap='2' flex='1'>
+											<Text mb='0' fontSize='24px' fontFamily='ClearSans-Bold'>{distributor.company_name}</Text>
+											<Text mb='0' w='80%' overflow='hidden' h='20px'>{distributor.description}</Text>
+										</Flex>
+									</Flex>
+								)
+							})}
+						</>:
+						<>
+							<Loading />
+							<Loading />
+						</>
+					}
 					<Text color='#009393' fontSize='24px'>Featured Manufacturers </Text>
-					{manufacturers_data?.slice(0,4).map((manufacturer)=>{
-						return(
-							<Flex direction='column' bg='#eee' mb='1' p='1' key={manufacturer._id} gap='2'>
-								<Text mb='0' fontSize='20px' fontFamily='ClearSans-Bold'>{manufacturer.company_name}</Text>
-								<Text mb='0' overflow='hidden' h='20px'>{manufacturer.description}</Text>
-								<Text mb='0' fontSize='14px' color='#009393' cursor='pointer' onClick={(()=>{router.push(`/account/manufacturer/${manufacturer._id}`)})}> view &gt;&gt; </Text>
-							</Flex>
-						)
-					})}
+						{!isloading ?
+							<>
+								{manufacturers_data?.slice(0,4).map((manufacturer)=>{
+									return(
+										<Flex bg='#eee' mb='1' borderRadius='5' key={manufacturer._id} gap='2' onClick={(()=>{router.push(`/account/manufacturer/${manufacturer._id}`)})} cursor='pointer'>
+											<Image objectFit='cover' src={manufacturer?.profile_photo_url} w='100px' h='100px' alt='profilelogo'/>
+											<Flex direction='column' p='2' gap='2' flex='1'>
+												<Text mb='0' fontSize='24px' fontFamily='ClearSans-Bold'>{manufacturer.company_name}</Text>
+												<Text mb='0' w='80%' overflow='hidden' h='20px'>{manufacturer.description}</Text>
+											</Flex>
+										</Flex>
+									)
+								})}
+							</>:
+							<>
+								<Loading />
+								<Loading />
+							</>
+						}
 				</Flex>
 				</Flex>
 		</Flex>
 	)
 }
 
-const Categories=({item})=>{
-	const router = useRouter();
+const Item_Loading=()=>{
 	return(
-		<Flex direction='column' p='' gap='2' cursor='pointer'>
-			<Flex wrap='Wrap' justify='space-between'>
-				{item.contents.map((content)=>{
-					return(
-						<>
-							<Item content={content}/>
-						</>
-					)
-				})}
+		<Flex w='150px' h='225px' m='1' position='relative' bg='#fff' boxShadow='lg'>
+			<Flex bg='#eee' p='4' m='2' mb='0' borderRadius='5' position='absolute' top='10px' left='10px' w='80%' h='50px'/>
+		</Flex>
+	)
+}
+
+const Loading=()=>{
+	return(
+		<Flex h='80px' position='relative' gap='2' align='center' boxShadow='lg' p='2'>
+			<Flex w='50px' h='50px' borderRadius='10px' bg='#eee'/>
+			<Flex direction='column' flex='1' gap='3'>
+				<Flex bg='#eee' w='100%' h='20px' borderRadius='5'/>
+				<Flex bg='#eee' w='100%' h='20px' borderRadius='5'/>
 			</Flex>
 		</Flex>
 	)
 }
-
-const Item=({content})=>{
-	const router = useRouter();
-	return(
-		<Flex w='175px' h='225px' m='1' position='relative' onClick={(()=>{router.push(`/industry/${content.name}`)})}>
-			<Image borderRadius='10px' objectFit='cover' src={content.img} alt='next'/>
-			<Text position='absolute' top='10px' left='10px' fontSize='20px' color='#fff' fontFamily='ClearSans-Bold'>{content.name}</Text>
-		</Flex>
-	)
-}
-
-const categories=[
-	{
-		id:1,
-		title:'Industries',
-		contents:[
-			{
-				id:1,
-				name:"Adhesives",
-				img:"../images.jpeg",
-			},
-			{
-				id:2,
-				name:"Agriculture",
-				img:"../download.jpeg",
-			},
-			{
-				id:3,
-				name:"Food and Nutrition",
-				img:"../download (1).jpeg",
-			},
-			{
-				id:4,
-				name:"Pharmaceuticals",
-				img:"../images (1).jpeg",
-			},
-			{
-				id:5,
-				name:"Personal Care",
-				img:"../download (2).jpeg",
-			},
-			{
-				id:6,
-				name:"Electrical & Electronics",
-				img:"../download (3).jpeg",
-			},
-			{
-				id:7,
-				name:"Paintings & Coatings",
-				img:"../images (2).jpeg",
-			},
-			{
-				id:8,
-				name:"Printing & Labelling",
-				img:"../download (4).jpeg",
-			}]
-	},
-	{
-		id:2,
-		title:'Technologies',
-		contents:[
-			{
-				id:1,
-				name:"AgroChemicals",
-				img:"../download.jpeg",
-			},
-			{
-				id:2,
-				name:"Cosmetics ingredients",
-				img:"../images (3).jpeg",
-			},
-			{
-				id:3,
-				name:"Lab ingredients",
-				img:"../download (6).jpeg",
-			},
-			{
-				id:4,
-				name:"Pharmaceuticals",
-				img:"../images (1).jpeg",
-			},
-			{
-				id:5,
-				name:"Paints",
-				img:"../images (2).jpeg",
-			}]
-	},
-]
-
-const technologiesop=[
-			{
-				id:1,
-				name:"Agriculture Crops",
-				img:"../images (1).jpeg",
-			},
-			{
-				id:2,
-				name:"Agriculture films",
-				img:"../images (1).jpeg",
-			},
-			{
-				id:3,
-				name:"Animal Health & Nutrition",
-				img:"../images (1).jpeg",
-			},
-			{
-				id:4,
-				name:"Pest Control",
-				img:"../images (1).jpeg",
-			},
-]
-
-const distributors=[
-	{
-		id:1,
-		name:'IMCD',
-		industries:['Personal Care','H I &I','Building and Construction',]
-	},
-	{
-		id:2,
-		name:'Carst and Walker',
-		industries:['Personal Care','H I &I']
-	},
-	{
-		id:3,
-		name:'Azelis',
-		industries:['Personal Care','H I &I','Building and Construction',]
-	},
-	{
-		id:4,
-		name:'Brentag',
-		industries:['Personal Care','H I &I','Building and Construction',]
-	},
-]
-
-const manufacturers=[
-	{
-		id:1,
-		name:'Crda Inc.',
-		industries:['Personal Care','H I &I']
-	},
-	{
-		id:2,
-		name:'BASF',
-		industries:['Personal Care','H I &I']
-	},
-	{
-		id:3,
-		name:'Du Pont',
-		industries:['Personal Care','Building and Construction',]
-	},
-]

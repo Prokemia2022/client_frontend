@@ -25,8 +25,6 @@ function Settings({distributor_data}){
 	const router = useRouter();
 	const cookies = new Cookies();
 	//states
-	const [show, setShow] = useState(false);
-  	const handleClick = () => setShow(!show);
 
   	const [is_delete_account_Modalvisible,set_is_delete_account_Modalvisible]=useState(false)
 	//functions
@@ -77,13 +75,8 @@ function Settings({distributor_data}){
 							<InputGroup size='md'>
 								<Input
 								pr='4.5rem'
-								type={show ? 'text' : 'password'} value={new_password} placeholder='password' onChange={((e)=>{set_new_password(e.target.value)})}
+								type={'password'} value={new_password} placeholder='password' onChange={((e)=>{set_new_password(e.target.value)})}
 								/>
-									<InputRightElement width='4.5rem'>
-									<Button h='1.75rem' size='sm' onClick={handleClick} bg='#fff'>
-									{show ? <VisibilityOff/> : <Visibility/>}
-									</Button>
-								</InputRightElement>
 							</InputGroup>
 							<Button bg='#ff' border='1px solid #000' onClick={Handle_Change_Password}>Change Password</Button>
 						</Flex>

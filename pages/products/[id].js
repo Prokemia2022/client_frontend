@@ -25,6 +25,7 @@ export default function Products(){
 	const [technology_data,set_technology_data]=useState('')
 	const [distributors_data,set_distributors_data]=useState([]);
 	const [manufacturers_data,set_manufacturers_data]=useState([]);
+	const [isloading,set_isloading]=useState(true);
 
 	const [description,set_description]=useState('')
 	//functions
@@ -33,10 +34,11 @@ export default function Products(){
 	/**fetch products data*/
 	const get_Products_Data=async()=>{
 		await Get_Products().then((response)=>{
-			const data = response?.data
-			const result = data.filter((item)=> item?.industry.includes(categ?.id) || item?.technology.includes(categ?.id))
+			const data = response?.data;
+			const result = data.filter((item)=> item?.industry.includes(categ?.id) || item?.technology.includes(categ?.id));
 			////console.log(response.data)
-			set_products_data(result)
+			set_products_data(result);
+			set_isloading(false);
 		})
 	}
 	/*fetch manufacturers */
@@ -89,50 +91,90 @@ export default function Products(){
 			<Header/>
 			<Flex p='2' direction='column' gap='2'>
 				<Flex direction='column'>
-					<Text fontSize='32px' fontFamily='ClearSans-Bold'>{category_title}</Text>
+					<Text fontSize='32px' fontFamily='ClearSans-Bold' color='#009393'>{category_title}</Text>
 					<Text>{industry_data == undefined? technology_data?.description : industry_data?.description}</Text>
 				</Flex>
-				{products_data?.length === 0?
-					<Flex bg='#eee' p='2' justify='center' align='center' h='40vh' boxShadow='lg'>
-						<Text>No products have been listed under this category</Text>
-					</Flex>
+				{isloading ?
+					<>
+						<Loading/>
+						<Loading/>
+					</>
 					:
 					<>
-						{products_data?.map((item)=>{
-							return(
-								<Flex key={item._id} position='relative' gap='2' align='center' onClick={(()=>{router.push(`/product/${item._id}`)})} bg='#eee' p='2' borderRadius='5' boxShadow='lg' cursor='pointer'>
-									<Image w='50px' h='50px' borderRadius='10px' objectFit='cover' src="../Pro.png" alt='next' />
-									<Flex direction='column'>
-										<Text fontSize='16px' fontFamily='ClearSans-Bold'>{item.name_of_product}</Text>
-										<Text fontSize='16px'>{item.industry}</Text>
-									</Flex>
-								</Flex>
-							)
-						})}
+						{products_data.length !== 0 ?
+							<>
+								{products_data?.map((item)=>{
+									return(
+										<Flex key={item._id} position='relative' gap='2' align='center' onClick={(()=>{router.push(`/product/${item._id}`)})} bg='#eee' p='2' borderRadius='5' boxShadow='lg' cursor='pointer'>
+											<Image w='50px' h='50px' borderRadius='10px' objectFit='cover' src="../Pro.png" alt='next' />
+											<Flex direction='column'>
+												<Text fontSize='16px' fontFamily='ClearSans-Bold'>{item.name_of_product}</Text>
+												<Text fontSize='16px'>{item.industry}</Text>
+											</Flex>
+										</Flex>
+									)
+								})}
+							</>:
+							<Flex bg='#eee' p='2' justify='center' align='center' h='40vh' boxShadow='lg'>
+								<Text>No products have been listed under this category</Text>
+							</Flex>
+						}
 					</>
 				}
 			</Flex>
 			<Flex p='2' direction='column' gap='2'>
 				<Text color='#009393' fontSize='24px'> Featured Distributors </Text>
-				{distributors_data?.slice(0,4).map((distributor)=>{
-					return(
-						<Flex direction='column' bg='#eee' p='1' mb='1' key={distributor._id}>
-							<Text mb='0' fontSize='20px'>{distributor.company_name}</Text>
-							<Text mb='0' >{distributor.description}</Text>
-							<Text mb='0' fontSize='14px' color='#009393' cursor='pointer' onClick={(()=>{router.push(`/account/distributor/${distributor._id}`)})}> view &gt;&gt; </Text>
-						</Flex>
-					)
-				})}
+				{distributors_data.length !== 0 ?
+					<>
+						{distributors_data?.slice(0,4).map((distributor)=>{
+							return(
+								<Flex bg='#eee' mb='1' borderRadius='5' key={distributor._id} gap='2' onClick={(()=>{router.push(`/account/distributor/${distributor._id}`)})} cursor='pointer'>
+									<Image objectFit='cover' src={distributor?.profile_photo_url} boxSize='100px' alt='profilelogo'/>
+									<Flex direction='column' p='2' gap='2' flex='1'>
+										<Text mb='0' fontSize='24px' fontFamily='ClearSans-Bold'>{distributor.company_name}</Text>
+										<Text mb='0' w='80%' overflow='hidden' h='20px'>{distributor.description}</Text>
+									</Flex>
+								</Flex>
+							)
+						})}
+					</>:
+					<>
+						<Loading />
+						<Loading />
+					</>
+				}
 				<Text color='#009393' fontSize='24px'>Featured Manufacturers </Text>
-				{manufacturers_data?.slice(0,4).map((manufacturer)=>{
-					return(
-						<Flex direction='column' bg='#eee' mb='1' p='1' key={manufacturer._id} gap='2'>
-							<Text mb='0' fontSize='20px' fontFamily='ClearSans-Bold'>{manufacturer.company_name}</Text>
-							<Text mb='0' overflow='hidden' h='20px'>{manufacturer.description}</Text>
-							<Text mb='0' fontSize='14px' color='#009393' cursor='pointer' onClick={(()=>{router.push(`/account/manufacturer/${manufacturer._id}`)})}> view &gt;&gt; </Text>
-						</Flex>
-					)
-				})}
+					{manufacturers_data.length !== 0 ?
+						<>
+							{manufacturers_data?.slice(0,4).map((manufacturer)=>{
+								return(
+									<Flex bg='#eee' mb='1' borderRadius='5' key={manufacturer._id} gap='2' onClick={(()=>{router.push(`/account/manufacturer/${manufacturer._id}`)})} cursor='pointer'>
+										<Image objectFit='cover' src={manufacturer?.profile_photo_url} w='100px' h='100px' alt='profilelogo'/>
+										<Flex direction='column' p='2' gap='2' flex='1'>
+											<Text mb='0' fontSize='24px' fontFamily='ClearSans-Bold'>{manufacturer.company_name}</Text>
+											<Text mb='0' w='80%' overflow='hidden' h='20px'>{manufacturer.description}</Text>
+										</Flex>
+									</Flex>
+								)
+							})}
+						</>:
+						<>
+							<Loading />
+							<Loading />
+						</>
+					}
+			</Flex>
+		</Flex>
+	)
+}
+
+const Loading=()=>{
+	return(
+		<Flex h='80px' position='relative' gap='2' align='center' boxShadow='lg' p='2'>
+			<Flex w='50px' h='50px' borderRadius='10px' bg='#eee'/>
+			<Flex direction='column' flex='1' gap='3'>
+				<Flex bg='#eee' w='100%' h='20px' borderRadius='5'/>
+				<Flex bg='#eee' w='100%' h='20px' borderRadius='5'/>
 			</Flex>
 		</Flex>
 	)

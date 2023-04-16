@@ -47,7 +47,7 @@ const Buy=({active,setActive,router})=>{
 			>
 				<Text fontSize='36px' fontFamily='ClearSans-bold'>Search for Products</Text>
 				<Text>Search for products, ingredients,chemicals from our vast marketplace</Text>
-				<Text>We will connect you to sellers,distributors & manufacturers</Text>
+				<Text>We will connect you to suppliers,distributors & manufacturers</Text>
 				<Button onClick={(()=>{router.push('/signup/client')})} bg='#009393' color="#fff">Create Account</Button> 
 		</Flex>
 	)

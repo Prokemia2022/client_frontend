@@ -29,7 +29,7 @@ function Footer(){
 				</Flex>
 			</Flex>
 			<Center>
-				<Text>Copyright @ proKemia 2022</Text>
+				<Text>Copyright @ ProKemia 2022</Text>
 			</Center>
 		</Flex>
 	)

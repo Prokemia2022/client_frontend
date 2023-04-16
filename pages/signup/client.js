@@ -136,7 +136,7 @@ export default function ClientSignUp(){
 							</Button>
 						</InputRightElement>
 					</InputGroup>
-					<Text fontSize={'11px'}>By Signing up you agree to our <a href="t&c" target="_blank" rel="noopener noreferrer" style={{color:'#009393'}}> terms&conditions</a > and our <a href="privacy_policy" target="_blank" rel="noopener noreferrer" style={{color:'#009393'}}>privacy policy</a>.</Text>
+					<Text fontSize={'11px'}>By Signing up you agree to our <a href="/t&c" target="_blank" rel="noopener noreferrer" style={{color:'#009393'}}> terms&conditions</a > and our <a href="privacy_policy" target="_blank" rel="noopener noreferrer" style={{color:'#009393'}}>privacy policy</a>.</Text>
 					<Button bg='#009393' color='#fff' onClick={Verify_Inputs} disabled={issubmitting? true:false}>Create Account</Button>
 				</Flex>
 			</Flex>				

@@ -159,7 +159,10 @@ const Result=({products_data,distributors_data,manufacturers_data,industries_dat
 					})}
 				</Flex>
 			}
-			<Text mt='2' fontSize='20px' color='#009393' p='1' borderRadius='5'>Industries</Text>
+			<Flex justify='space-between' align='center' p='2'>
+				<Text mt='2' fontSize='20px' color='#009393' p='1' borderRadius='5'>Industries</Text>
+				<Text mb='0' fontSize='18px' color='#009393' onClick={(()=>{router.push('/Industries/all')})} cursor='pointer'>see more</Text>
+			</Flex>
 			{industries_data?.length === 0?
 				<Flex align='center' justify='center' bg='#eee' h='150px' p='3'>
 					<Text w='50%' textAlign='center'>We could not find Industries that match your search</Text>
@@ -178,7 +181,10 @@ const Result=({products_data,distributors_data,manufacturers_data,industries_dat
 					})}
 				</Flex>
 			}
-			<Text mt='2' fontSize='20px' color='#009393' p='1' borderRadius='5'>Technologies</Text>
+			<Flex justify='space-between' align='center' p='2'>
+				<Text mt='2' fontSize='20px' color='#009393' p='1' borderRadius='5'>Technologies</Text>
+				<Text mb='0' fontSize='18px' color='#009393' onClick={(()=>{router.push('/Technologies/all')})} cursor='pointer'>see more</Text>
+			</Flex>
 			{technologies_data?.length === 0?
 				<Flex align='center' justify='center' bg='#eee' h='150px' p='3'>
 					<Text w='50%' textAlign='center'>We could not find Technologies that match your search</Text>

@@ -22,62 +22,92 @@ export default function UploadFile({prod_payload,handle_add_new_product,set_islo
 	//useStates:
 
 //states
-	const [is_submitting,set_is_submitting]=useState(false);
-	const [is_retry,set_is_retry]=useState(false);
+	const [is_submitting,set_is_submitting]=useState(false); //handles submission status to control disabling of buttons 
+	const [is_retry,set_is_retry]=useState(false); //handles retry status to help rerun function once file uploads have failed.
 
 //document data
-	const [data_sheet,set_data_sheet]=useState('');
-	const [data_sheet_url,set_data_sheet_url]=useState('');
-	const [data_sheet_uploaded,set_data_sheet_uploaded]=useState(false);
+	const [data_sheet,set_data_sheet]=useState(''); 			//rep the file that has been uploaded by user 
+	const [data_sheet_url,set_data_sheet_url]=useState('');		//rep the url returned from firebase to the link to the stored file
+	const [data_sheet_uploaded,set_data_sheet_uploaded]=useState(false); //handles whether the file has successfully been uploaded to firebase.
 
-	const [safety_data_sheet,set_safety_data_sheet]=useState("");
-	const [safety_data_sheet_url,set_safety_data_sheet_url]=useState('');
-	const [safety_data_sheet_uploaded,set_safety_data_sheet_uploaded]=useState(false);
+	const [safety_data_sheet,set_safety_data_sheet]=useState(""); //rep the file that has been uploaded by user 
+	const [safety_data_sheet_url,set_safety_data_sheet_url]=useState(''); //rep the url returned from firebase to the link to the stored file
+	const [safety_data_sheet_uploaded,set_safety_data_sheet_uploaded]=useState(false); //handles whether the file has successfully been uploaded to firebase.
 
-	const [formulation_document,set_formulation_document]=useState("");
-	const [formulation_document_url,set_formulation_document_url]=useState('');
-	const [formulation_document_uploaded,set_formulation_document_uploaded]=useState(false);
+	const [formulation_document,set_formulation_document]=useState(""); //rep the file that has been uploaded by user 
+	const [formulation_document_url,set_formulation_document_url]=useState(''); //rep the url returned from firebase to the link to the stored file
+	const [formulation_document_uploaded,set_formulation_document_uploaded]=useState(false); //handles whether the file has successfully been uploaded to firebase.
 //payload
-	const payload = {
-		name_of_product:prod_payload?.name_of_product,
-		email_of_lister: prod_payload?.email_of_lister,
-		listed_by_id : prod_payload?.listed_by_id,
-		short_on_expiry : prod_payload?.short_on_expiry,
-		manufactured_by:prod_payload?.manufactured_by,
-		distributed_by :prod_payload?.distributed_by,
-		description_of_product: prod_payload?.description_of_product,
-		chemical_name :prod_payload?.chemical_name,
-		function : prod_payload?.function,
-		brand : prod_payload?.brand,
-		features_of_product : prod_payload?.features_of_product,
-		application_of_product: prod_payload?.application_of_product,
-		packaging_of_product : prod_payload?.packaging_of_product,
-		storage_of_product: prod_payload?.storage_of_product,
+	// const payload = {
+	// 	name_of_product:prod_payload?.name_of_product,
+	// 	email_of_lister: prod_payload?.email_of_lister,
+	// 	listed_by_id : prod_payload?.listed_by_id,
+	// 	short_on_expiry : prod_payload?.short_on_expiry,
+	// 	manufactured_by:prod_payload?.manufactured_by,
+	// 	distributed_by :prod_payload?.distributed_by,
+	// 	description_of_product: prod_payload?.description_of_product,
+	// 	chemical_name :prod_payload?.chemical_name,
+	// 	function : prod_payload?.function,
+	// 	brand : prod_payload?.brand,
+	// 	features_of_product : prod_payload?.features_of_product,
+	// 	application_of_product: prod_payload?.application_of_product,
+	// 	packaging_of_product : prod_payload?.packaging_of_product,
+	// 	storage_of_product: prod_payload?.storage_of_product,
 
+	// 	data_sheet_url,
+	// 	safety_data_sheet_url,
+	// 	formulation_document_url,
+
+	// 	industry: prod_payload?.industry,
+	// 	technology: prod_payload?.technology,
+	// 	website_link: prod_payload?.website_link
+	// }
+	const payload = {
+		...prod_payload,
 		data_sheet_url,
 		safety_data_sheet_url,
 		formulation_document_url,
-
-		industry: prod_payload?.industry,
-		technology: prod_payload?.technology,
-		website_link: prod_payload?.website_link
 	}
+	console.log(payload)
 
 	const handle_data_sheet_file_upload=async()=>{
+		/**
+			Uploads file to firebase.
+			
+			data_sheet_documentRef (String): str to show where the document will be stored in firebase.
+			snapshot (obj):upload infomation returned from firebase.
+			file_url (String): url to the uploaded file.
+
+			Return:
+				returns url to the uploaded file.
+		*/
 		if (data_sheet?.name == undefined){
-			return alert('could not process file, try again.')
+			return alert('could not process file, try re-uploading again.')
 		}else{
-			console.log(data_sheet?.name)
+			//console.log(data_sheet?.name)
 			const data_sheet_documentRef = ref(storage, `data_sheet/${data_sheet?.name + v4()}`);
-			const snapshot= await uploadBytes(data_sheet_documentRef,data_sheet)
-			set_data_sheet_uploaded(true)
+			const snapshot= await uploadBytes(data_sheet_documentRef,data_sheet);
+			
+			set_data_sheet_uploaded(true);
+			
 			const file_url = await getDownloadURL(snapshot.ref)
-			cookies.set('data_sheet_url', file_url, { path: '/' });
+			
+			cookies.set('data_sheet_url', file_url, { path: '/' }); //sets the url to cookies for retrieval.
 			return file_url
 		}
 	}
 
 	const handle_safety_sheet_file_upload=async()=>{
+		/**
+			Uploads file to firebase.
+			
+			data_sheet_documentRef (String): str to show where the document will be stored in firebase.
+			snapshot (obj):upload infomation returned from firebase.
+			file_url (String): url to the uploaded file.
+
+			Return:
+				returns url to the uploaded file.
+		*/
 		if (safety_data_sheet?.name == undefined){
 			return alert('could not process file, try re-uploading again.')  
 		}else{
@@ -92,6 +122,16 @@ export default function UploadFile({prod_payload,handle_add_new_product,set_islo
 	}
 
 	const handle_formulation_document_file_upload=async()=>{
+		/**
+			Uploads file to firebase.
+			
+			data_sheet_documentRef (String): str to show where the document will be stored in firebase.
+			snapshot (obj):upload infomation returned from firebase.
+			file_url (String): url to the uploaded file.
+
+			Return:
+				returns url to the uploaded file.
+		*/
 		if (formulation_document?.name == undefined){
 			return alert('could not process file, try re-uploading again.')
 		}else{
@@ -106,11 +146,19 @@ export default function UploadFile({prod_payload,handle_add_new_product,set_islo
 	}
 
 	const handle_File_Upload=async()=>{
-		set_is_submitting(true)
+		/**
+			Function to file upload handler:- calls the respective functions to upload each file.
+			Calls the add_product_function that will post payload to the api.
+			
+			sets the data to variable respectively.
+
+			Return:
+				null.
+		*/
+		set_is_submitting(true);
 		await handle_data_sheet_file_upload().then((res)=>{
 			console.log(res)
 			set_data_sheet_url(res)
-			 //data_sheet_url.current = res
 		})
 		await handle_safety_sheet_file_upload().then((res)=>{
 			console.log(res)
@@ -126,30 +174,52 @@ export default function UploadFile({prod_payload,handle_add_new_product,set_islo
 		})
 	}
 	const Add_Product_Function=async()=>{
+		/**
+			sends a payload data to server to add new product.
+
+			payload (object): json obj containing information for the new product.
+
+			Return:
+				alerts user whether function runs successfully or not.
+			catch:
+				alerts user when function fails
+		*/
 		console.log(payload)
 		if ((payload?.data_sheet_url == '') || (payload?.safety_data_sheet_url == '') || (payload?.formulation_document_url == '')){
+			/**
+				checks if all urls exist.
+				fetches the url from cookies.
+				then sets the retry state to true to retry assigning url to payload.
+			*/
 			set_data_sheet_url(cookies.get("data_sheet_url"))
 			set_safety_data_sheet_url(cookies.get("safety_data_sheet_url"))
 			set_formulation_document_url(cookies.get("formulation_document_url"))
 			set_is_retry(true)
 		}else{
 			await Add_New_Product(payload).then(()=>{
-				alert(`${payload?.name_of_product} has been created`)
+				/**
+					sends a payload data to server to add new product.
+
+					payload (object): json obj containing information for the new product.
+
+					Return:
+						alerts user whether function runs successfully or not.
+						removes all urls previously stored from cookies.
+					catch:
+						alerts user when function fails
+				*/
 				router.back()
-				set_isloading(false)
+				alert(`${payload?.name_of_product} has been created`)
 			}).then(()=>{
 				cookies.remove('data_sheet_url',{ path: '/' });
 				cookies.remove('safety_data_sheet_url',{ path: '/' });
 				cookies.remove('formulation_document_url',{ path: '/' });
 			}).catch((err)=>{
-				console.log(err)
-				alert(err.response.data)
-			    set_isloading(false)
-			    router.back()
+				console.log(err);
+			    router.back();
 			})
 		}
 	}
-	console.log(payload)
 	return(
 		<Flex direction='column' w='90vw' boxShadow='lg' p='1' gap='2'>
 			<Text color='#009393' fontSize='24px' fontWeight='bold'>Upload Documents</Text>
