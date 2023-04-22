@@ -82,14 +82,21 @@ export default function Search({setsearchbaractive}){
 		})
 	}
 	return(
-		<Flex p='3' borderRadius='5'>
-			<Input borderRadius='5px 0 0 5px' placeholder='Search for products, sellers, industries, technologies' variant='filled' onChange={((e)=>{set_search_value(e.target.value);set_active(true)})}/>
-			<Button color='#fff' bg='#009393'borderRadius='0 5px 5px 0' onClick={(()=>{setsearchbaractive(false)})}><CloseFullscreenIcon/></Button>
-			{active? 
-				<Result setsearchbaractive={setsearchbaractive} set_active={set_active} products_data={products_data} distributors_data={distributors_data} manufacturers_data={manufacturers_data} industries_data={industries_data} technologies_data={technologies_data}/> 
-			:
-				null
-			}
+		<Flex direction='column' w='100%'>
+			<Flex p='3' direction='column'>
+				<Flex direction=''>
+					<Input w='100%' borderRadius='5px 0 0 5px' placeholder='Search for products, sellers, industries, technologies' variant='filled' onChange={((e)=>{set_search_value(e.target.value);set_active(true)})}/>
+					<Button color='#fff' bg='#009393'borderRadius='0 5px 5px 0' onClick={(()=>{setsearchbaractive(false)})}><CloseFullscreenIcon/></Button>
+				</Flex>
+				{active?
+					<Flex position='relative'>
+						<Flex borderRadius='5' bg='#000' opacity='0.3' zIndex='' h='100vh' w='100vw' onClick={(()=>{set_active(false)})} position='fixed' top='0' right='0' />
+						<Result setsearchbaractive={setsearchbaractive} set_active={set_active} products_data={products_data} distributors_data={distributors_data} manufacturers_data={manufacturers_data} industries_data={industries_data} technologies_data={technologies_data}/> 
+					</Flex>
+					:
+					null
+				}
+			</Flex>
 		</Flex>	
 	)
 }
@@ -98,7 +105,7 @@ const Result=({products_data,distributors_data,manufacturers_data,industries_dat
 	//console.log(distributors_data,products_data,manufacturers_data,technologies_data,industries_data)
 	const router = useRouter()
 	return(
-		<Flex className={styles.ResultsBar} direction='column' bg='#eee' p='2' borderRadius='10' boxShadow='dark-lg' overflowY='scroll' h='50vh'>
+		<Flex className={styles.ResultsBar} direction='column' p='2' borderRadius='10' bg='#eee' overflowY='scroll' h='60vh' >
 			<Text fontSize='20px' color='#009393' p='1' borderRadius='5'>Products</Text>
 			{products_data?.length === 0?
 				<Flex align='center' justify='center' bg='#eee' h='150px' p='3'>
@@ -106,7 +113,7 @@ const Result=({products_data,distributors_data,manufacturers_data,industries_dat
 				</Flex>
 				:
 				<Flex direction='column' p='1' gap='2'>
-					{products_data?.slice(0,6).map((item)=>{
+					{products_data?.slice(0,4).map((item)=>{
 						return(
 							<Flex key={item._id} position='relative' gap='2' align='center' onClick={(()=>{router.push(`/product/${item._id}`);setsearchbaractive(false);set_active(false)})} bg='#fff' p='1' borderRadius='5' boxShadow='lg'>
 								<Image w='50px' h='50px' borderRadius='10px' objectFit='cover' src='../../Pro.png' alt='next'/>

@@ -13,7 +13,7 @@ import LocationCityIcon from '@mui/icons-material/LocationCity';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import Person2Icon from '@mui/icons-material/Person2';
 
-function Distributor(){
+export default function Distributor(){
 		//utils
 	const router = useRouter()
 	const query = router.query
@@ -92,30 +92,20 @@ function Distributor(){
 						{distributor_data?.profile_photo_url == ''? 
 							<LocationCityIcon style={{fontSize:'150px',padding:'10px'}}/> 
 						: 
-							<Image boxSize='100px' src={distributor_data?.profile_photo_url} alt='profile photo' boxShadow='lg' borderRadius='5'/>
+							<Image boxSize='100px' objectFit={distributor_data?.profile_photo_url == '' || !distributor_data?.profile_photo_url? "contain":'cover'} src={distributor_data?.profile_photo_url == '' || !distributor_data?.profile_photo_url? "../../Pro.png":distributor_data?.profile_photo_url} alt='profile photo' boxShadow='lg' borderRadius='5'/>
 						}
 						<Flex direction='column' gap='2' bg='#eee' p='2' w='100%' borderRadius='8' boxShadow='lg'>
 							<Text fontSize='32px' fontWeight='bold' color='#009393'>{distributor_data?.company_name}</Text>
 						</Flex>
 					</Flex>
-					<Flex direction='column' gap='2' bg='#eee' p='2' w='100%' borderRadius='8' boxShadow='lg'>
-						<Text>Email: <Link fontWeight='bold' color='#009393' href={`mailto: ${distributor_data?.email_of_company}`} isExternal>
-		                    {distributor_data?.email_of_company}
-		                </Link></Text>
-						<Text>Mobile: <span style={{fontWeight:'bold'}}>{distributor_data?.mobile_of_company}</span></Text>	
-						<Text>Address: <span style={{fontWeight:'bold'}}>{distributor_data?.address_of_company}</span></Text>
-					</Flex>
-					<Flex gap='2'>
-						<Link w='100vw' p='2' borderRadius='5' textAlign='center' bg='#009393' color='#fff' href={`mailto: ${distributor_data?.email_of_company}`} isExternal>
-		                    Contact Us
-		                </Link>
-					</Flex>
 					<Flex direction='column'>
-						<Text fontWeight='bold' fontSize='20px'>Description</Text>
 						{distributor_data?.description === ''? 
-							<Flex align='center' justify='center' bg='#eee' h='20vh' p='3' borderRadius='5' boxShadow='lg'>
-								<Text>The User has not added a bio</Text>
-							</Flex>
+							null
+							:
+							<Text fontWeight='bold' fontSize='20px'>Description</Text>
+						}
+						{distributor_data?.description === ''? 
+							null
 							:
 							<Flex mt='2' bg='#eee' p='2' borderRadius='5' boxShadow='lg' gap='2'>
 								<Text>{distributor_data?.description}</Text>
@@ -126,22 +116,20 @@ function Distributor(){
 						<Text fontSize='20px' fontWeight='bold' borderBottom='1px solid #000'>Experts</Text>
 						{distributor_data?.experts?.length === 0 ?
 							<Flex justify='center' align='center' h='15vh' bg='#eee' p='2' boxShadow='lg'>
-								<Text>The User has not attached experts to this account.</Text>
+								<Text>The user has not attached any experts.</Text>
 							</Flex>
 						:
-						<Flex m='1' p='2' borderRadius='5' bg='#eee' gap='3' direction='column' boxShadow='lg'> 
+						<Flex borderRadius='5' gap='3' direction='column'> 
 							{distributor_data?.experts?.map((item)=>{
 								return(
-									<Flex key={item._id} direction='' bg='#fff' p='2' borderRadius='5' boxShadow='lg' cursor='pointer'>
-										<Flex direction='column'>
-											<Text fontWeight='bold'>Name: {item.name}</Text>
-											<Text>Email: <Link fontWeight='bold' color='#009393' href={`mailto: ${item?.email}`} isExternal>
-		                    {item?.email}
-		                </Link></Text>
-											<Text>Mobile: {item.mobile}</Text>
-											<Text>Role: {item.role}</Text>
-											<Text>Description: {item.description}</Text>
-										</Flex>
+									<Flex direction='column' key={item._id} p='2' borderRadius='5' boxShadow='lg' cursor='pointer'>
+										<Text><span style={{fontWeight:"bold"}}>Name: </span>{item.name}</Text>
+										<Text>Email:  
+											<Link fontWeight='bold' color='#009393' href={`mailto: ${item?.email}`} isExternal>
+						                    	{item?.email}
+						                	</Link>
+						                </Text>
+										<Text>Mobile: {item.mobile}</Text>
 									</Flex>
 								)
 							})}
@@ -149,10 +137,10 @@ function Distributor(){
 						}
 					</Flex>
 					<Flex direction='column' gap='2'>
-						<Text fontSize='18px' fontWeight='bold' borderBottom='1px solid #000'>Industries by this Manufacturer</Text>
+						<Text fontSize='18px' fontWeight='bold' borderBottom='1px solid #000'>Industries by this Distributor</Text>
 						{industries?.length === 0 ?
 								<Flex justify='center' align='center' h='15vh' bg='#eee' p='2' borderRadius='5' boxShadow='lg' gap='2'>
-									<Text>The User has not seletected an industry to specialize in yet</Text>
+									<Text>Not specializing in any industries.</Text>
 								</Flex>
 								:
 								<Flex direction='column'> 
@@ -164,9 +152,10 @@ function Distributor(){
 							</Flex>
 							}
 					</Flex>
+					<Text fontSize='18px' fontWeight='bold' borderBottom='1px solid #000'>Products</Text>
 					{products?.length === 0?
 						<Flex align='center' justify='center' bg='#eee' h='40vh' p='3' borderRadius='5' boxShadow='lg'>
-							<Text w='50%' textAlign='center'>No products have been listed under by this account.</Text>
+							<Text w='50%' textAlign='center'>No products have been listed.</Text>
 						</Flex>
 						:
 						<Flex direction='column' h='50vh' overflowY='scroll'>
@@ -189,8 +178,6 @@ function Distributor(){
 		</Flex>
 	)
 }
-
-export default Distributor;
 
 const ProductItem=({item,})=>{
 	const router = useRouter();

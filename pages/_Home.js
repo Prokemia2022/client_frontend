@@ -90,7 +90,7 @@ function _Home(){
 
 		<Flex p='4' direction='column'>
 			<Flex mt='10vh' mb='50px' direction='column' gap='3' w='100%' p='2'>
-				<Text mb='3' fontFamily='ClearSans-Bold' fontSize='38px' >The <span style={{color:"#009393"}}>Marketplace</span> for ingredients,Polymers and Chemistry.</Text>
+				<Text mb='3' fontFamily='ClearSans-Bold' fontSize='38px' >The <span style={{color:"#009393"}}>Marketplace</span> for ingredients, Polymers and Chemistry.</Text>
 				<Text mb='0' cursor='pointer' w='80%'>Search, Learn, Engage ,sample , quote and purchase from thousands of suppliers - all in one platform.</Text>
 			</Flex>
 			<Flex direction='column' gap='2' w='100%'>
@@ -104,7 +104,7 @@ function _Home(){
 							{industries_data?.slice(0,4).map((item)=>{
 								return(
 									<Flex cursor='pointer' key={item._id} w={window?.width > 500? '200px':'150px'} h='225px' m='1' position='relative' onClick={(()=>{router.push(`/products/${item.title}`)})}>
-										<Image borderRadius='10px' objectFit='cover' src={item?.cover_image == ''? "../Pro.png":item?.cover_image} alt='photo' boxShadow='lg' w='100%'/>
+										<Image borderRadius='10px' objectFit={item?.cover_image == ''? "contain":'cover'} src={item?.cover_image == ''? "../Pro.png":item?.cover_image} alt='photo' boxShadow='lg' w='100%'/>
 										<Text bg='rgb(192,192,192,0.6)' p='1' m='2' mb='0' borderRadius='5' position='absolute' top='10px' left='10px' w='80%' fontSize='20px' color='#000' fontFamily='ClearSans-Bold'>{item.title}</Text>
 									</Flex>
 								)
@@ -128,7 +128,7 @@ function _Home(){
 							{technologies_data?.slice(0,4).map((item)=>{
 								return(
 									<Flex cursor='pointer' key={item._id} w={window?.width > 500 ? '200px':'150px'} h='225px' m='1' position='relative' onClick={(()=>{router.push(`/products/${item.title}`)})}>
-										<Image borderRadius='10px' objectFit='cover' src={item?.cover_image == ''? "../Pro.png":item?.cover_image} alt='photo' boxShadow='lg' w='100%'/>
+										<Image borderRadius='10px' objectFit={item?.cover_image == ''? "contain":'cover'} src={item?.cover_image == ''? "../Pro.png":item?.cover_image} alt='photo' boxShadow='lg' w='100%'/>
 										<Text bg='rgb(192,192,192,0.6)' p='1' m='2' mb='0' borderRadius='5' position='absolute' top='10px' left='10px' fontSize='20px' w='80%' color='#000' fontFamily='ClearSans-Bold'>{item.title}</Text>
 									</Flex>
 								)
@@ -163,7 +163,7 @@ function _Home(){
 					{distributors_data?.slice(0,4).map((distributor)=>{
 						return(
 							<Flex bg='#eee' mb='1' borderRadius='5' key={distributor._id} gap='2' onClick={(()=>{router.push(`/account/distributor/${distributor._id}`)})} cursor='pointer'>
-								<Image objectFit='cover' src={distributor?.profile_photo_url} boxSize='100px' alt='profilelogo'/>
+								<Image objectFit={distributor?.profile_photo_url == '' || !distributor?.profile_photo_url? "contain":'cover'} src={distributor?.profile_photo_url == '' || !distributor?.profile_photo_url? "../Pro.png":distributor?.profile_photo_url} boxSize='100px' alt='profilelogo'/>
 								<Flex direction='column' p='2' gap='2' flex='1'>
 									<Text mb='0' fontSize='24px' fontFamily='ClearSans-Bold'>{distributor.company_name}</Text>
 									<Text mb='0' w='80%' overflow='hidden' h='20px'>{distributor.description}</Text>
@@ -183,7 +183,7 @@ function _Home(){
 					{manufacturers_data?.slice(0,4).map((manufacturer)=>{
 						return(
 							<Flex bg='#eee' mb='1' borderRadius='5' key={manufacturer._id} gap='2' onClick={(()=>{router.push(`/account/manufacturer/${manufacturer._id}`)})} cursor='pointer'>
-								<Image objectFit='cover' src={manufacturer?.profile_photo_url} w='100px' h='100px' alt='profilelogo'/>
+								<Image objectFit={manufacturer?.profile_photo_url == '' || !manufacturer?.profile_photo_url? "contain":'cover'} src={manufacturer?.profile_photo_url == '' || !manufacturer?.profile_photo_url? "../Pro.png":manufacturer?.profile_photo_url} w='100px' h='100px' alt='profilelogo'/>
 								<Flex direction='column' p='2' gap='2' flex='1'>
 									<Text mb='0' fontSize='24px' fontFamily='ClearSans-Bold'>{manufacturer.company_name}</Text>
 									<Text mb='0' w='80%' overflow='hidden' h='20px'>{manufacturer.description}</Text>

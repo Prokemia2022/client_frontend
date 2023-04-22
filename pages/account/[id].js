@@ -4,7 +4,7 @@ import styles from '../../styles/Home.module.css'
 import {useRouter} from 'next/router'
 import Header from '../../components/Header.js';
 
-function Account(){
+export default function Account_User_Handler(){
 	const router = useRouter();
 	const id= router.query;
 	const idactive = id.id;
@@ -27,8 +27,6 @@ function Account(){
 		</Flex>
 	)
 }
-
-export default Account;
 
 const Buy=({active,setActive,router})=>{
 	return(

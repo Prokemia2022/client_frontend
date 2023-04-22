@@ -200,7 +200,7 @@ height: 100vh;
 }
 .ResultsBar{
 	position:absolute;
-	top:110px;
+	top: 60px;
 	margin-left: 2.5vw;
 	width:90vw;
 }
