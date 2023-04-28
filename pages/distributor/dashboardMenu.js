@@ -5,6 +5,7 @@ import AddNewExpertsModal from '../../components/modals/addNewExperts.js';
 import AddNewProduct from '../../components/modals/AddNewProduct.js';
 //icons
 import {LocationCity,Add} from '@mui/icons-material/';
+import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 //utils
 import {Flex,Text,Input,Button,Image,useToast,Textarea} from '@chakra-ui/react'
 import {useRouter} from 'next/router';

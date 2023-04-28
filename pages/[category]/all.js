@@ -148,7 +148,7 @@ export default function Categotries(){
 								<>
 									{industries_data?.map((item)=>{
 										return(
-											<Industry_Card item={item}/>
+											<Industry_Card item={item} key={item._id}/>
 										)
 									})}
 								</>:
@@ -167,7 +167,7 @@ export default function Categotries(){
 								<>
 									{technologies_data?.map((item)=>{
 										return(
-											<Technology_Card item={item}/>
+											<Technology_Card item={item} key={item._id}/>
 										)
 									})}
 								</>:

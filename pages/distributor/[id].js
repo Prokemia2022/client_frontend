@@ -10,7 +10,7 @@ import Header from '../../components/Header.js';
 import SettingsIcon from '@mui/icons-material/Settings';
 import {Dashboard,Folder,Groups2,Groups} from '@mui/icons-material';
 import WorkspacePremiumOutlinedIcon from '@mui/icons-material/WorkspacePremiumOutlined';
-import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
+
 //api calls
 import Get_Distributor from '../api/auth/distributor/get_distributor.js'
 /*page sections*/

@@ -154,7 +154,7 @@ export default function Distributor(){
 						<Flex direction='column' h='50vh' overflowY='scroll'>
 							{products?.map((item)=>{
 								return(
-									<Product_Item item={item}/>
+									<Product_Item item={item} key={item._id}/>
 								)
 							})}
 						</Flex>
