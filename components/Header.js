@@ -37,7 +37,8 @@ function Header({products_data,distributors_data,manufacturers_data,industries_d
 	const [user,setuser]=useState('');
 	const [acc_type,set_acc_type]=useState('');
 	const [uid,set_uid]=useState('');
-	const [profile_photo_url,set_profile_photo_url]=useState('')
+	const [profile_photo_url,set_profile_photo_url]=useState('');
+	const [is_suspended,set_is_suspended]=useState(null);
 
 
 	const router = useRouter();
@@ -86,23 +87,26 @@ function Header({products_data,distributors_data,manufacturers_data,industries_d
 		////console.log(payload,acc_type)
 		if(acc_type === 'sales')
 			await Get_Salesperson(payload).then((res)=>{
-				set_profile_photo_url(res.data?.profile_photo_url)
+				set_profile_photo_url(res.data?.profile_photo_url);
+				cookies.set('is_suspended', res.data?.suspension_status, { path: '/' });
 				////console.log(res.data?.profile_photo_url)
 			})
 		if(acc_type === 'client')
 			await Get_Client(payload).then((res)=>{
-				set_profile_photo_url(res.data?.profile_photo_url)
+				set_profile_photo_url(res.data?.profile_photo_url);
+				cookies.set('is_suspended', res.data?.suspension_status, { path: '/' });
 				////console.log(res.data)
 			})
 		if(acc_type === 'distributor')
 			await Get_Distributor(payload).then((res)=>{
-				set_profile_photo_url(res.data?.profile_photo_url)
+				set_profile_photo_url(res.data?.profile_photo_url);
+				cookies.set('is_suspended', res.data?.suspension_status, { path: '/' });;
 				////console.log(res.data?.profile_photo_url)
 			})
 		if(acc_type === 'manufacturer')
 			await Get_Manufacturer(payload).then((res)=>{
-				set_profile_photo_url(res.data?.profile_photo_url)
-				////console.log(res.data?.profile_photo_url)
+				set_profile_photo_url(res.data?.profile_photo_url);
+				cookies.set('is_suspended', res.data?.suspension_status, { path: '/' });
 			})
 	}
 

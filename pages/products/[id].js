@@ -27,7 +27,6 @@ export default function Products(){
 	const [manufacturers_data,set_manufacturers_data]=useState([]);
 	const [isloading,set_isloading]=useState(true);
 
-	const [description,set_description]=useState('')
 	//functions
 	
 	//api calls
@@ -72,9 +71,9 @@ export default function Products(){
 		await Get_Technologies().then((res)=>{
 			//console.log(res.data)
 			const technology = res.data
-			const {filtered_result} = technology.filter((item)=> item?.title?.toLowerCase().includes(category_title?.toLowerCase()))
-			set_technology_data(filtered_result)
-			//console.log(filtered_result)
+			const filtered_result = technology.filter((item)=> item?.title?.toLowerCase().includes(category_title?.toLowerCase()))
+			set_technology_data(...filtered_result)
+			///console.log(...filtered_result)
 		})
 	}
 	//useEffects
@@ -90,9 +89,10 @@ export default function Products(){
 		<Flex direction='column'>
 			<Header/>
 			<Flex p='2' direction='column' gap='2'>
-				<Flex direction='column'>
+				<Flex direction='column' mb='4'>
 					<Text fontSize='32px' fontFamily='ClearSans-Bold' color='#009393'>{category_title}</Text>
-					<Text>{industry_data == undefined? technology_data?.description : industry_data?.description}</Text>
+					<Text>{industry_data == undefined? null : industry_data?.description}</Text>
+					<Text>{technology_data == undefined? null : technology_data?.description}</Text>
 				</Flex>
 				{isloading ?
 					<>
@@ -129,7 +129,7 @@ export default function Products(){
 						{distributors_data?.slice(0,4).map((distributor)=>{
 							return(
 								<Flex bg='#eee' mb='1' borderRadius='5' key={distributor._id} gap='2' onClick={(()=>{router.push(`/account/distributor/${distributor._id}`)})} cursor='pointer'>
-									<Image objectFit='cover' src={distributor?.profile_photo_url} boxSize='100px' alt='profilelogo'/>
+									<Image borderRadius='0px' objectFit={distributor?.profile_photo_url == ''? "contain":'cover'} src={distributor?.profile_photo_url == '' || !distributor?.profile_photo_url? "../../Pro.png":distributor?.profile_photo_url} alt='photo' boxShadow='lg' w='100px'/>
 									<Flex direction='column' p='2' gap='2' flex='1'>
 										<Text mb='0' fontSize='24px' fontFamily='ClearSans-Bold'>{distributor.company_name}</Text>
 										<Text mb='0' w='80%' overflow='hidden' h='20px'>{distributor.description}</Text>
@@ -149,7 +149,7 @@ export default function Products(){
 							{manufacturers_data?.slice(0,4).map((manufacturer)=>{
 								return(
 									<Flex bg='#eee' mb='1' borderRadius='5' key={manufacturer._id} gap='2' onClick={(()=>{router.push(`/account/manufacturer/${manufacturer._id}`)})} cursor='pointer'>
-										<Image objectFit='cover' src={manufacturer?.profile_photo_url} w='100px' h='100px' alt='profilelogo'/>
+									<Image borderRadius='0px' objectFit={manufacturer?.profile_photo_url == ''? "contain":'cover'} src={manufacturer?.profile_photo_url == '' || !manufacturer?.profile_photo_url? "../Pro.png":manufacturer?.profile_photo_url} alt='photo' boxShadow='lg' w='100px'/>
 										<Flex direction='column' p='2' gap='2' flex='1'>
 											<Text mb='0' fontSize='24px' fontFamily='ClearSans-Bold'>{manufacturer.company_name}</Text>
 											<Text mb='0' w='80%' overflow='hidden' h='20px'>{manufacturer.description}</Text>

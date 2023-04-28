@@ -18,9 +18,9 @@ import {
     useToast
   } from '@chakra-ui/react';
 import { useEffect,useState } from 'react';
-import axios from 'axios';
 import Cookies from 'universal-cookie';
 import jwt_decode from "jwt-decode";
+import Send_Quotation_Email from '../../pages/api/email_handler/quotation_email.js';
 
 function QuotationModal({isquotationModalvisible,setisquotationModalvisible,product_data}){
     const { isOpen, onOpen, onClose } = useDisclosure();
@@ -41,7 +41,7 @@ function QuotationModal({isquotationModalvisible,setisquotationModalvisible,prod
       HandleModalOpen();
     },[isquotationModalvisible])
 
-    const cookies = new Cookies();
+  const cookies = new Cookies();
   const token = cookies.get('user_token');
   const [user,setuser]=useState('');
   
@@ -67,32 +67,42 @@ function QuotationModal({isquotationModalvisible,setisquotationModalvisible,prod
     }
 
     const handle_submit_quotation_request=async()=>{
-      if ((amount == 0) || (description_for_use == '') || (unit == '')){
-        toast({
-            title: '',
-            description: 'All inputs are required',
-            status: 'info',
-            isClosable: true,
-          });
-      }else{
-        await axios.post("https://prokemiaemailsmsserver-production.up.railway.app/api/quotation_email",payload).then(()=>{
+      if (!user || user === ''){
           toast({
             title: '',
-            description: 'Your quotation request has been sent',
+            description: 'You need to be signed in to request a quotation',
             status: 'info',
             isClosable: true,
           });
           onClose()
-        }).catch((err)=>{
+      }else{
+        if ((amount == 0) || (description_for_use == '') || (unit == '')){
           toast({
-            title: '',
-            description: 'We could not create a quotation request.',
-            status: 'error',
-            isClosable: true,
-          });
-        })
+              title: '',
+              description: 'All inputs are required',
+              status: 'info',
+              isClosable: true,
+            });
+        }else{
+          await Send_Quotation_Email(payload).then(()=>{
+            toast({
+              title: 'Your quotation request has been sent',
+              description: 'Emails may take a few minutes or may appear in the spam folder.',
+              status: 'info',
+              isClosable: true,
+            });
+          }).catch((err)=>{
+            toast({
+              title: '',
+              description: 'We could not create a quotation request.',
+              status: 'error',
+              isClosable: true,
+            });
+          }).finally(()=>{
+            onClose();
+          })
+        }
       }
-//      console.log(payload)
     }
     return (
       <>

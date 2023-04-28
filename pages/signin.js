@@ -41,7 +41,7 @@ export default function UserSignIn(){
 					isClosable: true,
 				});
 			}).then(()=>{
-				router.push('/')
+				router.back()
 			}).catch((err)=>{
 				//console.log(err)
 				toast({

@@ -2,19 +2,17 @@ import {useState,useEffect} from 'react';
 import {Flex,Text,Button,Link,useToast} from '@chakra-ui/react';
 import {useRouter} from 'next/router';
 //icons
-// import FileDownloadIcon from '@mui/icons-material/FileDownload';
-// import LanguageIcon from '@mui/icons-material/Language';
-// import FavoriteIcon from '@mui/icons-material/Favorite';
 import DescriptionIcon from '@mui/icons-material/Description';
 import VerifiedIcon from '@mui/icons-material/Verified';
 //components
-import QuotationModal from '../../components/modals/Quotation.js';
-import SampleModal from '../../components/modals/Sample.js';
-import Header from '../../components/Header.js';
+import QuotationModal from '../../../components/modals/Quotation.js';
+import SampleModal from '../../../components/modals/Sample.js';
+import Header from '../../../components/Header.js';
+import Delete_Product from '../../../components/modals/DeleteProduct.js';
 //api
-import Get_Product from '../api/product/get_product.js';
+import Get_Product from '../../api/product/get_product.js';
 //utils
-import styles from '../../styles/Home.module.css';
+import styles from '../../../styles/Home.module.css';
 
 export default function Product(){
 	const router = useRouter();
@@ -22,6 +20,7 @@ export default function Product(){
 	const toast = useToast()
 	const [isquotationModalvisible,setisquotationModalvisible]=useState(false);
 	const [issampleModalvisible,setissampleModalvisible]=useState(false);
+    const [is_delete_product_Modalvisible,set_is_delete_product_Modalvisible]=useState(false);
 
 	const payload = {
 		_id : id?.id
@@ -51,6 +50,7 @@ export default function Product(){
 		<Flex  direction='column'>
 			<QuotationModal isquotationModalvisible={isquotationModalvisible} setisquotationModalvisible={setisquotationModalvisible} product_data={product_data}/>
 			<SampleModal issampleModalvisible={issampleModalvisible} setissampleModalvisible={setissampleModalvisible} product_data={product_data}/>
+            <Delete_Product is_delete_product_Modalvisible={is_delete_product_Modalvisible} set_is_delete_product_Modalvisible={set_is_delete_product_Modalvisible} product_data={product_data}/>
 			<Header/>
 			<Flex direction='column' gap='2' className={styles.productbody}>
 			<Flex p='2' direction='column' gap='2' className={styles.productsection1} position='relative'>
@@ -114,12 +114,9 @@ export default function Product(){
 				</Flex>
 			</Flex>
 				<Flex p='2' gap='2' direction='column' w='100%'>
-					
-					<Button color='#fff' borderRadius='0' bg='#009393' onClick={(()=>{setisquotationModalvisible(true)})}><DescriptionIcon />Request Quotation</Button>
-					<Button color='#fff' borderRadius='0' bg='#000' onClick={(()=>{setissampleModalvisible(true)})}><DescriptionIcon />Request Sample</Button>
-					<Text textAlign='center'>or</Text>
-	                {product_data?.website_link_to_Seller === ''? <Text bg='#eee' p='2' textAlign='center' borderRadius='5'>Website link is not attached</Text> : <Link href={product_data?.website_link_to_Seller} bg='grey' borderRadius='5' boxShadow='lg' color='#fff' align='center' p='1' isExternal fontSize='20px'>Website link</Link>}
-					
+					<Button color='#fff' borderRadius='0' bg='#009393' onClick={(()=>{router.push(`/product/edit_config/${product_data?._id}`)})}>Edit Product</Button>
+					<Button color='red' borderRadius='0' bg='#fff' border='1px solid red' onClick={(()=>{set_is_delete_product_Modalvisible(true)})}>Delete Product</Button>
+                    <Button color='#000' borderRadius='0' bg='#fff' border='1px solid #000' onClick={(()=>{router.back()})}>Go back</Button>
 				</Flex>
 			</Flex>
 		</Flex>

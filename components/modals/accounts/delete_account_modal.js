@@ -31,7 +31,8 @@ export default function Delete_Account_Modal({
     const [confirm_name,set_confirm_name]=useState('')
     const [name,set_name]=useState('');
     const [uid,set_uid]=useState('');
-    const [verify,set_verify]=useState(false)
+    const [verify,set_verify]=useState(false);
+	const [is_suspended,set_is_suspended]=useState(null);
 
 
     const payload = {
@@ -44,20 +45,24 @@ export default function Delete_Account_Modal({
 		console.log(client_data)
       	HandleModalOpen();
 	    if (acc_type === 'client'){
-		  	set_uid(client_data?._id)
-		    set_name(client_data?.first_name)
+		  	set_uid(client_data?._id);
+		    set_name(client_data?.first_name);
+			set_is_suspended(client_data?.suspension_status);
 	    }
 	    if (acc_type === 'distributors'){
-	    	set_uid(distributor_data?._id)
-	        set_name(distributor_data?.company_name)
+	    	set_uid(distributor_data?._id);
+	        set_name(distributor_data?.company_name);
+			set_is_suspended(distributor_data?.suspension_status);
 	    }
 	    if (acc_type === 'manufacturers'){
-	    	set_uid(manufacturer_data?._id)
-	        set_name(manufacturer_data?.company_name)
+	    	set_uid(manufacturer_data?._id);
+	        set_name(manufacturer_data?.company_name);
+			set_is_suspended(manufacturer_data?.suspension_status);
 	    }
 	    if (acc_type === 'salesperson'){
-	      	set_uid(salesperson_data?._id)
-	        set_name(salesperson_data?.first_name)
+	      	set_uid(salesperson_data?._id);
+	        set_name(salesperson_data?.first_name);
+			set_is_suspended(salesperson_data?.suspension_status);
 	    }
     },[is_delete_account_Modalvisible,acc_type])
     
@@ -70,54 +75,62 @@ export default function Delete_Account_Modal({
     }
 
     const handle_deletion=async()=>{
-      if (confirm_name === name){  
-        if (acc_type === 'client'){
-          await Delete_Client(payload).then(()=>{
-            toast({
-				title: '',
-				description: `${name} has deleted this account.`,
-				status: 'success',
+		if (is_suspended){
+			toast({
+				title: 'Your account is currently suspended.',
+				description: 'reach out to support for guidance by emailing us at help@prokemia.com',
+				status: 'error',
 				isClosable: true,
 			});
-          })
-        }else if (acc_type === 'distributors'){
-          await Delete_Distributor(payload).then(()=>{
-            toast({
-				title: '',
-				description: `${name} has deleted this account.`,
-				status: 'success',
-				isClosable: true,
-			});
-          })
-        }else if (acc_type === 'manufacturers'){
-          await Delete_Manufacturer(payload).then(()=>{
-            toast({
-				title: '',
-				description: `${name} has deleted this account.`,
-				status: 'success',
-				isClosable: true,
-			});
-          })
-        }else if (acc_type === 'salesperson'){
-          await Delete_SalesPerson(payload).then(()=>{
-            toast({
-				title: '',
-				description: `${name} has deleted this account.`,
-				status: 'success',
-				isClosable: true,
-			});
-          });
-        }
-        cookies.remove('user_token', { path: '/' });
-        router.push('/');
-      }else{
-	        toast({
-				title: '',
-				description: `the input tags do not match,try again.`,
-				status: 'info',
-				isClosable: true,
-			});
-      }
+			return ;
+		}else if (confirm_name === name){  
+			if (acc_type === 'client'){
+			await Delete_Client(payload).then(()=>{
+				toast({
+					title: '',
+					description: `${name} has deleted this account.`,
+					status: 'success',
+					isClosable: true,
+				});
+			})
+			}else if (acc_type === 'distributors'){
+			await Delete_Distributor(payload).then(()=>{
+				toast({
+					title: '',
+					description: `${name} has deleted this account.`,
+					status: 'success',
+					isClosable: true,
+				});
+			})
+			}else if (acc_type === 'manufacturers'){
+			await Delete_Manufacturer(payload).then(()=>{
+				toast({
+					title: '',
+					description: `${name} has deleted this account.`,
+					status: 'success',
+					isClosable: true,
+				});
+			})
+			}else if (acc_type === 'salesperson'){
+				await Delete_SalesPerson(payload).then(()=>{
+					toast({
+						title: '',
+						description: `${name} has deleted this account.`,
+						status: 'success',
+						isClosable: true,
+					});
+				});
+			}
+			cookies.remove('user_token', { path: '/' });
+			router.push('/');
+		}else{
+				toast({
+					title: '',
+					description: `the input tags do not match,try again.`,
+					status: 'info',
+					isClosable: true,
+				});
+		}
       onClose()
     }
 
@@ -162,7 +175,7 @@ export default function Delete_Account_Modal({
 									</InputGroup>
 									<Flex gap='2'>
 										<Button flex='1' bg='red' color='#fff' onClick={initiate_account_deletion}>Proceed to delete</Button>
-										<Button flex='1' bg='#fff' color='#000' border='1px solid #000' onClick={(()=>{set_is_delete_account_Modalvisible(false)})}>Cancel</Button>
+										<Button flex='1' bg='#fff' color='#000' border='1px solid #000' onClick={(()=>{set_is_delete_account_Modalvisible(!is_delete_account_Modalvisible);onClose()})}>Cancel</Button>
 									</Flex>
 								</Flex>
 							}

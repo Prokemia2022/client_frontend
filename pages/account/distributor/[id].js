@@ -10,8 +10,6 @@ import Get_Distributor from '../../api/auth/distributor/get_distributor.js'
 import Get_Products from '../../api/product/get_products.js'
 //icons
 import LocationCityIcon from '@mui/icons-material/LocationCity';
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import Person2Icon from '@mui/icons-material/Person2';
 
 export default function Distributor(){
 		//utils
@@ -26,8 +24,7 @@ export default function Distributor(){
 	const toast = useToast();
 	//states
 
-	const [distributor_data,set_distributor_data] = useState('')
-	const [recents,set_recents]=useState(distributor_data?.recents)
+	const [distributor_data,set_distributor_data] = useState('');
 	const [products,set_products]=useState([]);
 	const [industries,set_industries]=useState([])
 	//useEffects
@@ -89,11 +86,7 @@ export default function Distributor(){
 			<Flex direction='column' p='2'>
 				<Flex p='1' direction='column' gap='2'>
 					<Flex gap='3' w='100%'>
-						{distributor_data?.profile_photo_url == ''? 
-							<LocationCityIcon style={{fontSize:'150px',padding:'10px'}}/> 
-						: 
-							<Image boxSize='100px' objectFit={distributor_data?.profile_photo_url == '' || !distributor_data?.profile_photo_url? "contain":'cover'} src={distributor_data?.profile_photo_url == '' || !distributor_data?.profile_photo_url? "../../Pro.png":distributor_data?.profile_photo_url} alt='profile photo' boxShadow='lg' borderRadius='5'/>
-						}
+						<Image boxSize='100px' objectFit={distributor_data?.profile_photo_url == '' || !distributor_data?.profile_photo_url? "contain":'cover'} src={distributor_data?.profile_photo_url == '' || !distributor_data?.profile_photo_url? "../../Pro.png":distributor_data?.profile_photo_url} alt='profile photo' boxShadow='lg' borderRadius='5'/>
 						<Flex direction='column' gap='2' bg='#eee' p='2' w='100%' borderRadius='8' boxShadow='lg'>
 							<Text fontSize='32px' fontWeight='bold' color='#009393'>{distributor_data?.company_name}</Text>
 						</Flex>
@@ -113,7 +106,7 @@ export default function Distributor(){
 						}
 					</Flex>
 					<Flex direction='column' gap='2'>
-						<Text fontSize='20px' fontWeight='bold' borderBottom='1px solid #000'>Experts</Text>
+						<Text fontSize='20px' fontWeight='bold'>Experts</Text>
 						{distributor_data?.experts?.length === 0 ?
 							<Flex justify='center' align='center' h='15vh' bg='#eee' p='2' boxShadow='lg'>
 								<Text>The user has not attached any experts.</Text>
@@ -122,7 +115,7 @@ export default function Distributor(){
 						<Flex borderRadius='5' gap='3' direction='column'> 
 							{distributor_data?.experts?.map((item)=>{
 								return(
-									<Flex direction='column' key={item._id} p='2' borderRadius='5' boxShadow='lg' cursor='pointer'>
+									<Flex direction='column' key={item._id} p='2' borderRadius='5' boxShadow='lg' cursor='pointer' fontSize={'14px'}>
 										<Text><span style={{fontWeight:"bold"}}>Name: </span>{item.name}</Text>
 										<Text>Email:  
 											<Link fontWeight='bold' color='#009393' href={`mailto: ${item?.email}`} isExternal>
@@ -137,7 +130,7 @@ export default function Distributor(){
 						}
 					</Flex>
 					<Flex direction='column' gap='2'>
-						<Text fontSize='18px' fontWeight='bold' borderBottom='1px solid #000'>Industries by this Distributor</Text>
+						<Text fontSize='18px' fontWeight='bold'>Industries by this Distributor</Text>
 						{industries?.length === 0 ?
 								<Flex justify='center' align='center' h='15vh' bg='#eee' p='2' borderRadius='5' boxShadow='lg' gap='2'>
 									<Text>Not specializing in any industries.</Text>
@@ -152,23 +145,16 @@ export default function Distributor(){
 							</Flex>
 							}
 					</Flex>
-					<Text fontSize='18px' fontWeight='bold' borderBottom='1px solid #000'>Products</Text>
+					<Text fontSize='18px' fontWeight='bold'>Products</Text>
 					{products?.length === 0?
 						<Flex align='center' justify='center' bg='#eee' h='40vh' p='3' borderRadius='5' boxShadow='lg'>
 							<Text w='50%' textAlign='center'>No products have been listed.</Text>
 						</Flex>
 						:
 						<Flex direction='column' h='50vh' overflowY='scroll'>
-							<Text fontWeight='bold' fontSize='24px'>Products</Text>
 							{products?.map((item)=>{
 								return(
-									<Flex key={item?._id} position='relative' gap='2' bg='#eee' m='2' align='center' borderRadius='5' boxShadow='lg' cursor='pointer' onClick={(()=>{router.push(`/product/${item?._id}`)})}>
-										<Image  boxSize='100px' objectFit='cover' src='../../Pro.png' alt='next'/>
-										<Flex direction='column' p='2' gap='2'>
-											<Text color='#009393' fontSize='20px' fontFamily='ClearSans-Bold'>{item?.name_of_product}</Text>
-											<Text fontSize='16px'>{item?.industry}</Text>
-										</Flex>
-									</Flex>
+									<Product_Item item={item}/>
 								)
 							})}
 						</Flex>
@@ -179,18 +165,23 @@ export default function Distributor(){
 	)
 }
 
-const ProductItem=({item,})=>{
+const Product_Item=({item})=>{
 	const router = useRouter();
 	return(
-		<Flex flex='1' gap='2' align='center' boxShadow='lg' cursor='pointer' onClick={(()=>{router.push(`/product/${item._id}`)})}>
-			<Image w='50px' h='50px' borderRadius='10px' objectFit='cover' src='../Pro.png' alt='next'/>
+		<Flex key={item._id} cursor='pointer' position='relative' gap='2' align='center' onClick={(()=>{router.push(`/product/${item._id}`)})} bg='#fff' p='1' borderRadius='5' boxShadow='lg'>
+			<Image w='50px' h='50px' borderRadius='10px' objectFit='cover' src='../../Pro.png' alt='next'/>
 			<Flex direction='column'>
-				<Text fontSize='16px' fontFamily='ClearSans-Bold'>{item.name_of_product}</Text>
-				<Text fontSize='14px'>distributed by: {item.distributed_by}</Text>
+				<Text fontSize='16px' fontFamily='ClearSans-Bold' color='#009393'>{item.name_of_product}</Text>
+				<Text fontSize='14px'>{item.distributed_by}</Text>
+				<Flex gap='2' fontSize='10px' color='grey'>
+					<Text>{item.industry}</Text>
+					<Text borderLeft='1px solid grey' paddingLeft='2'>{item.technology}</Text>
+				</Flex>
 			</Flex>
 		</Flex>
 	)
 }
+
 
 const Industry=({item})=>{
 	const router = useRouter()

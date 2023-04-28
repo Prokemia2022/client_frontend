@@ -57,8 +57,8 @@ export default function Market(){
 					</Flex>
 				</Flex>
 				{products_data.length === 0? 
-					<Flex h='60vh' bg='#eee' borderRadius='5' m='2' align='center' justify='center'>
-						<Text fontSize='28px' color='grey'>There are no products listed, that are expiring soon</Text>
+					<Flex h='60vh' bg='' borderRadius='5' m='2' align='center' justify='center'>
+						<Text fontSize='24px' color='grey'>There are no products listed that are expiring soon</Text>
 					</Flex>
 				:
 					<Flex direction='column'>

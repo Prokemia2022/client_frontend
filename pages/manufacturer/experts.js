@@ -3,20 +3,27 @@ import {Flex,Text,Input,Button,useToast,Textarea} from '@chakra-ui/react'
 import {useRouter} from 'next/router'
 import AddNewExpertsModal from '../../components/modals/addNewExperts.js';
 import Delete_Expert_Manufacturer from '../api/auth/manufacturer/delete_expert.js'
-import Edit_Expert_Manufacturer from '../api/auth/manufacturer/edit_expert.js'
+import Edit_Expert_Manufacturer from '../api/auth/manufacturer/edit_expert.js';
 
-function Experts({manufacturer_data}){
+export default function Experts({manufacturer_data}){
+	/**
+	 * Expert page: Shows all listed experts by user.
+	 * Props
+	 * 		manufacturer_data (obj): obj conataining manufacturer user data.
+	 * 
+	 */
 	const router = useRouter();
 	const [isaddnewexpertModalvisible,setisaddNewExpertModalvisible]=useState(false);
 
 	const id = manufacturer_data?._id
 	return (
-		<Flex direction='column' gap='3' p='2' w='100%'>
-			<AddNewExpertsModal isaddnewexpertModalvisible={isaddnewexpertModalvisible} setisaddNewExpertModalvisible={setisaddNewExpertModalvisible} id={id} acc_type='manufacturer'/>
+		<Flex direction='column' gap='3' p='2' w='100%' h='100vh'>
+			<AddNewExpertsModal isaddnewexpertModalvisible={isaddnewexpertModalvisible} setisaddNewExpertModalvisible={setisaddNewExpertModalvisible} id={id} acc_type='manufacturer' router={router}/>
 			<Text fontSize='32px' fontWeight='bold'>Experts</Text>
 			{manufacturer_data?.experts?.length === 0 ?
 					<Flex justify='center' align='center' h='40vh' direction='column' gap='2'>
-						<Text>You have not listed any experts</Text>
+						<Text fontWeight={'bold'} >You have not listed any experts</Text>
+						<Text fontSize='12px' align='center' fontWeight='bold' color='#009393'>Experts will be available to advice, support<br/> and assist clients about your company and your products. </Text>
 						<Button bg='#009393' color='#fff' onClick={(()=>{setisaddNewExpertModalvisible(true)})}>Add a new Expert</Button>
 					</Flex>
 				:
@@ -24,7 +31,7 @@ function Experts({manufacturer_data}){
 					<Button bg='#009393' color='#fff' p='5' onClick={(()=>{setisaddNewExpertModalvisible(true)})}>Add a new Expert</Button>
 					{manufacturer_data?.experts?.map((item)=>{
 						return(
-							<Expert_Item  key={item._id} item={item} id={manufacturer_data?._id}/>
+							<Expert_Item  key={item._id} item={item} id={manufacturer_data?._id} router={router}/>
 						)
 					})}
 					
@@ -34,9 +41,7 @@ function Experts({manufacturer_data}){
 	)
 }
 
-export default Experts;
-
-const Expert_Item=({item,id})=>{
+const Expert_Item=({item,id,router})=>{
 	const toast = useToast()
 	const [is_verify,set_is_verify]=useState(false);
 	const [is_edit,set_is_edit]=useState(false);
@@ -66,6 +71,8 @@ const Expert_Item=({item,id})=>{
 				status: 'error',
 				isClosable: true,
 			});
+		}).finally(()=>{
+			setTimeout(()=>{router.reload()},500)
 		})
 	}
 
@@ -94,6 +101,8 @@ const Expert_Item=({item,id})=>{
 				status: 'error',
 				isClosable: true,
 			});
+		}).finally(()=>{
+			setTimeout(()=>{router.reload()},500)
 		})
 		set_is_edit(false)
 	}

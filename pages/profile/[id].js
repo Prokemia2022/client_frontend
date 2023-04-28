@@ -1,59 +1,52 @@
 //modules imports
 import React,{useState,useEffect} from 'react';
 import {useRouter} from 'next/router';
-import {Flex,Text,Button,Input,InputGroup,InputRightElement,Select,Image,useToast} from '@chakra-ui/react';
-import bcrypt from 'bcryptjs';
+import {Flex,Text,Button,Input,InputGroup,Select,Image,useToast} from '@chakra-ui/react';
 import Cookies from 'universal-cookie';
 import jwt_decode from "jwt-decode";
 //icons-imports
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import {Room,Visibility,VisibilityOff} from '@mui/icons-material'
+import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 //components imports
 import Header from '../../components/Header.js';
 import Delete_Account_Modal from '../../components/modals/accounts/delete_account_modal.js'
 //api-calls
 import Get_Client from '../api/auth/client/get_client.js'
-import Edit_Client from '../api/auth/client/edit_client.js'
-import Change_Password from '../api/auth/distributor/change_password.js'
-import Delete_Client from '../api/auth/client/delete_client_account.js'
+import Edit_Client from '../api/auth/client/edit_client.js';
+import Email_Verification from '../api/email_handler/email_verification.js'
 //utils
 import {storage} from '../../components/firebase.js';
 import {ref,uploadBytes,getDownloadURL} from 'firebase/storage';
 import { v4 } from "uuid";
-import axios from 'axios';
+//error handler
+import Suspension_Notification from '../../components/error_handlers/account_suspension_notification.js';
 
-function Settings(){
+export default function Client_Profile(){
+	/**
+	 * Client_Profile: client user profile page.
+	 */
 	//utils
 	const router = useRouter();
 	const id = router.query;
 
 	const cookies = new Cookies();
+	const toast = useToast();
 	const token = cookies.get('user_token');
 
 	//states
 	const [client_data,set_client_data]=useState("");
-	const [uid,set_uid]=useState("");
-	const [u_email,set_u_email]=useState("");
 	const [edit,setedit]=useState(false);
-
-	const [show, setShow] = useState(false);
   	
   	const [is_delete_account_Modalvisible,set_is_delete_account_Modalvisible]=useState(false)
-	//functions
-	const handleClick = () => setShow(!show);
-
-	const Handle_Change_Password=async()=>{
-		router.push("/password_reset")
-	}
 	//api calls'
 	
 	const Get_Client_Data=async(payload)=>{
-		console.log(payload)
+		//console.log(payload)
 		if (!payload || payload._id == '' || payload.email == ''){
 			return;
 		}else{
 			await Get_Client(payload).then((response)=>{
-				console.log(response.data)
+				//console.log(response.data)
 				set_client_data(response.data)
 			})
 		}
@@ -62,22 +55,21 @@ function Settings(){
 	
 	useEffect(()=>{
 		if(!token){
-			alert('could not get userid')
+			toast({
+				title: 'Broken link',
+				description: `we are redirecting you...`,
+				status: 'info',
+				isClosable: true,
+			  });
 		}else{
 			const details = jwt_decode(token);
-			//console.log(details)
-			set_uid(details?.id)
-			set_u_email(details?.email)
 			const payload = {
 				email_of_company : details?.email,
 				_id: details?.id
 			}
-			//console.log(payload)
-			Get_Client_Data(payload)
+			Get_Client_Data(payload);
 		}
 	},[token])
-
-	const [code,set_code]=useState(false);
 
 	const Generate_Code=async()=>{
   		const characters = '0123456789';
@@ -97,39 +89,49 @@ function Settings(){
 			email: client_data.email_of_company,
 			code: code
 		}
-		await axios.post("https://prokemiaemailsmsserver-production.up.railway.app/api/email_verification",email_payload).then(()=>{
+		await Email_Verification(email_payload).then(()=>{
 			router.push(`/verify/${'client'}/${client_data._id}`)
-		})
+		}).catch(()=>{
+			toast({
+				title: '',
+				description: `error while verifying your account.`,
+				status: 'error',
+				isClosable: true,
+			});
+		});
 	}
 	return(
 		<Flex direction='column' gap='2'>
 			<Header/>
 			<Flex p='2' direction='column' gap='2' w='100%'>
-				<Delete_Account_Modal is_delete_account_Modalvisible={is_delete_account_Modalvisible} set_is_delete_account_Modalvisible={set_is_delete_account_Modalvisible} client_data={client_data} acc_type='client'/>
-				<Text fontSize='34px' fontWeight='bold'>Welcome,<br/> {client_data?.first_name} {client_data?.last_name}</Text>
+				{client_data?.suspension_status?<Suspension_Notification/>:null}
 				{client_data?.valid_email_status == false || !client_data?.valid_email_status?
-					<Flex direction='column' gap='3' w='100%' bg='' p='2' borderRadius='5'>
-						<Text fontSize='28px'fontWeight='bold' color='#009393'>Verify your email.</Text>
-						<Text >Get access to all features and be an active user on our platform by verifying your email.</Text>
-						<Text >It wont take more than a minute.</Text>
-						<Flex gap='2'>
-							<Button bg='#fff' border='1px solid #000' color='#000' onClick={handle_verify_email}>Verify Email</Button>
+					<Flex w='100%' p='1' borderRadius='5' bg='#009393' align='center' justify='space-between' color='#fff'>
+						<Flex align='center' gap='2'>
+							<InfoOutlinedIcon />
+							<Flex direction='column'>
+								<Text fontSize='18px' fontWeight='bold'>Verify your email.</Text>
+								<Text fontSize={'14px'}>Get access to all features by verifying your email.</Text>
+							</Flex>
 						</Flex>
+						<Button bg='#fff' color='#000' onClick={handle_verify_email}>Verify Email</Button>
 					</Flex>
 				: null
 				}
+				<Delete_Account_Modal is_delete_account_Modalvisible={is_delete_account_Modalvisible} set_is_delete_account_Modalvisible={set_is_delete_account_Modalvisible} client_data={client_data} acc_type='client'/>
+				<Text fontSize='34px' fontWeight='bold'>Welcome,<br/> {client_data?.first_name} {client_data?.last_name}</Text>
 				{edit ?
 					<EditProfile setedit={setedit} client_data={client_data}/>
 				:
 					<Flex direction='column' gap='2'>
 						<Flex gap='3' direction='column'>
-							<Flex direction='column' gap='1' w='100%' bg='#eee' p='2' borderRadius='5' boxShadow='dark-lg'>
-								<Text>Email: {client_data?.email_of_company}</Text>
-								<Text>Mobile: {client_data?.mobile_of_company}</Text>	
-								<Text>Gender: {client_data?.gender}</Text>
-								<Text>Company name: {client_data?.company_name}</Text>
-								<Text>Position: {client_data?.position}</Text>
-								<Text>Address: {client_data?.address}</Text>
+							<Flex direction='column' gap='1' w='100%' bg='#fff' p='2' borderRadius='5' boxShadow=''>
+								<Text><span style={{fontWeight:'bold'}}>Email:</span> {client_data?.email_of_company}</Text>
+								<Text><span style={{fontWeight:'bold'}}>Mobile:</span> {client_data?.mobile_of_company}</Text>	
+								<Text><span style={{fontWeight:'bold'}}>Gender:</span> {client_data?.gender}</Text>
+								<Text><span style={{fontWeight:'bold'}}>Company name:</span> {client_data?.company_name}</Text>
+								<Text><span style={{fontWeight:'bold'}}>Position:</span> {client_data?.position}</Text>
+								<Text><span style={{fontWeight:'bold'}}>Address:</span> {client_data?.address}</Text>
 							</Flex>
 							<Button onClick={(()=>{setedit(true)})} bg='#009393' color='#fff'>Edit Profile</Button>
 						</Flex>
@@ -140,15 +142,10 @@ function Settings(){
 								<InputGroup size='md'>
 									<Input
 									pr='4.5rem'
-									type={show ? 'text' : 'password'} placeholder='password' onChange={((e)=>{set_new_password(e.target.value)})}
+									type='password' placeholder={client_data?.password}
 									/>
-										<InputRightElement width='4.5rem'>
-										<Button h='1.75rem' size='sm' onClick={handleClick} bg='#fff'>
-										{show ? <VisibilityOff/> : <Visibility/>}
-										</Button>
-									</InputRightElement>
 								</InputGroup>
-								<Button bg='#ff' border='1px solid #000' onClick={Handle_Change_Password}>Change Password</Button>
+								<Button bg='#ff' border='1px solid #000' onClick={(()=>{router.push("/password_reset")})}>Change Password</Button>
 							</Flex>
 						</Flex>
 						<Flex p='1' color='red' direction='column'>
@@ -164,8 +161,6 @@ function Settings(){
 		</Flex>
 	)
 }
-
-export default Settings;
 
 const EditProfile=({setedit,client_data})=>{
 	//utils
@@ -331,7 +326,10 @@ const EditProfile=({setedit,client_data})=>{
 						<Text>Address</Text>
 						<Input type='text' placeholder={client_data?.address_of_company} variant='filled' onChange={((e)=>{set_address_of_company(e.target.value)})}/>
 					</Flex>
-					<Button onClick={handle_Edit_Profile} bg='#009393' color='#fff'>Save</Button>
+					<Flex gap='2' >
+						<Button flex='1' onClick={handle_Edit_Profile} bg='#009393' color='#fff'>Save</Button>
+						<Button flex='1' onClick={(()=>{setedit(false)})} bg='#fff' color='red' border='1px solid red'>Cancel</Button>
+					</Flex>
 				</Flex>
 			</Flex>
 	)

@@ -18,6 +18,8 @@ import Cookies from 'universal-cookie';
 import jwt_decode from "jwt-decode";
 //styles
 import styles from '../../styles/Home.module.css';
+//error handlers
+import Suspension_Notification from '../../components/error_handlers/account_suspension_notification.js'
 
 function Product(){
 	//modules
@@ -40,6 +42,8 @@ function Product(){
 
 	const [manufactured_by_suggestion_query,set_manufactured_by_suggestion_query]=useState('');
 	const [manufactured_by_suggestion_query_modal,set_manufactured_by_suggestion_query_modal]=useState(false);
+
+	let is_suspended = cookies.get('is_suspended');;
 
 
 	//apis
@@ -65,12 +69,13 @@ function Product(){
 			const data = response?.data;
 			const result_data = data.filter((item)=> item?.verification_status && !item?.suspension_status); //filters users that are only verified and not suspended
 
-			set_manufacturers_data(result_data.filter((item) =>item?.company_name.toLowerCase().includes(manufactured_by.toLowerCase())));
+			set_manufacturers_data(result_data?.filter((item) =>item?.company_name?.toLowerCase().includes(manufactured_by?.toLowerCase())));
 			if (acc_type == 'manufacturer'){
 				/** Finds the details of company listing product.*/
 				const result = result_data.find(({ email_of_company }) => email_of_company === email);
+				console.log(result);
 				set_lister_company_name(result?.company_name)
-				set_manufactured_by(result?.company_name)
+				set_manufactured_by(result?.company_name);
 				//console.log(result);
 			}
 		})
@@ -176,16 +181,24 @@ function Product(){
 			get_Technology_Data();
 			get_Distributors_Data(acc_type,email);
 			get_Manufacturers_Data(acc_type,email);
+		}else if (is_suspended){
+			return toast({
+				title: 'you cannot list a new product at the moment',
+				description: '',
+				status: 'info',
+				isClosable: true,
+			  });
 		}else{
-			toast({
+			router.back();
+			return toast({
               title: 'you must be signed in to list a product.',
               description: '',
               status: 'info',
               isClosable: true,
             });
-            router.back();
+            
 		}
-	},[token,distributed_by_suggestion_query,manufactured_by_suggestion_query])
+	},[token,distributed_by_suggestion_query,manufactured_by_suggestion_query,is_suspended])
 
 	//add new product without documents function
 	const handle_add_new_product=async()=>{
@@ -262,119 +275,127 @@ function Product(){
 						/>
 					</Flex>
 				:
-					<Flex className={styles.productbody} direction='column' p='3' gap='3'>
-						<Text fontSize='32px' fontWeight='bold'>Add New Product</Text>
-						<Flex direction='column'>
-							<Text>Name/Title of product</Text>
-							<Input type='text' placeholder='Name of product/Brand' variant='filled' onChange={((e)=>{set_name_of_product(e.target.value)})}/>
-						</Flex>
-						<Flex direction='column'>
-							<Text>Brand Name</Text>
-							<Input type='text' placeholder='Brand Name' variant='filled' onChange={((e)=>{set_brand(e.target.value)})}/>
-						</Flex>
-						<Flex direction='column'>
-							<Text>Chemical Family</Text>
-							<Input type='text' placeholder='Chemical Family' variant='filled' onChange={((e)=>{set_chemical_name(e.target.value)})}/>
-						</Flex>
-						<Flex direction='column'>
-							<Text>Description</Text>
-							<Textarea type='text' placeholder='Description' variant='filled' onChange={((e)=>{set_description_of_product(e.target.value)})}/>
-						</Flex>
-						<Flex gap='2'>
-							<Flex direction='column' flex='1' position='relative'>
-								<Text>Manufactured by:</Text>
-								<Input type='text' value={manufactured_by} variant='filled' onChange={((e)=>{set_manufactured_by(e.target.value);set_manufactured_by_suggestion_query(e.target.value);set_manufactured_by_suggestion_query_modal(true)})}/>
-								{manufactured_by_suggestion_query !== '' && manufactured_by_suggestion_query_modal?
-									<>
-									{manufacturers_data.length === 0? null : 
-										<Flex direction='column' w='100%' h='15vh' boxShadow='dark-lg' padding='2' borderRadius='5' mt='2' position='absolute' bg='#fff' zIndex='99' top='60px' overflowY='scroll'>
-											{manufacturers_data?.map((manufacturer)=>{
+					<>
+						{is_suspended? 
+							<Flex h='100vh' direction={'column'}>
+								<Suspension_Notification/>
+							</Flex>
+							:
+							<Flex className={styles.productbody} direction='column' p='3' gap='3'>
+								<Text fontSize='32px' fontWeight='bold'>Add New Product</Text>
+								<Flex direction='column'>
+									<Text>Name/Title of product</Text>
+									<Input type='text' placeholder='Name of product/Brand' variant='filled' onChange={((e)=>{set_name_of_product(e.target.value)})}/>
+								</Flex>
+								<Flex direction='column'>
+									<Text>Brand Name</Text>
+									<Input type='text' placeholder='Brand Name' variant='filled' onChange={((e)=>{set_brand(e.target.value)})}/>
+								</Flex>
+								<Flex direction='column'>
+									<Text>Chemical Family</Text>
+									<Input type='text' placeholder='Chemical Family' variant='filled' onChange={((e)=>{set_chemical_name(e.target.value)})}/>
+								</Flex>
+								<Flex direction='column'>
+									<Text>Description</Text>
+									<Textarea type='text' placeholder='Description' variant='filled' onChange={((e)=>{set_description_of_product(e.target.value)})}/>
+								</Flex>
+								<Flex gap='2'>
+									<Flex direction='column' flex='1' position='relative'>
+										<Text>Manufactured by:</Text>
+										<Input type='text' value={manufactured_by} variant='filled' onChange={((e)=>{set_manufactured_by(e.target.value);set_manufactured_by_suggestion_query(e.target.value);set_manufactured_by_suggestion_query_modal(true)})}/>
+										{manufactured_by_suggestion_query !== '' && manufactured_by_suggestion_query_modal?
+											<>
+											{manufacturers_data.length === 0? null : 
+												<Flex direction='column' w='100%' h='15vh' boxShadow='dark-lg' padding='2' borderRadius='5' mt='2' position='absolute' bg='#fff' zIndex='99' top='60px' overflowY='scroll'>
+													{manufacturers_data?.map((manufacturer)=>{
+														return(
+															<Text key={manufacturer?._id} cursor='pointer' bg='#eee' p='1' m='1' borderRadius='5' onClick={(()=>{set_manufactured_by(manufacturer?.company_name);set_manufactured_by_suggestion_query_modal(false)})} fontSize='14px' fontFamily='ClearSans-Bold'>{manufacturer.company_name}</Text>
+														)
+													})}
+												</Flex>}
+											</>
+										: null}
+									</Flex>
+									<Flex direction='column' flex='1' position='relative'>
+										<Text>Sold by</Text>
+										<Input type='text' placeholder='Sold by' value={distributed_by} variant='filled' onChange={((e)=>{set_distributed_by(e.target.value);set_distributed_by_suggestion_query(e.target.value);set_distributed_by_suggestion_query_modal(true)})} />
+										{distributed_by_suggestion_query !== '' && distributed_by_suggestion_query_modal?
+											<>
+											{distributors_data.length === 0? null : 
+												<Flex direction='column' w='100%' h='15vh' boxShadow='dark-lg' padding='2' borderRadius='5' mt='2' position='absolute' bg='#fff' zIndex='99' top='60px' overflowY='scroll'>
+													{distributors_data?.map((distributor)=>{
+														return(
+															<Text key={distributor?._id} cursor='pointer' bg='#eee' p='1' m='1' borderRadius='5' onClick={(()=>{set_distributed_by(distributor?.company_name);set_distributed_by_suggestion_query_modal(false)})} fontSize='14px' fontFamily='ClearSans-Bold'>{distributor.company_name}</Text>
+														)
+													})}
+												</Flex>}
+											</>
+										: null}
+									</Flex>
+								</Flex>
+								<Flex gap='1'>
+									<Flex direction='column' gap='2' flex='1'>
+										<Text fontFamily='ClearSans-Bold'>Industry</Text>
+										<Select variant='filled' placeholder='Select Industry' onChange={((e)=>{set_industry(e.target.value)})}>
+											{industries_data?.map((item)=>{
+													return(
+														<option key={item?._id} value={item?.title}>{item?.title}</option>
+		
+													)
+												})}
+										</Select>
+									</Flex>
+									<Flex direction='column' gap='3' flex='1'>
+										<Text fontFamily='ClearSans-Bold'>Technology</Text>
+										<Select variant='filled' placeholder='Select Technology' onChange={((e)=>{set_technology(e.target.value)})}>
+											{technologies_data?.map((item)=>{
 												return(
-													<Text key={manufacturer?._id} cursor='pointer' bg='#eee' p='1' m='1' borderRadius='5' onClick={(()=>{set_manufactured_by(manufacturer?.company_name);set_manufactured_by_suggestion_query_modal(false)})} fontSize='14px' fontFamily='ClearSans-Bold'>{manufacturer.company_name}</Text>
+													<option key={item?._id} value={item?.title}>{item?.title}</option>
+		
 												)
 											})}
-										</Flex>}
-									</>
-								: null}
+										</Select>
+									</Flex>
+								</Flex>
+								<Flex direction='column'>
+									<Text>Function</Text>
+									<Textarea type='text' placeholder='Function' variant='filled' onChange={((e)=>{set_product_function(e.target.value)})}/>
+								</Flex>				
+								<Flex direction='column'>
+									<Text>Features & Benefits</Text>
+									<Textarea type='text' placeholder='features and Benefits products' variant='filled' onChange={((e)=>{set_features_of_product(e.target.value)})}/>
+								</Flex>
+								<Flex direction='column'>
+									<Text>Application</Text>
+									<Textarea type='text' placeholder='use commas to separate different applications' variant='filled' onChange={((e)=>{set_application_of_product(e.target.value)})}/>
+								</Flex>
+								<Flex direction='column'>
+									<Text>Packaging</Text>
+									<Textarea type='text' placeholder='packaging infomation' variant='filled' onChange={((e)=>{set_packaging_of_product(e.target.value)})}/>
+								</Flex>
+								<Flex direction='column'>
+									<Text>Storage & Handling</Text>
+									<Textarea type='text' placeholder='storage and product handling information' variant='filled' onChange={((e)=>{set_storage_of_product(e.target.value)})}/>
+								</Flex>
+								<Flex direction='column'>
+									<Text>Website_link</Text>
+									<Input type='text' placeholder='link to website' variant='filled' onChange={((e)=>{set_website_link(e.target.value)})}/>
+								</Flex>
+								<Flex direction='column' gap='3' flex='1'>
+									<Text fontFamily='ClearSans-Bold'>Short on Expiry</Text>
+									<Select variant='filled' placeholder='List As Short on Expiry' onChange={((e)=>{e.target.value === 'true'? set_short_on_expiry(true): set_short_on_expiry(false)})}>
+										<option value='false'>Product is not set to expire soon</option>
+										<option value='true'>Product wil be expiring soon</option>
+									</Select>
+								</Flex>
+								<Flex gap='2'>
+									<Button flex='1' bg='#009393' borderRadius='0' color='#fff' onClick={handle_add_new_product} disabled={isloading? true : false}>Save and add product</Button>
+									<Button flex='1' bg='#000' borderRadius='0' color='#fff' onClick={(()=>{set_isfileupload(true)})} disabled={isloading? true : false}>Continue to upload files</Button>
+								</Flex>
+								<Button bg='#eee' borderRadius='0' color='red' onClick={(()=>{router.back()})} disabled={isloading? true:false}>Cancel</Button>
 							</Flex>
-							<Flex direction='column' flex='1' position='relative'>
-								<Text>Sold by</Text>
-								<Input type='text' placeholder='Sold by' value={distributed_by} variant='filled' onChange={((e)=>{set_distributed_by(e.target.value);set_distributed_by_suggestion_query(e.target.value);set_distributed_by_suggestion_query_modal(true)})} />
-								{distributed_by_suggestion_query !== '' && distributed_by_suggestion_query_modal?
-									<>
-									{distributors_data.length === 0? null : 
-										<Flex direction='column' w='100%' h='15vh' boxShadow='dark-lg' padding='2' borderRadius='5' mt='2' position='absolute' bg='#fff' zIndex='99' top='60px' overflowY='scroll'>
-											{distributors_data?.map((distributor)=>{
-												return(
-													<Text key={distributor?._id} cursor='pointer' bg='#eee' p='1' m='1' borderRadius='5' onClick={(()=>{set_distributed_by(distributor?.company_name);set_distributed_by_suggestion_query_modal(false)})} fontSize='14px' fontFamily='ClearSans-Bold'>{distributor.company_name}</Text>
-												)
-											})}
-										</Flex>}
-									</>
-								: null}
-							</Flex>
-						</Flex>
-						<Flex gap='1'>
-							<Flex direction='column' gap='2' flex='1'>
-								<Text fontFamily='ClearSans-Bold'>Industry</Text>
-								<Select variant='filled' placeholder='Select Industry' onChange={((e)=>{set_industry(e.target.value)})}>
-									{industries_data?.map((item)=>{
-											return(
-												<option key={item?._id} value={item?.title}>{item?.title}</option>
-
-											)
-										})}
-						        </Select>
-							</Flex>
-							<Flex direction='column' gap='3' flex='1'>
-								<Text fontFamily='ClearSans-Bold'>Technology</Text>
-								<Select variant='filled' placeholder='Select Technology' onChange={((e)=>{set_technology(e.target.value)})}>
-									{technologies_data?.map((item)=>{
-										return(
-											<option key={item?._id} value={item?.title}>{item?.title}</option>
-
-										)
-									})}
-						        </Select>
-							</Flex>
-						</Flex>
-						<Flex direction='column'>
-							<Text>Function</Text>
-							<Textarea type='text' placeholder='Function' variant='filled' onChange={((e)=>{set_product_function(e.target.value)})}/>
-						</Flex>				
-						<Flex direction='column'>
-							<Text>Features & Benefits</Text>
-							<Textarea type='text' placeholder='features and Benefits products' variant='filled' onChange={((e)=>{set_features_of_product(e.target.value)})}/>
-						</Flex>
-						<Flex direction='column'>
-							<Text>Application</Text>
-							<Textarea type='text' placeholder='use commas to separate different applications' variant='filled' onChange={((e)=>{set_application_of_product(e.target.value)})}/>
-						</Flex>
-						<Flex direction='column'>
-							<Text>Packaging</Text>
-							<Textarea type='text' placeholder='packaging infomation' variant='filled' onChange={((e)=>{set_packaging_of_product(e.target.value)})}/>
-						</Flex>
-						<Flex direction='column'>
-							<Text>Storage & Handling</Text>
-							<Textarea type='text' placeholder='storage and product handling information' variant='filled' onChange={((e)=>{set_storage_of_product(e.target.value)})}/>
-						</Flex>
-						<Flex direction='column'>
-							<Text>Website_link</Text>
-							<Input type='text' placeholder='link to website' variant='filled' onChange={((e)=>{set_website_link(e.target.value)})}/>
-						</Flex>
-						<Flex direction='column' gap='3' flex='1'>
-							<Text fontFamily='ClearSans-Bold'>Short on Expiry</Text>
-							<Select variant='filled' placeholder='List As Short on Expiry' onChange={((e)=>{e.target.value === 'true'? set_short_on_expiry(true): set_short_on_expiry(false)})}>
-								<option value='false'>Product is not set to expire soon</option>
-								<option value='true'>Product wil be expiring soon</option>
-					        </Select>
-						</Flex>
-						<Flex gap='2'>
-							<Button flex='1' bg='#009393' borderRadius='0' color='#fff' onClick={handle_add_new_product} disabled={isloading? true : false}>Save and add product</Button>
-			                <Button flex='1' bg='#000' borderRadius='0' color='#fff' onClick={(()=>{set_isfileupload(true)})} disabled={isloading? true : false}>Continue to upload files</Button>
-			            </Flex>
-		                <Button bg='#eee' borderRadius='0' color='red' onClick={(()=>{router.back()})} disabled={isloading? true:false}>Cancel</Button>
-					</Flex>
+						}
+					</>
 				}
 			</>
 		</Flex>

@@ -42,8 +42,8 @@ function Inventory({distributor_data}){
 		}).then(()=>{
 			set_isloading(false);
 		}).catch((err)=>{
+			//console.error(err)
 			throw new Error("Fetching error");
-			console.error(err)
 		});
 	}
 	return(

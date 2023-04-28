@@ -71,11 +71,21 @@ export default function Sale_Form({setCurrentValue,salesperson_data}){
 				isClosable: true,
 			});
 			set_isverified(false)
-		}else if(salesperson_data?.verification_status == false){
+		}else if(!salesperson_data?.verification_status){
+			console.log(salesperson_data?.verification_status)
 			toast({
 				title: 'Account has not been approved',
 				description: 'only verified salesperson accounts can create a new sale.',
 				status: 'info',
+				isClosable: true,
+			});
+			set_isverified(false)
+		}else if(salesperson_data?.suspension_status){
+			//console.log(salesperson_data?.verification_status)
+			toast({
+				title: 'Your account is currently suspended.',
+				description: 'reach out to support for guidance by emailing us at help@prokemia.com',
+				status: 'error',
 				isClosable: true,
 			});
 			set_isverified(false)
@@ -91,7 +101,7 @@ export default function Sale_Form({setCurrentValue,salesperson_data}){
       	
         toast({
 			title: 'Success',
-			description: `Sale:${name_of_product} has created successfuly.`,
+			description: `Sale of ${name_of_product} has created successfuly.`,
 			status: 'success',
 			isClosable: true,
 		});

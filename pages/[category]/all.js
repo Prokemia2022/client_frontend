@@ -1,6 +1,6 @@
 //modules import
 import React,{useState,useEffect} from 'react';
-import {Flex,Text,Center,Image,useToast} from '@chakra-ui/react';
+import {Flex,Text,Image,useToast,Grid,GridItem} from '@chakra-ui/react';
 //components import
 import Header from '../../components/Header.js';
 //api calls imports
@@ -11,15 +11,20 @@ import Get_Manufacturers from '../api/auth/manufacturer/get_manufacturers.js'
 //utils
 import {useRouter} from 'next/router';
 //icons
-import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 
-export default function All(){
+
+export default function Categotries(){
+	/**
+	 * Categories: Fetches all items in the industry and technology catgory.
+	 * Props:
+	 * 		categ (string): Shows the current category selected by user,i.e industries or technologies.
+	 */
 	//utils
 	const router = useRouter();
 	let categ = router.query;
 	const toast = useToast();
-	//console.log(categ)
 	//apis
+
 	//states
 	const [industries_data,set_industries_data]=useState([]);
 	const [technologies_data,set_technologies_data]=useState([]);
@@ -29,22 +34,40 @@ export default function All(){
 	//functions
 	/**fetch industries */
 	const get_Industries_Data=async()=>{
+		/**
+		 * Fetches all industries
+		 */
 		await Get_Industries().then((response)=>{
 			const result = response?.data.filter((item)=> item?.verification_status)
-			set_industries_data(result)
-			////console.log(result)
+			set_industries_data(result);
 		}).then(()=>{
 			set_isloading(false)
+		}).catch(()=>{
+			toast({
+				title: '',
+				description: `error while fetching data`,
+				status: 'error',
+				isClosable: true,
+			});
 		})
 	}
 	/**fetch technologies */
 	const get_Technologies_Data=async()=>{
+		/**
+		 * Fetches all technologies
+		 */
 		await Get_Technologies().then((response)=>{
 			const result = response?.data.filter((item)=> item?.verification_status)
-			set_technologies_data(result)
-			////console.log(response.data)
+			set_technologies_data(result);
 		}).then(()=>{
 			set_isloading(false)
+		}).catch(()=>{
+			toast({
+				title: '',
+				description: `error while fetching data`,
+				status: 'error',
+				isClosable: true,
+			});
 		})
 	}
 	/**fetch distributors */
@@ -52,43 +75,62 @@ export default function All(){
 		await Get_Distributors().then((response)=>{
 			const data = response?.data
 			const result_data = data.filter((item)=> item?.verification_status && !item?.suspension_status)
-			set_distributors_data(result_data)
+			set_distributors_data(result_data);
 			//console.log(result_data)
 		}).then(()=>{
 			set_isloading(false)
-		})
+		}).catch(()=>{
+			toast({
+				title: '',
+				description: `error while fetching data`,
+				status: 'error',
+				isClosable: true,
+			});
+		});
 	}
 	/**fetch manufacturers */
 	const get_Manufacturers_Data=async()=>{
 		await Get_Manufacturers().then((response)=>{
 			const data = response?.data
 			const result_data = data.filter((item)=> item?.verification_status && !item?.suspension_status)
-			set_manufacturers_data(result_data)
+			set_manufacturers_data(result_data);
 			////console.log(response.data)
 		}).then(()=>{
 			set_isloading(false)
-		})
+		}).catch(()=>{
+			toast({
+				title: '',
+				description: `error while fetching data`,
+				status: 'error',
+				isClosable: true,
+			});
+		});
 	}
 	//useEffects
 	useEffect(()=>{
 		if(!categ){
-			alert('could not get options')
-			router.back()
+			toast({
+				title: 'Could not get data parameters',
+				description: `we are redirecting you`,
+				status: 'error',
+				isClosable: true,
+			});
+			setTimeout(()=>{
+				router.back();
+			},500)
 		}
 		if(categ.category === 'Industries'){
-			////console.log('1')
 			get_Industries_Data()
 		}else if(categ.category === 'Technologies'){
-			////console.log('2')
 			get_Technologies_Data()
 		}else{
 			toast({
-				title: '',
-				description: `broken link, redirecting`,
+				title: 'broken link',
+				description: `we are redirecting you`,
 				status: 'info',
 				isClosable: true,
 			});
-			router.back()
+			router.back();
 		}
 		get_Distributors_Data()
 		get_Manufacturers_Data()
@@ -101,43 +143,37 @@ export default function All(){
 				{categ?.category === 'Industries'?
 					<Flex direction='column' gap='2' w='100%'>
 						<Text fontSize='28px' fontFamily='ClearSans-Bold' >{categ?.category}</Text>
-						<Flex wrap='Wrap' w='100%' justify='space-between'>
+						<Flex direction='column' w='100%' justify='space-evenly'>
 							{!isloading ?
 								<>
 									{industries_data?.map((item)=>{
 										return(
-											<Flex cursor='pointer' key={item._id} w={window?.width > 500? '200px':'150px'} h='225px' m='1' position='relative' onClick={(()=>{router.push(`/products/${item.title}`)})}>
-												<Image borderRadius='10px' objectFit='cover' src={item?.cover_image == ''? "../Pro.png":item?.cover_image} alt='photo' boxShadow='lg' w='100%'/>
-												<Text bg='rgb(192,192,192,0.6)' p='1' m='2' mb='0' borderRadius='5' position='absolute' top='10px' left='10px' w='80%' fontSize='20px' color='#000' fontFamily='ClearSans-Bold'>{item.title}</Text>
-											</Flex>
+											<Industry_Card item={item}/>
 										)
 									})}
 								</>:
 								<>
-									<Item_Loading />
-									<Item_Loading />
+									<Loading />
+									<Loading />
 								</>
 							}
 						</Flex>
 					</Flex>
 				:
 					<Flex direction='column' gap='2' w='100%'>
-						<Text fontSize='28px' fontFamily='ClearSans-Bold' borderBottom='1px solid #000' >{categ.category}</Text>
-						<Flex wrap='Wrap' w='100%' justify='space-between'>
+						<Text fontSize='28px' fontFamily='ClearSans-Bold' >{categ.category}</Text>
+						<Flex direction='column' w='100%' justify='space-evenly'>
 							{!isloading ?
 								<>
 									{technologies_data?.map((item)=>{
 										return(
-											<Flex cursor='pointer' key={item._id} w={window?.width > 500 ? '200px':'150px'} h='225px' m='1' position='relative' onClick={(()=>{router.push(`/products/${item.title}`)})}>
-												<Image borderRadius='10px' objectFit='cover' src={item?.cover_image == ''? "../Pro.png":item?.cover_image} alt='photo' boxShadow='lg' w='100%'/>
-												<Text bg='rgb(192,192,192,0.6)' p='1' m='2' mb='0' borderRadius='5' position='absolute' top='10px' left='10px' fontSize='20px' w='80%' color='#000' fontFamily='ClearSans-Bold'>{item.title}</Text>
-											</Flex>
+											<Technology_Card item={item}/>
 										)
 									})}
 								</>:
 								<>
-									<Item_Loading />
-									<Item_Loading />
+									<Loading />
+									<Loading />
 								</>
 							}
 						</Flex>
@@ -150,7 +186,7 @@ export default function All(){
 							{distributors_data?.slice(0,4).map((distributor)=>{
 								return(
 									<Flex bg='#eee' mb='1' borderRadius='5' key={distributor._id} gap='2' onClick={(()=>{router.push(`/account/distributor/${distributor._id}`)})} cursor='pointer'>
-										<Image objectFit='cover' src={distributor?.profile_photo_url} boxSize='100px' alt='profilelogo'/>
+										<Image objectFit={distributor?.profile_photo_url == ''? "contain":'cover'} src={distributor?.profile_photo_url == '' || !distributor?.profile_photo_url? "../Pro.png":distributor?.profile_photo_url} alt='photo' boxShadow='lg' boxSize='100px'/>
 										<Flex direction='column' p='2' gap='2' flex='1'>
 											<Text mb='0' fontSize='24px' fontFamily='ClearSans-Bold'>{distributor.company_name}</Text>
 											<Text mb='0' w='80%' overflow='hidden' h='20px'>{distributor.description}</Text>
@@ -170,7 +206,7 @@ export default function All(){
 								{manufacturers_data?.slice(0,4).map((manufacturer)=>{
 									return(
 										<Flex bg='#eee' mb='1' borderRadius='5' key={manufacturer._id} gap='2' onClick={(()=>{router.push(`/account/manufacturer/${manufacturer._id}`)})} cursor='pointer'>
-											<Image objectFit='cover' src={manufacturer?.profile_photo_url} w='100px' h='100px' alt='profilelogo'/>
+											<Image objectFit={manufacturer?.profile_photo_url == ''? "contain":'cover'} src={manufacturer?.profile_photo_url == '' || !manufacturer?.profile_photo_url? "../Pro.png":manufacturer?.profile_photo_url} alt='photo' boxShadow='lg' boxSize='100px'/>
 											<Flex direction='column' p='2' gap='2' flex='1'>
 												<Text mb='0' fontSize='24px' fontFamily='ClearSans-Bold'>{manufacturer.company_name}</Text>
 												<Text mb='0' w='80%' overflow='hidden' h='20px'>{manufacturer.description}</Text>
@@ -190,13 +226,6 @@ export default function All(){
 	)
 }
 
-const Item_Loading=()=>{
-	return(
-		<Flex w='150px' h='225px' m='1' position='relative' bg='#fff' boxShadow='lg'>
-			<Flex bg='#eee' p='4' m='2' mb='0' borderRadius='5' position='absolute' top='10px' left='10px' w='80%' h='50px'/>
-		</Flex>
-	)
-}
 
 const Loading=()=>{
 	return(
@@ -205,6 +234,32 @@ const Loading=()=>{
 			<Flex direction='column' flex='1' gap='3'>
 				<Flex bg='#eee' w='100%' h='20px' borderRadius='5'/>
 				<Flex bg='#eee' w='100%' h='20px' borderRadius='5'/>
+			</Flex>
+		</Flex>
+	)
+}
+
+const Industry_Card=({item})=>{
+	const router = useRouter();
+	return(
+		<Flex bg='#fff' mb='1' borderRadius='5' gap='2' onClick={(()=>{router.push(`/products/${item.title}`)})} cursor='pointer'>
+			<Image objectFit='cover' src={item?.cover_image == ''? "../Pro.png":item?.cover_image} alt='photo' boxShadow='lg' boxSize='100px'/>
+			<Flex direction='column' p='2' gap='2' flex='1'>
+				<Text mb='0' fontSize='20px' fontFamily='ClearSans-Bold'>{item.title}</Text>
+				<Text mb='0' w='80%' overflow='hidden' fontSize='14px'>{item.description}</Text>
+			</Flex>
+		</Flex>
+	)
+}
+
+const Technology_Card=({item})=>{
+	const router = useRouter();
+	return(
+		<Flex bg='#fff' mb='1' borderRadius='5' gap='2' onClick={(()=>{router.push(`/products/${item.title}`)})} cursor='pointer'>
+			<Image objectFit='cover' src={item?.cover_image == ''? "../Pro.png":item?.cover_image} alt='photo' boxShadow='lg' boxSize='100px'/>
+			<Flex direction='column' p='2' gap='2' flex='1'>
+				<Text mb='0' fontSize='20px' fontFamily='ClearSans-Bold'>{item.title}</Text>
+				<Text mb='0' w='80%' overflow='hidden' fontSize='14px'>{item.description}</Text>
 			</Flex>
 		</Flex>
 	)

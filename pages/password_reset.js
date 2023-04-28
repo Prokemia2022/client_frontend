@@ -5,7 +5,9 @@ import Header from '../components/Header.js';
 import axios from 'axios';
 import Cookies from 'universal-cookie';
 import Password_Reset from './api/auth/password_reset.js'
-import {Visibility,VisibilityOff} from '@mui/icons-material'
+import {Visibility,VisibilityOff} from '@mui/icons-material';
+//api
+import Send_Password_Otp from './api/email_handler/password_email.js'
 
 export default function Password_Reset_Function(){
 	const router = useRouter();
@@ -58,7 +60,7 @@ export default function Password_Reset_Function(){
   		}
   	}
 
-  	const Send_Email=async()=>{
+  	const Send_Code_Email=async()=>{
   		const validRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
   		if (!email.match(validRegex)){
   			toast({
@@ -75,12 +77,12 @@ export default function Password_Reset_Function(){
 	  			email
 	  		}
 	  		//console.log(payload)
-	  		await axios.post("https://prokemiaemailsmsserver-production.up.railway.app/api/otp_password_email",payload).then(()=>{
+	  		await Send_Password_Otp(payload).then(()=>{
 				set_code_active(!code_active)
 			}).catch((err)=>{
 				toast({
 					title: '',
-					description: err,
+					description: 'error while sending code',
 					status: 'error',
 					isClosable: true,
 				});
@@ -101,13 +103,8 @@ export default function Password_Reset_Function(){
 					status: 'success',
 					isClosable: true,
 				});
-				axios.post("https://prokemiaemailsmsserver-production.up.railway.app/api/changed_password_email",payload).then(()=>{
-					//set_code_active(!code_active) 
-				}).catch((err)=>{
-					console.log(err)
-				})
 				router.push('/')
-  			})
+  			});
   		}else{
   			toast({
 				title: '',
@@ -137,7 +134,7 @@ export default function Password_Reset_Function(){
 						:
 							<Flex direction='column' gap='2'>
 								<Input variant='filled' bg='#eee' required type='email' placeholder='Enter your email' onChange={((e)=>{set_email(e.target.value)})}/>
-								<Button bg='#000' color='#fff' onClick={Send_Email}>Send Email</Button>
+								<Button bg='#000' color='#fff' onClick={Send_Code_Email}>Send Email</Button>
 							</Flex>
 						}
 						

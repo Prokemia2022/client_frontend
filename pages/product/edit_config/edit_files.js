@@ -14,7 +14,14 @@ import {storage} from '../../../components/firebase';
 import {ref,uploadBytes,getDownloadURL} from 'firebase/storage';
 import { v4 } from "uuid";
 
-export default function EditFile({product_data,payload,set_iseditfiles}){
+export default function EditFile({product_data,set_iseditfiles}){
+	/**
+	 * Handles function to edit files to a product.
+	 * Props:
+	 * 		product_data(obj): json data containing a product data.
+	 * 		set_iseditfiles (Boolean): Handles the state of viewing the editfiles page.
+	 * 
+	 */
 	//utils
 	const toast = useToast();
 	const [is_submitting,set_is_submitting]=useState(false);
@@ -112,6 +119,7 @@ export default function EditFile({product_data,payload,set_iseditfiles}){
 				//formulation_document_url.current = res
 			})
 		}
+			
 		Edit_Product_Function()
 	}
 
@@ -181,7 +189,7 @@ export default function EditFile({product_data,payload,set_iseditfiles}){
 								:
 								<Button flex='1' bg='#000' onClick={handle_File_Upload} disabled={is_submitting?true:false}>Upload files</Button>	
 							}
-							<Button flex='1' bg='#009393' disabled={is_submitting?true:false}>Cancel <ArrowRightAltIcon/></Button>
+							<Button flex='1' bg='#009393' disabled={is_submitting?true:false} onClick={(()=>{set_iseditfiles(false)})}>Cancel <ArrowRightAltIcon/></Button>
 						</Flex>
 					</Flex>
 				:

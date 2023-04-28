@@ -3,19 +3,18 @@ import React,{useState,useEffect} from 'react';
 import {Flex,Text,Button,Input,Switch,useToast} from '@chakra-ui/react';
 //api calls
 import Edit_Salesperson from '../api/auth/salesperson/edit_salesperson_account.js';
-//icons
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import Email_Verification from '../api/email_handler/email_verification.js';
+//icons;
 import SecurityOutlinedIcon from '@mui/icons-material/SecurityOutlined';
 import ReceiptOutlinedIcon from '@mui/icons-material/ReceiptOutlined';
 import Groups2OutlinedIcon from '@mui/icons-material/Groups2Outlined';
+import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 //components
-import Header from '../../components/Header.js';
 //utils
 import {useRouter} from 'next/router';
-import axios from 'axios'
 import Cookies from 'universal-cookie';
 
-export default function Salesperson({setCurrentValue,salesperson_data}){
+export default function Salesperson({setCurrentValue,salesperson_data,set_is_refetch,is_refetch}){
 	//utils
 	const router = useRouter();
 	const toast = useToast();
@@ -24,34 +23,47 @@ export default function Salesperson({setCurrentValue,salesperson_data}){
 	const annonymous = salesperson_data?.account_status;  //current status for the salesperson i.e annonymous or not
 	//functions
 	const handle_annonymous_status=async()=>{
-		const payload = {
-			_id: salesperson_data?._id,
-			account_status: !annonymous
-		}
-		await Edit_Salesperson(payload).then(()=>{
-			//console.log(payload)
+		if(salesperson_data?.suspension_status){
+			//console.log(salesperson_data?.verification_status)
 			toast({
-				title: '',
-				description: 'Your account status has changed',
-				status: 'info',
-				isClosable: true,
-			});
-		}).then(()=>{
-			const timeout = setTimeout(()=>{
-				router.reload()
-			},3000)
-
-			return ()=>{
-				clearTimeout(timeout);
-			}
-		}).catch((err)=>{
-			toast({
-				title: '',
-				description: `${err.response.data}`,
+				title: 'Your account is currently suspended.',
+				description: 'reach out to support for guidance by emailing us at help@prokemia.com',
 				status: 'error',
 				isClosable: true,
 			});
-		})
+		}else if(!salesperson_data?.verification_status){
+			console.log(salesperson_data?.verification_status)
+			toast({
+				title: 'Your account has not been approved',
+				description: '',
+				status: 'info',
+				isClosable: true,
+			});
+		}else{
+			const payload = {
+				_id: salesperson_data?._id,
+				account_status: !annonymous
+			}
+			await Edit_Salesperson(payload).then(()=>{
+				//console.log(payload)
+				toast({
+					title: '',
+					description: 'Your account status has changed',
+					status: 'info',
+					isClosable: true,
+				});
+			}).then(()=>{
+				set_is_refetch(!is_refetch)
+			}).catch((err)=>{
+				console.log(err)
+				toast({
+					title: '',
+					description: `error while changing your account status`,
+					status: 'error',
+					isClosable: true,
+				});
+			});
+		}
 	}
 
 	const Generate_Code=async()=>{
@@ -72,24 +84,33 @@ export default function Salesperson({setCurrentValue,salesperson_data}){
 			email: salesperson_data.email_of_salesperson,
 			code: code
 		}
-		await axios.post("https://prokemiaemailsmsserver-production.up.railway.app/api/email_verification",email_payload).then(()=>{
+		await Email_Verification(email_payload).then(()=>{
 			router.push(`/verify/${'salesperson'}/${salesperson_data._id}`)
+		}).catch(()=>{
+			toast({
+				title: '',
+				description: `error while verifying your account.`,
+				status: 'error',
+				isClosable: true,
+			});
 		})
 	}
 	return(
 			<Flex direction='column' w='100%'>
 				<Flex p='2' direction='column' gap='2' w='100%' overflowY='scroll' h='100vh'>
 				{salesperson_data?.valid_email_status == false || !salesperson_data?.valid_email_status?
-						<Flex direction='column' gap='3' w='100%' bg='' p='2' borderRadius='5'>
-							<Text fontSize='28px'fontWeight='bold' color='#009393'>Verify your email.</Text>
-							<Text >Get access to all features and be an active user on our platform by verifying your email.</Text>
-							<Text >It wont take more than a minute.</Text>
-							<Flex gap='2'>
-								<Button bg='#fff' border='1px solid #000' color='#000' onClick={handle_verify_email}>Verify Email</Button>
+					<Flex w='100%' p='1' borderRadius='5' bg='#009393' align='center' justify='space-between' color='#fff' m=''>
+						<Flex align='center' gap='2'>
+							<InfoOutlinedIcon />
+							<Flex direction='column'>
+								<Text fontSize='18px' fontWeight='bold'>Verify your email.</Text>
+								<Text fontSize={'14px'}>Get access to all features by verifying your email.</Text>
 							</Flex>
 						</Flex>
-					: null
-					}
+						<Button bg='#fff' color='#000' onClick={handle_verify_email}>Verify Email</Button>
+					</Flex>
+				: null
+				}
 					<Flex gap='4' justify='space-between'>
 						<Text fontSize='42px' fontFamily='ClearSans-bold'>Welcome,<br/> {salesperson_data?.first_name} {salesperson_data?.last_name}</Text>
 						<Flex gap='2' direction='column'>

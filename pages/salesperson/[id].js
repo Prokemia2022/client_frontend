@@ -16,18 +16,21 @@ import Sale from './initiate_sale_form.js'
 /*icons*/
 import SettingsIcon from '@mui/icons-material/Settings';
 import {LocationCity,Dashboard,Folder,Groups2,Groups,PostAdd} from '@mui/icons-material';
-import WorkspacePremiumOutlinedIcon from '@mui/icons-material/WorkspacePremiumOutlined';
 import MarkUnreadChatAltOutlinedIcon from '@mui/icons-material/MarkUnreadChatAltOutlined';
 //api calls
-import Get_Salesperson from '../api/auth/salesperson/get_salesperson_client.js'
+import Get_Salesperson from '../api/auth/salesperson/get_salesperson_client.js';
+//error handlers
+import Suspension_Notification from '../../components/error_handlers/account_suspension_notification';
 
 function SalesPerson(){
 	const [currentvalue,setCurrentValue] = useState('dashboard')
 	const cookies = new Cookies();
-	const toast = useToast()
+	const toast = useToast();
+	const router = useRouter();	
 	const token = cookies.get('user_token');
 
 	const [salesperson_data,set_salesperson_data]=useState("");
+	const [is_refetch,set_is_refetch]=useState(false);
 
 	useEffect(()=>{
 		if(!token){
@@ -49,16 +52,17 @@ function SalesPerson(){
 			//console.log(response.data)
 			set_salesperson_data(response.data)
 		})		}
-	},[])
+	},[is_refetch])
 
 	if (currentvalue == 'sales')
 	{   
 		return(
 				<Flex direction='column' gap='2'>
 					<Header/>
+					{salesperson_data?.suspension_status?<Suspension_Notification/>:null}
 					<Flex className={styles.consolebody} >
 						<Navbar currentvalue={currentvalue} setCurrentValue={setCurrentValue}/>
-						<Sales salesperson_data={salesperson_data}/>
+						<Sales salesperson_data={salesperson_data} is_refetch={is_refetch} set_is_refetch={set_is_refetch} />
 					</Flex>
 				</Flex>
 			)
@@ -67,9 +71,10 @@ function SalesPerson(){
 		return(
 				<Flex direction='column' gap='2'>
 					<Header/>
+					{salesperson_data?.suspension_status?<Suspension_Notification/>:null}
 					<Flex className={styles.consolebody}>
 						<Navbar currentvalue={currentvalue} setCurrentValue={setCurrentValue}/>
-						<Settings salesperson_data={salesperson_data}/>
+						<Settings salesperson_data={salesperson_data} is_refetch={is_refetch} set_is_refetch={set_is_refetch}/>
 					</Flex>
 				</Flex>
 			)
@@ -78,6 +83,7 @@ function SalesPerson(){
 		return(
 				<Flex direction='column' gap='2'>
 					<Header/>
+					{salesperson_data?.suspension_status?<Suspension_Notification/>:null}
 					<Flex className={styles.consolebody}>
 						<Navbar currentvalue={currentvalue} setCurrentValue={setCurrentValue}/>
 						<Hub />
@@ -89,9 +95,10 @@ function SalesPerson(){
 		return(
 				<Flex direction='column' gap='2'>
 					<Header/>
+					{salesperson_data?.suspension_status?<Suspension_Notification/>:null}
 					<Flex className={styles.consolebody}>
 						<Navbar currentvalue={currentvalue} setCurrentValue={setCurrentValue}/>
-						<Sale setCurrentValue={setCurrentValue} salesperson_data={salesperson_data}/>
+						<Sale setCurrentValue={setCurrentValue} salesperson_data={salesperson_data} is_refetch={is_refetch} set_is_refetch={set_is_refetch}/>
 					</Flex>
 				</Flex>
 			)
@@ -99,9 +106,10 @@ function SalesPerson(){
 		return(
 			<Flex direction='column' gap='2'>
 				<Header/>
+				{salesperson_data?.suspension_status?<Suspension_Notification/>:null}
 				<Flex className={styles.consolebody} justify='space-between'>
 					<Navbar currentvalue={currentvalue} setCurrentValue={setCurrentValue}/>
-					<DashboardMenu setCurrentValue={setCurrentValue} salesperson_data={salesperson_data}/>
+					<DashboardMenu setCurrentValue={setCurrentValue} salesperson_data={salesperson_data} is_refetch={is_refetch} set_is_refetch={set_is_refetch}/>
 				</Flex>
 			</Flex>
 			)

@@ -1,31 +1,32 @@
 //modules imports
 import React,{useState,useEffect} from 'react';
-import {Flex,Text,Button,Input} from '@chakra-ui/react';
-import {useRouter} from 'next/router';
+import {Flex,Text} from '@chakra-ui/react';
 import Cookies from 'universal-cookie';
 import jwt_decode from "jwt-decode";
 //.components imports
 import styles from '../../styles/Home.module.css';
 import Header from '../../components/Header.js'
 /*Icons*/
-import {LocationCity,Dashboard,Folder,Groups2,Groups} from '@mui/icons-material';
+import {Dashboard,Folder,Groups2,Groups} from '@mui/icons-material';
 import SettingsIcon from '@mui/icons-material/Settings';
-import AddIcon from '@mui/icons-material/Add';
 import WorkspacePremiumOutlinedIcon from '@mui/icons-material/WorkspacePremiumOutlined';
 /*page sections*/
 import DashboardMenu from './dashboardMenu.js';
-import Inventory from './inventory.js';
+import Inventory from '../../components/suppliers_dashboard_pages/inventory.js';
 import Distributors from './distributor.js';
 import Experts from './experts.js';
 import Settings from './settings.js';
-import Premium from './Premium.js'
+import Premium from '../../components/suppliers_dashboard_pages/premium.js'
 //api calls
-import Get_Manufacturer from '../api/auth/manufacturer/get_manufacturer.js'
+import Get_Manufacturer from '../api/auth/manufacturer/get_manufacturer.js';
+import Suspension_Notification from '../../components/error_handlers/account_suspension_notification.js';
 
-function Manufacturer(){
+export default function Manufacturer(){
 	const [currentvalue,setCurrentValue]=useState('dashboard')
 	const cookies = new Cookies();
 	const token = cookies.get('user_token');
+	const is_suspended = cookies.get('is_suspended');
+	//console.log(is_suspended)
 
 	const [manufacturer_data,set_manufacturer_data]=useState("");
 
@@ -56,9 +57,10 @@ function Manufacturer(){
 		return(
 				<Flex direction='column' gap='2'>
 					<Header/>
+					{manufacturer_data?.suspension_status?<Suspension_Notification/>:null}
 					<Flex className={styles.consolebody} >
 						<Navbar currentvalue={currentvalue} setCurrentValue={setCurrentValue}/>
-						<Inventory manufacturer_data={manufacturer_data}/>
+						<Inventory manufacturer_data={manufacturer_data} acc_type={'manufacturer'}/>
 					</Flex>
 				</Flex>
 			)
@@ -67,6 +69,7 @@ function Manufacturer(){
 		return(
 				<Flex direction='column' gap='2'>
 					<Header/>
+					{manufacturer_data?.suspension_status?<Suspension_Notification/>:null}
 					<Flex className={styles.consolebody} >
 						<Navbar currentvalue={currentvalue} setCurrentValue={setCurrentValue}/>
 						<Settings manufacturer_data={manufacturer_data}/>
@@ -78,6 +81,7 @@ function Manufacturer(){
 		return(
 				<Flex direction='column' gap='2'>
 					<Header/>
+					{manufacturer_data?.suspension_status?<Suspension_Notification/>:null}
 					<Flex className={styles.consolebody} >
 						<Navbar currentvalue={currentvalue} setCurrentValue={setCurrentValue}/>
 						<Experts manufacturer_data={manufacturer_data}/>
@@ -89,6 +93,7 @@ function Manufacturer(){
 		return(
 				<Flex direction='column' gap='2'>
 					<Header/>
+					{manufacturer_data?.suspension_status?<Suspension_Notification/>:null}
 					<Flex className={styles.consolebody} >
 						<Navbar currentvalue={currentvalue} setCurrentValue={setCurrentValue}/>
 						<Distributors manufacturer_data={manufacturer_data}/>
@@ -100,6 +105,7 @@ function Manufacturer(){
 		return(
 				<Flex direction='column' gap='2'>
 					<Header/>
+					{manufacturer_data?.suspension_status?<Suspension_Notification/>:null}
 					<Flex className={styles.consolebody} >
 						<Navbar currentvalue={currentvalue} setCurrentValue={setCurrentValue}/>
 						<Premium />
@@ -110,6 +116,7 @@ function Manufacturer(){
 		return(
 				<Flex direction='column' gap='2'>
 					<Header/>
+					{manufacturer_data?.suspension_status?<Suspension_Notification/>:null}
 					<Flex className={styles.consolebody} >
 						<Navbar currentvalue={currentvalue} setCurrentValue={setCurrentValue}/>
 						<DashboardMenu manufacturer_data={manufacturer_data}/>
@@ -118,8 +125,6 @@ function Manufacturer(){
 			)
 	}
 }
-
-export default Manufacturer
 
 const navItems = [
  {

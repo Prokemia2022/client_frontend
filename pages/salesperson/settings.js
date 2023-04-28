@@ -14,7 +14,6 @@ import {Visibility,VisibilityOff} from '@mui/icons-material'
 import Delete_Account_Modal from '../../components/modals/accounts/delete_account_modal.js'
 //api-calls
 import Edit_Salesperson from '../api/auth/salesperson/edit_salesperson_account.js'
-import Delete_SalesPerson from '../api/auth/salesperson/delete_salesperson_account.js'
 //utils
 import {storage} from '../../components/firebase.js';
 import {ref,uploadBytes,getDownloadURL} from 'firebase/storage';
@@ -30,13 +29,6 @@ function Settings({salesperson_data}){
 	
 	const [edit,setedit]=useState(false);
 	const [new_password,set_new_password]=useState(salesperson_data?.password)
-	const old_password = salesperson_data?.password
-
-	const cookies = new Cookies();
-
-	const payload = {
-		_id : salesperson_data?._id,
-	}
 
 const Handle_Change_Password=async()=>{
 		router.push("/password_reset")
@@ -58,7 +50,7 @@ const Handle_Change_Password=async()=>{
 								<Image boxSize='200px' src={salesperson_data?.profile_photo_url} alt='profile photo' borderRadius='5' boxShadow='lg' objectFit='cover'/>
 							</Flex>
 						}
-						<Flex direction='column' gap='1' w='100%' bg='#eee' p='2' borderRadius='5' boxShadow='dark-lg'>
+						<Flex direction='column' gap='1' w='100%' bg='#fff' p='2' borderRadius='5' boxShadow='lg'>
 							<Text  p='1' borderRadius='5' fontSize='24px' fontWeight='bold' color='#009393'>{salesperson_data?.first_name} {salesperson_data?.last_name}</Text>
 							<Text p='1' borderRadius='5'>Email: {salesperson_data?.email_of_salesperson}</Text>
 							<Text p='1' borderRadius='5'>Mobile: {salesperson_data?.mobile_of_salesperson}</Text>
@@ -66,11 +58,11 @@ const Handle_Change_Password=async()=>{
 							<Button onClick={(()=>{setedit(true)})} bg='#009393' color='#fff'>Edit Profile</Button>	
 						</Flex>
 					</Flex>
-					<Flex direction='column' gap='1' w='100%' bg='#eee' p='2' borderRadius='5' boxShadow='dark-lg'>
+					<Flex direction='column' gap='1' w='100%' bg='#fff' p='2' borderRadius='5'>
 						<Text fontWeight='bold'>Bio</Text>
-						<Text p='1' borderRadius='5'>Bio: {salesperson_data?.bio}</Text>
+						<Text p='1' borderRadius='5'>{salesperson_data?.bio}</Text>
 					</Flex>
-					<Flex direction='column' gap='1' w='100%' bg='#eee' p='2' borderRadius='5' boxShadow='dark-lg'>
+					<Flex direction='column' gap='1' w='100%' bg='#fff' p='2' borderRadius='5'>
 						<Text fontWeight='bold'>Payment Details</Text>
 						<Text p='1' borderRadius='5'>{salesperson_data?.payment_method}</Text>
 					</Flex>
@@ -193,24 +185,34 @@ const EditProfile=({setedit,salesperson_data})=>{
 	}
 
 	const handle_Edit_Profile=async()=>{
-		await Edit_Salesperson(payload).then(()=>{
+		if(salesperson_data?.suspension_status){
+			//console.log(salesperson_data?.verification_status)
 			toast({
-				title: '',
-				description: 'Your account has been edited successfully, refresh to see changes',
-				status: 'success',
-				isClosable: true,
-			});
-		}).then(()=>{
-			//console.log(payload)
-			setedit(false)
-		}).catch((err)=>{
-			toast({
-				title: '',
-				description: `${err.response.data}`,
+				title: 'Your account is currently suspended.',
+				description: 'reach out to support for guidance by emailing us at help@prokemia.com',
 				status: 'error',
 				isClosable: true,
 			});
-		})
+		}else{
+			await Edit_Salesperson(payload).then(()=>{
+				toast({
+					title: '',
+					description: 'Your account has been edited successfully, refresh to see changes',
+					status: 'success',
+					isClosable: true,
+				});
+			}).then(()=>{
+				//console.log(payload)
+				setedit(false)
+			}).catch((err)=>{
+				toast({
+					title: '',
+					description: `${err.response.data}`,
+					status: 'error',
+					isClosable: true,
+				});
+			});
+		}
 	}
 	return(	
 		<Flex gap='3' direction='column' overflowY='scroll' h='80vh'>

@@ -4,7 +4,7 @@ import styles from '../../styles/Home.module.css'
 import {useRouter} from 'next/router'
 import Header from '../../components/Header.js';
 
-export default function Account_User_Handler(){
+export default function Account_Selection_Handler(){
 	const router = useRouter();
 	const id= router.query;
 	const idactive = id.id;

@@ -149,16 +149,18 @@ const Item=({router,product,manufacturer_data})=>{
 		}
 	}
 	return(
-		<Flex borderRight={product?.sponsored === true ?'4px solid gold': null} bg='#eee' borderRadius='5px' boxShadow='lg' justify='space-between' flex='1' position='relative'>
+		<Flex borderRight={product?.sponsored === true ?'4px solid gold': null} bg='#fff' borderRadius='5px' boxShadow='lg' justify='space-between' flex='1' position='relative'>
 			<Flex direction='column' p='2'>
 				<Text color='#009393' fontWeight='bold' fontSize="24px">{product?.name_of_product}</Text>
-				<Flex gap='2'>
-					<Text fontWeight='bold'>Industry:</Text>
-					<Text>{product?.industry}</Text>
-				</Flex>
-				<Flex gap='2'>
-					<Text fontWeight='bold'>Technology:</Text>
-					<Text>{product?.technology}</Text>
+				<Flex gap='1' fontSize={'14px'} color='grey' direction="column">
+					<Flex >
+						<Text fontWeight={'bold'}>Industry:</Text>
+						<Text color='#009393' cursor='pointer' textDecoration='underline' onClick={(()=>{router.push(`/products/${product?.industry}`)})}> {product?.industry}</Text>
+					</Flex>
+					<Flex>
+						<Text fontWeight={'bold'}>Technology:</Text>
+						<Text color='#009393' cursor='pointer' textDecoration='underline' onClick={(()=>{router.push(`/products/${product?.technology}`)})}>{product?.technology}</Text>
+					</Flex>
 				</Flex>
 				{product?.sponsored === true ? <VerifiedIcon style={{color:'gold',position:'absolute',top:'10px',right:'15px'}}/> : null}
 				<Flex direction='' justify='space-between' gap='2' mt='2'>

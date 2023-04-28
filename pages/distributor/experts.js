@@ -11,22 +11,24 @@ function Experts({distributor_data}){
 	const [experts,set_experts]=useState(distributor_data?.experts)
 	const id = distributor_data?._id
 	return (
-		<Flex direction='column' gap='3' p='2' w='100%'>
+		<Flex direction='column' gap='3' p='2' w='100%' h='100vh'>
 			<AddNewExpertsModal isaddnewexpertModalvisible={isaddnewexpertModalvisible} setisaddNewExpertModalvisible={setisaddNewExpertModalvisible} id={id} acc_type='distributor'/>
 			<Text fontSize='32px' fontWeight='bold'>Experts</Text>
-			{experts?.length === 0 ?
+			{distributor_data?.experts?.length === 0 ?
 					<Flex justify='center' align='center' h='40vh' direction='column' gap='2'>
-						<Text>You have not listed any experts</Text>
+						<Text fontWeight={'bold'} >You have not listed any experts</Text>
+						<Text fontSize='12px' align='center' fontWeight='bold' color='#009393'>Experts will be available to advice, support<br/> and assist clients about your company and your products. </Text>
 						<Button bg='#009393' color='#fff' onClick={(()=>{setisaddNewExpertModalvisible(true)})}>Add a new Expert</Button>
 					</Flex>
 				:
-				<Flex direction='column' p='1' gap='2' overflowY='scroll' h='85vh'>
-					{experts?.map((item)=>{
+				<Flex direction='column' p='1' gap='2' overflowY='scroll' h='80vh'>
+					<Button bg='#009393' color='#fff' p='5' onClick={(()=>{setisaddNewExpertModalvisible(true)})}>Add a new Expert</Button>
+					{distributor_data?.experts?.map((item)=>{
 						return(
 							<Expert_Item  key={item._id} item={item} id={distributor_data?._id}/>
 						)
 					})}
-					<Button bg='#009393' color='#fff' p='5' onClick={(()=>{setisaddNewExpertModalvisible(true)})}>Add a new Expert</Button>
+					
 				</Flex>
 			}
 		</Flex>

@@ -87,9 +87,8 @@ function _Home(){
 	return(
 		<Flex direction='column' position='relative' gap='2'>
 		<Header products_data={products_data} distributors_data={distributors_data} manufacturers_data={manufacturers_data} industries_data={industries_data} technologies_data={technologies_data}/>
-
 		<Flex p='4' direction='column'>
-			<Flex mt='10vh' mb='50px' direction='column' gap='3' w='100%' p='2'>
+			<Flex mt={window.width > 500? '10vh' : ''} mb='50px' direction='column' gap='3' w='100%' p='2'>
 				<Text mb='3' fontFamily='ClearSans-Bold' fontSize='38px' >The <span style={{color:"#009393"}}>Marketplace</span> for ingredients, Polymers and Chemistry.</Text>
 				<Text mb='0' cursor='pointer' w='80%'>Search, Learn, Engage ,sample , quote and purchase from thousands of suppliers - all in one platform.</Text>
 			</Flex>
@@ -103,8 +102,8 @@ function _Home(){
 						<>
 							{industries_data?.slice(0,4).map((item)=>{
 								return(
-									<Flex cursor='pointer' key={item._id} w={window?.width > 500? '200px':'150px'} h='225px' m='1' position='relative' onClick={(()=>{router.push(`/products/${item.title}`)})}>
-										<Image borderRadius='10px' objectFit={item?.cover_image == ''? "contain":'cover'} src={item?.cover_image == ''? "../Pro.png":item?.cover_image} alt='photo' boxShadow='lg' w='100%'/>
+									<Flex cursor='pointer' key={item._id} w={window?.width > 500? '175px':'150px'} h='225px' m='1' position='relative' onClick={(()=>{router.push(`/products/${item.title}`)})}>
+										<Image objectFit={item?.cover_image == ''? "contain":'cover'} src={item?.cover_image == ''? "../Pro.png":item?.cover_image} alt='photo' boxShadow='lg' w='100%'/>
 										<Text bg='rgb(192,192,192,0.6)' p='1' m='2' mb='0' borderRadius='5' position='absolute' top='10px' left='10px' w='80%' fontSize='20px' color='#000' fontFamily='ClearSans-Bold'>{item.title}</Text>
 									</Flex>
 								)
@@ -127,8 +126,8 @@ function _Home(){
 						<>
 							{technologies_data?.slice(0,4).map((item)=>{
 								return(
-									<Flex cursor='pointer' key={item._id} w={window?.width > 500 ? '200px':'150px'} h='225px' m='1' position='relative' onClick={(()=>{router.push(`/products/${item.title}`)})}>
-										<Image borderRadius='10px' objectFit={item?.cover_image == ''? "contain":'cover'} src={item?.cover_image == ''? "../Pro.png":item?.cover_image} alt='photo' boxShadow='lg' w='100%'/>
+									<Flex cursor='pointer' key={item._id} w={window?.width > 500 ? '175px':'150px'} h='225px' m='1' position='relative' onClick={(()=>{router.push(`/products/${item.title}`)})}>
+										<Image objectFit={item?.cover_image == ''? "contain":'cover'} src={item?.cover_image == ''? "../Pro.png":item?.cover_image} alt='photo' boxShadow='lg' w='100%'/>
 										<Text bg='rgb(192,192,192,0.6)' p='1' m='2' mb='0' borderRadius='5' position='absolute' top='10px' left='10px' fontSize='20px' w='80%' color='#000' fontFamily='ClearSans-Bold'>{item.title}</Text>
 									</Flex>
 								)

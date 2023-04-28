@@ -9,7 +9,6 @@ import {
     Button,
     Text,
     Flex,
-    Center,
     Textarea,
     Input,
     Select,
@@ -19,10 +18,12 @@ import {
   } from '@chakra-ui/react';
 import { useEffect,useState } from 'react';
 import Add_New_Expert from '../../pages/api/auth/distributor/add_new_expert.js'
-import Add_New_Expert_Manufacturer from '../../pages/api/auth/manufacturer/add_new_expert.js'
+import Add_New_Expert_Manufacturer from '../../pages/api/auth/manufacturer/add_new_expert.js';
+import {useRouter} from 'next/router';
 
-function AddNewExpertsModal({isaddnewexpertModalvisible,setisaddNewExpertModalvisible,id,acc_type}){
+export default function AddNewExpertsModal({isaddnewexpertModalvisible,setisaddNewExpertModalvisible,id,acc_type}){
     const toast = useToast();
+    const router = useRouter();
     const { isOpen, onOpen, onClose } = useDisclosure();
 
     const HandleModalOpen=()=>{
@@ -60,14 +61,14 @@ function AddNewExpertsModal({isaddnewexpertModalvisible,setisaddNewExpertModalvi
             status: 'info',
             isClosable: true,
           });
-      }else if (name != '' && mobile != '' && email != '' && role != ''){
+      }else if (name !== '' && mobile !== '' && email !== '' && role !== ''){
         handle_add_new_expert()
       }
     }
-    const handle_add_new_expert=()=>{
-      console.log(payload)
+    const handle_add_new_expert=async()=>{
+      //console.log(payload)
       if(acc_type === 'distributor')
-        Add_New_Expert(payload).then(()=>{
+        await Add_New_Expert(payload).then(()=>{
           toast({
             title: '',
             description: `${name} has been added as an expert.`,
@@ -85,7 +86,7 @@ function AddNewExpertsModal({isaddnewexpertModalvisible,setisaddNewExpertModalvi
           });
         })
       else{
-        Add_New_Expert_Manufacturer(payload).then(()=>{
+        await Add_New_Expert_Manufacturer(payload).then(()=>{
           toast({
             title: '',
             description: `${name} has been added as an expert.`,
@@ -104,6 +105,7 @@ function AddNewExpertsModal({isaddnewexpertModalvisible,setisaddNewExpertModalvi
         })
       }
       onClose()
+      setTimeout(()=>{router.reload()},1000)
     }
     return (
         <>
@@ -117,7 +119,7 @@ function AddNewExpertsModal({isaddnewexpertModalvisible,setisaddNewExpertModalvi
               <ModalBody>
                 <Stack spacing={4}>
                   <Flex direction='column'>
-                    <Text>Name</Text>
+                    <Text>Name </Text>
                     <Input type='text' placeholder='Name of Expert' variant='filled' onChange={((e)=>{set_name(e.target.value)})}/>
                   </Flex>
                   <Flex direction='column'>
@@ -143,6 +145,4 @@ function AddNewExpertsModal({isaddnewexpertModalvisible,setisaddNewExpertModalvi
           </Modal>
         </>
       )
-}   
-
-export default AddNewExpertsModal;
+}

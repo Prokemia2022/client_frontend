@@ -17,6 +17,8 @@ export default function Delete_Product_Modal({
   const { isOpen, onOpen, onClose } = useDisclosure();
   const toast = useToast();
   const router = useRouter();
+  const cookies = new Cookies();
+  const is_suspended = cookies.get('is_suspended');
   //states
     const [confirm_name,set_confirm_name]=useState('')
     //const [name,set_name]=useState();
@@ -42,22 +44,32 @@ export default function Delete_Product_Modal({
     }
 
     const handle_deletion=async()=>{
-      await Delete_Product(payload).then(()=>{
+      if(is_suspended){
         toast({
-          title: '',
-          description: `${product_data?.name_of_product} has been deleted.`,
-          status: 'success',
-          isClosable: true,
-        });
-        router.back()
-      }).catch((err)=>{
-        toast({
-          title: '',
-          description: err.response?.data,
+          title: 'Your account is currently suspended.',
+          description: 'reach out to support for guidance by emailing us at help@prokemia.com',
           status: 'error',
           isClosable: true,
         });
-      })
+        return ;
+      }else {
+        await Delete_Product(payload).then(()=>{
+          toast({
+            title: '',
+            description: `${product_data?.name_of_product} has been deleted.`,
+            status: 'success',
+            isClosable: true,
+          });
+          router.back()
+        }).catch((err)=>{
+          toast({
+            title: '',
+            description: err.response?.data,
+            status: 'error',
+            isClosable: true,
+          });
+        });
+      }
       onClose()
     }
 
@@ -101,7 +113,7 @@ export default function Delete_Product_Modal({
                   </InputGroup>
                   <Flex gap='2'>
                     <Button flex='1' bg='red' color='#fff' onClick={initiate_product_deletion}>Proceed to delete</Button>
-                    <Button flex='1' bg='#fff' color='#000' border='1px solid #000' onClick={(()=>{set_is_delete_product_Modalvisible(false)})}>Cancel</Button>
+                    <Button flex='1' bg='#fff' color='#000' border='1px solid #000' onClick={(()=>{onClose()})}>Cancel</Button>
                   </Flex>
                 </Flex>
               }
