@@ -171,7 +171,7 @@ export default function Sale_Form({setCurrentValue,salesperson_data}){
 					</Flex>
 					<Flex direction='column'>
 					    <Text fontSize='14px'>- by creating this invoice you acknowledge that Prokemia will formally trade on behalf </Text>
-					    <Text fontSize='14px'>- a 2% service fee will be charged for this process.</Text>
+					    <Text fontSize='14px'>- a 5% service fee will be charged for this process.</Text>
 					</Flex>
 					<Flex gap='2'>
 						<Button flex='1' bg='#009393' p='4' color='#fff' onClick={verify_input_fields} disabled={is_verified?true:false}>Create Sale</Button>
