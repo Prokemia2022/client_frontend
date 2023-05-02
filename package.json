@@ -1,12 +1,12 @@
 {
   "name": "prokemia.web",
-  "homepage":"https://prokemia.com/",
   "version": "0.1.0",
   "private": true,
   "scripts": {
     "dev": "node server.js",
     "build": "next build",
-    "start": "cross-env NODE_ENV=production node server.js"
+    "start": "NODE_ENV=production node server.js",
+    "lint": "next lint"
   },
   "dependencies": {
     "@chakra-ui/react": "^2.3.4",
