@@ -13,7 +13,7 @@ import {useRouter} from 'next/router';
 //icons
 
 
-export default function Categotries(){
+export default function Categories(){
 	/**
 	 * Categories: Fetches all items in the industry and technology catgory.
 	 * Props:
@@ -185,11 +185,11 @@ export default function Categotries(){
 						<>
 							{distributors_data?.slice(0,4).map((distributor)=>{
 								return(
-									<Flex bg='#eee' mb='1' borderRadius='5' key={distributor._id} gap='2' onClick={(()=>{router.push(`/account/distributor/${distributor._id}`)})} cursor='pointer'>
+									<Flex bg='#eee' mb='1' borderRadius='5' key={distributor?._id} gap='2' onClick={(()=>{router.push(`/account/distributor/${distributor?._id}`)})} cursor='pointer'>
 										<Image objectFit={distributor?.profile_photo_url == ''? "contain":'cover'} src={distributor?.profile_photo_url == '' || !distributor?.profile_photo_url? "../Pro.png":distributor?.profile_photo_url} alt='photo' boxShadow='lg' boxSize='100px'/>
 										<Flex direction='column' p='2' gap='2' flex='1'>
-											<Text mb='0' fontSize='24px' fontFamily='ClearSans-Bold'>{distributor.company_name}</Text>
-											<Text mb='0' w='80%' overflow='hidden' h='20px'>{distributor.description}</Text>
+											<Text mb='0' fontSize='24px' fontFamily='ClearSans-Bold'>{distributor?.company_name}</Text>
+											<Text mb='0' w='80%' overflow='hidden' h='20px'>{!distributor?.description || distributor?.description == ''? '-' : distributor?.description}</Text>
 										</Flex>
 									</Flex>
 								)
@@ -205,11 +205,11 @@ export default function Categotries(){
 							<>
 								{manufacturers_data?.slice(0,4).map((manufacturer)=>{
 									return(
-										<Flex bg='#eee' mb='1' borderRadius='5' key={manufacturer._id} gap='2' onClick={(()=>{router.push(`/account/manufacturer/${manufacturer._id}`)})} cursor='pointer'>
+										<Flex bg='#eee' mb='1' borderRadius='5' key={manufacturer?._id} gap='2' onClick={(()=>{router.push(`/account/manufacturer/${manufacturer?._id}`)})} cursor='pointer'>
 											<Image objectFit={manufacturer?.profile_photo_url == ''? "contain":'cover'} src={manufacturer?.profile_photo_url == '' || !manufacturer?.profile_photo_url? "../Pro.png":manufacturer?.profile_photo_url} alt='photo' boxShadow='lg' boxSize='100px'/>
 											<Flex direction='column' p='2' gap='2' flex='1'>
-												<Text mb='0' fontSize='24px' fontFamily='ClearSans-Bold'>{manufacturer.company_name}</Text>
-												<Text mb='0' w='80%' overflow='hidden' h='20px'>{manufacturer.description}</Text>
+												<Text mb='0' fontSize='24px' fontFamily='ClearSans-Bold'>{manufacturer?.company_name}</Text>
+												<Text mb='0' w='80%' overflow='hidden' h='20px'>{!manufacturer?.description || manufacturer?.description == ''? '-' : manufacturer?.description}</Text>
 											</Flex>
 										</Flex>
 									)
@@ -244,9 +244,9 @@ const Industry_Card=({item})=>{
 	return(
 		<Flex bg='#fff' mb='1' borderRadius='5' gap='2' onClick={(()=>{router.push(`/products/${item.title}`)})} cursor='pointer'>
 			<Image objectFit='cover' src={item?.cover_image == ''? "../Pro.png":item?.cover_image} alt='photo' boxShadow='lg' boxSize='100px'/>
-			<Flex direction='column' p='2' gap='2' flex='1'>
+			<Flex direction='column' p='2' gap='2' flex='1' bg='#eee'>
 				<Text mb='0' fontSize='20px' fontFamily='ClearSans-Bold'>{item.title}</Text>
-				<Text mb='0' w='80%' overflow='hidden' fontSize='14px'>{item.description}</Text>
+				<Text mb='0' w='80%' overflow='hidden' fontSize='14px'>{!item?.description || item?.description == ''? '-' : item?.description}</Text>
 			</Flex>
 		</Flex>
 	)
@@ -257,9 +257,9 @@ const Technology_Card=({item})=>{
 	return(
 		<Flex bg='#fff' mb='1' borderRadius='5' gap='2' onClick={(()=>{router.push(`/products/${item.title}`)})} cursor='pointer'>
 			<Image objectFit='cover' src={item?.cover_image == ''? "../Pro.png":item?.cover_image} alt='photo' boxShadow='lg' boxSize='100px'/>
-			<Flex direction='column' p='2' gap='2' flex='1'>
+			<Flex direction='column' p='2' gap='2' flex='1' bg='#eee'>
 				<Text mb='0' fontSize='20px' fontFamily='ClearSans-Bold'>{item.title}</Text>
-				<Text mb='0' w='80%' overflow='hidden' fontSize='14px'>{item.description}</Text>
+				<Text mb='0' w='80%' overflow='hidden' fontSize='14px'>{!item?.description || item?.description == ''? '-' : item?.description}</Text>
 			</Flex>
 		</Flex>
 	)

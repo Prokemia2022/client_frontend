@@ -105,13 +105,7 @@ export default function Products(){
 							<>
 								{products_data?.map((item)=>{
 									return(
-										<Flex key={item._id} position='relative' gap='2' align='center' onClick={(()=>{router.push(`/product/${item._id}`)})} bg='#eee' p='2' borderRadius='5' boxShadow='lg' cursor='pointer'>
-											<Image w='50px' h='50px' borderRadius='10px' objectFit='cover' src="../Pro.png" alt='next' />
-											<Flex direction='column'>
-												<Text fontSize='16px' fontFamily='ClearSans-Bold'>{item.name_of_product}</Text>
-												<Text fontSize='16px'>{item.industry}</Text>
-											</Flex>
-										</Flex>
+										<Product_Cart_Item item={item} key={item?._id}/>
 									)
 								})}
 							</>:
@@ -123,36 +117,16 @@ export default function Products(){
 				}
 			</Flex>
 			<Flex p='2' direction='column' gap='2'>
-				<Text color='#009393' fontSize='24px'> Featured Distributors </Text>
-				{distributors_data.length !== 0 ?
-					<>
-						{distributors_data?.slice(0,4).map((distributor)=>{
-							return(
-								<Flex bg='#eee' mb='1' borderRadius='5' key={distributor._id} gap='2' onClick={(()=>{router.push(`/account/distributor/${distributor._id}`)})} cursor='pointer'>
-									<Image borderRadius='0px' objectFit={distributor?.profile_photo_url == ''? "contain":'cover'} src={distributor?.profile_photo_url == '' || !distributor?.profile_photo_url? "../../Pro.png":distributor?.profile_photo_url} alt='photo' boxShadow='lg' w='100px'/>
-									<Flex direction='column' p='2' gap='2' flex='1'>
-										<Text mb='0' fontSize='24px' fontFamily='ClearSans-Bold'>{distributor.company_name}</Text>
-										<Text mb='0' w='80%' overflow='hidden' h='20px'>{distributor.description}</Text>
-									</Flex>
-								</Flex>
-							)
-						})}
-					</>:
-					<>
-						<Loading />
-						<Loading />
-					</>
-				}
-				<Text color='#009393' fontSize='24px'>Featured Manufacturers </Text>
-					{manufacturers_data.length !== 0 ?
+					<Text color='#009393' fontSize='24px'> Featured Distributors </Text>
+					{!isloading ?
 						<>
-							{manufacturers_data?.slice(0,4).map((manufacturer)=>{
+							{distributors_data?.slice(0,4).map((distributor)=>{
 								return(
-									<Flex bg='#eee' mb='1' borderRadius='5' key={manufacturer._id} gap='2' onClick={(()=>{router.push(`/account/manufacturer/${manufacturer._id}`)})} cursor='pointer'>
-									<Image borderRadius='0px' objectFit={manufacturer?.profile_photo_url == ''? "contain":'cover'} src={manufacturer?.profile_photo_url == '' || !manufacturer?.profile_photo_url? "../Pro.png":manufacturer?.profile_photo_url} alt='photo' boxShadow='lg' w='100px'/>
+									<Flex bg='#eee' mb='1' borderRadius='5' key={distributor?._id} gap='2' onClick={(()=>{router.push(`/account/distributor/${distributor?._id}`)})} cursor='pointer'>
+										<Image objectFit={distributor?.profile_photo_url == ''? "contain":'cover'} src={distributor?.profile_photo_url == '' || !distributor?.profile_photo_url? "../Pro.png":distributor?.profile_photo_url} alt='photo' boxShadow='lg' boxSize='100px'/>
 										<Flex direction='column' p='2' gap='2' flex='1'>
-											<Text mb='0' fontSize='24px' fontFamily='ClearSans-Bold'>{manufacturer.company_name}</Text>
-											<Text mb='0' w='80%' overflow='hidden' h='20px'>{manufacturer.description}</Text>
+											<Text mb='0' fontSize='24px' fontFamily='ClearSans-Bold'>{distributor?.company_name}</Text>
+											<Text mb='0' w='80%' overflow='hidden' h='20px'>{!distributor?.description || distributor?.description == ''? '-' : distributor?.description}</Text>
 										</Flex>
 									</Flex>
 								)
@@ -163,7 +137,27 @@ export default function Products(){
 							<Loading />
 						</>
 					}
-			</Flex>
+					<Text color='#009393' fontSize='24px'>Featured Manufacturers </Text>
+						{!isloading ?
+							<>
+								{manufacturers_data?.slice(0,4).map((manufacturer)=>{
+									return(
+										<Flex bg='#eee' mb='1' borderRadius='5' key={manufacturer?._id} gap='2' onClick={(()=>{router.push(`/account/manufacturer/${manufacturer?._id}`)})} cursor='pointer'>
+											<Image objectFit={manufacturer?.profile_photo_url == ''? "contain":'cover'} src={manufacturer?.profile_photo_url == '' || !manufacturer?.profile_photo_url? "../Pro.png":manufacturer?.profile_photo_url} alt='photo' boxShadow='lg' boxSize='100px'/>
+											<Flex direction='column' p='2' gap='2' flex='1'>
+												<Text mb='0' fontSize='24px' fontFamily='ClearSans-Bold'>{manufacturer?.company_name}</Text>
+												<Text mb='0' w='80%' overflow='hidden' h='20px'>{!manufacturer?.description || manufacturer?.description == ''? '-' : manufacturer?.description}</Text>
+											</Flex>
+										</Flex>
+									)
+								})}
+							</>:
+							<>
+								<Loading />
+								<Loading />
+							</>
+						}
+				</Flex>
 		</Flex>
 	)
 }
@@ -175,6 +169,23 @@ const Loading=()=>{
 			<Flex direction='column' flex='1' gap='3'>
 				<Flex bg='#eee' w='100%' h='20px' borderRadius='5'/>
 				<Flex bg='#eee' w='100%' h='20px' borderRadius='5'/>
+			</Flex>
+		</Flex>
+	)
+}
+
+const Product_Cart_Item=({item})=>{
+	const router = useRouter();
+	return(
+		<Flex cursor='pointer' gap='2' align='center' bg='#fff' p='1' borderRadius='5' boxShadow='lg' onClick={(()=>{router.push(`/product/${item._id}`)})} >
+			<Image w='50px' h='50px' borderRadius='10px' objectFit='cover' src='../../Pro.png' alt='next'/>
+			<Flex direction='column'>
+				<Text fontSize='16px' fontFamily='ClearSans-Bold' color='#009393'>{item.name_of_product}</Text>
+				<Text fontSize='14px'>{item.distributed_by}</Text>
+				<Flex gap='2' fontSize='10px' color='grey'>
+					<Text>{item.industry? item.industry : "-"}</Text>
+					<Text borderLeft='1px solid grey' paddingLeft='2'>{item.technology? item.technology : "-"}</Text>
+				</Flex>
 			</Flex>
 		</Flex>
 	)

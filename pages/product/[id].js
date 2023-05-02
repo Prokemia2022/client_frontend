@@ -117,7 +117,6 @@ export default function Product(){
 					
 					<Button color='#fff' borderRadius='0' bg='#009393' onClick={(()=>{setisquotationModalvisible(true)})}><DescriptionIcon />Request Quotation</Button>
 					<Button color='#fff' borderRadius='0' bg='#000' onClick={(()=>{setissampleModalvisible(true)})}><DescriptionIcon />Request Sample</Button>
-					<Text textAlign='center'>or</Text>
 	                {product_data?.website_link_to_Seller === ''? <Text bg='#eee' p='2' textAlign='center' borderRadius='5'>Website link is not attached</Text> : <Link href={product_data?.website_link_to_Seller} bg='grey' borderRadius='5' boxShadow='lg' color='#fff' align='center' p='1' isExternal fontSize='20px'>Website link</Link>}
 					
 				</Flex>

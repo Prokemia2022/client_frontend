@@ -1,20 +1,25 @@
 import React,{useState,useEffect}from 'react';
 //module imports
-import {Flex,Text,Button,Image,useToast,Link} from '@chakra-ui/react';
+import {Flex,Text,Image,useToast,Link} from '@chakra-ui/react';
 import {useRouter} from 'next/router'
 //components imports
-import Header from '../../../components/Header.js'
-//import Product from '../../../components/Product.js';
+import Header from '../../../components/Header.js';
 //api calls
 import Get_Manufacturer from '../../api/auth/manufacturer/get_manufacturer.js'
 import Get_Products from '../../api/product/get_products.js'
-//icons
-import LocationCityIcon from '@mui/icons-material/LocationCity';
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import Person2Icon from '@mui/icons-material/Person2';
+//error handlers
 
 export default function Manufacturer(){
-		//utils
+	/**
+	 * Manufacturer: Page that returns details about a specific supplier(manufacturer) to be viewed by a user.
+     *      user refers to the type of account i.e manufacturer
+     * Props:
+     *      id (string): id of user in db.
+	 *      payload(obj): data sent to fetch the particular user account.
+     *       
+	 */
+	
+	//utils
 	const router = useRouter()
 	const query = router.query
 	const id = query?.id
@@ -26,50 +31,75 @@ export default function Manufacturer(){
 	const toast = useToast();
 	//states
 
-	const [manufacturer_data,set_manufacturer_data] = useState('')
-	const [products,set_products]=useState([])
-	const [industries,set_industries]=useState([])
+	const [manufacturer_data,set_manufacturer_data] = useState(''); //fetched user data
+	const [products,set_products]=useState([]); //fetched products data
+	const [industries,set_industries]=useState([]); //filtered industry data
+	const [technologies,set_technologies]=useState([]); //filtered technology data
+	
 	//useEffects
 	//functions
+
 	//api calls
-	const get_manufacturer_data=async(payload)=>{
+	const fetch_manufacturer_data=async(payload)=>{
+		/**
+		 * fetches manufacturer data.
+         * 
+         * props:
+         *      payload(obj): data sent to server to fetch a specific user.
+         *      email(string): email to be used to filter data tailored to the user.
+         * 
+         * calls the fetch products function.
+         * Return:
+         *       returns null
+		 */
 		await Get_Manufacturer(payload).then((response)=>{
 			//console.log(response)
 			set_manufacturer_data(response?.data)
-			const email = response?.data?.email_of_company
-			get_products_data(email)
+			const email = response?.data?.email_of_company;
+			fetch_products_data(email);
 		}).catch((err)=>{
-			////console.log(err)
+            //console.log(err.response.status);
 			toast({
-				title: '',
-				description: `${err}`,
+                title: '',
+				description: `${err.response.data}`,
 				status: 'error',
 				isClosable: true,
 			});
-		})
+			router.back();
+		}).finally(()=>{
+            return ;
+        })
 	}
-	const get_products_data=async(email)=>{
+	const fetch_products_data=async(email)=>{
+        /**
+         * fetches products.
+         * filters products listed by the user,
+         * finds industries & technologies selected by the user.
+         * Props:
+         *      email(string): used to filter products listed by the req user account.
+         */
 		await Get_Products().then((response)=>{
-			const res_data = response?.data
-			const data =  res_data.filter(v => v.verification_status)
-			const result = data?.filter((item)=> item?.email_of_lister.toLowerCase().includes(email))
+			const res_data = response?.data;
+			const data =  res_data.filter(v => v.verification_status && !v.suspension_status); //filters data that are verified and not suspended
+			const result = data?.filter((item)=> item?.email_of_lister.toLowerCase().includes(email.toLowerCase())); //filters data only listed by the req user.
 			set_products(result)
-			//console.log(result)
-			const industry_values = result.map(item=>item?.industry)
-			//console.log([...new Set(industry_values)])
-			set_industries([...new Set(industry_values)])
-			//console.log(result)
+			const industry_values = result.map(item=>item?.industry);
+			set_industries([...new Set(industry_values)]);
+			const technology_values = result.map(item=>item?.technology);
+			set_technologies([...new Set(technology_values)]);
 		}).catch((err)=>{
-			////console.log(err)
+			console.log(err)
 			toast({
 				title: '',
 				description: `${err.data}`,
 				status: 'error',
 				isClosable: true,
 			});
-		})
+		}).finally(()=>{
+            return ;
+        })
 	}
-
+	//useEffects
 	useEffect(()=>{
 		if (!payload || id === undefined){
 			toast({
@@ -80,28 +110,33 @@ export default function Manufacturer(){
 			});
 			router.back()
 		}else{
-			get_manufacturer_data(payload)
+			fetch_manufacturer_data(payload)
 		}
 	},[id])
 	return(
 		<Flex direction='column' gap='2'>
 			<Header />
-			<Flex direction='column' p='2'>
-				<Flex p='1' direction='column' gap='2'>
-					<Flex gap='3' w='100%'>
-						<Image boxSize='100px' objectFit={manufacturer_data?.profile_photo_url == '' || !manufacturer_data?.profile_photo_url? "contain":'cover'} src={manufacturer_data?.profile_photo_url == '' || !manufacturer_data?.profile_photo_url? "../../Pro.png":manufacturer_data?.profile_photo_url} alt='profile photo' boxShadow='lg' borderRadius='5'/>
-						<Flex direction='column' gap='2' bg='#eee' p='2' w='100%' borderRadius='8' boxShadow='lg'>
-							<Text fontSize='32px' fontWeight='bold' color='#009393'>{manufacturer_data?.company_name}</Text>
-						</Flex>
+			<Flex p='3' direction='column' gap='2' bg=''>
+					<Flex gap='3' w='100%' align={'center'}>
+						<Image 
+								boxSize='100px' 
+								objectFit={manufacturer_data?.profile_photo_url == '' || !manufacturer_data?.profile_photo_url? "contain":'cover'} 
+								src={manufacturer_data?.profile_photo_url == '' || !manufacturer_data?.profile_photo_url? "../../Pro.png":manufacturer_data?.profile_photo_url} 
+								alt='profile photo' 
+								boxShadow='lg' 
+								borderRadius='5'/>
+						<Text fontSize='2rem' fontWeight='bold' color='#009393' h='100px' w='100%' p='2'>{manufacturer_data?.company_name}</Text>
 					</Flex>
-					<Flex direction='column'>
-						{manufacturer_data?.description === ''? null : <Text fontWeight='bold' fontSize='20px'>Description</Text>}
+					<Flex direction='column' mt='2' gap='2'>
 						{manufacturer_data?.description === ''? 
 							null
 							:
-							<Flex mt='2' bg='#eee' p='2' borderRadius='5' boxShadow='lg' gap='2'>
-								<Text>{manufacturer_data?.description}</Text>
-							</Flex>
+							<Text fontWeight='bold' fontSize='20px'>Description</Text>
+						}
+						{manufacturer_data?.description === ''? 
+							null
+							:
+							<Text>{manufacturer_data?.description}</Text>
 						}
 					</Flex>
 					<Flex direction='column' gap='2'>
@@ -111,16 +146,16 @@ export default function Manufacturer(){
 								<Text>The user has not attached any experts.</Text>
 							</Flex>
 						:
-						<Flex borderRadius='5' gap='3' direction='column'> 
+						<Flex borderRadius='5' gap='3' direction='column' h='25vh' overflowY={'scroll'}> 
 							{manufacturer_data?.experts?.map((item)=>{
 								return(
-									<Flex direction='column' key={item._id} p='2' borderRadius='5' boxShadow='lg' cursor='pointer' fontSize={'14px'}>
-										<Text fontWeight='bold'>Name: {item.name}</Text>
-										<Text>Email: 
+									<Flex bg='#eee' direction='column' key={item._id} p='2' borderRadius='5' boxShadow='lg' cursor='pointer' fontSize={'14px'}>
+										<Text><span style={{fontWeight:"bold"}}>Name: </span>{item.name}</Text>
+										<Text>Email:  
 											<Link fontWeight='bold' color='#009393' href={`mailto: ${item?.email}`} isExternal>
-						                    	{item?.email}
-						                	</Link>
-						                </Text>
+												{item?.email}
+											</Link>
+										</Text>
 										<Text>Mobile: {item.mobile}</Text>
 									</Flex>
 								)
@@ -129,16 +164,32 @@ export default function Manufacturer(){
 						}
 					</Flex>
 					<Flex direction='column' gap='2'>
-						<Text fontSize='18px' fontWeight='bold' >Industries by this Manufacturer</Text>
+						<Text fontSize='18px' fontWeight='bold'>Industries by this manufacturer</Text>
 						{industries?.length === 0 ?
 								<Flex justify='center' align='center' h='15vh' bg='#eee' p='2' borderRadius='5' boxShadow='lg' gap='2'>
 									<Text>Not specializing in any industries.</Text>
 								</Flex>
 								:
 								<Flex direction='column'> 
-								{industries?.map((item)=>{
+								{industries?.map((item,id)=>{
 									return(
-										<Industry key={item._id} item={item}/>
+										<Industry_Card_Item key={id} item={item}/>
+									)
+								})}
+							</Flex>
+							}
+					</Flex>
+					<Flex direction='column' gap='2'>
+						<Text fontSize='18px' fontWeight='bold'>Technologies by this manufacturer</Text>
+						{technologies?.length === 0 ?
+								<Flex justify='center' align='center' h='15vh' bg='#eee' p='2' borderRadius='5' boxShadow='lg' gap='2'>
+									<Text>Not specializing in any technologies.</Text>
+								</Flex>
+								:
+								<Flex direction='column'> 
+								{technologies?.map((item,id)=>{
+									return(
+										<Technology_Card_Item key={id} item={item}/>
 									)
 								})}
 							</Flex>
@@ -150,7 +201,7 @@ export default function Manufacturer(){
 							<Text w='50%' textAlign='center'>No products have been listed.</Text>
 						</Flex>
 						:
-						<Flex direction='column' gap='2' h='50vh' overflowY='scroll'>
+						<Flex direction='column' h='50vh' overflowY='scroll' gap='2'>
 							{products?.map((item)=>{
 								return(
 									<Product_Item item={item} key={item._id}/>
@@ -159,7 +210,6 @@ export default function Manufacturer(){
 						</Flex>
 					}
 				</Flex>
-			</Flex>
 		</Flex>
 	)
 }
@@ -167,25 +217,29 @@ export default function Manufacturer(){
 const Product_Item=({item})=>{
 	const router = useRouter();
 	return(
-		<Flex key={item._id} cursor='pointer' position='relative' gap='2' align='center' onClick={(()=>{router.push(`/product/${item._id}`)})} bg='#fff' p='1' borderRadius='5' boxShadow='lg'>
+		<Flex cursor='pointer' gap='2' align='center' bg='#fff' p='1' borderRadius='5' boxShadow='lg' onClick={(()=>{router.push(`/product/${item._id}`)})} >
 			<Image w='50px' h='50px' borderRadius='10px' objectFit='cover' src='../../Pro.png' alt='next'/>
 			<Flex direction='column'>
 				<Text fontSize='16px' fontFamily='ClearSans-Bold' color='#009393'>{item.name_of_product}</Text>
 				<Text fontSize='14px'>{item.distributed_by}</Text>
 				<Flex gap='2' fontSize='10px' color='grey'>
-					<Text>{item.industry}</Text>
-					<Text borderLeft='1px solid grey' paddingLeft='2'>{item.technology}</Text>
+					<Text>{item.industry? item.industry : "-"}</Text>
+					<Text borderLeft='1px solid grey' paddingLeft='2'>{item.technology? item.technology : "-"}</Text>
 				</Flex>
 			</Flex>
 		</Flex>
 	)
 }
 
-const Industry=({item})=>{
-	const router = useRouter()
+
+const Industry_Card_Item=({item})=>{
 	return(
-		<Flex flex='1' borderRadius='5' mb='1' position='relative' bg='#eee' p='2'>
-			<Text fontSize='18px' fontFamily='ClearSans-Bold' color='#009393' onClick={(()=>{router.push(`/products/${item}`)})}>{item}</Text>
-		</Flex>
+		<Link fontWeight='bold' color='#009393' href={`/products/${item}`}>{item}</Link>
+	)
+}
+
+const Technology_Card_Item=({item})=>{
+	return(
+		<Link fontWeight='bold' color='#009393' href={`/products/${item}`}>{item}</Link>
 	)
 }

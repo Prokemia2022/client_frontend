@@ -151,7 +151,7 @@ export default function Client_Profile(){
 						<Flex p='1' color='red' direction='column'>
 							<Text fontSize='20px' color='red' fontWeight='bold' >Delete Account</Text>
 							<Flex direction='column'>
-								<Text>By deleting your account , all your information, products and activities in our platform will be erased as your account will be permamnetly deleted and will not be restored.</Text>
+								<Text>By deleting your account , all your information and activities in our platform will be erased as your account will be permanently deleted and will not be restored.</Text>
 								<Button bg='#ff' border='1px solid red' onClick={(()=>{set_is_delete_account_Modalvisible(true)})}>Delete Account</Button>
 							</Flex>
 						</Flex>

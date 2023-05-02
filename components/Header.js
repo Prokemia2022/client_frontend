@@ -117,7 +117,7 @@ function Header({products_data,distributors_data,manufacturers_data,industries_d
 		setsignedin(false)
 	}
 	return(
-		<Flex position='sticky' top='0' w='100%' zIndex='999' cursor='pointer' bg='#fff' fontFamily='ClearSans-Bold' p='2' direction='column'>
+		<Flex position='sticky' top='0' w='100%' zIndex='2000' cursor='pointer' bg='#fff' fontFamily='ClearSans-Bold' p='2' direction='column' >
 			<Flex justify='space-between' align='center'>
 				<Text mb='0' onClick={(()=>{router.push('/')})} fontSize='28px' color='#00e0c6'>Pro<span style={{color:"#000"}}>Kemia</span></Text>
 				<Flex align='center' gap='2'>
@@ -137,7 +137,7 @@ function Header({products_data,distributors_data,manufacturers_data,industries_d
 							<MenuOpenIcon style={{fontSize:'24px'}}/>
 						</MenuButton>
 					</Flex>
-						<MenuList alignItems={'center'} p='2'>
+						<MenuList alignItems={'center'} p='2' boxShadow='dark-lg' zIndex={'9999'}>
 							<Flex align='center' gap='2'>
 								<Script src="https://cdn.lordicon.com/xdjxvujz.js"></Script>
 								{profile_photo_url == '' || !profile_photo_url ?

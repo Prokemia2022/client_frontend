@@ -142,15 +142,13 @@ function _Home(){
 			</Flex>
 			<Text mt='4' fontSize='24px' fontFamily='ClearSans-Bold'>Featured Products</Text>
 			{!isloading ?
-				<>
-					{products_data?.slice(0,4).map((content)=>{
+				<Flex direction={'column'} gap='2'>
+					{products_data?.slice(0,4).map((item)=>{
 						return(
-							<div key={content._id} style={{margin:'5px'}} >
-								<ProductItem content={content}/>
-							</div>
+							<Product_Cart_Item item={item} key={item?._id}/>
 						)
 					})}
-				</>:
+				</Flex>:
 				<>
 					<Loading />
 					<Loading />
@@ -161,11 +159,11 @@ function _Home(){
 				<>
 					{distributors_data?.slice(0,4).map((distributor)=>{
 						return(
-							<Flex bg='#eee' mb='1' borderRadius='5' key={distributor._id} gap='2' onClick={(()=>{router.push(`/account/distributor/${distributor._id}`)})} cursor='pointer'>
+							<Flex bg='#eee' mb='1' borderRadius='5' key={distributor?._id} gap='2' onClick={(()=>{router.push(`/account/distributor/${distributor?._id}`)})} cursor='pointer'>
 								<Image objectFit={distributor?.profile_photo_url == '' || !distributor?.profile_photo_url? "contain":'cover'} src={distributor?.profile_photo_url == '' || !distributor?.profile_photo_url? "../Pro.png":distributor?.profile_photo_url} boxSize='100px' alt='profilelogo'/>
 								<Flex direction='column' p='2' gap='2' flex='1'>
-									<Text mb='0' fontSize='24px' fontFamily='ClearSans-Bold'>{distributor.company_name}</Text>
-									<Text mb='0' w='80%' overflow='hidden' h='20px'>{distributor.description}</Text>
+									<Text mb='0' fontSize='24px' fontFamily='ClearSans-Bold'>{distributor?.company_name}</Text>
+									<Text mb='0' w='80%' overflow='hidden' h='20px'>{!distributor?.description || distributor?.description == ''? '-' : distributor?.description}</Text>
 								</Flex>
 							</Flex>
 						)
@@ -181,11 +179,11 @@ function _Home(){
 				<>
 					{manufacturers_data?.slice(0,4).map((manufacturer)=>{
 						return(
-							<Flex bg='#eee' mb='1' borderRadius='5' key={manufacturer._id} gap='2' onClick={(()=>{router.push(`/account/manufacturer/${manufacturer._id}`)})} cursor='pointer'>
+							<Flex bg='#eee' mb='1' borderRadius='5' key={manufacturer?._id} gap='2' onClick={(()=>{router.push(`/account/manufacturer/${manufacturer?._id}`)})} cursor='pointer'>
 								<Image objectFit={manufacturer?.profile_photo_url == '' || !manufacturer?.profile_photo_url? "contain":'cover'} src={manufacturer?.profile_photo_url == '' || !manufacturer?.profile_photo_url? "../Pro.png":manufacturer?.profile_photo_url} w='100px' h='100px' alt='profilelogo'/>
 								<Flex direction='column' p='2' gap='2' flex='1'>
-									<Text mb='0' fontSize='24px' fontFamily='ClearSans-Bold'>{manufacturer.company_name}</Text>
-									<Text mb='0' w='80%' overflow='hidden' h='20px'>{manufacturer.description}</Text>
+									<Text mb='0' fontSize='24px' fontFamily='ClearSans-Bold'>{manufacturer?.company_name}</Text>
+									<Text mb='0' w='80%' overflow='hidden' h='20px'>{!manufacturer?.description || manufacturer?.description == ''? '-' : manufacturer?.description}</Text>
 								</Flex>
 							</Flex>
 						)
@@ -253,14 +251,18 @@ const Promo=({router})=>{
 	)
 }
 
-const ProductItem=({content,categ})=>{
+const Product_Cart_Item=({item})=>{
 	const router = useRouter();
 	return(
-		<Flex h='80px' position='relative' gap='2' align='center' boxShadow='lg' cursor='pointer' onClick={(()=>{router.push(`/product/${content._id}`)})}>
-			<Image w='50px' h='50px' borderRadius='10px' objectFit='cover' src='../Pro.png' alt='next'/>
+		<Flex cursor='pointer' gap='2' align='center' bg='#fff' p='1' borderRadius='5' boxShadow='lg' onClick={(()=>{router.push(`/product/${item._id}`)})} >
+			<Image w='50px' h='50px' borderRadius='10px' objectFit='cover' src='../../Pro.png' alt='next'/>
 			<Flex direction='column'>
-				<Text fontSize='16px' fontFamily='ClearSans-Bold'>{content.name_of_product}</Text>
-				<Text fontSize='14px' color='#009393'>{content.industry}</Text>
+				<Text fontSize='16px' fontFamily='ClearSans-Bold' color='#009393'>{item.name_of_product}</Text>
+				<Text fontSize='14px'>{item.distributed_by}</Text>
+				<Flex gap='2' fontSize='10px' color='grey'>
+					<Text>{item.industry? item.industry : "-"}</Text>
+					<Text borderLeft='1px solid grey' paddingLeft='2'>{item.technology? item.technology : "-"}</Text>
+				</Flex>
 			</Flex>
 		</Flex>
 	)

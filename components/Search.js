@@ -32,11 +32,6 @@ export default function Search({setsearchbaractive}){
 	useEffect(()=>{
 		(async ()=>{
 			set_is_querying(true);
-			// set_products_data([]);
-			// set_distributors_data([]);
-			// set_manufacturers_data([]);
-			// set_industries_data([]);
-			// set_technologies_data([]);
 			console.log(debounce_search_value);
 			if (debounce_search_value.length == 0){
 				set_active(false);
@@ -55,7 +50,7 @@ export default function Search({setsearchbaractive}){
 	const get_Products_Data=async()=>{
 		await Get_Products().then((response)=>{
 			const data = response?.data
-			const result_data = data.filter((item)=> item.verification_status)
+			const result_data = data.filter((item)=> item.verification_status && !item.suspension_status)
 			const result = result_data.filter((item) => item.name_of_product?.toLowerCase().includes(debounce_search_value.toLowerCase()) ||
 														item.industry?.toLowerCase().includes(debounce_search_value.toLowerCase()) || 
 														item.function?.toLowerCase().includes(debounce_search_value.toLowerCase()) ||
@@ -92,7 +87,7 @@ export default function Search({setsearchbaractive}){
 	const get_Distributors_Data=async()=>{
 		await Get_Distributors().then((response)=>{
 			const data = response?.data
-			const result_data = data.filter((item)=> item.verification_status)
+			const result_data = data.filter((item)=> item.verification_status && !item.suspension_status)
 			const result = result_data.filter(item => item.company_name?.toLowerCase().includes(debounce_search_value.toLowerCase()))
 			set_distributors_data(result);
 		}).then(()=>{
@@ -102,7 +97,7 @@ export default function Search({setsearchbaractive}){
 	const get_Manufacturers_Data=async()=>{
 		await Get_Manufacturers().then((response)=>{
 			const data = response?.data
-			const result_data = data.filter((item)=> item.verification_status)
+			const result_data = data.filter((item)=> item.verification_status && !item.suspension_status)
 			const result = result_data.filter(item => item.company_name?.toLowerCase().includes(debounce_search_value.toLowerCase()))
 			set_manufacturers_data(result);
 		}).then(()=>{
@@ -112,8 +107,8 @@ export default function Search({setsearchbaractive}){
 	return(
 		<Flex direction='column' w='100%'>
 			<Flex p='3' direction='column'>
-				<Flex direction=''>
-					<Input w='100%' value={search_value} autoComplete="off" type='text' borderRadius='5px 0 0 5px' placeholder='Search for products, sellers, industries, technologies' variant='filled' onChange={((e)=>{set_search_value(e.target.value);set_active(true)})}/>
+				<Flex zIndex='900' >
+					<input style={{backgroundColor:'#eee',width:"100%",borderRadius:'5px 0 0 5px',outline:'none',padding:'5px'}} value={search_value} autoComplete="off" type='text' placeholder='Search for products, sellers, industries, technologies' onChange={((e)=>{set_search_value(e.target.value);set_active(true)})}/>
 					<Button color='#fff' bg='#009393' borderRadius='0 5px 5px 0' onClick={(()=>{setsearchbaractive(false)})}><CloseFullscreenIcon/></Button>
 				</Flex>
 				{active?
@@ -164,7 +159,7 @@ const Result=({
 					<Script src="https://cdn.lordicon.com/bhenfmcm.js"></Script>
 					<lord-icon src="https://cdn.lordicon.com/gqzfzudq.json" trigger="loop" delay="500" style={{marginTop:'20px',width:'70px',height:"70px",}} >
 					</lord-icon>
-					<Text w='50%' textAlign='center'>We could not find products that match your search</Text>
+					<Text w='50%' textAlign='center'>Sorry! We could not find items that match your search</Text>
 				</Flex>
 				:
 				<>
