@@ -162,7 +162,7 @@ export default function Delete_Account_Modal({
 									<Text fontSize='24px'>We are sad to see you leave!!</Text>
 									<Text fontSize='20px' color='grey'>Are you sure you want to delete your account?</Text>
 									<Flex gap='2'>
-										<Button flex='1' bg='red' color='#fff' onClick={handle_deletion}> Yes, I want to delete my account< /Button>
+										<Button flex='1' bg='red' color='#fff' onClick={handle_deletion}> Yes, I want to delete my account</Button>
 										<Button border='1px solid #000' onClick={(()=>{set_is_delete_account_Modalvisible(false)})} > Cancel </Button>
 									</Flex>
 								</Flex>

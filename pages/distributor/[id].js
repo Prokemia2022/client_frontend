@@ -59,7 +59,7 @@ export default function Distributor(){
 				<Flex direction='column' gap='2'>
 					<Header/>
 					{distributor_data?.suspension_status ?<Suspension_Notification/>:null}
-					<Flex className={styles.consolebody} >
+					<Flex className={styles.consolebody}>
 						<Navbar currentvalue={currentvalue} setCurrentValue={setCurrentValue}/>
 						<Inventory distributor_data={distributor_data} acc_type='distributor'/>
 					</Flex>

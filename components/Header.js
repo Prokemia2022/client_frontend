@@ -112,6 +112,8 @@ function Header({products_data,distributors_data,manufacturers_data,industries_d
 
 	const handle_LogOut=()=>{
 		cookies.remove('user_token', { path: '/' });
+		cookies.remove('is_acc_verified', { path: '/' });
+		cookies.remove('is_suspended', { path: '/' });
 		// router.reload()
 		router.push('/')
 		setsignedin(false)

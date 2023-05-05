@@ -77,7 +77,7 @@ export default function Supplier_Inventory({manufacturer_data,distributor_data,a
 		});
 	}
 	return(
-		<Flex direction='column' gap='3' p='2' w='100%' >
+		<Flex direction='column' gap='3' p='2' w='100%' h='100vh'>
 			<Text fontSize='32px' fontWeight='bold' textDecoration='3px solid underline #009393'>Inventory</Text>
 			<Flex gap='2'>
 				<Select placeholder='sort' w='100px' onChange={((e)=>{set_sort(e.target.value)})}> 

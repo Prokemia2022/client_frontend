@@ -58,7 +58,7 @@ export default function Manufacturer(){
 				<Flex direction='column' gap='2'>
 					<Header/>
 					{manufacturer_data?.suspension_status?<Suspension_Notification/>:null}
-					<Flex className={styles.consolebody} >
+					<Flex className={styles.consolebody}>
 						<Navbar currentvalue={currentvalue} setCurrentValue={setCurrentValue}/>
 						<Inventory manufacturer_data={manufacturer_data} acc_type={'manufacturer'}/>
 					</Flex>

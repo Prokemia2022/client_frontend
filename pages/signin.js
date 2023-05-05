@@ -9,7 +9,8 @@ import Header from '../components/Header.js';
 import {Visibility,VisibilityOff} from '@mui/icons-material'
 //utils
 import {useRouter} from 'next/router'
-import styles from '../styles/Home.module.css'
+import styles from '../styles/Home.module.css';
+import Loading from '../components/Loading.js';
 
 export default function UserSignIn(){
 	//utils
@@ -22,7 +23,8 @@ export default function UserSignIn(){
 	const [password,setpassword]=useState(''); //password input
 	const [email_of_company,set_email_of_company]=useState(''); //email input
 
-	const [issubmitting,set_issubmitting]=useState(false);
+	//const [is_submitting,set_is_submitting]=useState(false);
+	const [is_submitting,set_is_submitting]=useState(false)
 
 	const payload = {
 		password,
@@ -30,7 +32,7 @@ export default function UserSignIn(){
 	}
 	//function
 	const handleSignIn=async()=>{
-		set_issubmitting(true)
+		set_is_submitting(true)
 		if(password && email_of_company){
 			await SignIn(payload).then((res)=>{
 				//console.log(res)
@@ -67,7 +69,7 @@ export default function UserSignIn(){
 				isClosable: true,
 			});
 		}
-		set_issubmitting(false)
+		set_is_submitting(false)
 	}
 
 	return(
@@ -102,8 +104,23 @@ export default function UserSignIn(){
 							</Button>
 						</InputRightElement>
 					</InputGroup>
-					<Text cursor='pointer' fontSize='14px' color='red' onClick={(()=>{router.push('/password_reset')})}> Forgot Password?</Text>
-					<Button bg='#009393' color='#fff' onClick={handleSignIn} disabled={issubmitting? true:false}>Sign In</Button>
+					{is_submitting? 
+						<Button
+							bg='#009393'
+							borderRadius='5'
+							color='#fff'
+							align='center'
+						>
+							<Loading width='40px' height='40px' color='#ffffff'/>
+							signing you in...
+						</Button>
+						:
+							<>
+							<Text cursor='pointer' fontSize='14px' color='red' onClick={(()=>{router.push('/password_reset')})}> Forgot Password?</Text>
+							<Button bg='#009393' color='#fff' onClick={handleSignIn} disabled={is_submitting? true:false}>Sign In</Button>
+							</>							
+					}
+					
 				</Flex>
 			</Flex>
 		</Flex>

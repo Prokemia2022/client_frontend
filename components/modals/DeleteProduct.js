@@ -44,7 +44,7 @@ export default function Delete_Product_Modal({
     }
 
     const handle_deletion=async()=>{
-      if(is_suspended){
+      if(is_suspended == 'true'){
         toast({
           title: 'Your account is currently suspended.',
           description: 'reach out to support for guidance by emailing us at help@prokemia.com',

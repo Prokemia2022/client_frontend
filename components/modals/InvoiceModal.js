@@ -142,7 +142,7 @@ function CreateInvoiceModal({iscreateinvoiceModalvisible,setiscreateinvoiceModal
                     </Flex>
                     <Flex direction='column'>
 	                    <Text fontSize='14px'>- by creating this invoice you acknowledge that Prokemia will formally trade on behalf </Text>
-	                    <Text fontSize='14px'>- a 2% service fee will be charged for this process.</Text>
+	                    <Text fontSize='14px'>- a 5% service fee will be charged for this process.</Text>
                     </Flex>
                     <Button bg='#009393' borderRadius='0' color='#fff' onClick={create_order}>Create Sale Invoice</Button>
                   </Stack>
