@@ -114,8 +114,8 @@ function Header(){
 			<Flex justify='space-between' align='center'>
 				<Text mb='0' onClick={(()=>{router.push('/')})} fontSize='28px' color='#00e0c6'>Pro<span style={{color:"#000"}}>Kemia</span></Text>
 				<Flex align='center' gap='2'>
-					<Flex className={styles.search_input_on_header}>
-						<InputGroup className={styles.search_input_on_header}>
+					<div className={styles.search_input_on_header}>
+						<InputGroup>
 							<Input bg='#fff' value={query_search} variant='outline' borderTopRightRadius='0' borderBottomRightRadius='0' placeholder='Search products,suppliers,items' outline={'none'} onChange={((e)=>{setquery_search(e.target.value);})}/>
 							{query_search.length > 0 || searchbaractive ? 
 								<InputRightElement bg='#eee' borderLeft='1px solid #eee' children={<CloseIcon />} onClick={(()=>{setquery_search('');setsearchbaractive(false)})}/>
@@ -123,7 +123,7 @@ function Header(){
 								<InputRightElement bg='#eee' borderLeft='1px solid #eee' children={<SearchIcon />} />
 							}
 						</InputGroup>
-					</Flex>
+					</div>
 					<Flex className={styles.search_input_icon_on_header}>
 						<SearchIcon onClick={(()=>{setsearchbaractive(true)})}/>
 					</Flex>
