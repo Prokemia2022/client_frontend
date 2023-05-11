@@ -114,15 +114,19 @@ function Header(){
 			<Flex justify='space-between' align='center'>
 				<Text mb='0' onClick={(()=>{router.push('/')})} fontSize='28px' color='#00e0c6'>Pro<span style={{color:"#000"}}>Kemia</span></Text>
 				<Flex align='center' gap='2'>
-					<InputGroup className={styles.search_input_on_header}>
-						<Input bg='#fff' value={query_search} variant='outline' borderTopRightRadius='0' borderBottomRightRadius='0' placeholder='Search products,suppliers,items' outline={'none'} onChange={((e)=>{setquery_search(e.target.value);})}/>
-						{query_search.length > 0 || searchbaractive ? 
-							<InputRightElement bg='#eee' borderLeft='1px solid #eee' children={<CloseIcon />} onClick={(()=>{setquery_search('');setsearchbaractive(false)})}/>
-							: 
-							<InputRightElement bg='#eee' borderLeft='1px solid #eee' children={<SearchIcon />} />
-						}
-					</InputGroup>
-					<SearchIcon className={styles.search_input_icon_on_header} onClick={(()=>{setsearchbaractive(true)})}/>
+					<Flex className={styles.search_input_on_header}>
+						<InputGroup className={styles.search_input_on_header}>
+							<Input bg='#fff' value={query_search} variant='outline' borderTopRightRadius='0' borderBottomRightRadius='0' placeholder='Search products,suppliers,items' outline={'none'} onChange={((e)=>{setquery_search(e.target.value);})}/>
+							{query_search.length > 0 || searchbaractive ? 
+								<InputRightElement bg='#eee' borderLeft='1px solid #eee' children={<CloseIcon />} onClick={(()=>{setquery_search('');setsearchbaractive(false)})}/>
+								: 
+								<InputRightElement bg='#eee' borderLeft='1px solid #eee' children={<SearchIcon />} />
+							}
+						</InputGroup>
+					</Flex>
+					<Flex className={styles.search_input_icon_on_header}>
+						<SearchIcon onClick={(()=>{setsearchbaractive(true)})}/>
+					</Flex>
 					{signedin? 
 						null:
 						<Button onClick={(()=>{router.push('/account/1')})} bg='#009393' color='#fff'>Free Sign Up</Button>}

@@ -70,5 +70,6 @@
     }
     .search_input_icon_on_header{
         display: block;
+        padding-top: 6px;
     }
 }
