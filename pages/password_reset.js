@@ -119,12 +119,12 @@ export default function Password_Reset_Function(){
 
 	return(
 		<Flex className={styles.Password_Body}>
-			<Flex className={styles.Password_Image}>
+			<div className={styles.Password_Image}>
 				<Flex className={styles.Back_Icon} gap='2' boxShadow={'lg'} onClick={(()=>{router.back()})}>
 					<ArrowBackIcon />
 					<Text fontWeight={'bold'}>Back</Text>
 				</Flex>
-			</Flex>
+			</div>
 			<Flex direction='column' className={styles.Form_Body}>
 				<Flex className={styles.Back_Icon} gap='2' boxShadow={'lg'} onClick={(()=>{router.back()})}>
 					<ArrowBackIcon />

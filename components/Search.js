@@ -113,7 +113,7 @@ export default function Search({setsearchbaractive,query_search,setquery_search}
 	return(
 			<Flex direction='column' className={styles.search_body}>
 				<Flex className={styles.result_bar_body}>
-					<Flex className={styles.search_input_on_result_bar} gap='1'>
+					<div className={styles.search_input_on_result_bar} gap='1'>
 						<ArrowBackIcon onClick={(()=>{set_search_value('');setsearchbaractive(false)})}/>
 						<Input value={search_value} autoComplete="off" type='text' placeholder='Search for products, sellers, industries, technologies' onChange={((e)=>{set_search_value(e.target.value);setquery_search(e.target.value);set_active(true)})}/>
 						{search_value? 
@@ -121,7 +121,7 @@ export default function Search({setsearchbaractive,query_search,setquery_search}
 							:
 							<Button color='#fff' bg='#009393' borderRadius='5px'><SearchIcon/></Button>
 						}
-					</Flex>
+					</div>
 					{active ?
 						<Result 
 									is_querying={is_querying}

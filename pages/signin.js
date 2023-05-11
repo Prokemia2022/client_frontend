@@ -74,7 +74,7 @@ export default function UserSignIn(){
 
 	return(
 		<Flex className={styles.AuthBody}>
-			<Flex className={styles.Auth_Image}>
+			<div className={styles.Auth_Image}>
 				<Flex className={styles.Back_Icon} gap='2' boxShadow={'lg'} onClick={(()=>{router.back()})}>
 					<ArrowBackIcon />
 					<Text fontWeight={'bold'}>Back</Text>
@@ -85,7 +85,7 @@ export default function UserSignIn(){
 					<Text onClick={(()=>{router.push('/t&c')})}>Terms of Use</Text>
 					<Text onClick={(()=>{router.push('/faqs')})}>FAQs</Text>
 				</Flex>
-			</Flex>
+			</div>
 			<Flex className={styles.Form_Body}>
 				<Flex className={styles.Back_Icon} gap='2' boxShadow={'lg'} onClick={(()=>{router.back()})}>
 					<ArrowBackIcon />

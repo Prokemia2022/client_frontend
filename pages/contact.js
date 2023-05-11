@@ -57,7 +57,7 @@ function Contact(){
 	}
 	return(
 		<Flex className={styles.Contact_Body}>
-			<Flex className={styles.Contact_Image}>
+			<div className={styles.Contact_Image}>
 				<Flex className={styles.Back_Icon} gap='2' boxShadow={'lg'} onClick={(()=>{router.back()})}>
 					<ArrowBackIcon />
 					<Text fontWeight={'bold'}>Back</Text>
@@ -68,7 +68,7 @@ function Contact(){
 					<Text onClick={(()=>{router.push('/t&c')})}>Terms of Use</Text>
 					<Text onClick={(()=>{router.push('/faqs')})}>FAQs</Text>
 				</Flex>
-			</Flex>
+			</div>
 			<Flex className={styles.Form_Body}>
 				<Flex className={styles.Back_Icon} gap='2' boxShadow={'lg'} onClick={(()=>{router.back()})}>
 					<ArrowBackIcon />
