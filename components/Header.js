@@ -124,9 +124,9 @@ function Header(){
 							}
 						</InputGroup>
 					</div>
-					<Flex className={styles.search_input_icon_on_header}>
+					<div className={styles.search_input_icon_on_header}>
 						<SearchIcon onClick={(()=>{setsearchbaractive(true)})}/>
-					</Flex>
+					</div>
 					{signedin? 
 						null:
 						<Button onClick={(()=>{router.push('/account/1')})} bg='#009393' color='#fff'>Free Sign Up</Button>}
