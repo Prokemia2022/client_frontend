@@ -1,28 +1,30 @@
-import React,{useState} from 'react';
-import {Flex,Center,Text,Button,Input,InputGroup,InputRightElement,Image,Textarea,useToast} from '@chakra-ui/react';
-import styles from '../styles/Home.module.css';
-import {Room,Visibility,VisibilityOff} from '@mui/icons-material';
+import React,{useEffect, useState} from 'react';
+import {Flex,Heading,Text,Button,Input,InputGroup,InputRightElement,Image,Textarea,useToast, useEditable} from '@chakra-ui/react';
+import styles from '../styles/Feedback.module.css';
 import {useRouter} from 'next/router';
 import Header from '../components/Header.js';
 import Create_Feedback from './api/control/create_feedback.js'
 import StarRateIcon from '@mui/icons-material/StarRate';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import Get_Feedback from './api/control/get_feedbacks.js'
 
-export default function ClientSignUp(){
+export default function Feedback(){
 	const [active, setActive] = useState(false);
   	const router = useRouter();
   	const toast = useToast();
   	
   	const [name,setname]=useState('');
   	const [email,setemail]=useState('');
-  	const [feedback,setfeedback]=useState('');
+  	const [message,setmessage]=useState('');
   	const [rate,set_rate]=useState(5);
+	const [feedback_data,set_feedback_data]=useState([])
 
   	let route = '';
 
 	const payload = {
 		name,
 		email,
-		feedback,
+		feedback:message,
 		rate
 	}
 
@@ -41,7 +43,7 @@ export default function ClientSignUp(){
 			await Create_Feedback(payload).then((response)=>{
 				toast({
 		          title: '',
-		          description: `your feeback has been submitted`,
+		          description: `your feedback has been submitted`,
 		          status: 'info',
 		          isClosable: true,
 		        });
@@ -57,70 +59,129 @@ export default function ClientSignUp(){
 			})
 	  	}
 	}
+	const handle_get_feedbacks=async()=>{
+		await Get_Feedback().then((res)=>{
+			console.log(res.data);
+			set_feedback_data(res.data.reverse())
+		})
+	}
+	useEffect(()=>{
+		handle_get_feedbacks()
+	},[])
 	return(
 		<Flex direction='column'>
 			<Header/>
-			<Flex className={styles.feedbackBody}>
-				<Flex className={styles.feedbackSection} gap='2' p='6'>
-					<h3>We Value your feedback</h3>
-					<p>We value feedback, please rate your experience by clicking the button below.</p>
-					<p>Thank you for helping us improve our sevices.</p>
-					<Button w='40vw' bg='#009393' color='#fff' onClick={(()=>{setActive(!active)})}>Rate Us</Button>
-				</Flex>
-				{active? 
-				<Flex className={styles.authForm} gap='2' direction='column'>
-					<Text fontSize='2.5rem' fontFamily='ClearSans-bold'>Leave Us a feedback</Text>
-					<Flex direction='column' gap='2'>
-						<Text fontWeight='bold'>Name</Text>
-						<Input type='text' placeholder='name' variant='filled' onChange={((e)=>{setname(e.target.value)})}/>
-					</Flex>
-					<Flex direction='column' gap='2'>
-						<Text fontWeight='bold'>Email</Text>
-						<Input type='email' placeholder='Email' variant='filled' onChange={((e)=>{setemail(e.target.value)})}/>
-					</Flex>
-					<Flex direction='column' gap='2'>
-						<Text fontWeight='bold'>feedback</Text>
-						<Textarea type='text' placeholder='comment on your feedback' variant='filled' onChange={((e)=>{setfeedback(e.target.value)})}/>
-					</Flex>
-					<Flex direction='column' gap='2'>
-						<Text fontWeight='bold'>Rate Us</Text>
-						<Flex gap='2'>
-							<Text fontWeight='bold' w='30px' borderRadius='5' border='1px solid #000' p='2' cursor='pointer' bg={rate === 1? "#009393" : '#fff'} color={rate === 1? "gold" : '#000'} onClick={(()=>{set_rate(1)})}>1</Text>
-							<Text fontWeight='bold' w='30px' borderRadius='5' border='1px solid #000' p='2' cursor='pointer' bg={rate === 2? "#009393" : '#fff'} color={rate === 2? "gold" : '#000'} onClick={(()=>{set_rate(2)})}>2</Text>
-							<Text fontWeight='bold' w='30px' borderRadius='5' border='1px solid #000' p='2' cursor='pointer' bg={rate === 3? "#009393" : '#fff'} color={rate === 3? "gold" : '#000'} onClick={(()=>{set_rate(3)})}>3</Text>
-							<Text fontWeight='bold' w='30px' borderRadius='5' border='1px solid #000' p='2' cursor='pointer' bg={rate === 4? "#009393" : '#fff'} color={rate === 4? "gold" : '#000'} onClick={(()=>{set_rate(4)})}>4</Text>
-							<Text fontWeight='bold' w='30px' borderRadius='5' border='1px solid #000' p='2' cursor='pointer' bg={rate === 5? "#009393" : '#fff'} color={rate === 5? "gold" : '#000'} onClick={(()=>{set_rate(5)})}>5</Text>
-
+			<Flex className={styles.feedback_body} gap='2'>
+			{active?
+				<Flex className={styles.feedback_form_body} >
+					<Flex gap='2' direction='column' bg={'#fff'} margin={'auto'} p='4' borderRadius={'5'}>
+						<Text fontSize='2.5rem' fontFamily='ClearSans-bold'>Leave us a feedback</Text>
+						<Flex direction='column' gap='2'>
+							<Text fontWeight='bold'>Full Name</Text>
+							<Input type='text' placeholder='name' variant='filled' onChange={((e)=>{setname(e.target.value)})}/>
 						</Flex>
-						<Input w='30px' type='Number' placeholder='1' variant='filled' onChange={((e)=>{set_rate(e.target.value)})}/>
+						<Flex direction='column' gap='2'>
+							<Text fontWeight='bold'>Email</Text>
+							<Input type='email' placeholder='Email' variant='filled' onChange={((e)=>{setemail(e.target.value)})}/>
+						</Flex>
+						<Flex direction='column' gap='2'>
+							<Text fontWeight='bold'>Message</Text>
+							<Textarea type='text' maxlength="200" placeholder='comment on your message, 200words' variant='filled' onChange={((e)=>{setmessage(e.target.value)})}/>
+						</Flex>
+						<Flex direction='column' gap='2'>
+							<Text fontWeight='bold'>Rate Us</Text>
+							<Flex gap='2'>
+								<Text fontWeight='bold' w='30px' borderRadius='5' border='1px solid #000' p='2' cursor='pointer' bg={rate === 1? "#009393" : '#fff'} color={rate === 1? "gold" : '#000'} onClick={(()=>{set_rate(1)})}>1</Text>
+								<Text fontWeight='bold' w='30px' borderRadius='5' border='1px solid #000' p='2' cursor='pointer' bg={rate === 2? "#009393" : '#fff'} color={rate === 2? "gold" : '#000'} onClick={(()=>{set_rate(2)})}>2</Text>
+								<Text fontWeight='bold' w='30px' borderRadius='5' border='1px solid #000' p='2' cursor='pointer' bg={rate === 3? "#009393" : '#fff'} color={rate === 3? "gold" : '#000'} onClick={(()=>{set_rate(3)})}>3</Text>
+								<Text fontWeight='bold' w='30px' borderRadius='5' border='1px solid #000' p='2' cursor='pointer' bg={rate === 4? "#009393" : '#fff'} color={rate === 4? "gold" : '#000'} onClick={(()=>{set_rate(4)})}>4</Text>
+								<Text fontWeight='bold' w='30px' borderRadius='5' border='1px solid #000' p='2' cursor='pointer' bg={rate === 5? "#009393" : '#fff'} color={rate === 5? "gold" : '#000'} onClick={(()=>{set_rate(5)})}>5</Text>
+
+							</Flex>
+						</Flex>
+						<Button bg='#009393' color='#fff' onClick={Handle_Create_Feedback}>Submit Feedback</Button>
+						<Button border='1px solid red' color='#000' onClick={(()=>{setActive(false)})}>Cancel</Button>
 					</Flex>
-					<Button bg='#009393' color='#fff' onClick={Handle_Create_Feedback}>Submit Feedback</Button>
+				</Flex>	
+			:
+				<Flex className={styles.feedback_info_body} gap='2'>
+					<Flex direction={'column'} className={styles.feedback_title} gap='2'>
+						<Heading as='h2'>What Our Clients say<br/> about us</Heading>
+						<Text>We value feedback, view experiences and give us your feedback<br/> to help us improve our sevices, and our experiences.</Text>
+						<Button bg='#009393' color='#fff' w='145px' onClick={(()=>{setActive(true)})}>Give us a Feedback</Button>
+					</Flex>
+					<Flex className={styles.feedback_content_body} gap='2'>
+						{feedback_data?.slice(0,3).map((feedback)=>{
+							return(
+								<Feedback_Content_Card feedback={feedback}/>
+							)
+						})}
+					</Flex>
 				</Flex>
-				:
-				<Flex gap='2' direction='column'>
-					<Image src='/feedback.jpg' alt='photo'/>
-				</Flex>
-			}
+				}	
 			</Flex>
 		</Flex>
 	)
 }
+const Feedback_Content_Card=({feedback})=>{
+	let jsx = [];
+	for (let index = 0; index < feedback?.rate; index++) {
+        jsx.push('index'+index)
+    }
+	return(
+		<Flex className={styles.feedback_content_card} direction={'column'} w='300px' h='300px'>
+			<Flex gap='2' align='center'>
+				<AccountCircleIcon style={{fontSize:'32px',color:'grey'}}/>
+				{jsx.map(()=>(
+					<StarRateIcon style={{fontSize:'14px',color:'gold'}}/>
+				))}
+			</Flex>
+			<Flex p='2' direction={'column'}>
+				<Text fontWeight={'bold'} fontSize={'18px'}>{feedback?.name}</Text>
+				<Text fontSize={'10px'} color='grey'>{feedback?.email}</Text>
+			</Flex>
+			<Text p='2' textAlign={'left'} overflow={'hidden'}>"{feedback?.feedback} "</Text>
+		</Flex>
+	)
+}
+// <Flex className={styles.feedbackBody}>
+// 				<Flex className={styles.feedbackSection} gap='2' p='6'>
+// 					<h3>We Value your feedback</h3>
+// 					<p>We value feedback, please rate your experience by clicking the button below.</p>
+// 					<p>Thank you for helping us improve our sevices.</p>
+// 					<Button w='40vw' bg='#009393' color='#fff' onClick={(()=>{setActive(!active)})}>Rate Us</Button>
+// 				</Flex>
+// 				{active? 
+// 				<Flex className={styles.authForm} gap='2' direction='column'>
+// 					<Text fontSize='2.5rem' fontFamily='ClearSans-bold'>Leave Us a feedback</Text>
+// 					<Flex direction='column' gap='2'>
+// 						<Text fontWeight='bold'>Name</Text>
+// 						<Input type='text' placeholder='name' variant='filled' onChange={((e)=>{setname(e.target.value)})}/>
+// 					</Flex>
+// 					<Flex direction='column' gap='2'>
+// 						<Text fontWeight='bold'>Email</Text>
+// 						<Input type='email' placeholder='Email' variant='filled' onChange={((e)=>{setemail(e.target.value)})}/>
+// 					</Flex>
+// 					<Flex direction='column' gap='2'>
+// 						<Text fontWeight='bold'>feedback</Text>
+// 						<Textarea type='text' placeholder='comment on your feedback' variant='filled' onChange={((e)=>{setfeedback(e.target.value)})}/>
+// 					</Flex>
+// 					<Flex direction='column' gap='2'>
+// 						<Text fontWeight='bold'>Rate Us</Text>
+// 						<Flex gap='2'>
+// 							<Text fontWeight='bold' w='30px' borderRadius='5' border='1px solid #000' p='2' cursor='pointer' bg={rate === 1? "#009393" : '#fff'} color={rate === 1? "gold" : '#000'} onClick={(()=>{set_rate(1)})}>1</Text>
+// 							<Text fontWeight='bold' w='30px' borderRadius='5' border='1px solid #000' p='2' cursor='pointer' bg={rate === 2? "#009393" : '#fff'} color={rate === 2? "gold" : '#000'} onClick={(()=>{set_rate(2)})}>2</Text>
+// 							<Text fontWeight='bold' w='30px' borderRadius='5' border='1px solid #000' p='2' cursor='pointer' bg={rate === 3? "#009393" : '#fff'} color={rate === 3? "gold" : '#000'} onClick={(()=>{set_rate(3)})}>3</Text>
+// 							<Text fontWeight='bold' w='30px' borderRadius='5' border='1px solid #000' p='2' cursor='pointer' bg={rate === 4? "#009393" : '#fff'} color={rate === 4? "gold" : '#000'} onClick={(()=>{set_rate(4)})}>4</Text>
+// 							<Text fontWeight='bold' w='30px' borderRadius='5' border='1px solid #000' p='2' cursor='pointer' bg={rate === 5? "#009393" : '#fff'} color={rate === 5? "gold" : '#000'} onClick={(()=>{set_rate(5)})}>5</Text>
 
-const passwords=[
-	{
-		acc:'client',
-		password:'client'
-	},
-	{
-		acc:'sales',
-		password:'sales'
-	},
-	{
-		acc:'distributor',
-		password:'distributor'
-	},
-	{
-		acc:'manufacturer',
-		password:'manufacturer'
-	},
-]
+// 						</Flex>
+// 					</Flex>
+// 					<Button bg='#009393' color='#fff' onClick={Handle_Create_Feedback}>Submit Feedback</Button>
+// 				</Flex>
+// 				:
+// 				<Flex gap='2' direction='column'>
+// 					<Image src='/feedback.jpg' alt='photo'/>
+// 				</Flex>
+// 			}
+// 			</Flex>

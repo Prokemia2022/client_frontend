@@ -61,67 +61,105 @@ export default function Sale_Form({setCurrentValue,salesperson_data}){
 
     //functions
     const verify_input_fields=()=>{
-    	set_isverified(true)
+    	set_issubmitting(true)
     	/***verifies the main input fields are correct.***/
     	if (!name_of_product || !name_of_client || !email_of_client || !volume_of_items || !unit_price){
     		toast({
 				title: '',
-				description: 'All required inputs must be filled',
+				position: 'top-left',
+				variant:"subtle",
+				description: `Ensure all inputs are filled`,
 				status: 'info',
 				isClosable: true,
 			});
-			set_isverified(false)
+			set_issubmitting(false)
 		}else if(!salesperson_data?.verification_status){
-			console.log(salesperson_data?.verification_status)
+			//console.log(!salesperson_data?.verification_status)
 			toast({
+				position: 'top-left',
+				variant:"subtle",
 				title: 'Account has not been approved',
 				description: 'only verified salesperson accounts can create a new sale.',
 				status: 'info',
 				isClosable: true,
 			});
-			set_isverified(false)
+			set_issubmitting(false)
 		}else if(salesperson_data?.suspension_status){
 			//console.log(salesperson_data?.verification_status)
 			toast({
+				position: 'top-left',
+				variant:"subtle",
 				title: 'Your account is currently suspended.',
 				description: 'reach out to support for guidance by emailing us at help@prokemia.com',
 				status: 'error',
 				isClosable: true,
 			});
-			set_isverified(false)
+			set_issubmitting(false)
 		}else if (name_of_product && name_of_client && email_of_client && volume_of_items && unit_price){
-			set_issubmitting(true)
 			Create_Sale()
 		}else{
-			console.log('error')
+			toast({
+				position: 'top-left',
+				variant:"subtle",
+				title: '',
+				description: 'Error while verifying your sale',
+				status: 'error',
+				isClosable: true,
+			});
+			set_issubmitting(false)
 		}
     }
     const Create_Sale=async()=>{
       await Create_Order(payload).then(()=>{
-      	
         toast({
-			title: 'Success',
-			description: `Sale of ${name_of_product} has created successfuly.`,
+			position: 'top-left',
+			variant:"subtle",
+			title: '',
+			description: `Sale of ${name_of_product} has been created successfuly.`,			
 			status: 'success',
 			isClosable: true,
 		});
       }).then(()=>{
-      		set_issubmitting(false)
-      		set_isverified(false)
-      		setCurrentValue("dashboard")
+		  Clean_input_data()
+		setTimeout(()=>{
+			set_issubmitting(false);
+			setCurrentValue("dashboard")
+		},1000)
       }).catch((err)=>{
 	      	toast({
+				position: 'top-left',
+				variant:"subtle",
 				title: '',
 				description: `${err.response.data}`,
 				status: 'error',
 				isClosable: true,
 			});
+			set_issubmitting(false)
       })
     }
+	const Clean_input_data=()=>{
+		//client-info
+		set_name_of_client('');
+		set_company_name_of_client('');
+		set_mobile_of_client('');
+		set_email_of_client('');
+		set_location_of_client('');
+		//product info
+		set_name_of_product('');
+		set_volume_of_items('');
+		set_unit_price('');
+		//payment&delivery
+		set_delivery_date('');
+		set_delivery_terms('');
+		set_payment_terms('')
+	}
 	return(
 		<>
 			{issubmitting?
-				<Loading/>
+				<Flex direction='column' h='100vh' justify='center' align='center' bg='#009393' w='100%'>
+				<Loading width='100px' height='100px' color='#fff'/>
+				<Text fontWeight={'bold'} fontSize={'lg'} color='#fff'>Wait as we submit your sale...</Text>
+				</Flex>
 				:
 				<Flex direction='column' gap='3' p='4' w='100%' overflowY='scroll' h='100vh'>
 					<Text fontSize='28px' fontWeight='bold'>New Sale</Text>
@@ -174,7 +212,7 @@ export default function Sale_Form({setCurrentValue,salesperson_data}){
 					    <Text fontSize='14px'>- a 5% service fee will be charged for this process.</Text>
 					</Flex>
 					<Flex gap='2'>
-						<Button flex='1' bg='#009393' p='4' color='#fff' onClick={verify_input_fields} disabled={is_verified?true:false}>Create Sale</Button>
+						<Button flex='1' bg='#009393' p='4' color='#fff' onClick={verify_input_fields}>Create Sale</Button>
 						<Button flex='1' bg='#fff' border='1px solid red' p='4' color='#000' onClick={(()=>{setCurrentValue('dashboard')})}>Cancel</Button>
 					</Flex>
 				</Flex>

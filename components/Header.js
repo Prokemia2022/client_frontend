@@ -7,30 +7,28 @@ import jwt_decode from "jwt-decode";
 import {Flex,
 		Text,
 		Button,
-		Stack,
 		Divider,
 		Menu,
 	    MenuButton,
-	    MenuList,
-	    MenuItem,MenuDivider,Center,Image} from '@chakra-ui/react'
+	    MenuList,InputGroup ,InputRightElement ,
+	    Image,
+		Input} from '@chakra-ui/react'
 //icon import
-import {Close,Add,HorizontalRule,ArrowForward} from '@mui/icons-material';
+import {Add} from '@mui/icons-material';
 import MenuOpenIcon from '@mui/icons-material/MenuOpen';
 import SearchIcon from '@mui/icons-material/Search';
-import SearchOffIcon from '@mui/icons-material/SearchOff';
-import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import CloseIcon from '@mui/icons-material/Close';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 //components import
 import Search from './Search.js'
-import styles from '../styles/Home.module.css';
+import styles from '../styles/Search.module.css';
 import Get_Client from '../pages/api/auth/client/get_client.js'
 import Get_Distributor from '../pages/api/auth/distributor/get_distributor.js'
 import Get_Manufacturer from '../pages/api/auth/manufacturer/get_manufacturer.js'
 import Get_Salesperson from '../pages/api/auth/salesperson/get_salesperson_client.js'
 
 
-function Header({products_data,distributors_data,manufacturers_data,industries_data,technologies_data}){
-	const [showmenubar,setshowmenubar]=useState(false);
+function Header(){
 	const [searchbaractive,setsearchbaractive]=useState(false);
 	const [signedin,setsignedin]=useState(false);
 	
@@ -38,7 +36,8 @@ function Header({products_data,distributors_data,manufacturers_data,industries_d
 	const [acc_type,set_acc_type]=useState('');
 	const [uid,set_uid]=useState('');
 	const [profile_photo_url,set_profile_photo_url]=useState('');
-	const [is_suspended,set_is_suspended]=useState(null);
+
+	const [query_search,setquery_search]=useState('');
 
 
 	const router = useRouter();
@@ -46,14 +45,6 @@ function Header({products_data,distributors_data,manufacturers_data,industries_d
 	const token = cookies.get('user_token');
 	
 	useEffect(()=>{
-		const client = {
-		      width: document.documentElement.clientWidth,
-		      height: document.documentElement.clientHeight
-		}
-		//console.log(client.width)
-		if (client.width > 500){
-			setsearchbaractive(true)
-		}
 		if(token){
 			const details = jwt_decode(token)
 			////console.log(details)
@@ -123,10 +114,18 @@ function Header({products_data,distributors_data,manufacturers_data,industries_d
 			<Flex justify='space-between' align='center'>
 				<Text mb='0' onClick={(()=>{router.push('/')})} fontSize='28px' color='#00e0c6'>Pro<span style={{color:"#000"}}>Kemia</span></Text>
 				<Flex align='center' gap='2'>
-					{searchbaractive ? <SearchOffIcon onClick={(()=>{setsearchbaractive(false)})}/> : <SearchIcon onClick={(()=>{setsearchbaractive(true)})}/>}
+					<InputGroup className={styles.search_input_on_header}>
+						<Input bg='#fff' value={query_search} variant='outline' borderTopRightRadius='0' borderBottomRightRadius='0' placeholder='Search products,suppliers,items' outline={'none'} onChange={((e)=>{setquery_search(e.target.value);})}/>
+						{query_search.length > 0 || searchbaractive ? 
+							<InputRightElement bg='#eee' borderLeft='1px solid #eee' children={<CloseIcon />} onClick={(()=>{setquery_search('');setsearchbaractive(false)})}/>
+							: 
+							<InputRightElement bg='#eee' borderLeft='1px solid #eee' children={<SearchIcon />} />
+						}
+					</InputGroup>
+					<SearchIcon className={styles.search_input_icon_on_header} onClick={(()=>{setsearchbaractive(true)})}/>
 					{signedin? 
 						null:
-						<Button onClick={(()=>{router.push('/account/1')})} bg='#009393' color='#fff' >Free Sign Up</Button>}
+						<Button onClick={(()=>{router.push('/account/1')})} bg='#009393' color='#fff'>Free Sign Up</Button>}
 					<Menu >
 					<Flex align='center' gap='1' p='1' borderRadius='5'>
 						{signedin?
@@ -191,7 +190,7 @@ function Header({products_data,distributors_data,manufacturers_data,industries_d
 					</Menu>
 				</Flex>
 			</Flex>
-			{searchbaractive ? <Search setsearchbaractive={setsearchbaractive}/> : null}			
+			{searchbaractive || query_search? <Search setsearchbaractive={setsearchbaractive} query_search={query_search} setquery_search={setquery_search}/> : null}			
 		</Flex>
 	)
 }

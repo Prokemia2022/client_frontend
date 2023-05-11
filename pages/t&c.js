@@ -11,14 +11,14 @@ function TC(){
 
 			<Text>These Website Terms and Conditions (“Terms”, “Terms of Service”) contained herein on this webpage, shall govern your use of this website, including all pages within this website (“Website”) located here. <Link color='#009393' href='https://prokemia.com' isExternal>https://prokemia.com</Link> (together or individually “Service”) operated by Prokemia Specialty (“Company”, “we”, “our”, “us”).</Text>
 			<Text>These Terms apply in full force and effect to your use of this Website and by using this Website, you expressly accept all terms and conditions contained herein in full. You must not use this Website, if you have any objection to any of these Website Terms and Conditions.</Text>
-			<Text fontWeight='bold'>UPDATE MESSAGE: This Terms & Conditions Policy was last updated on 11th February 2023.</Text>
+			<Text fontWeight='bold'>UPDATE MESSAGE: This Policy was last updated on 11th May 2023.</Text>
 			<Text mt='1' fontWeight='bold' fontSize='20px'>Content</Text>
 			<Text>The Content found on or through the Service is the property of the Company or used with permission from a third party. You may not distribute, modify, transmit, reuse, download, repost, copy, or use the said Content, whether in whole or in part, for commercial purposes or for personal gain, without prior written permission from us.</Text>
 			<Text mt='1' fontWeight='bold' fontSize='20px'>Prohibited Uses</Text>
 			<Text>You may use this Service only for lawful purposes.</Text>
 			<Text>You agree not to use Service:</Text>
 			<Flex direction='column' gap='1'>
-				{prohibiteduses.map((text)=>{return(<Text key={text.id}>-{text}</Text>)})}
+				{prohibiteduses.map((text,index)=>{return(<Text key={index}>-{text}</Text>)})}
 			</Flex>
 			<Text mt='1' fontWeight='bold' fontSize='20px'>Accounts</Text>
 			<Text>When you create an account with us, you guarantee that you are above at least the age of 18 years or older, and that the information you provide us is accurate, complete, and current at all times. Inaccurate, incomplete, or obsolete information may result in the immediate termination of your account on Service.</Text>
@@ -31,7 +31,7 @@ function TC(){
 			<Text>You may provide us either directly at app@prokemia.com  or via third party sites and tools with information and feedback concerning errors, suggestions for improvements, ideas, problems, complaints, and other matters related to our Service (“Feedback”). </Text>
 			<Text>You acknowledge and agree that:</Text>
 			<Flex direction='column' gap='1'>
-				{errorfeedback.map((text)=>{return(<Text key={text.id}>-{text}</Text>)})}
+				{errorfeedback.map((text,index)=>{return(<Text key={index}>-{text}</Text>)})}
 			</Flex>
 			<Text>In the event the transfer of the ownership to the Feedback is not possible due to applicable mandatory laws, you grant Company and its affiliates an exclusive, transferable, irrevocable, free-of-charge, sub-licensable, unlimited and perpetual right to use (including copy, modify, create derivative works, publish, distribute and commercialize) Feedback in any manner and for any purpose.</Text>
 			<Text mt='1' fontWeight='bold' fontSize='20px'>Links to Other Web Sites</Text>

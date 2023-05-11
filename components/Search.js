@@ -1,6 +1,6 @@
 import {useState,useEffect} from 'react';
-import {Flex,Text,Select,Input,Button,Image} from '@chakra-ui/react';
-import styles from '../styles/Home.module.css';
+import {Flex,Text,Input,Button,Image} from '@chakra-ui/react';
+import styles from '../styles/Search.module.css';
 import SearchIcon from '@mui/icons-material/Search';
 import Script from 'next/script';
 import {useRouter} from 'next/router'
@@ -9,9 +9,10 @@ import Get_Industries from '../pages/api/control/get_industries.js'
 import Get_Technologies from '../pages/api/control/get_technologies.js'
 import Get_Distributors from '../pages/api/auth/distributor/get_distributors.js'
 import Get_Manufacturers from '../pages/api/auth/manufacturer/get_manufacturers.js'
-import CloseFullscreenIcon from '@mui/icons-material/CloseFullscreen';
+import CloseIcon from '@mui/icons-material/Close';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
-export default function Search({setsearchbaractive}){
+export default function Search({setsearchbaractive,query_search,setquery_search}){
 	const [active,set_active]=useState(false);
 	const [search_value,set_search_value]=useState('');
 
@@ -30,13 +31,18 @@ export default function Search({setsearchbaractive}){
 	const debounce_search_value = useDebounceValue(search_value)
 
 	useEffect(()=>{
+		//console.log(search_value)
+		if(query_search?.length > 0){
+			set_search_value(query_search)
+		}
 		(async ()=>{
 			set_is_querying(true);
-			console.log(debounce_search_value);
+			//console.log(debounce_search_value);
 			if (debounce_search_value.length == 0){
 				set_active(false);
 			}
 			if (debounce_search_value.length > 0){
+				set_active(true);
 				get_Products_Data()
 				get_Industries_Data()
 				get_Technologies_Data()
@@ -45,7 +51,7 @@ export default function Search({setsearchbaractive}){
 				set_is_querying(false)
 			}
 		})();
-	},[debounce_search_value])
+	},[debounce_search_value,query_search,search_value])
 
 	const get_Products_Data=async()=>{
 		await Get_Products().then((response)=>{
@@ -105,40 +111,42 @@ export default function Search({setsearchbaractive}){
 		});
 	}
 	return(
-		<Flex direction='column' w='100%'>
-			<Flex p='3' direction='column'>
-				<Flex zIndex='900' >
-					<input style={{backgroundColor:'#eee',width:"100%",borderRadius:'5px 0 0 5px',outline:'none',padding:'5px'}} value={search_value} autoComplete="off" type='text' placeholder='Search for products, sellers, industries, technologies' onChange={((e)=>{set_search_value(e.target.value);set_active(true)})}/>
-					<Button color='#fff' bg='#009393' borderRadius='0 5px 5px 0' onClick={(()=>{setsearchbaractive(false)})}><CloseFullscreenIcon/></Button>
-				</Flex>
-				{active?
-					<Flex position='relative'>
-						<Flex borderRadius='5' bg='#000' opacity='0.3' zIndex='' h='100vh' w='100vw' onClick={(()=>{set_active(false)})} position='fixed' top='0' right='0' />
-						<Result 
-								is_querying={is_querying}
-								product_isfetching={product_isfetching} 
-								distributor_isfetching={distributor_isfetching} 
-								manufacturers_isfetching={manufacturers_isfetching} 
-								industries_isfetching={industries_isfetching} 
-								technologies_isfetching={technologies_isfetching} 
-								setsearchbaractive={setsearchbaractive} 
-								set_active={set_active} 
-								products_data={products_data} 
-								distributors_data={distributors_data} 
-								manufacturers_data={manufacturers_data} 
-								industries_data={industries_data}
-								technologies_data={technologies_data}/> 
+			<Flex direction='column' className={styles.search_body}>
+				<Flex className={styles.result_bar_body}>
+					<Flex className={styles.search_input_on_result_bar} gap='1'>
+						<ArrowBackIcon onClick={(()=>{set_search_value('');setsearchbaractive(false)})}/>
+						<Input value={search_value} autoComplete="off" type='text' placeholder='Search for products, sellers, industries, technologies' onChange={((e)=>{set_search_value(e.target.value);setquery_search(e.target.value);set_active(true)})}/>
+						{search_value? 
+							<Button color='#fff' bg='#009393' borderRadius='5px' onClick={(()=>{set_search_value('');setquery_search('')})}><CloseIcon/></Button>
+							:
+							<Button color='#fff' bg='#009393' borderRadius='5px'><SearchIcon/></Button>
+						}
 					</Flex>
-					:
-					null
-				}
+					{active ?
+						<Result 
+									is_querying={is_querying}
+									product_isfetching={product_isfetching} 
+									distributor_isfetching={distributor_isfetching} 
+									manufacturers_isfetching={manufacturers_isfetching} 
+									industries_isfetching={industries_isfetching} 
+									technologies_isfetching={technologies_isfetching}
+									setquery_search={setquery_search}
+									set_active={set_active} 
+									products_data={products_data} 
+									distributors_data={distributors_data} 
+									manufacturers_data={manufacturers_data} 
+									industries_data={industries_data}
+									setsearchbaractive={setsearchbaractive}
+									technologies_data={technologies_data}/> 
+						:
+						null
+					}
+				</Flex>
 			</Flex>
-		</Flex>	
 	)
 }
 
 const Result=({
-				is_querying,
 				product_isfetching,
 				distributor_isfetching,
 				manufacturers_isfetching,
@@ -149,13 +157,14 @@ const Result=({
 				manufacturers_data,
 				industries_data,
 				technologies_data,
+				setquery_search,
 				setsearchbaractive
 			})=>{
 	const router = useRouter();
 	return(
-		<Flex className={styles.ResultsBar} direction='column' p='2' borderRadius='10' bg='#eee' overflowY='scroll' h='60vh' >
+		<Flex className={styles.ResultsBar}>
 			{products_data?.length === 0 && distributors_data?.length === 0 && manufacturers_data?.length === 0 && industries_data?.length === 0 && technologies_data?.length === 0 && !product_isfetching && !distributor_isfetching && !manufacturers_isfetching && !industries_isfetching && !technologies_isfetching?
-				<Flex align='center' justify='center' bg='#eee' h='150px' p='3' m='auto'>
+				<Flex className={styles.Results_Info}>
 					<Script src="https://cdn.lordicon.com/bhenfmcm.js"></Script>
 					<lord-icon src="https://cdn.lordicon.com/gqzfzudq.json" trigger="loop" delay="500" style={{marginTop:'20px',width:'70px',height:"70px",}} >
 					</lord-icon>
@@ -165,7 +174,7 @@ const Result=({
 				<>
 					{product_isfetching?
 						<Flex w='100%' direction={'column'} gap='2'>
-							<Text fontSize='20px' color='#009393' p='1' borderRadius='5'>Products</Text>
+							<Text fontSize='24px' color='#009393' p='1' borderRadius='5'>Products</Text>
 							<Loading/>
 							<Loading/>
 						</Flex>
@@ -175,10 +184,10 @@ const Result=({
 								null
 								:
 								<Flex direction='column' p='1' gap='2'>
-									<Text fontSize='20px' color='#009393' p='1' borderRadius='5'>Products</Text>
+									<Text fontSize='24px' p='1' color='#009393' borderRadius='5'>Products</Text>
 									{products_data?.slice(0,4).map((item)=>{
 										return(
-											<Product_Item router={router} item={item} key={item?._id} setsearchbaractive={setsearchbaractive}/>	
+											<Product_Item router={router} item={item} key={item?._id} setquery_search={setquery_search} setsearchbaractive={setsearchbaractive}/>	
 										)
 									})}
 								</Flex>
@@ -188,7 +197,7 @@ const Result=({
 					
 					{distributor_isfetching?
 						<Flex w='100%' direction={'column'} gap='2'>
-							<Text mt='2' fontSize='20px' color='#009393' p='1' borderRadius='5'>Distributors</Text>
+							<Text mt='2' fontSize='24px' color='#009393' p='1' borderRadius='5'>Distributors</Text>
 							<Loading/>
 							<Loading/>
 						</Flex>
@@ -198,10 +207,10 @@ const Result=({
 								null
 								:
 								<Flex direction='column' p='1' gap='2'>
-									<Text mt='2' fontSize='20px' color='#009393' p='1' borderRadius='5'>Distributors</Text>
+									<Text mt='2' fontSize='24px' color='#009393' p='1' borderRadius='5'>Distributors</Text>
 									{distributors_data?.slice(0,2).map((item)=>{
 										return(
-											<Distributor_Item router={router} item={item} key={item?._id} setsearchbaractive={setsearchbaractive}/>
+											<Distributor_Item router={router} item={item} key={item?._id} setquery_search={setquery_search} setsearchbaractive={setsearchbaractive}/>
 										)
 									})}
 								</Flex>
@@ -211,7 +220,7 @@ const Result=({
 					
 					{manufacturers_isfetching?
 						<Flex w='100%' direction={'column'} gap='2'>
-							<Text mt='2' fontSize='20px' color='#009393' p='1' borderRadius='5'>Manufacturers</Text>
+							<Text mt='2' fontSize='24px' color='#009393' p='1' borderRadius='5'>Manufacturers</Text>
 							<Loading/>
 							<Loading/>
 						</Flex>
@@ -221,10 +230,10 @@ const Result=({
 							null
 							:
 							<Flex direction='column' p='1' gap='2'>
-								<Text mt='2' fontSize='20px' color='#009393' p='1' borderRadius='5'>Manufacturers</Text>
+								<Text mt='2' fontSize='24px' color='#009393' p='1' borderRadius='5'>Manufacturers</Text>
 								{manufacturers_data?.slice(0,2).map((item)=>{
 									return(
-										<Manufacturer_Item router={router} item={item} key={item?._id} setsearchbaractive={setsearchbaractive}/>
+										<Manufacturer_Item router={router} item={item} key={item?._id} setquery_search={setquery_search} setsearchbaractive={setsearchbaractive}/>
 									)
 								})}
 							</Flex>
@@ -235,7 +244,7 @@ const Result=({
 					{industries_isfetching?
 						<Flex w='100%' direction={'column'} gap='2'>
 							<Flex justify='space-between' align='center' p='2'>
-									<Text mt='2' fontSize='20px' color='#009393' p='1' borderRadius='5'>Industries</Text>
+									<Text mt='2' fontSize='24px' color='#009393' p='1' borderRadius='5'>Industries</Text>
 									<Text mb='0' fontSize='18px' color='#009393' onClick={(()=>{router.push('/Industries/all')})} cursor='pointer'>see more</Text>
 								</Flex>
 							<Loading/>
@@ -248,12 +257,12 @@ const Result=({
 							:
 							<Flex direction='column' p='1' gap='2'>
 								<Flex justify='space-between' align='center' p='2'>
-									<Text mt='2' fontSize='20px' color='#009393' p='1' borderRadius='5'>Industries</Text>
+									<Text mt='2' fontSize='24px' color='#009393' p='1' borderRadius='5'>Industries</Text>
 									<Text mb='0' fontSize='18px' color='#009393' onClick={(()=>{router.push('/Industries/all')})} cursor='pointer'>see more</Text>
 								</Flex>
 								{industries_data?.slice(0,2).map((item)=>{
 									return(
-										<Industry_Item router={router} item={item} key={item?._id} setsearchbaractive={setsearchbaractive}/>
+										<Industry_Item router={router} item={item} key={item?._id} setquery_search={setquery_search} setsearchbaractive={setsearchbaractive}/>
 									)
 								})}
 							</Flex>
@@ -263,7 +272,7 @@ const Result=({
 					{technologies_isfetching?
 						<Flex w='100%' direction={'column'} gap='2'>
 							<Flex justify='space-between' align='center' p='2'>
-								<Text mt='2' fontSize='20px' color='#009393' p='1' borderRadius='5'>Technologies</Text>
+								<Text mt='2' fontSize='24px' color='#009393' p='1' borderRadius='5'>Technologies</Text>
 								<Text mb='0' fontSize='18px' color='#009393' onClick={(()=>{router.push('/Technologies/all')})} cursor='pointer'>see more</Text>
 							</Flex>
 							<Loading/>
@@ -276,12 +285,12 @@ const Result=({
 							:
 							<Flex direction='column' p='1' gap='2'>
 								<Flex justify='space-between' align='center' p='2'>
-									<Text mt='2' fontSize='20px' color='#009393' p='1' borderRadius='5'>Technologies</Text>
+									<Text mt='2' fontSize='24px' color='#009393' p='1' borderRadius='5'>Technologies</Text>
 									<Text mb='0' fontSize='18px' color='#009393' onClick={(()=>{router.push('/Technologies/all')})} cursor='pointer'>see more</Text>
 								</Flex>
 								{technologies_data?.slice(0,2).map((item)=>{
 									return(
-										<Technology_Item router={router} item={item} key={item?._id} setsearchbaractive={setsearchbaractive}/>
+										<Technology_Item router={router} item={item} key={item?._id} setquery_search={setquery_search} setsearchbaractive={setsearchbaractive}/>
 									)
 								})}
 							</Flex>
@@ -295,9 +304,14 @@ const Result=({
 	)
 }
 
-const Product_Item=({item,router,setsearchbaractive})=>{
+const Product_Item=({item,router,setquery_search,setsearchbaractive})=>{
+	const handle_route=()=>{
+		router.push(`/product/${item._id}`);
+		setquery_search('')
+		setsearchbaractive(false)
+	}
 	return(
-		<Flex key={item._id} position='relative' gap='2' align='center' onClick={(()=>{router.push(`/product/${item._id}`);setsearchbaractive(false)})} bg='#fff' p='1' borderRadius='5' boxShadow='lg'>
+		<Flex key={item._id} position='relative' gap='2' align='center' onClick={handle_route} bg='#fff' p='1' borderRadius='5' boxShadow='lg'>
 			<Image w='50px' h='50px' borderRadius='10px' objectFit='cover' src='../../Pro.png' alt='next'/>
 			<Flex direction='column'>
 				<Text fontSize='16px' fontFamily='ClearSans-Bold' color='#009393'>{item.name_of_product}</Text>
@@ -311,9 +325,14 @@ const Product_Item=({item,router,setsearchbaractive})=>{
 	)
 }
 
-const Distributor_Item=({item,router,setsearchbaractive})=>{
+const Distributor_Item=({item,router,setquery_search,setsearchbaractive})=>{
+	const handle_route=()=>{
+		router.push(`/account/distributor/${item?._id}`);
+		setquery_search('')
+		setsearchbaractive(false);
+	}
 	return(
-		<Flex key={item._id} position='relative' gap='2' align='center' bg='#fff' p='1' borderRadius='5' boxShadow='lg' onClick={(()=>{router.push(`/account/distributor/${item?._id}`);setsearchbaractive(false);})}>
+		<Flex key={item._id} position='relative' gap='2' align='center' bg='#fff' p='1' borderRadius='5' boxShadow='lg' onClick={handle_route}>
 			<Image w='50px' h='50px' borderRadius='10px' objectFit='cover' src={item?.profile_photo_url == '' || !item?.profile_photo_url? '../../Pro.png' : item?.profile_photo_url} alt='next'/>
 			<Flex direction='column'>
 				<Text mb='0' fontSize='16px' fontFamily='ClearSans-Bold' color='#009393'>{item.company_name}</Text>
@@ -323,9 +342,14 @@ const Distributor_Item=({item,router,setsearchbaractive})=>{
 	)
 }
 
-const Manufacturer_Item=({item,router,setsearchbaractive})=>{
+const Manufacturer_Item=({item,router,setquery_search,setsearchbaractive})=>{
+	const handle_route=()=>{
+		router.push(`/account/manufacturer/${item?._id}`);
+		setquery_search('')
+		setsearchbaractive(false);
+	}
 	return(
-		<Flex key={item._id} position='relative' gap='2' align='center' bg='#fff' p='1' borderRadius='5' boxShadow='lg' onClick={(()=>{router.push(`/account/manufacturer/${item?._id}`);setsearchbaractive(false);})}>
+		<Flex key={item._id} position='relative' gap='2' align='center' bg='#fff' p='1' borderRadius='5' boxShadow='lg' onClick={handle_route}>
 			<Image w='50px' h='50px' borderRadius='10px' objectFit='cover' src={item?.profile_photo_url == '' || !item?.profile_photo_url? '../../Pro.png' : item?.profile_photo_url} alt='next'/>
 			<Flex direction='column'>
 				<Text mb='0' fontSize='16px' fontFamily='ClearSans-Bold' color='#009393'>{item.company_name}</Text>
@@ -335,9 +359,14 @@ const Manufacturer_Item=({item,router,setsearchbaractive})=>{
 	)
 }
 
-const Industry_Item=({item,router,setsearchbaractive})=>{
+const Industry_Item=({item,router,setquery_search,setsearchbaractive})=>{
+	const handle_route=()=>{
+		router.push(`/products/${item.title}`);
+		setquery_search('')
+		setsearchbaractive(false)
+	}
 	return(
-		<Flex key={item._id} position='relative' gap='2' align='center' onClick={(()=>{router.push(`/products/${item.title}`);setsearchbaractive(false)})} bg='#fff' p='1' borderRadius='5' boxShadow='lg'>
+		<Flex key={item._id} position='relative' gap='2' align='center' onClick={handle_route} bg='#fff' p='1' borderRadius='5' boxShadow='lg'>
 			<Image w='50px' h='50px' borderRadius='10px' objectFit='cover' src={item?.cover_image == '' || !item?.cover_image?'../../Pro.png':item?.cover_image} alt='next'/>
 			<Flex direction='column'>
 				<Text mb='0' fontSize='16px' fontFamily='ClearSans-Bold'>{item.title}</Text>
@@ -346,9 +375,14 @@ const Industry_Item=({item,router,setsearchbaractive})=>{
 	)
 }
 
-const Technology_Item=({item,router,setsearchbaractive})=>{
+const Technology_Item=({item,router,setquery_search,setsearchbaractive})=>{
+	const handle_route=()=>{
+		router.push(`/products/${item.title}`);
+		setquery_search('')
+		setsearchbaractive(false)
+	}
 	return(
-		<Flex key={item._id} position='relative' gap='2' align='center' onClick={(()=>{router.push(`/products/${item.title}`);setsearchbaractive(false)})} bg='#fff' p='1' borderRadius='5' boxShadow='lg'>
+		<Flex key={item._id} position='relative' gap='2' align='center' onClick={handle_route} bg='#fff' p='1' borderRadius='5' boxShadow='lg'>
 			<Image w='50px' h='50px' borderRadius='10px' objectFit='cover' src={item?.cover_image == '' || !item?.cover_image?'../../Pro.png':item?.cover_image} alt='next'/>
 			<Flex direction='column'>
 				<Text mb='0' fontSize='16px' fontFamily='ClearSans-Bold'>{item.title}</Text>

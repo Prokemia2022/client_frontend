@@ -8,6 +8,8 @@ import Header from '../../../components/Header.js'
 import Get_Distributor from '../../api/auth/distributor/get_distributor.js'
 import Get_Products from '../../api/product/get_products.js'
 //icons
+//styles
+import styles from '../../../styles/Home.module.css';
 
 export default function Distributor(){
 	/**
@@ -52,7 +54,7 @@ export default function Distributor(){
          *       returns null
 		 */
 		await Get_Distributor(payload).then((response)=>{
-			//console.log(response)
+			//console.log(response?.data)
 			set_distributor_data(response?.data);
 			const email = response?.data?.email_of_company;
 			fetch_products_data(email);
@@ -87,7 +89,7 @@ export default function Distributor(){
 			const technology_values = result.map(item=>item?.technology);
 			set_technologies([...new Set(technology_values)]);
 		}).catch((err)=>{
-			console.log(err)
+			//console.log(err)
 			toast({
 				title: '',
 				description: `${err.data}`,
@@ -146,17 +148,15 @@ export default function Distributor(){
 							<Text>The user has not attached any experts.</Text>
 						</Flex>
 					:
-					<Flex borderRadius='5' gap='3' direction='column' h='25vh' overflowY={'scroll'}> 
+					<Flex borderRadius='5' gap='3' direction='column' h='25vh' overflowY={'scroll'} className={styles.scrollbar}> 
 						{distributor_data?.experts?.map((item)=>{
 							return(
 								<Flex bg='#eee' direction='column' key={item._id} p='2' borderRadius='5' boxShadow='lg' cursor='pointer' fontSize={'14px'}>
 									<Text><span style={{fontWeight:"bold"}}>Name: </span>{item.name}</Text>
-									<Text>Email:  
-										<Link fontWeight='bold' color='#009393' href={`mailto: ${item?.email}`} isExternal>
-											{item?.email}
-										</Link>
-									</Text>
-									<Text>Mobile: {item.mobile}</Text>
+									<Text>{item?.description}</Text>
+									<Link bg='#009393' p='1' w='120px' borderRadius='5' fontWeight='bold' color='#fff' href={`mailto: ${item?.email}`} isExternal>
+										Email this expert
+									</Link>
 								</Flex>
 							)
 						})}
@@ -170,13 +170,13 @@ export default function Distributor(){
 								<Text>Not specializing in any industries.</Text>
 							</Flex>
 							:
-							<Flex direction='column'> 
-							{industries?.map((item,id)=>{
-								return(
-									<Industry_Card_Item key={id} item={item}/>
-								)
-							})}
-						</Flex>
+							<Flex gap='1' flexWrap={'wrap'}> 
+								{industries?.map((item,id)=>{
+									return(
+										<Industry_Card_Item key={id} item={item}/>
+									)
+								})}
+							</Flex>
 						}
 				</Flex>
 				<Flex direction='column' gap='2'>
@@ -186,13 +186,13 @@ export default function Distributor(){
 								<Text>Not specializing in any technologies.</Text>
 							</Flex>
 							:
-							<Flex direction='column'> 
-							{technologies?.map((item,id)=>{
-								return(
-									<Technology_Card_Item key={id} item={item}/>
-								)
-							})}
-						</Flex>
+							<Flex gap='1' flexWrap={'wrap'}> 
+								{technologies?.map((item,id)=>{
+									return(
+										<Technology_Card_Item key={id} item={item}/>
+									)
+								})}
+							</Flex>
 						}
 				</Flex>
 				<Text fontSize='18px' fontWeight='bold'>Products</Text>
@@ -201,7 +201,7 @@ export default function Distributor(){
 						<Text w='50%' textAlign='center'>No products have been listed.</Text>
 					</Flex>
 					:
-					<Flex direction='column' h='50vh' overflowY='scroll' gap='2'>
+					<Flex direction='column' h='50vh' overflowY='scroll' gap='2' className={styles.scrollbar}>
 						{products?.map((item)=>{
 							return(
 								<Product_Item item={item} key={item._id}/>
@@ -233,13 +233,16 @@ const Product_Item=({item})=>{
 
 
 const Industry_Card_Item=({item})=>{
+	//console.log(item)
+	let link = item?item:'undefined';
 	return(
-		<Link fontWeight='bold' color='#009393' href={`/products/${item}`}>{item}</Link>
+		<Link bg='#eee' p='1' borderRadius='5' fontWeight='bold' color='#009393' href={`/products/${link}`}>{link == 'undefined'?null:link}</Link>
 	)
 }
 
 const Technology_Card_Item=({item})=>{
+	let link = item?item:'undefined';
 	return(
-		<Link fontWeight='bold' color='#009393' href={`/products/${item}`}>{item}</Link>
+		<Link bg='#eee' p='1' borderRadius='5' fontWeight='bold' color='#009393' href={`/products/${link}`}>{link == 'undefined'?null:link}</Link>
 	)
 }

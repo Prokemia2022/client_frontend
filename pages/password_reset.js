@@ -1,13 +1,15 @@
 import {useState,useEffect} from 'react';
-import {Flex,Text,Button,Input,useToast,InputGroup,InputRightElement} from '@chakra-ui/react'
+import {Flex,Text,Button,Input,useToast,InputGroup,InputRightElement,Heading} from '@chakra-ui/react'
 import {useRouter} from 'next/router'
 import Header from '../components/Header.js';
 import axios from 'axios';
 import Cookies from 'universal-cookie';
 import Password_Reset from './api/auth/password_reset.js'
 import {Visibility,VisibilityOff} from '@mui/icons-material';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 //api
 import Send_Password_Otp from './api/email_handler/password_email.js'
+import styles from '../styles/Password.module.css';
 
 export default function Password_Reset_Function(){
 	const router = useRouter();
@@ -34,10 +36,10 @@ export default function Password_Reset_Function(){
 
 	const Generate_Code=async()=>{
 		const characters = '0123456789';
-		const result = ''
+		let result = ''
 		const charactersLength = characters.length
 
-		for (const i = 0;i<6;i++){
+		for (let i = 0;i<6;i++){
 			result += characters.charAt(Math.floor(Math.random() * charactersLength));
 		}
 		cookies.set('password_reset_code', result, { path: '/' });
@@ -116,13 +118,22 @@ export default function Password_Reset_Function(){
   	}
 
 	return(
-		<Flex direction='column'>
-			<Header/>
-			<Flex align='center' justify='center' direction='column' p='2' gap='2' h='90vh' >
-				<Text fontSize='28px' fontWeight='bold'>Password Reset</Text>
+		<Flex className={styles.Password_Body}>
+			<Flex className={styles.Password_Image}>
+				<Flex className={styles.Back_Icon} gap='2' boxShadow={'lg'} onClick={(()=>{router.back()})}>
+					<ArrowBackIcon />
+					<Text fontWeight={'bold'}>Back</Text>
+				</Flex>
+			</Flex>
+			<Flex direction='column' className={styles.Form_Body}>
+				<Flex className={styles.Back_Icon} gap='2' boxShadow={'lg'} onClick={(()=>{router.back()})}>
+					<ArrowBackIcon />
+					<Text fontWeight={'bold'}>Back</Text>
+				</Flex>
+				<Heading as='h3' >Forgot password?</Heading>
 				{active?
-					<Flex direction='column' gap='3'>
-						<Text>Use the code sent to your email to change your password.</Text>
+					<Flex direction='column' gap='3' mt='3'>
+						<Text>Enter email to receive the code to change your password.</Text>
 						{code_active?
 							<Flex direction='column' gap='2'>
 								<Input variant='filled' bg='#eee' required type='Number' placeholder='Enter Code' onChange={((e)=>{set_confirmation_code(e.target.value)})}/>

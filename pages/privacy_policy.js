@@ -12,12 +12,12 @@ export default function privacy_policy(){
 			<Text>We at Prokem Specialty (ProKemia) respect your privacy. This Privacy Policy is established to inform the users of ProKemia (Prokem Specialty, ProKemia, “the Company” “We”, “Us”) Website, App and services of collection, processing, sharing and storing of your personal data.</Text>
 			<Text>We are committed to conducting our business in accordance with these principles in order to ensure that the privacy of personal information is protected and maintained. Unless stated otherwise, this Privacy Policy applies when you visit or use the Company website, App or services (our platforms). By accessing the platforms, you agree to be bound by the terms of this Privacy Policy</Text>
 			<Text>This statement should be read together with the applicable data protection laws and regulations and the Terms and Conditions of ProKemia’s services and App. </Text>
-			<Text fontWeight='bold'>UPDATE MESSAGE: This Terms & Conditions Policy was last updated on 11th February 2023.</Text>
+			<Text fontWeight='bold'>UPDATE MESSAGE: This Policy was last updated on 11th May 2023.</Text>
 
 			<Text mt='1' fontWeight='bold' fontSize='20px'> Our Responsibilities</Text>
 			<Text>It is the policy of The Company to maintain an environment that promotes ethical and responsible conduct in all online network activities. The Company recognizes its legal and ethical obligation to protect your personal information and Data in that regard. To this end, The Company reserves the right and recognizes its obligation to:</Text>
 			<Flex direction='column' gap='1'>
-				{responsibility.map((text)=>{return(<Text key={text.id}>-{text}</Text>)})}
+				{responsibility.map((text,index)=>{return(<Text key={index}>-{text}</Text>)})}
 			</Flex>
 			<Text mt='1' fontWeight='bold' fontSize='20px'>Data Collection</Text>
 			<Text>We collect certain data from you directly, like information you enter yourself, data about your participation in our platform including from third party platforms you connect with The Company. We also use third party analytics to collect some data, like information about your device.</Text>
@@ -25,7 +25,7 @@ export default function privacy_policy(){
 			<Text mt='1' fontWeight='bold' fontSize='20px'>Data You Provide </Text>
 			<Text>We may collect different data from or about you depending on how you use the Services. When you create an account and use the Services, we collect personal information which includes any information about you from which you can be identified. The categories of Personal Information about you that we may collect, use, store or transfer (subject to your consent and/ requirements under applicable law) includes the following, some of which constitute Personal Information only when combined with personal identifiers:</Text>
 			<Flex direction='column' gap='1'>
-				{data.map((text)=>{return(<Text key={text.id}>-{text}</Text>)})}
+				{data.map((text,index)=>{return(<Text key={index}>-{text}</Text>)})}
 			</Flex>
 
 			<Text mt='1' fontWeight='bold' fontSize='20px'>How We Get Data about You</Text>
@@ -34,19 +34,19 @@ export default function privacy_policy(){
 			<Text mt='1' fontWeight='bold' fontSize='20px'>Purpose of Information</Text>
 			<Text>Before or at the time of collecting personal information, we will identify the purposes for which information is being collected. These include but not limited to:</Text>
 			<Flex direction='column' gap='1'>
-				{purposeofinformation.map((text)=>{return(<Text key={text.id}>-{text}</Text>)})}
+				{purposeofinformation.map((text,index)=>{return(<Text key={index}>-{text}</Text>)})}
 			</Flex>
 
 			<Text mt='1' fontWeight='bold' fontSize='20px'>Information Sharing and Disclosure</Text>
 			<Text>Depending on usage, we may share certain data about you with our business partners, analytics and data enrichment providers, your social media providers, companies helping us run promotions and surveys, and advertising companies who help us promote our Services. We may also share your data as needed for security, legal compliance, or as part of a corporate restructuring. Lastly, we can share data in other ways if it is aggregated or de-identified or with your consent. We may share your data with third parties under the following circumstances or as otherwise described in this Privacy Policy:</Text>
 			<Flex direction='column' gap='1'>
-				{InformationSharing.map((text)=>{return(<Text key={text.id}>-{text}</Text>)})}
+				{InformationSharing.map((text,index)=>{return(<Text key={index}>-{text}</Text>)})}
 			</Flex>
 
 			<Text mt='1' fontWeight='bold' fontSize='20px'>Rights of users</Text>
 			<Text>Subject to applicable laws, a user has the following rights;</Text>
 			<Flex direction='column' gap='1'>
-				{rightofusers.map((text)=>{return(<Text key={text.id}>-{text}</Text>)})}
+				{rightofusers.map((text,index)=>{return(<Text key={index}>-{text}</Text>)})}
 			</Flex>
 
 			<Text mt='1' fontWeight='bold' fontSize='20px'>Data Retention</Text>

@@ -1,6 +1,23 @@
+.scrollbar::-webkit-scrollbar{
+	display: none; 
+}
+.aboutus{
+	display: flex;
+	flex-direction: row;
+	justify-content: space-around;
+	height:40vh;
+	align-items: center;
+}
+.aboutusbody{
+	padding-left:100px;
+	padding-right:100px;
+}
 .authbody{
 	display:flex;
 	height: 100vh
+}
+.search_input{
+
 }
 .filterbody{
 	width: 70vw;
@@ -70,10 +87,6 @@
 	height: 100vh;
 	align-items:center;
 }
-
-.productbody{
-	/*flex-direction: row;*/
-}
 .productsection2{
 	width: 20vw
 }
@@ -82,9 +95,6 @@
 }
 .contactside{
 	width: 40%;
-}
-.consolebody{
-	
 }
 .consoleNavigation{
 	height: 100vh;
@@ -222,6 +232,20 @@ height: 100vh;
     	width:100vw;
     	height: 100vh;
     }
+	.search_input{
+		display: none;
+	}
+	.aboutusbody{
+		padding: 10px;
+	}
+	.aboutus{
+		flex-direction: column;
+		padding: 10px;
+		height: 100%;
+	}
+	.aboutus p{
+		text-align: center;
+	}
     .authsection1{
     	display: none;
     }

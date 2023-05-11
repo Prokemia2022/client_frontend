@@ -9,37 +9,37 @@ export default function FAQs(){
 	return(
 		<Flex direction='column'>
 			<Header/>
-			<Flex direction='column' p='4'>
-			<Text fontSize='52px' fontFamily='ClearSans-bold'>Faqs</Text>
-			<Text color='grey'>Frequently asked Questions.</Text>
-			<Text color='grey'>Here are some common asked questions about Prokemia</Text>
+			<Flex direction='column' p='4' h='100vh'>
+				<Text fontSize='52px' fontFamily='ClearSans-bold'>FAQs</Text>
+				<Text color='grey'>Frequently asked Questions.</Text>
+				<Text color='grey'>Here are some common asked questions about Prokemia</Text>
 
-			<Flex direction='column' mt='4' gap='3'>
-				{faqs.map((item)=>{
-					return(
-						<Flex key={item.id} borderTop='3px solid grey' borderBottom='3px solid grey' p='2' direction='column'>
-							<Flex cursor='pointer' onClick={(()=>{setActive(!active); setcurrentValue(`${item.title}`)})} align='center' justify='space-between' w='100%'>
-								<Text fontWeight='bold'>{item.title}</Text>
-								{active && item.title === currentValue ? <HorizontalRule /> : <Add />}
-							</Flex>
-							{active && item.title === currentValue ? 
-								<Flex direction='column' gap='1'>
-									{item.content.map((text)=>{
-										return(
-											<Flex key={text.id} bg='#eee' p='2'>
-												<Text mb='0'>{text}</Text>
-											</Flex>
-										)
-									})}
+				<Flex direction='column' mt='4' gap='3'>
+					{faqs.map((item)=>{
+						return(
+							<Flex key={item.id} borderTop='0px solid grey' borderBottom='1px solid grey' p='2' direction='column'>
+								<Flex cursor='pointer' onClick={(()=>{setActive(!active); setcurrentValue(`${item.title}`)})} align='center' justify='space-between' w='100%'>
+									<Text fontWeight='bold'>{item.title}</Text>
+									{active && item.title === currentValue ? <HorizontalRule /> : <Add style={{color:'#009393'}}/>}
 								</Flex>
-							:
-							null
-						}
-						</Flex>
-					)
-				})}
+								{active && item.title === currentValue ? 
+									<Flex direction='column' gap='1'>
+										{item.content.map((text,index)=>{
+											return(
+												<Flex key={index} bg='#eee' p='2'>
+													<Text mb='0'>{text}</Text>
+												</Flex>
+											)
+										})}
+									</Flex>
+								:
+								null
+							}
+							</Flex>
+						)
+					})}
+				</Flex>
 			</Flex>
-		</Flex>
 		</Flex>
 	)
 }
@@ -63,7 +63,7 @@ const faqs=[
 	},
 	{
 		id:4,
-		title:'How to Find Suppliers?',
+		title:'How to find suppliers?',
 		content:['Suppliers are listed as Distributors and Manufacturers, They will list their products on prokemia and you get to access and view their profile.'],
 	},
 	{
@@ -74,7 +74,7 @@ const faqs=[
 	{
 		id:6,
 		title:'How to buy products on Prokemia?',
-		content:['PRokemia does not sell products but we help connect you to suppliers that produce and sell Whatyou are looking for.'],
+		content:['Prokemia does not sell products but we help connect you to suppliers that produce and sell Whatyou are looking for.'],
 	},
 	{
 		id:7,

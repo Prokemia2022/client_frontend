@@ -1,7 +1,6 @@
 import React,{useState,useEffect} from 'react'
 import { Flex,Text,Image,Center,Select,Button} from '@chakra-ui/react';
 import styles from '../styles/Home.module.css';
-import styled from 'styled-components';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import {useRouter} from 'next/router';
 import CloudDownloadIcon from '@mui/icons-material/CloudDownload';
@@ -22,7 +21,6 @@ function _Home(){
 	const [manufacturers_data,set_manufacturers_data]=useState([]);
 	const [window,set_window]=useState({});
 	const [isloading,set_isloading]=useState(true);
-	let count = 4;
 
 	useEffect(()=>{
 		const client = {
@@ -49,7 +47,7 @@ function _Home(){
 			const result_data = data.filter((item)=> item?.verification_status);
 			set_products_data(result_data);
 		}).catch((err)=>{
-			console.log(err);
+			//console.log(err);
 		});		
 	}
 	const get_Industries_Data=async()=>{
@@ -71,26 +69,45 @@ function _Home(){
 	const get_Distributors_Data=async()=>{
 		await Get_Distributors().then((response)=>{
 			const data = response?.data
-			const result_data = data.filter((item)=> item?.verification_status && !item?.suspension_status)
-			set_distributors_data(result_data)
-			//console.log(result_data)
+			const result_data = data.filter((item)=> item?.verification_status && !item?.suspension_status);
+			const shuffled_data = shuffle(result_data.filter((item)=> item?.subscription));
+			set_distributors_data(shuffled_data)
+			//console.log(shuffled_data)
 		})
 	}
 	const get_Manufacturers_Data=async()=>{
 		await Get_Manufacturers().then((response)=>{
 			const data = response?.data
 			const result_data = data.filter((item)=> item?.verification_status && !item?.suspension_status)
-			set_manufacturers_data(result_data)
-			//console.log(result_data)
+			const shuffled_data = shuffle(result_data.filter((item)=> item?.subscription));
+			set_manufacturers_data(shuffled_data)
+			//console.log(shuffled_data)
 		})
 	}
+	function shuffle(array) {
+		let currentIndex = array.length,  randomIndex;
+	  
+		// While there remain elements to shuffle.
+		while (currentIndex != 0) {
+	  
+		  // Pick a remaining element.
+		  randomIndex = Math.floor(Math.random() * currentIndex);
+		  currentIndex--;
+	  
+		  // And swap it with the current element.
+		  [array[currentIndex], array[randomIndex]] = [
+			array[randomIndex], array[currentIndex]];
+		}
+	  
+		return array;
+	  }
 	return(
 		<Flex direction='column' position='relative' gap='2'>
 		<Header products_data={products_data} distributors_data={distributors_data} manufacturers_data={manufacturers_data} industries_data={industries_data} technologies_data={technologies_data}/>
-		<Flex p='4' direction='column'>
+		<Flex p='4' direction='column' >
 			<Flex mt={window.width > 500? '10vh' : ''} mb='50px' direction='column' gap='3' w='100%' p='2'>
-				<Text mb='3' fontFamily='ClearSans-Bold' fontSize='38px' >The <span style={{color:"#009393"}}>Marketplace</span> for ingredients, Polymers and Chemistry.</Text>
-				<Text mb='0' cursor='pointer' w='80%'>Search, Learn, Engage ,sample , quote and purchase from thousands of suppliers - all in one platform.</Text>
+				<Text mb='3' fontFamily='ClearSans-Bold' fontSize='38px' >The <span style={{color:"#009393"}}>Marketplace</span> for Ingredients, Polymers and Chemistry.</Text>
+				<Text mb='0' w='80%'>Search, earn, engage, sample, quote and purchase from thousands of suppliers - all in one platform.</Text>
 			</Flex>
 			<Flex direction='column' gap='2' w='100%'>
 				<Flex justify='space-between' align='center' p='2'>

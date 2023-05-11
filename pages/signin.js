@@ -1,15 +1,15 @@
 //modules import
 import React,{useState} from 'react'
-import {Flex,Text,Button,Input,InputGroup,InputRightElement,useToast} from '@chakra-ui/react'
+import {Flex,Text,Button,Input,InputGroup,InputRightElement,useToast,Heading} from '@chakra-ui/react'
 //api calls
 import SignIn from './api/auth/signin.js'
 //components import
-import Header from '../components/Header.js';
 //icons
-import {Visibility,VisibilityOff} from '@mui/icons-material'
+import {Visibility,VisibilityOff} from '@mui/icons-material';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 //utils
 import {useRouter} from 'next/router'
-import styles from '../styles/Home.module.css';
+import styles from '../styles/Auth.module.css';
 import Loading from '../components/Loading.js';
 
 export default function UserSignIn(){
@@ -73,27 +73,33 @@ export default function UserSignIn(){
 	}
 
 	return(
-		<Flex direction='column'>
-			<Header/>
-			<Flex className={styles.SignupBody}>
-				<Flex className={styles.authSection} gap='2'>
-					<Text w='100%' fontSize='3rem' color='#fff' fontFamily='ClearSans-bold'>Welcome Back!</Text>
-					<Text color='#fff'>Dont Have an Account?</Text>
-					<Text mt='-2' onClick={(()=>{router.push('/account/1')})} textDecoration='3px solid #fff underline' cursor='pointer' fontFamily='ClearSans-bold' fontSize='22px' color="#000">Sign Up now.</Text>
+		<Flex className={styles.AuthBody}>
+			<Flex className={styles.Auth_Image}>
+				<Flex className={styles.Back_Icon} gap='2' boxShadow={'lg'} onClick={(()=>{router.back()})}>
+					<ArrowBackIcon />
+					<Text fontWeight={'bold'}>Back</Text>
 				</Flex>
-				<Flex className={styles.authForm} gap='2' direction='column'>
-					<Text fontSize='2.5rem' fontFamily='ClearSans-bold'><span style={{borderBottom:"4px solid #009393",borderRadius:"3px"}}>Sign</span> In</Text>
-					<Text color='grey'>Welcome back, Please sign in to your account.</Text>
-					<Flex direction='column' gap='2'>
-						<Text fontWeight='bold'>Email</Text>
-						<Input type='text' placeholder='Email' variant='filled' onChange={((e)=>{set_email_of_company(e.target.value)})}/>
-					</Flex>
-					<Text fontWeight='bold'>Password</Text>
+				<Flex className={styles.Auth_Links} gap='10' >
+					<Text onClick={(()=>{router.push('/Aboutus')})}>About</Text>
+					<Text onClick={(()=>{router.push('/privacy_policy')})}>Privacy</Text>
+					<Text onClick={(()=>{router.push('/t&c')})}>Terms of Use</Text>
+					<Text onClick={(()=>{router.push('/faqs')})}>FAQs</Text>
+				</Flex>
+			</Flex>
+			<Flex className={styles.Form_Body}>
+				<Flex className={styles.Back_Icon} gap='2' boxShadow={'lg'} onClick={(()=>{router.back()})}>
+					<ArrowBackIcon />
+					<Text fontWeight={'bold'}>Back</Text>
+				</Flex>
+				<Flex className={styles.Form} gap='4' direction='column'>
+					<Heading as='h2' mb='0' onClick={(()=>{router.push('/')})} fontSize='28px' color='#00e0c6'>Pro<span style={{color:"#000"}}>Kemia</span></Heading>
+					<Heading as='h6'>Sign-in</Heading>
+					<Input type='text' placeholder='Enter your Email' variant='filled' onChange={((e)=>{set_email_of_company(e.target.value)})}/>
 					<InputGroup size='md'>
 						<Input
 						pr='4.5rem'
 						type={show ? 'text' : 'password'}
-						placeholder='Enter password'
+						placeholder='Enter your password' 
 						variant='filled'
 						onChange={((e)=>{setpassword(e.target.value)})}
 						required
@@ -115,12 +121,15 @@ export default function UserSignIn(){
 							signing you in...
 						</Button>
 						:
-							<>
-							<Text cursor='pointer' fontSize='14px' color='red' onClick={(()=>{router.push('/password_reset')})}> Forgot Password?</Text>
-							<Button bg='#009393' color='#fff' onClick={handleSignIn} disabled={is_submitting? true:false}>Sign In</Button>
-							</>							
+							<Flex direction={'column'} mt='2' gap='2'>
+								<Text cursor='pointer' fontSize='14px' color='red' onClick={(()=>{router.push('/password_reset')})}> Forgot Password?</Text>
+								<Button bg='#009393' color='#fff' onClick={handleSignIn} disabled={is_submitting? true:false}>Sign In</Button>
+							</Flex>							
 					}
-					
+					<Flex gap='1'>
+						<Text>Dont have an account?</Text>
+						<Text onClick={(()=>{router.push('/account/1')})} fontWeight={'bold'} cursor='pointer' fontSize='16px' color="#009393">Sign Up now.</Text>
+					</Flex>
 				</Flex>
 			</Flex>
 		</Flex>

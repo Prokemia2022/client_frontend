@@ -41,23 +41,41 @@ export default function Products(){
 		})
 	}
 	/*fetch manufacturers */
+	const get_Distributors_Data=async()=>{
+		await Get_Distributors().then((response)=>{
+			const data = response?.data
+			const result_data = data.filter((item)=> item?.verification_status && !item?.suspension_status);
+			const shuffled_data = shuffle(result_data.filter((item)=> item?.subscription));
+			set_distributors_data(shuffled_data)
+			//console.log(shuffled_data)
+		})
+	}
 	const get_Manufacturers_Data=async()=>{
 		await Get_Manufacturers().then((response)=>{
 			const data = response?.data
 			const result_data = data.filter((item)=> item?.verification_status && !item?.suspension_status)
-			set_manufacturers_data(result_data)
-			////console.log(response.data)
+			const shuffled_data = shuffle(result_data.filter((item)=> item?.subscription));
+			set_manufacturers_data(shuffled_data)
+			//console.log(shuffled_data)
 		})
 	}
-	/**fetch distributors */
-	const get_Distributors_Data=async()=>{
-		await Get_Distributors().then((response)=>{
-			const data = response?.data
-			const result_data = data.filter((item)=> item?.verification_status && !item?.suspension_status)
-			set_distributors_data(result_data)
-			////console.log(response.data)
-		})
-	}
+	function shuffle(array) {
+		let currentIndex = array.length,  randomIndex;
+	  
+		// While there remain elements to shuffle.
+		while (currentIndex != 0) {
+	  
+		  // Pick a remaining element.
+		  randomIndex = Math.floor(Math.random() * currentIndex);
+		  currentIndex--;
+	  
+		  // And swap it with the current element.
+		  [array[currentIndex], array[randomIndex]] = [
+			array[randomIndex], array[currentIndex]];
+		}
+	  
+		return array;
+	  }
 	const get_Industry_data=async()=>{
 		await Get_Industries().then((res)=>{
 			//console.log(res.data)
@@ -78,6 +96,7 @@ export default function Products(){
 	}
 	//useEffects
 	useEffect(()=>{
+		console.log(category_title)
 		get_Products_Data()
 		get_Distributors_Data()
 		get_Manufacturers_Data()
