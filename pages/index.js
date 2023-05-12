@@ -8,6 +8,7 @@ export default function home() {
     <div className={styles.container}>
       <Head>
         <title>Prokemia | Online MarketPlace</title>
+        <meta name="google-site-verification" content="IsAmllyZfArUnB7GkKSA77RLnhZi9ttveC54FBgHoM0" />
         <meta name="description" content="Buy and sell ingredients at a marketplace." />
         <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"/>
         <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png"/>

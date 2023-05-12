@@ -7,6 +7,7 @@ function MyApp({ Component, pageProps }) {
   return (
 	  <ChakraProvider>
 	  	<Head>
+		  	<meta name="google-site-verification" content="IsAmllyZfArUnB7GkKSA77RLnhZi9ttveC54FBgHoM0" />
 			<title>Prokemia | Online MarketPlace</title>
 			<meta name="description" content="Buy and sell ingredients at a marketplace." />
 			<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"/>
