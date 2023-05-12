@@ -19,7 +19,7 @@ export default function Market(){
 		await Get_Products().then((response)=>{
 			const data = response.data
 			//console.log(data)
-			const result = data.filter(item => {return item.short_on_expiry})
+			const result = data.filter((item)=> item?.verification_status && item.short_on_expiry);
 			const result_data = result?.filter((item) => 	item?.industry.includes(search_query.toLowerCase()) ||
 															item?.technology.includes(search_query.toLowerCase()) ||
 															item?.name_of_product.toLowerCase().includes(search_query.toLowerCase()) ||
@@ -29,7 +29,7 @@ export default function Market(){
 															item?.features_of_product.toLowerCase().includes(search_query.toLowerCase()) ||
 															item?.manufactured_by.includes(search_query.toLowerCase()) ||
 															item?.description_of_product.toLowerCase().includes(search_query.toLowerCase()))		
-			console.log(result_data)
+			//console.log(result_data)
 			if (sort == 'desc'){
 				const sorted_result = result_data.sort((a, b) => a.name_of_product.localeCompare(b.name_of_product))	
 				set_products_data(sorted_result)
@@ -65,7 +65,7 @@ export default function Market(){
 						{products_data.map((item)=>{
 							return(
 								<div key={item._id} style={{margin:'5px'}}>
-									<Product_Item router={router} item={item}/>
+									<Product_Cart_Item router={router} item={item}/>
 								</div>
 							)
 						})}
@@ -76,15 +76,19 @@ export default function Market(){
 	)
 }
 
-const Product_Item=({router,item})=>{
+const Product_Cart_Item=({item})=>{
+	const router = useRouter();
 	return(
-		<Flex key={item._id} position='relative' gap='2' align='center' onClick={(()=>{router.push(`/product/${item._id}`)})} bg='#eee' p='2' borderRadius='5' boxShadow='lg' cursor='pointer'>
-			<Image w='50px' h='50px' borderRadius='10px' objectFit='cover' src="../Pro.png" alt='next' />
+		<Flex cursor='pointer' gap='2' align='center' bg='#fff' p='1' borderRadius='5' boxShadow='lg' onClick={(()=>{router.push(`/product/${item._id}`)})} >
+			<Image w='50px' h='50px' borderRadius='10px' objectFit='cover' src='../../Pro.png' alt='next'/>
 			<Flex direction='column'>
-				<Text fontSize='16px' fontFamily='ClearSans-Bold'>{item.name_of_product}</Text>
-				<Text fontSize='16px'>{item.industry}</Text>
+				<Text fontSize='16px' fontFamily='ClearSans-Bold' color='#009393'>{item.name_of_product}</Text>
+				<Text fontSize='14px'>{item.distributed_by}</Text>
+				<Flex gap='2' fontSize='10px' color='grey'>
+					<Text>{item.industry? item.industry : "-"}</Text>
+					<Text borderLeft='1px solid grey' paddingLeft='2'>{item.technology? item.technology : "-"}</Text>
+				</Flex>
 			</Flex>
 		</Flex>
 	)
 }
-//<Text color='#009393'>Want to list your products?<span style={{fontWeight:'bold',cursor:'pointer'}} onClick={(()=>{router.push('/product/add_product')})}>Click here</span>.</Text>

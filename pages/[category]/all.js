@@ -130,28 +130,18 @@ export default function Categories(){
 	//useEffects
 	useEffect(()=>{
 		if(!categ){
-			toast({
-				title: 'Could not get data parameters',
-				description: `we are redirecting you`,
-				status: 'error',
-				isClosable: true,
-			});
-			setTimeout(()=>{
-				router.back();
-			},500)
+			// toast({
+			// 	title: 'Could not get data parameters',
+			// 	description: `we are redirecting you`,
+			// 	status: 'error',
+			// 	isClosable: true,
+			// });
+			return;
 		}
 		if(categ.category === 'Industries'){
 			get_Industries_Data()
 		}else if(categ.category === 'Technologies'){
 			get_Technologies_Data()
-		}else{
-			toast({
-				title: 'broken link',
-				description: `we are redirecting you`,
-				status: 'info',
-				isClosable: true,
-			});
-			router.back();
 		}
 		get_Distributors_Data()
 		get_Manufacturers_Data()

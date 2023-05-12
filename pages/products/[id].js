@@ -96,7 +96,7 @@ export default function Products(){
 	}
 	//useEffects
 	useEffect(()=>{
-		console.log(category_title)
+		//console.log(category_title)
 		get_Products_Data()
 		get_Distributors_Data()
 		get_Manufacturers_Data()

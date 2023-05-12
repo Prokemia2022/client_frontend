@@ -27,7 +27,6 @@ export default function Client_Profile(){
 	 */
 	//utils
 	const router = useRouter();
-	const id = router.query;
 
 	const cookies = new Cookies();
 	const toast = useToast();
@@ -73,10 +72,10 @@ export default function Client_Profile(){
 
 	const Generate_Code=async()=>{
   		const characters = '0123456789';
-  		const result = ''
+  		let result = ''
   		const charactersLength = characters.length
 
-  		for (const i = 0;i<6;i++){
+  		for (let i = 0;i<6;i++){
   			result += characters.charAt(Math.floor(Math.random() * charactersLength));
   		}
   		cookies.set('verification_code', result, { path: '/' });

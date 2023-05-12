@@ -39,7 +39,7 @@ export default function Feedback(){
 			});
 			return;
   		}else{
-	  		console.log(payload)
+	  		//console.log(payload)
 			await Create_Feedback(payload).then((response)=>{
 				toast({
 		          title: '',
@@ -61,7 +61,7 @@ export default function Feedback(){
 	}
 	const handle_get_feedbacks=async()=>{
 		await Get_Feedback().then((res)=>{
-			console.log(res.data);
+			//console.log(res.data);
 			set_feedback_data(res.data.reverse())
 		})
 	}
@@ -86,7 +86,7 @@ export default function Feedback(){
 						</Flex>
 						<Flex direction='column' gap='2'>
 							<Text fontWeight='bold'>Message</Text>
-							<Textarea type='text' maxlength="200" placeholder='comment on your message, 200words' variant='filled' onChange={((e)=>{setmessage(e.target.value)})}/>
+							<Textarea type='text' maxLength="200" placeholder='comment on your message, 200words' variant='filled' onChange={((e)=>{setmessage(e.target.value)})}/>
 						</Flex>
 						<Flex direction='column' gap='2'>
 							<Text fontWeight='bold'>Rate Us</Text>
@@ -113,7 +113,7 @@ export default function Feedback(){
 					<Flex className={styles.feedback_content_body} gap='2'>
 						{feedback_data?.slice(0,3).map((feedback)=>{
 							return(
-								<Feedback_Content_Card feedback={feedback}/>
+								<Feedback_Content_Card feedback={feedback} key={feedback?._id}/>
 							)
 						})}
 					</Flex>
@@ -132,8 +132,8 @@ const Feedback_Content_Card=({feedback})=>{
 		<Flex className={styles.feedback_content_card} direction={'column'} w='300px' h='300px'>
 			<Flex gap='2' align='center'>
 				<AccountCircleIcon style={{fontSize:'32px',color:'grey'}}/>
-				{jsx.map(()=>(
-					<StarRateIcon style={{fontSize:'14px',color:'gold'}}/>
+				{jsx.map((index)=>(
+					<StarRateIcon key={index} style={{fontSize:'14px',color:'gold'}}/>
 				))}
 			</Flex>
 			<Flex p='2' direction={'column'}>

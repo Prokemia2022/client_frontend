@@ -138,7 +138,7 @@ function Header(){
 								<Text ml='1' fontSize='14px' >{user[0]}{user[1]}{user[2]}{user[3]}{user[4]}..</Text>
 							</Flex>
 							:null}
-						<MenuButton as={Button} rounded={'full'} variant={'link'} cursor={'pointer'} minW={0} pt='1' color='#000'>
+						<MenuButton title='button' as={Button} rounded={'full'} variant={'link'} cursor={'pointer'} minW={0} pt='1' color='#000'>
 							<MenuOpenIcon style={{fontSize:'24px'}}/>
 						</MenuButton>
 					</Flex>
@@ -174,7 +174,7 @@ function Header(){
 								null
 								:
 								<Flex mt='2' direction='column' p='2' gap='2' onClick={(()=>{router.push('/account/2')})}>
-									<Text mb='0' >Sell and Market your Products</Text>
+									<Text mb='0' >Sell and market your products</Text>
 									<Divider/>
 								</Flex>
 							}

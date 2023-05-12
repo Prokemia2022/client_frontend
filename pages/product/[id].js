@@ -19,7 +19,7 @@ import styles from '../../styles/Home.module.css';
 export default function Product(){
 	const router = useRouter();
 	const id = router.query;
-	const toast = useToast()
+	const toast = useToast();
 	const [isquotationModalvisible,setisquotationModalvisible]=useState(false);
 	const [issampleModalvisible,setissampleModalvisible]=useState(false);
 
@@ -35,14 +35,14 @@ export default function Product(){
 		})
 	}
 	useEffect(()=>{
-		if (!payload._id == undefined || id.id === undefined){
-			toast({
-              title: 'This link is broken,',
-              description: 'we are taking you back',
-              status: 'info',
-              isClosable: true,
-            });
-			router.back()
+		if (id.id === undefined){
+			// toast({
+            //   title: 'This link is broken,',
+            //   description: 'we are taking you back',
+            //   status: 'info',
+            //   isClosable: true,
+            // });
+			return;
 		}else{
 			get_Data(payload)
 		}

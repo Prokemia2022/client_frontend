@@ -49,7 +49,7 @@ function Footer(){
 				</Flex>
 			</Flex>
 			<Center>
-				<Text>Copyright @ ProKemia 2022</Text>
+				<Text fontSize={'12px'} color={'grey'}>Copyright @ ProKemia 2022</Text>
 			</Center>
 		</Flex>
 	)
