@@ -11,7 +11,7 @@ export default function Careers(){
 	const [email,set_email]=useState('')
 	const router = useRouter();
 	useEffect(()=>{
-		get_Careers_Data()
+		router.back()
 	},[])
 
 	const get_Careers_Data=async()=>{
@@ -23,7 +23,7 @@ export default function Careers(){
 	return(
 			<Flex direction='column'>
 				<Header/>
-				<Flex direction='column' p='2'>
+				<Flex direction='column' p='2' h='100vh'>
 					<Heading as='h2' textDecoration='underline 1px solid #009393'>Vacancy Section</Heading>
 					<Text>Find upcoming Events and meetups, seminars to build and enrich you.</Text>
 					<Text>Find Job Listings, Job Openings, senior & junior positions from top companies and firms.</Text>

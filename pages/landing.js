@@ -1,17 +1,13 @@
 import React,{useState} from 'react'
-import {Flex,Center,Text,Heading,Button,Input,InputGroup,InputRightElement,Image,Textarea} from '@chakra-ui/react'
-import styles from '../styles/Home.module.css'
-import {Room,Visibility,VisibilityOff} from '@mui/icons-material'
-import {useRouter} from 'next/router'
-import styled from 'styled-components';
+import {Flex,Text,Button,Input,Image,Textarea} from '@chakra-ui/react'
+import styles from '../styles/Home.module.css';
 import { Carousel } from 'antd';
 import 'antd/dist/antd.css';
 import Create_Landing_page_mailing_list from './api/control/create_landing_page_mailing_list.js'
 
 export default function ClientSignUp(){
 	return(
- 		<Flex>
-			<Image src='./landing1.jpg' h='100vh' w='100vw' objectFit='cover' alt='photo'/>
+ 		<Flex h='100vh' w='100vw' position={'fixed'} top='0' left='0' bg='#fff'>
 			<Header />
 			<LandingText/>
 		</Flex>
@@ -21,10 +17,10 @@ export default function ClientSignUp(){
 const LandingText=()=>{
 	return(
 			<div className={styles.landingslider}>
-				<Carousel autoplay dots={false} autoplaySpeed={5000}>
+				<Carousel autoplay dots={false} autoplaySpeed={10000}>
 					{infos.map((info)=>{
 						return(
-							<Flex key={info.id} color='#fff' direction='column'> 
+							<Flex key={info.id} color='' direction='column'> 
 								<Text color='#009393' fontSize='36px' fontFamily='ClearSans-bold'>{info.heading}</Text>
 								<Text fontSize='20px' mb='0' w='80%'>{info.text}</Text>
 							</Flex>
@@ -48,7 +44,7 @@ const Form=()=>{
 		})
 	}
 	return(
-		<Flex gap='2' direction='column' w='300px' color='#fff' >
+		<Flex gap='2' direction='column' w='300px' color='#fff' mt='2'>
 			<Flex direction='column' gap='2'>
 				<Text mb='0' fontWeight='bold' fontSize='24px' color='#009393'>Get the early access.</Text>
 				<Flex bg='#fff' borderRadius='5'>
@@ -73,7 +69,7 @@ const infos=[
 	{
 		id: 1,
 		heading:'The Marketplace for ingredients, Polymers and Chemistry.',
-		text:'Search, Learn, Engage ,get samples and request quotations for products, and purchase from thousands of distributors - all in one platform.Access all easily.'
+		text:'Search, learn, engage ,get samples and request quotations for products, and purchase from thousands of distributors - all in one platform.Access all easily.'
 	},
 	{
 		id: 2,
@@ -91,13 +87,3 @@ const infos=[
 		text:'Connect and join a community of salespeople to interact, share, develop and grow each other.'
 	},
 ]
-
-const StyledSlider = styled.div`
-    display: flex;
-    overflow: auto;
-    padding:10px;
-    margin: 10px; 
-    position:absolute;
-    top:20%;
-    width:60%
-`

@@ -256,12 +256,12 @@ const numbers=[
 
 const Promo=({router})=>{
 	return(
-		<Flex bg='#000' p='2' borderRadius='5'>
-			<Flex className={styles.promotext} p='2' direction='column' color='#fff' gap='3'>
+		<Flex bg='#000' p='2' borderRadius='5' justify='center'>
+			<Flex className={styles.promotext} p='2' direction='column' color='#fff' gap='3' >
 				<Text mb='0'  fontSize='48px'>Interested in Selling Products?</Text>
 				<Text mb='0'  >Register as a Manufacturer or Distributor to start marketing your products in East, Central and Southern Africa.</Text>
 				<Text  mb='0' >Boost your sales and access a wide market for your company or business.</Text>
-				<Button bg='#000' border='1px solid #fff'>Request a demo <PlayArrowIcon /></Button>
+				<Button bg='#000' border='1px solid #fff' onClick={(()=>{router.push('/request_demo')})}>Request a demo</Button>
 				<Button bg='#009393' color='#fff' onClick={(()=>{router.push('/account/1')})}>Start selling</Button>
 			</Flex>
 		</Flex>
