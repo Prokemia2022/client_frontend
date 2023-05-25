@@ -1,6 +1,8 @@
 import {useState,useEffect} from 'react';
 import {Flex,Text,Button,Link,useToast} from '@chakra-ui/react';
 import {useRouter} from 'next/router';
+import Cookies from 'universal-cookie';
+import jwt_decode from "jwt-decode";
 //icons
 // import FileDownloadIcon from '@mui/icons-material/FileDownload';
 // import LanguageIcon from '@mui/icons-material/Language';
@@ -19,10 +21,33 @@ import styles from '../../styles/Home.module.css';
 export default function Product(){
 	const router = useRouter();
 	const id = router.query;
-	const toast = useToast();
 	const [isquotationModalvisible,setisquotationModalvisible]=useState(false);
 	const [issampleModalvisible,setissampleModalvisible]=useState(false);
+	
+	const toast = useToast();
+	const cookies = new Cookies();
+	const token = cookies.get('user_token');
+	const [is_signed_in,set_is_signed_in]=useState(false);
+	//const [is_signed_in,set_is_signed_in]=useState(false);
+	const Send_Info=()=>{
+		toast({
+			title: '',
+			description: 'You need to have an account to access this document. Sign In or create an account to get access.',
+			position: 'top-left',
+			variant:"subtle",
+			status: 'info',
+			isClosable: true,
+		});
+		return ;
+	}
 
+	useEffect(()=>{
+		if(token){
+			set_is_signed_in(true)
+		}else{
+			set_is_signed_in(false)
+		}
+	},[token])
 	const payload = {
 		_id : id?.id
 	}
@@ -36,12 +61,6 @@ export default function Product(){
 	}
 	useEffect(()=>{
 		if (id.id === undefined){
-			// toast({
-            //   title: 'This link is broken,',
-            //   description: 'we are taking you back',
-            //   status: 'info',
-            //   isClosable: true,
-            // });
 			return;
 		}else{
 			get_Data(payload)
@@ -92,9 +111,39 @@ export default function Product(){
 				</Flex>
 				<Flex direction='column' gap='2' mt='2' mb='2'>
 					<Text fontWeight='bold'>Attachments</Text>
-					{product_data?.data_sheet === ''? <Text bg='#eee' p='2' textAlign='center' borderRadius='5'>No data sheet attached</Text> : <Link href={product_data?.data_sheet} bg='' border='1px solid #eee' borderRadius='5' boxShadow='lg' color='#000' align='center' p='1' isExternal fontSize='20px'><DescriptionIcon style={{color:'#EA9DB0',fontSize:'18px'}} /> Product Data Sheet</Link>}
-					{product_data?.formulation_document === ''? <Text bg='#eee' p='2' textAlign='center' borderRadius='5'>No formulation document attached</Text> : <Link href={product_data?.formulation_document} bg='' border='1px solid #eee' borderRadius='5' boxShadow='lg' color='#000' align='center' p='1' isExternal fontSize='20px'><DescriptionIcon style={{color:'#5D95B4',fontSize:'18px'}} /> Fomulation document</Link>}
-					{product_data?.safety_data_sheet === ''? <Text bg='#eee' p='2' textAlign='center' borderRadius='5'>No safety data sheet attached</Text> : <Link href={product_data?.safety_data_sheet} bg='' border='1px solid #eee' borderRadius='5' boxShadow='lg' color='#000' align='center' p='1' isExternal fontSize='20px'><DescriptionIcon style={{color:'#8c52ff',fontSize:'18px'}} /> Safety Data Sheet</Link>}
+					{product_data?.data_sheet === ''? 
+						<Text bg='#eee' p='2' textAlign='center' borderRadius='5'>No data sheet attached</Text> 
+						: 
+						<>
+							{is_signed_in?
+								<Link href={product_data?.data_sheet} bg='' border='1px solid #eee' borderRadius='5' boxShadow='lg' color='#000' align='center' p='1' isExternal fontSize='20px'><DescriptionIcon style={{color:'#EA9DB0',fontSize:'18px'}} /> Product Data Sheet</Link>
+								:
+								<Text onClick={Send_Info} bg='' cursor='pointer' border='1px solid #eee' borderRadius='5' boxShadow='lg' color='#000' align='center' p='1' isExternal fontSize='20px'><DescriptionIcon style={{color:'#EA9DB0',fontSize:'18px'}} /> Product Data Sheet</Text>
+							}
+						</>
+					}
+					{product_data?.formulation_document === ''?
+						<Text bg='#eee' p='2' textAlign='center' borderRadius='5'>No formulation document attached</Text>
+						: 
+						<>
+							{is_signed_in?
+								<Link href={product_data?.formulation_document} bg='' border='1px solid #eee' borderRadius='5' boxShadow='lg' color='#000' align='center' p='1' isExternal fontSize='20px'><DescriptionIcon style={{color:'#5D95B4',fontSize:'18px'}} /> Fomulation document</Link>
+								:
+								<Text onClick={Send_Info} bg='' cursor='pointer' border='1px solid #eee' borderRadius='5' boxShadow='lg' color='#000' align='center' p='1' isExternal fontSize='20px'><DescriptionIcon style={{color:'#5D95B4',fontSize:'18px'}} /> Fomulation document</Text>
+							}
+						</>
+					}
+					{product_data?.safety_data_sheet === ''?
+						<Text bg='#eee' p='2' textAlign='center' borderRadius='5'>No formulation document attached</Text>
+						: 
+						<>
+							{is_signed_in?
+								<Link href={product_data?.safety_data_sheet} bg='' border='1px solid #eee' borderRadius='5' boxShadow='lg' color='#000' align='center' p='1' isExternal fontSize='20px'><DescriptionIcon style={{color:'#8c52ff',fontSize:'18px'}} /> Safety Data Sheet</Link>
+								:
+								<Text onClick={Send_Info} bg='' cursor='pointer' border='1px solid #eee' borderRadius='5' boxShadow='lg' color='#000' align='center' p='1' isExternal fontSize='20px'><DescriptionIcon style={{color:'#8c52ff',fontSize:'18px'}} /> Safety Data Sheet</Text>
+							}
+						</>
+					}
 				</Flex>
 				<Text fontWeight='bold'>Features & Benefits:</Text>
 				<Flex direction='column'  borderRadius='5' p=''>

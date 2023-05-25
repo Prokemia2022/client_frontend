@@ -45,8 +45,10 @@ export default function Categories(){
 		}).catch(()=>{
 			toast({
 				title: '',
-				description: `error while fetching data`,
-				status: 'error',
+				variant:'subtle',
+				position:'top-left',
+				description: `we are fetching data, it may take some time`,
+				status: 'info',
 				isClosable: true,
 			});
 		})
@@ -64,8 +66,10 @@ export default function Categories(){
 		}).catch(()=>{
 			toast({
 				title: '',
-				description: `error while fetching data`,
-				status: 'error',
+				variant:'subtle',
+				position:'top-left',
+				description: `we are fetching data, it may take some time`,
+				status: 'info',
 				isClosable: true,
 			});
 		})
@@ -102,8 +106,10 @@ export default function Categories(){
 		}).catch(()=>{
 			toast({
 				title: '',
-				description: `error while fetching data`,
-				status: 'error',
+				variant:'subtle',
+				position:'top-left',
+				description: `we are fetching data, it may take some time`,
+				status: 'info',
 				isClosable: true,
 			});
 		});
@@ -121,8 +127,10 @@ export default function Categories(){
 		}).catch(()=>{
 			toast({
 				title: '',
-				description: `error while fetching data`,
-				status: 'error',
+				variant:'subtle',
+				position:'top-left',
+				description: `we are fetching data, it may take some time`,
+				status: 'info',
 				isClosable: true,
 			});
 		});

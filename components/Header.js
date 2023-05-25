@@ -2,7 +2,7 @@
 import React,{useState,useEffect} from 'react'
 import {useRouter} from 'next/router'
 import Script from 'next/script'
-import Cookies from 'universal-cookie';
+import Cookies from 'universal-cookie'; 
 import jwt_decode from "jwt-decode";
 import {Flex,
 		Text,
@@ -112,7 +112,7 @@ function Header(){
 	return(
 		<Flex position='sticky' top='0' w='100%' zIndex='2000' cursor='pointer' bg='#fff' fontFamily='ClearSans-Bold' p='2' direction='column' >
 			<Flex justify='space-between' align='center'>
-				<Text mb='0' onClick={(()=>{router.push('/')})} fontSize='28px' color='#00e0c6'>Pro<span style={{color:"#000"}}>Kemia</span></Text>
+				<Text mb='0' onClick={(()=>{router.push('/')})} fontSize='28px' color='#009393'>Pro<span style={{color:"#000"}}>Kemia</span></Text>
 				<Flex align='center' gap='2'>
 					<div className={styles.search_input_on_header}>
 						<InputGroup>

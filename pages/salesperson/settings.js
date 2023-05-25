@@ -37,7 +37,7 @@ const Handle_Change_Password=async()=>{
 	return(
 		<Flex p='2' direction='column' gap='2' w='100%' overflowY='scroll' h='100vh'>
 			<Delete_Account_Modal is_delete_account_Modalvisible={is_delete_account_Modalvisible} set_is_delete_account_Modalvisible={set_is_delete_account_Modalvisible} salesperson_data={salesperson_data} acc_type='salesperson'/>
-			<Text fontSize='34px' textDecoration='1px solid underline #009393' fontWeight='bold'>MyProfile</Text>
+			<Text fontSize='34px' fontWeight='bold'>My Profile</Text>
 			{edit ?
 				<EditProfile setedit={setedit} salesperson_data={salesperson_data}/>
 			:
@@ -125,7 +125,7 @@ const EditProfile=({setedit,salesperson_data})=>{
 	}
 	const profile_upload_function=async()=>{
 		/**handles uploads profile image functions to firebase storage**/
-		console.log(profile_photo)
+		//console.log(profile_photo)
 		if (profile_photo == ''){
 			toast({
 				title: '',
@@ -175,7 +175,7 @@ const EditProfile=({setedit,salesperson_data})=>{
 			});
 			return;
 		}else{
-			console.log(profile_photo.name)
+			//console.log(profile_photo.name)
 			const profile_photo_documentRef = ref(storage, `profile_photo/${profile_photo?.name + v4()}`);
 			const snapshot= await uploadBytes(profile_photo_documentRef,profile_photo)
 			const file_url = await getDownloadURL(snapshot.ref)

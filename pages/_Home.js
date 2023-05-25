@@ -1,5 +1,5 @@
 import React,{useState,useEffect} from 'react'
-import { Flex,Text,Image,Center,Select,Button} from '@chakra-ui/react';
+import { Flex,Text,Image,Center,Select,Button,SimpleGrid} from '@chakra-ui/react';
 import styles from '../styles/Home.module.css';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import {useRouter} from 'next/router';
@@ -117,16 +117,15 @@ function _Home(){
 				<Flex wrap='Wrap' w='100%' justify=''>
 					{!isloading ?
 						<>
-							{industries_data?.slice(0,4).map((item)=>{
+							{industries_data?.slice(0,6).map((item)=>{
 								return(
-									<Flex cursor='pointer' key={item._id} w={window?.width > 500? '175px':'150px'} h='225px' m='1' position='relative' onClick={(()=>{router.push(`/products/${item.title}`)})}>
-										<Image objectFit={item?.cover_image == ''? "contain":'cover'} src={item?.cover_image == ''? "../Pro.png":item?.cover_image} alt='photo' boxShadow='lg' w='100%'/>
-										<Text bg='rgb(192,192,192,0.6)' p='1' m='2' mb='0' borderRadius='5' position='absolute' top='10px' left='10px' w='80%' fontSize='20px' color='#000' fontFamily='ClearSans-Bold'>{item.title}</Text>
-									</Flex>
+									<Control_Item_Card item={item} window={window} router={router} key={item?._id}/>
 								)
 							})}
 						</>:
 						<>
+							<Item_Loading />
+							<Item_Loading />
 							<Item_Loading />
 							<Item_Loading />
 						</>
@@ -141,12 +140,9 @@ function _Home(){
 				<Flex wrap='Wrap' w='100%' justify=''>
 					{!isloading ?
 						<>
-							{technologies_data?.slice(0,4).map((item)=>{
+							{technologies_data?.slice(0,6).map((item)=>{
 								return(
-									<Flex cursor='pointer' key={item._id} w={window?.width > 500 ? '175px':'150px'} h='225px' m='1' position='relative' onClick={(()=>{router.push(`/products/${item.title}`)})}>
-										<Image objectFit={item?.cover_image == ''? "contain":'cover'} src={item?.cover_image == ''? "../Pro.png":item?.cover_image} alt='photo' boxShadow='lg' w='100%'/>
-										<Text bg='rgb(192,192,192,0.6)' p='1' m='2' mb='0' borderRadius='5' position='absolute' top='10px' left='10px' fontSize='20px' w='80%' color='#000' fontFamily='ClearSans-Bold'>{item.title}</Text>
-									</Flex>
+									<Control_Item_Card item={item} window={window} router={router} key={item?._id}/>
 								)
 							})}
 						</>:
@@ -301,6 +297,15 @@ const Item_Loading=()=>{
 	return(
 		<Flex w='150px' h='225px' m='1' position='relative' bg='#fff' boxShadow='lg'>
 			<Flex bg='#eee' p='4' m='2' mb='0' borderRadius='5' position='absolute' top='10px' left='10px' w='80%' h='50px'/>
+		</Flex>
+	)
+}
+
+const Control_Item_Card=({item,window,router})=>{
+	return(
+		<Flex cursor='pointer' w={window?.width > 500? '175px':'150px'} h='225px' m='1' position='relative' onClick={(()=>{router.push(`/products/${item.title}`)})}>
+			<Image objectFit={item?.cover_image == ''? "contain":'cover'} src={item?.cover_image == ''? "../Pro.png":item?.cover_image} alt='photo' boxShadow='lg' w='100%'/>
+			<Text bg='rgb(0,0,0,0.6)' p='1' position='absolute' bottom='0px' left='0px' w='100%' fontSize='14px' color='#fff'>{item.title}</Text>
 		</Flex>
 	)
 }
