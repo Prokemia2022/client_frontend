@@ -12,7 +12,7 @@ import Get_Technologies from './api/control/get_technologies.js'
 import Get_Distributors from './api/auth/distributor/get_distributors.js'
 import Get_Manufacturers from './api/auth/manufacturer/get_manufacturers.js'
 
-function _Home(){
+function Home(){
 	const router = useRouter();
 	const [products_data,set_products_data]=useState([]);
 	const [industries_data,set_industries_data]=useState([]);
@@ -227,7 +227,7 @@ function _Home(){
 	)
 }
 
-export default _Home;
+export default Home;
 
 const numbers=[
 	{
@@ -303,7 +303,7 @@ const Item_Loading=()=>{
 
 const Control_Item_Card=({item,window,router})=>{
 	return(
-		<Flex cursor='pointer' w={window?.width > 500? '175px':'150px'} h='225px' m='1' position='relative' onClick={(()=>{router.push(`/products/${item.title}`)})}>
+		<Flex cursor='pointer' w={window?.width > 500? '175px':'145px'} h='225px' m='1' position='relative' onClick={(()=>{router.push(`/products/${item.title}`)})}>
 			<Image objectFit={item?.cover_image == ''? "contain":'cover'} src={item?.cover_image == ''? "../Pro.png":item?.cover_image} alt='photo' boxShadow='lg' w='100%'/>
 			<Text bg='rgb(0,0,0,0.6)' p='1' position='absolute' bottom='0px' left='0px' w='100%' fontSize='14px' color='#fff'>{item.title}</Text>
 		</Flex>

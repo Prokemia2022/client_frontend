@@ -1,7 +1,7 @@
 import Head from 'next/head'
 import Image from 'next/image'
 import styles from '../styles/Home.module.css'
-import Index from './_Home.js'
+import Index from './HomePage.js'
 
 export default function home() {
   return (
