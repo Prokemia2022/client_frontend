@@ -68,10 +68,10 @@ export default function Salesperson({setCurrentValue,salesperson_data,set_is_ref
 
 	const Generate_Code=async()=>{
   		const characters = '0123456789';
-  		const result = ''
+  		let result = ''
   		const charactersLength = characters.length
 
-  		for (const i = 0;i<6;i++){
+  		for (let i = 0;i<6;i++){
   			result += characters.charAt(Math.floor(Math.random() * charactersLength));
   		}
   		cookies.set('verification_code', result, { path: '/' });
@@ -82,7 +82,8 @@ export default function Salesperson({setCurrentValue,salesperson_data,set_is_ref
 		const code = await Generate_Code()
 		const email_payload={
 			email: salesperson_data.email_of_salesperson,
-			code: code
+			code: code,
+			link: `https://prokemia.com/verify/${'salesperson'}/${salesperson_data._id}`
 		}
 		await Email_Verification(email_payload).then(()=>{
 			router.push(`/verify/${'salesperson'}/${salesperson_data._id}`)
@@ -104,7 +105,7 @@ export default function Salesperson({setCurrentValue,salesperson_data,set_is_ref
 							<InfoOutlinedIcon />
 							<Flex direction='column'>
 								<Text fontSize='18px' fontWeight='bold'>Verify your email.</Text>
-								<Text fontSize={'14px'}>Get access to all features by verifying your email.</Text>
+								<Text fontSize={'14px'}>Get access to all features.</Text>
 							</Flex>
 						</Flex>
 						<Button bg='#fff' color='#000' onClick={handle_verify_email}>Verify Email</Button>

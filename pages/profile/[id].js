@@ -71,22 +71,23 @@ export default function Client_Profile(){
 	},[token])
 
 	const Generate_Code=async()=>{
-  		const characters = '0123456789';
-  		let result = ''
-  		const charactersLength = characters.length
+		const characters = '0123456789';
+		let result = ''
+		const charactersLength = characters.length
 
-  		for (let i = 0;i<6;i++){
-  			result += characters.charAt(Math.floor(Math.random() * charactersLength));
-  		}
-  		cookies.set('verification_code', result, { path: '/' });
-  		return result
-  	}
-	
+		for (let i = 0;i<6;i++){
+			result += characters.charAt(Math.floor(Math.random() * charactersLength));
+		}
+		cookies.set('verification_code', result, { path: '/' });
+		return result
+	}
+  
 	const handle_verify_email=async()=>{
 		const code = await Generate_Code()
 		const email_payload={
 			email: client_data.email_of_company,
-			code: code
+			code: code,
+			link: `https://prokemia.com/verify/${'client'}/${client_data._id}`
 		}
 		await Email_Verification(email_payload).then(()=>{
 			router.push(`/verify/${'client'}/${client_data._id}`)
@@ -97,7 +98,7 @@ export default function Client_Profile(){
 				status: 'error',
 				isClosable: true,
 			});
-		});
+		})
 	}
 	return(
 		<Flex direction='column' gap='2'>

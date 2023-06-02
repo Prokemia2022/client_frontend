@@ -118,7 +118,7 @@ export default function Product(){
 							{is_signed_in?
 								<Link href={product_data?.data_sheet} bg='' border='1px solid #eee' borderRadius='5' boxShadow='lg' color='#000' align='center' p='1' isExternal fontSize='20px'><DescriptionIcon style={{color:'#EA9DB0',fontSize:'18px'}} /> Product Data Sheet</Link>
 								:
-								<Text onClick={Send_Info} bg='' cursor='pointer' border='1px solid #eee' borderRadius='5' boxShadow='lg' color='#000' align='center' p='1' isExternal fontSize='20px'><DescriptionIcon style={{color:'#EA9DB0',fontSize:'18px'}} /> Product Data Sheet</Text>
+								<Text onClick={Send_Info} bg='' cursor='pointer' border='1px solid #eee' borderRadius='5' boxShadow='lg' color='#000' align='center' p='1' fontSize='20px'><DescriptionIcon style={{color:'#EA9DB0',fontSize:'18px'}} /> Product Data Sheet</Text>
 							}
 						</>
 					}
@@ -129,18 +129,18 @@ export default function Product(){
 							{is_signed_in?
 								<Link href={product_data?.formulation_document} bg='' border='1px solid #eee' borderRadius='5' boxShadow='lg' color='#000' align='center' p='1' isExternal fontSize='20px'><DescriptionIcon style={{color:'#5D95B4',fontSize:'18px'}} /> Fomulation document</Link>
 								:
-								<Text onClick={Send_Info} bg='' cursor='pointer' border='1px solid #eee' borderRadius='5' boxShadow='lg' color='#000' align='center' p='1' isExternal fontSize='20px'><DescriptionIcon style={{color:'#5D95B4',fontSize:'18px'}} /> Fomulation document</Text>
+								<Text onClick={Send_Info} bg='' cursor='pointer' border='1px solid #eee' borderRadius='5' boxShadow='lg' color='#000' align='center' p='1' fontSize='20px'><DescriptionIcon style={{color:'#5D95B4',fontSize:'18px'}} /> Fomulation document</Text>
 							}
 						</>
 					}
 					{product_data?.safety_data_sheet === ''?
-						<Text bg='#eee' p='2' textAlign='center' borderRadius='5'>No formulation document attached</Text>
+						<Text bg='#eee' p='2' textAlign='center' borderRadius='5'>No safety data sheet attached</Text>
 						: 
 						<>
 							{is_signed_in?
 								<Link href={product_data?.safety_data_sheet} bg='' border='1px solid #eee' borderRadius='5' boxShadow='lg' color='#000' align='center' p='1' isExternal fontSize='20px'><DescriptionIcon style={{color:'#8c52ff',fontSize:'18px'}} /> Safety Data Sheet</Link>
 								:
-								<Text onClick={Send_Info} bg='' cursor='pointer' border='1px solid #eee' borderRadius='5' boxShadow='lg' color='#000' align='center' p='1' isExternal fontSize='20px'><DescriptionIcon style={{color:'#8c52ff',fontSize:'18px'}} /> Safety Data Sheet</Text>
+								<Text onClick={Send_Info} bg='' cursor='pointer' border='1px solid #eee' borderRadius='5' boxShadow='lg' color='#000' align='center' p='1' fontSize='20px'><DescriptionIcon style={{color:'#8c52ff',fontSize:'18px'}} /> Safety Data Sheet</Text>
 							}
 						</>
 					}

@@ -34,7 +34,8 @@ export default function Products(){
 	const get_Products_Data=async()=>{
 		await Get_Products().then((response)=>{
 			const data = response?.data;
-			const result = data.filter((item)=> item?.industry.includes(categ?.id) || item?.technology.includes(categ?.id));
+			const result_data = data.filter((item)=> item?.verification_status);
+			const result = result_data.filter((item)=> item?.industry.includes(categ?.id) || item?.technology.includes(categ?.id));
 			////console.log(response.data)
 			set_products_data(result);
 			set_isloading(false);

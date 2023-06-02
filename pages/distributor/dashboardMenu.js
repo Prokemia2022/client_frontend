@@ -1,4 +1,4 @@
-import React,{useState} from 'react'
+import React,{useState,useEffect} from 'react'
 //components
 import AddNewManufacturer from '../../components/modals/addNewManufacturer.js';
 import AddNewExpertsModal from '../../components/modals/addNewExperts.js';
@@ -35,6 +35,7 @@ export default function DashboardMenu({distributor_data}){
 	//utils
 	const router = useRouter();
 	const cookies = new Cookies();
+	const toast = useToast();
 
 	const id = distributor_data?._id;
 
@@ -46,10 +47,10 @@ export default function DashboardMenu({distributor_data}){
 		 * 			returns the code.
 		 */
   		const characters = '0123456789';
-  		const result = ''
+  		let result = ''
   		const charactersLength = characters.length
 
-  		for (const i = 0;i<6;i++){
+  		for (let i = 0;i<6;i++){
   			result += characters.charAt(Math.floor(Math.random() * charactersLength));
   		}
   		cookies.set('verification_code', result, { path: '/' });
@@ -67,7 +68,8 @@ export default function DashboardMenu({distributor_data}){
 		const code = await Generate_Code()
 		const email_payload={
 			email: distributor_data.email_of_company,
-			code: code
+			code: code,
+			link: `https://prokemia.com/verify/${'distributor'}/${distributor_data._id}`
 		}
 		await Email_Verification(email_payload).then(()=>{
 			router.push(`/verify/${'distributor'}/${distributor_data._id}`)
@@ -80,11 +82,48 @@ export default function DashboardMenu({distributor_data}){
 			});
 		});
 	}
+	const isCompleteProfile=async()=>{
+		//console.log(distributor_data);
+		const contact_email = distributor_data?.contact_email;
+		const address_of_company = distributor_data?.address_of_company;
+		const mobile_of_company = distributor_data?.mobile_of_company;
+		const contact_person_name = distributor_data?.contact_person_name;
+		const description = distributor_data?.description;
+		const profile_photo_url = distributor_data?.profile_photo_url;
+		if (contact_email == '' || address_of_company == '' || mobile_of_company == '' || contact_person_name == '' || description == "" || profile_photo_url == ''){
+			toast({
+				title: '',
+				variant: 'subtle',
+				position: 'top-left',
+				description: `Your profile is incomplete, you need to fill details for customers to understand what you do.`,
+				status: 'info',
+				isClosable: true,
+			});
+		}else{
+			return;
+		}
+	}
+	useEffect(()=>{
+		isCompleteProfile()
+	},[distributor_data])
 	return (
 		<Flex p='2' direction='column' gap='4' w='100%' overflowY='scroll' h='100vh'>
 			<AddNewProduct isaddnewproductModalvisible={isaddnewproductModalvisible} setisaddnewProductModalvisible={setisaddnewProductModalvisible}/>
 			<AddNewExpertsModal isaddnewexpertModalvisible={isaddnewexpertModalvisible} setisaddNewExpertModalvisible={setisaddNewExpertModalvisible} id={id} acc_type='distributor'/>
 			<AddNewManufacturer isaddnewmanufacturerModalvisible={isaddnewmanufacturerModalvisible} setisaddnewmanufacturerModalvisible={setisaddnewmanufacturerModalvisible} id={id}/>
+			{!distributor_data?.valid_email_status?
+				<Flex w='100%' p='1' borderRadius='5' bg='#009393' align='center' justify='space-between' color='#fff'>
+					<Flex align='center' gap='2'>
+						<InfoOutlinedIcon />
+						<Flex direction='column'>
+							<Text fontSize='18px' fontWeight='bold'>Verify your email.</Text>
+							<Text fontSize={'14px'}>Get access to all features.</Text>
+						</Flex>
+					</Flex>
+					<Button bg='#fff' color='#000' onClick={Handle_Email_Verification}>Verify Email</Button>
+				</Flex>
+			: null
+			}
 			<Flex gap='3'>
 				{distributor_data?.profile_photo_url == ''? 
 					<LocationCity style={{fontSize:'150px',padding:'10px'}}/> 
@@ -98,19 +137,6 @@ export default function DashboardMenu({distributor_data}){
 					<Text>Address: {distributor_data?.address_of_company}</Text>
 				</Flex>
 			</Flex>
-			{!distributor_data?.valid_email_status?
-				<Flex w='100%' p='1' borderRadius='5' bg='#009393' align='center' justify='space-between' color='#fff'>
-					<Flex align='center' gap='2'>
-						<InfoOutlinedIcon />
-						<Flex direction='column'>
-							<Text fontSize='18px' fontWeight='bold'>Verify your email.</Text>
-							<Text fontSize={'14px'}>Get access to all features by verifying your email.</Text>
-						</Flex>
-					</Flex>
-					<Button bg='#fff' color='#000' onClick={Handle_Email_Verification}>Verify Email</Button>
-				</Flex>
-			: null
-			}
 			<Flex direction='column' gap='2' bg='#eee' p='2' w='100%' borderRadius='8' boxShadow='lg'>
 					<Text fontSize='24px' fontWeight='bold' color='#009393'>Description</Text>
 					<Text>{distributor_data?.description}</Text>

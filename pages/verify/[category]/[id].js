@@ -15,7 +15,7 @@ export default function Validating_Email_Account(){
 	const toast = useToast();
   	const router = useRouter();
   	const query = router.query
-  	console.log(query);
+  	//console.log(query);
 
   	useEffect(()=>{
   		const retrieved_verification_code = cookies.get("verification_code")
@@ -31,13 +31,13 @@ export default function Validating_Email_Account(){
   				cookies.remove('verification_code', { path: '/' });
   			})
   		}else{
-  			console.log(confirmation_code)
+  			//console.log(confirmation_code)
   			toast({
-          title: '',
-          description: `wrong code `,
-          status: 'error',
-          isClosable: true,
-        });
+				title: '',
+				description: `wrong code `,
+				status: 'error',
+				isClosable: true,
+			});
   		}
   	}
 
