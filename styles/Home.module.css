@@ -1,5 +1,9 @@
 .scrollbar::-webkit-scrollbar{
-	display: none; 
+    width: 2px;
+}
+.scrollbar::-webkit-scrollbar-thumb{
+    background: #009393;
+    border-radius: 20px;
 }
 .aboutus{
 	display: flex;

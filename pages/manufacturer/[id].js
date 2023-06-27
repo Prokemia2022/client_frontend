@@ -1,8 +1,9 @@
 //modules imports
 import React,{useState,useEffect} from 'react';
-import {Flex,Text} from '@chakra-ui/react';
+import {Flex,Text,useToast} from '@chakra-ui/react';
 import Cookies from 'universal-cookie';
 import jwt_decode from "jwt-decode";
+import { useRouter } from 'next/router';
 //.components imports
 import styles from '../../styles/Home.module.css';
 import Header from '../../components/Header.js'
@@ -25,14 +26,21 @@ export default function Manufacturer(){
 	const [currentvalue,setCurrentValue]=useState('dashboard')
 	const cookies = new Cookies();
 	const token = cookies.get('user_token');
-	const is_suspended = cookies.get('is_suspended');
-	//console.log(is_suspended)
+	const toast = useToast();
+	const router = useRouter();
 
 	const [manufacturer_data,set_manufacturer_data]=useState("");
 
 	useEffect(()=>{
 		if(!token){
-			alert('could not get user_id')
+			toast({
+				title: 'Error while fetching your account',
+				description: 'no user id was found',
+				status: 'error',
+				isClosable: true,
+			});
+			handle_LogOut()
+			router.push('/')
 		}else{
 			const details = jwt_decode(token)
 			//console.log(details)
@@ -43,12 +51,30 @@ export default function Manufacturer(){
 			get_Data(payload)
 		}
 	},[token])
+	const handle_LogOut=()=>{
+		cookies.remove('user_token', { path: '/' });
+		cookies.remove('is_acc_verified', { path: '/' });
+		cookies.remove('is_suspended', { path: '/' });
+		// router.reload()
+		router.push('/');
+	}
 	const get_Data=async(payload)=>{
 		//console.log(payload)
 		await Get_Manufacturer(payload).then((response)=>{
 			//console.log(response.data)
 			set_manufacturer_data(response.data)
 			cookies.set('is_acc_verified', response.data.valid_email_status, { path: '/' });
+		}).catch((err)=>{
+			//console.log(err.response.data);
+			toast({
+				title: 'Error while fetching your account',
+				description: err.response.data,
+				status: 'error',
+				variant: 'subtle',
+				isClosable: true,
+			});
+			handle_LogOut()
+			router.push('/');
 		})
 	}
 

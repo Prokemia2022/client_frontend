@@ -95,7 +95,7 @@ export default function DashboardMenu({manufacturer_data}){
 				title: '',
 				variant: 'subtle',
 				position: 'top-left',
-				description: `Your profile is incomplete, you need to fill details for customers to understand what you do.`,
+				description: `Your profile is incomplete, you need to fill company details for customers to understand what you do.`,
 				status: 'info',
 				isClosable: true,
 			});
@@ -124,13 +124,13 @@ export default function DashboardMenu({manufacturer_data}){
 				</Flex>
 			: null
 			}
-			<Flex gap='3'>
+			<Flex gap='2' align={'center'}>
 				{manufacturer_data?.profile_photo_url == ''? 
-					<LocationCity style={{fontSize:'150px',padding:'10px'}}/> 
+					<LocationCity style={{fontSize:'100px',padding:'5px'}}/> 
 				: 
-					<Image boxSize='150px' src={manufacturer_data?.profile_photo_url} alt='profile photo' boxShadow='lg'/>
+					<Image boxSize='150px' src={manufacturer_data?.profile_photo_url} alt='profile photo' boxShadow='lg' objectFit={'cover'}/>
 				}
-				<Flex direction='column' gap='2' bg='#eee' p='2' w='100%' borderRadius='8' boxShadow='lg'>
+				<Flex direction='column' gap='1' bg='#eee' p='2' w='100%' borderRadius='8' boxShadow='lg' fontSize={'14px'}>
 					<Text fontSize='28px' fontWeight='bold' color='#009393'>{manufacturer_data?.company_name}</Text>
 					<Text>Email: {manufacturer_data?.email_of_company}</Text>
 					<Text>Mobile: {manufacturer_data?.mobile_of_company}</Text>	

@@ -263,9 +263,10 @@ const Industry_Card=({item})=>{
 	return(
 		<Flex bg='#fff' mb='1' borderRadius='5' gap='2' onClick={(()=>{router.push(`/products/${item.title}`)})} cursor='pointer'>
 			<Image objectFit='cover' src={item?.cover_image == ''? "../Pro.png":item?.cover_image} alt='photo' boxShadow='lg' boxSize='100px'/>
-			<Flex direction='column' p='2' gap='2' flex='1' bg='#eee'>
+			<Flex direction='column' p='2' gap='1' h='100px' flex='1' bg='#eee'>
 				<Text mb='0' fontSize='20px' fontFamily='ClearSans-Bold'>{item.title}</Text>
-				<Text mb='0' w='80%' overflow='hidden' fontSize='14px'>{!item?.description || item?.description == ''? '-' : item?.description}</Text>
+				<Text overflow='hidden'>{!item?.description || item?.description == ''? '-' : item?.description}</Text>
+				<Text fontSize='12px' align='end'>read more...</Text>
 			</Flex>
 		</Flex>
 	)
@@ -276,9 +277,10 @@ const Technology_Card=({item})=>{
 	return(
 		<Flex bg='#fff' mb='1' borderRadius='5' gap='2' onClick={(()=>{router.push(`/products/${item.title}`)})} cursor='pointer'>
 			<Image objectFit='cover' src={item?.cover_image == ''? "../Pro.png":item?.cover_image} alt='photo' boxShadow='lg' boxSize='100px'/>
-			<Flex direction='column' p='2' gap='2' flex='1' bg='#eee'>
+			<Flex direction='column' p='2' gap='1' flex='1' bg='#eee'>
 				<Text mb='0' fontSize='20px' fontFamily='ClearSans-Bold'>{item.title}</Text>
-				<Text mb='0' w='80%' overflow='hidden' fontSize='14px'>{!item?.description || item?.description == ''? '-' : item?.description}</Text>
+				<Text mb='0' w='100%' h='50px' overflow='hidden' fontSize='14px'>{!item?.description || item?.description == ''? '-' : item?.description}</Text>
+				<Text fontSize='12px' align='end'>read more</Text>
 			</Flex>
 		</Flex>
 	)
