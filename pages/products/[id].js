@@ -1,6 +1,6 @@
 //modules import
 import React,{useState,useEffect} from 'react';
-import {Flex,Text,Image} from '@chakra-ui/react';
+import {Flex,Text,Image,Divider} from '@chakra-ui/react';
 //api calls
 import Get_Products from '../api/product/get_products.js'
 import Get_Distributors from '../api/auth/distributor/get_distributors.js'
@@ -12,6 +12,8 @@ import Get_Manufacturers from '../api/auth/manufacturer/get_manufacturers.js'
 import Header from '../../components/Header.js';
 //utils
 import {useRouter} from 'next/router';
+//styles
+import styles from '../../styles/Home.module.css'
 
 export default function Products(){
 	//utils
@@ -109,10 +111,17 @@ export default function Products(){
 		<Flex direction='column'>
 			<Header/>
 			<Flex p='2' direction='column' gap='2'>
-				<Flex direction='column' mb='4'>
+				<Flex direction='column' mb=''>
 					<Text fontSize='32px' fontFamily='ClearSans-Bold' color='#009393'>{category_title}</Text>
-					<Text>{industry_data == undefined? null : industry_data?.description}</Text>
-					<Text>{technology_data == undefined? null : technology_data?.description}</Text>
+					{industry_data == undefined? 
+						null : 
+						<Text overflowY={'scroll'} height={'200px'} className={styles.scrollbar} bg='#eee' p='1'>{industry_data?.description}</Text>
+					}
+					{technology_data == undefined? 
+						null : 
+						<Text overflowY={'scroll'} height={'200px'} className={styles.scrollbar} bg='#eee' p='1'>{technology_data?.description}</Text>
+					}
+					
 				</Flex>
 				{isloading ?
 					<>
@@ -121,6 +130,8 @@ export default function Products(){
 					</>
 					:
 					<>
+						<Text color='#009393' fontSize='24px'>Products </Text>
+						<Divider/>
 						{products_data.length !== 0 ?
 							<>
 								{products_data?.map((item)=>{
@@ -138,6 +149,7 @@ export default function Products(){
 			</Flex>
 			<Flex p='2' direction='column' gap='2'>
 					<Text color='#009393' fontSize='24px'> Featured Distributors </Text>
+					<Divider/>
 					{!isloading ?
 						<>
 							{distributors_data?.slice(0,4).map((distributor)=>{
@@ -158,6 +170,7 @@ export default function Products(){
 						</>
 					}
 					<Text color='#009393' fontSize='24px'>Featured Manufacturers </Text>
+					<Divider/>
 						{!isloading ?
 							<>
 								{manufacturers_data?.slice(0,4).map((manufacturer)=>{

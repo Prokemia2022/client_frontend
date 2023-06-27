@@ -105,16 +105,16 @@ export default function Request_Demo(){
 				<Flex className={styles.authForm} gap='2' direction='column'>
                     <Text w='100%' textAlign='center' fontSize='2rem' fontFamily='ClearSans-bold'>Get a personalised walkthrough of Prokemia</Text>
                         <Flex direction='column' gap='2'>
-                            <Text>Name</Text>
-                            <Input type='text' placeholder='Name' variant='filled' required onChange={((e)=>{set_name(e.target.value)})}/>
+                            <Text>Company name</Text>
+                            <Input type='text' placeholder='company name' variant='filled' required onChange={((e)=>{set_name(e.target.value)})}/>
                         </Flex>
                         <Flex direction='column' gap='2'>
-                            <Text>Email</Text>
-                            <Input type='email' placeholder='Email' variant='filled' required onChange={((e)=>{set_email(e.target.value)})}/>
+                            <Text>Email of company</Text>
+                            <Input type='email of company' placeholder='Email' variant='filled' required onChange={((e)=>{set_email(e.target.value)})}/>
                         </Flex>
                         <Flex direction='column' gap='2'>
-                            <Text>Mobile</Text>
-                            <Input type='tel' placeholder='Mobile' variant='filled' required onChange={((e)=>{set_mobile(e.target.value)})}/>
+                            <Text>Mobile of company</Text>
+                            <Input type='tel' placeholder='Mobile of company' variant='filled' required onChange={((e)=>{set_mobile(e.target.value)})}/>
                         </Flex>
                         <Flex direction='column' gap='2'>
                             <Text>Job Function</Text>

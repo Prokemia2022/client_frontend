@@ -1,5 +1,5 @@
 import React,{useState,useEffect} from 'react'
-import {Flex,Text,Input,Button,Heading} from '@chakra-ui/react'
+import {Flex,Text,Divider,Button,Heading} from '@chakra-ui/react'
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import Header from '../components/Header.js';
 import Get_Careers from './api/control/get_vacancies.js'
@@ -11,34 +11,34 @@ export default function Careers(){
 	const [email,set_email]=useState('')
 	const router = useRouter();
 	useEffect(()=>{
-		router.back()
+		//router.back()
+		get_Careers_Data()
 	},[])
 
 	const get_Careers_Data=async()=>{
 		await Get_Careers().then((response)=>{
 			set_careers_data(response.data)
-			//console.log(response.data)
 		})
 	}
 	return(
 			<Flex direction='column'>
 				<Header/>
-				<Flex direction='column' p='2' h='100vh'>
-					<Heading as='h2' textDecoration='underline 1px solid #009393'>Vacancy Section</Heading>
-					<Text>Find upcoming Events and meetups, seminars to build and enrich you.</Text>
-					<Text>Find Job Listings, Job Openings, senior & junior positions from top companies and firms.</Text>
-					<Text m='3' fontSize='24px' fontWeight='bold' textDecoration='underline 1px solid #000' textAlign='center'>VACANCIES</Text>
-					<Flex direction='column' p='2' gap='3'>
-						{careers_data.map((career)=>{
-							return(
-								<Career_Item career={career} key={career._id}/>
-							)
-						})}
-					</Flex>
-
-					<Text mt='10vh'>Be the first to recieve job listings, vacancies, Events notification</Text>
-					<Text>Fill out the form to register and join our mailing list</Text>
-					<Button borderRadius='0' bg='#009393' color='#fff' border onClick={(()=>{router.push("/career_mailing_list")})}>Register</Button>
+				<Flex direction='column' p='4' h='100vh' gap='2' bg='#eee'>
+					<Heading as='h2'>Careers</Heading>
+					<Text>Find Job Listings, Job openings, senior & junior positions from top companies and firms.</Text>
+					{careers_data?.length === 0?
+						<Flex justify='center' align='center' h='40vh' direction='column' gap='2' bg='#fff' borderRadius={'5'}>
+							<Text textAlign='center' fontSize='20px' color='grey'>No careers have been listed at the moment</Text>
+						</Flex>
+					:
+						<Flex direction='column' p='' gap='3'>
+							{careers_data.map((career)=>{
+								return(
+									<Career_Item career={career} key={career._id}/>
+								)
+							})}
+						</Flex>
+					}
 				</Flex>
 			</Flex>
 	)
@@ -46,24 +46,19 @@ export default function Careers(){
 
 const Career_Item=({career})=>{
 	return(
-		<Flex direction='column' p='2' bg='#eee' borderRadius='5' boxShadow='dark-lg'>
-			<Text fontSize='24px' fontWeight='bold'>{career.title}</Text>
-			<Flex gap='2'>
-				<Text fontWeight='bold'>Posted by:</Text>
+		<Flex direction='column' p='4' bg='#fff' borderRadius='5' boxShadow='sm'>
+			<Text fontSize='24px'>{career.title}</Text>
+			<Text>{career.description}</Text>
+			<Flex mt='2' gap='2' fontSize={'12px'}>
+				<Text color='grey'>Company:</Text>
 				<Text>{career.company}</Text>
 			</Flex>
-			<Flex gap='2'>
-				<Text fontWeight='bold'>Requirements: </Text>
+			<Flex gap='1' fontSize={'12px'} direction={'column'}>
+				<Text color='grey'>Requirements</Text>
+				<Divider/>
 				<Text>{career.requirements}</Text>
 			</Flex>
-			<Flex gap='2'>
-				<Text fontWeight='bold'>Description: </Text>
-				<Text>{career.description}</Text>
-			</Flex>
-			<Flex gap='2'>
-				<Text fontWeight='bold'>Status: </Text>
-				<Text>{career.status}</Text>
-			</Flex>
+			<Text fontSize={'12px'} color='grey'>{career.status}</Text>
 		</Flex>
 	)
 

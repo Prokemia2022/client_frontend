@@ -8,6 +8,8 @@ import AddIcon from '@mui/icons-material/Add';
 import StarIcon from '@mui/icons-material/Star';
 import VerifiedIcon from '@mui/icons-material/Verified';
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
+//styles
+import styles from '../../styles/Home.module.css';
 
 export default function Supplier_Inventory({manufacturer_data,distributor_data,acc_type}){
     /**
@@ -98,17 +100,18 @@ export default function Supplier_Inventory({manufacturer_data,distributor_data,a
 							<Text textAlign='center' fontSize='24px' color='gray'>You have not listed any products<br/>or<br/>products are awaiting review</Text>
 						</Flex>
 					:
-						<Flex direction={'column'} h='100vh' overflowY='scroll'>
+						<Flex direction={'column'} h='100vh' overflowY='scroll'  className={styles.scrollbar}>
 						{products_data?.map((product)=>{
 							return(
 								<div key={product?._id} style={{margin:'5px'}}>
 									<Product_Card_Item 
-                                                        set_changed_data={set_changed_data}
-                                                        changed_data={changed_data} 
-                                                        product={product} 
-                                                        router={router} 
-                                                        toast={toast} 
-                                                        is_subscribed={is_subscribed}/>
+										set_changed_data={set_changed_data}
+										changed_data={changed_data} 
+										product={product} 
+										router={router} 
+										toast={toast} 
+										is_subscribed={is_subscribed}
+									/>
 								</div>
 							)
 						})}

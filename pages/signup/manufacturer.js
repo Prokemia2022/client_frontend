@@ -6,6 +6,7 @@ import Cookies from 'universal-cookie';
 //components imports
 import styles from '../../styles/Home.module.css'
 import Header from '../../components/Header.js';
+import Loading from '../../components/Loading.js'
 //icon imports
 import {Visibility,VisibilityOff} from '@mui/icons-material'
 //api calls
@@ -26,6 +27,8 @@ export default function ManufacturerSignUp(){
   	const [password, set_password] = useState('');
   	const [email_of_company, set_email_of_company] = useState('');
 
+	const [is_submitting,set_is_submitting]=useState(false);
+
   	const payload = {
   		company_name,
   		password,
@@ -37,6 +40,7 @@ export default function ManufacturerSignUp(){
 	const yahooRegex = /^[^@]+@(yahoo|ymail|rocketmail)\.(com|in|co\.uk)$/i
 	//functions
 	const Verify_Inputs=()=>{
+		set_is_submitting(true);
 		if (password && company_name && email_of_company){
 			if (!email_of_company.match(validRegex)){
 				toast({
@@ -45,6 +49,9 @@ export default function ManufacturerSignUp(){
 					status: 'info',
 					isClosable: true,
 				});
+				setTimeout(()=>{
+					set_is_submitting(false);
+				},1000);
 				return;
 			}else if(email_of_company.match(gmailRegex) || email_of_company.match(yahooRegex)){
 				toast({
@@ -53,6 +60,9 @@ export default function ManufacturerSignUp(){
 					status: 'info',
 					isClosable: true,
 				});
+				setTimeout(()=>{
+					set_is_submitting(false);
+				},1000);
 				return;
 			}else{
 				handle_Sign_Up()
@@ -64,6 +74,7 @@ export default function ManufacturerSignUp(){
 				status: 'info',
 				isClosable: true,
 			});
+			set_is_submitting(false)
 		}
 	}
 	const handle_Sign_Up=async()=>{
@@ -92,6 +103,10 @@ export default function ManufacturerSignUp(){
 				status: 'error',
 				isClosable: true,
 			});
+		}).finally(()=>{
+			setTimeout(()=>{
+					set_is_submitting(false);
+				},1000);
 		})
 	}
 	return(
@@ -128,8 +143,20 @@ export default function ManufacturerSignUp(){
 							</Button>
 						</InputRightElement>
 					</InputGroup>
+					{is_submitting? 
+						<Button
+							bg='#009393'
+							borderRadius='5'
+							color='#fff'
+							align='center'
+						>
+							<Loading width='40px' height='40px' color='#ffffff'/>
+							creating an account...
+						</Button>
+						:
+							<Button bg='#009393' color='#fff' onClick={Verify_Inputs} disabled={is_submitting? true:false}>Create Manufacturer Account</Button>						
+					}
 					<Text fontSize={'11px'}>By Signing up you agree to our <a href="t&c" target="_blank" rel="noopener noreferrer" style={{color:'#009393'}}> terms&conditions</a > and our <a href="privacy_policy" target="_blank" rel="noopener noreferrer" style={{color:'#009393'}}>privacy policy</a>.</Text>
-					<Button bg='#000' color='#fff' onClick={Verify_Inputs}>Create Manufacturer Account</Button>
 				</Flex>
 			</Flex>
 		</Flex>

@@ -45,7 +45,7 @@ function Settings({manufacturer_data}){
 	return(
 		<Flex p='2' direction='column' gap='2' w='100%' overflowY='scroll' h='100vh'>
 		<Delete_Account_Modal is_delete_account_Modalvisible={is_delete_account_Modalvisible} set_is_delete_account_Modalvisible={set_is_delete_account_Modalvisible} manufacturer_data={manufacturer_data} acc_type='manufacturers'/>
-			<Text fontSize='34px' textDecoration='1px solid underline #009393' fontWeight='bold'>MyProfile</Text>
+			<Text fontSize='34px' fontWeight='bold'>MyProfile</Text>
 			{edit ?
 				<EditProfile setedit={setedit} manufacturer_data={manufacturer_data}/>
 			:

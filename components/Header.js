@@ -19,6 +19,7 @@ import MenuOpenIcon from '@mui/icons-material/MenuOpen';
 import SearchIcon from '@mui/icons-material/Search';
 import CloseIcon from '@mui/icons-material/Close';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import LogoutIcon from '@mui/icons-material/Logout';
 //components import
 import Search from './Search.js'
 import styles from '../styles/Search.module.css';
@@ -47,7 +48,7 @@ function Header(){
 	useEffect(()=>{
 		if(token){
 			const details = jwt_decode(token)
-			////console.log(details)
+			//console.log(details)
 			setsignedin(true)
 			set_acc_type(details?.acc_type)
 			setuser(details?.email)
@@ -134,7 +135,7 @@ function Header(){
 					<Flex align='center' gap='1' p='1' borderRadius='5'>
 						{signedin?
 							<Flex bg='#009393' boxShadow='lg' p='2' align='center' gap='1' borderRadius='5' color='#fff' onClick={handleProfile}>
-								{profile_photo_url == '' || !profile_photo_url? <AccountCircleIcon/> : <Image src={profile_photo_url} boxSize='25px' boxShadow='lg' borderRadius='40px' alt='pp'/>}
+								{profile_photo_url == '' || !profile_photo_url? <AccountCircleIcon/> : <Image src={profile_photo_url} boxSize='25px' boxShadow='lg' borderRadius='40px' alt='pp' objectFit={'cover'}/>}
 								<Text ml='1' fontSize='14px' >{user[0]}{user[1]}{user[2]}{user[3]}{user[4]}..</Text>
 							</Flex>
 							:null}
@@ -154,7 +155,6 @@ function Header(){
 								{signedin? 
 									<Flex direction='column' gap='1'>
 										<Text>{user}</Text>
-										<Text fontSize='12px' color='grey'>{user?.email_of_company}</Text>
 										<Text color='#009393' cursor='pointer' onClick={handleProfile}>view profile</Text>
 									</Flex> 
 									: 
@@ -164,7 +164,7 @@ function Header(){
 								}
 							</Flex>
 							{acc_type == 'distributor' || acc_type == 'manufacturer' ?
-								<Flex mt='2' bg='#009393' color='#fff' p='2' gap='2' onClick={(()=>{router.push(`/product/add_product`)})}>
+								<Flex mt='2' bg='#eee' p='2' gap='2' borderRadius={'5'} onClick={(()=>{router.push(`/product/add_product`)})}>
 									<Add/>
 									<Text mb='0' >Add a new product</Text>
 								</Flex>
@@ -175,19 +175,22 @@ function Header(){
 								:
 								<Flex mt='2' direction='column' p='2' gap='2' onClick={(()=>{router.push('/account/2')})}>
 									<Text mb='0' >Sell and market your products</Text>
-									<Divider/>
-								</Flex>
-							}
+									</Flex>
+								}
+							<Divider/>
 							{navigation.map((nav)=>{
 								return(
-									<Flex mt='2' key={nav.id} direction='column' p='2' gap='2' onClick={(()=>{router.push(`${nav.link}`)})}>
+									<Flex mt='2' key={nav.id} direction='column' p='1' gap='2' onClick={(()=>{router.push(`${nav.link}`)})}>
 										<Text mb='0' >{nav.title}</Text>
 										<Divider/>
 									</Flex>
 								)
 							})}
-							{signedin? 
-								<Button w='100%' bg='#000' color='#fff' onClick={handle_LogOut}>LogOut</Button>
+							{signedin?
+								<Flex gap='2' pl='2' align={'center'}>
+									<LogoutIcon style={{fontSize:'20px'}}/>
+									<Text w='100%'  onClick={handle_LogOut} align={'start'}>Log out</Text>
+								</Flex>
 									: 
 								<Button onClick={(()=>{router.push(`/signin`)})} bg='#009393' color='#fff' w='100%'>Sign In</Button>}
 						</MenuList>

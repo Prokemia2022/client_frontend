@@ -44,7 +44,7 @@ function Home(){
 		await Get_Products().then((response)=>{
 			set_isloading(false);
 			const data = response?.data;
-			const result_data = data.filter((item)=> item?.verification_status);
+			const result_data = data.filter((item)=> item?.verification_status && item?.sponsored);
 			set_products_data(result_data);
 		}).catch((err)=>{
 			//console.log(err);
@@ -114,7 +114,7 @@ function Home(){
 					<Text mb='0' fontFamily='ClearSans-Bold' fontSize='24px'>Industries</Text>
 					<Text mb='0' fontSize='18px' color='#009393' onClick={(()=>{router.push('/Industries/all')})} cursor='pointer'>see more</Text>
 				</Flex>
-				<Flex wrap='Wrap' w='100%' justify=''>
+				<SimpleGrid minChildWidth='150px' spacing='20px'>
 					{!isloading ?
 						<>
 							{industries_data?.slice(0,6).map((item)=>{
@@ -128,16 +128,20 @@ function Home(){
 							<Item_Loading />
 							<Item_Loading />
 							<Item_Loading />
+							<Item_Loading />
+							<Item_Loading />
+							<Item_Loading />
+							<Item_Loading />
 						</>
 					}				
-				</Flex>
+				</SimpleGrid>
 			</Flex>
 			<Flex direction='column' gap='3' w='100%' mt='2'>
 				<Flex p='2' justify='space-between' alighn='center'>
 					<Text mb='0' fontFamily='ClearSans-Bold' fontSize='24px'>Technologies</Text>
 					<Text mb='0' color='#009393' fontSize='18px' onClick={(()=>{router.push("/Technologies/all")})}>see more</Text>
 				</Flex>
-				<Flex wrap='Wrap' w='100%' justify=''>
+				<SimpleGrid minChildWidth='150px' spacing='20px'>
 					{!isloading ?
 						<>
 							{technologies_data?.slice(0,6).map((item)=>{
@@ -149,9 +153,17 @@ function Home(){
 						<>
 							<Item_Loading />
 							<Item_Loading />
+							<Item_Loading />
+							<Item_Loading />
+							<Item_Loading />
+							<Item_Loading />
+							<Item_Loading />
+							<Item_Loading />
+							<Item_Loading />
+							<Item_Loading />
 						</>
 					}
-				</Flex>
+				</SimpleGrid>
 			</Flex>
 			<Text mt='4' fontSize='24px' fontFamily='ClearSans-Bold'>Featured Products</Text>
 			{!isloading ?
@@ -295,7 +307,7 @@ const Loading=()=>{
 
 const Item_Loading=()=>{
 	return(
-		<Flex w='150px' h='225px' m='1' position='relative' bg='#fff' boxShadow='lg'>
+		<Flex w='100%' h='225px' m='1' position='relative' bg='#fff' boxShadow='lg'>
 			<Flex bg='#eee' p='4' m='2' mb='0' borderRadius='5' position='absolute' top='10px' left='10px' w='80%' h='50px'/>
 		</Flex>
 	)
@@ -303,7 +315,7 @@ const Item_Loading=()=>{
 
 const Control_Item_Card=({item,window,router})=>{
 	return(
-		<Flex cursor='pointer' w={window?.width > 500? '175px':'145px'} h='225px' m='1' position='relative' onClick={(()=>{router.push(`/products/${item.title}`)})}>
+		<Flex cursor='pointer' w='100%' h='225px' m='1' position='relative' onClick={(()=>{router.push(`/products/${item.title}`)})}>
 			<Image objectFit={item?.cover_image == ''? "contain":'cover'} src={item?.cover_image == ''? "../Pro.png":item?.cover_image} alt='photo' boxShadow='lg' w='100%'/>
 			<Text bg='rgb(0,0,0,0.6)' p='1' position='absolute' bottom='0px' left='0px' w='100%' fontSize='14px' color='#fff'>{item.title}</Text>
 		</Flex>

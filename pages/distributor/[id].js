@@ -1,8 +1,10 @@
 //modules imports
 import React,{useState,useEffect} from 'react';
-import {Flex,Text,} from '@chakra-ui/react';
+import {Flex,Text, useToast,} from '@chakra-ui/react';
+//utils
 import Cookies from 'universal-cookie';
 import jwt_decode from "jwt-decode";
+import { useRouter } from 'next/router';
 //components imports
 import styles from '../../styles/Home.module.css';
 import Header from '../../components/Header.js';
@@ -28,13 +30,22 @@ export default function Distributor(){
 	const [currentvalue,setCurrentValue] = useState('dashboard')
 	const cookies = new Cookies();
 	const token = cookies.get('user_token');
+	const toast = useToast();
+	const router = useRouter();
 	
 
 	const [distributor_data,set_distributor_data]=useState("");
 
 	useEffect(()=>{
 		if(!token){
-			alert('could not get user_id')
+			toast({
+				title: 'Error while fetching your account',
+				description: 'no user id was found',
+				status: 'error',
+				isClosable: true,
+			});
+			handle_LogOut()
+			router.push('/')
 		}else{
 			const details = jwt_decode(token)
 			//console.log(details)
@@ -44,13 +55,29 @@ export default function Distributor(){
 			}
 			get_Data(payload)
 		}
-	},[token])
+	},[token]);
+	const handle_LogOut=()=>{
+		cookies.remove('user_token', { path: '/' });
+		cookies.remove('is_acc_verified', { path: '/' });
+		cookies.remove('is_suspended', { path: '/' });
+		router.push('/');
+	}
 	const get_Data=async(payload)=>{
 		//console.log(payload)
 		await Get_Distributor(payload).then((response)=>{
 			//console.log(typeof(response.data.valid_email_status))
 			set_distributor_data(response.data)
 			cookies.set('is_acc_verified', response.data?.valid_email_status, { path: '/' });
+		}).catch((err)=>{
+			toast({
+				title: 'Error while fetching your account',
+				description: err.response.data,
+				status: 'error',
+				variant: 'subtle',
+				isClosable: true,
+			});
+			handle_LogOut()
+			router.push('/');
 		})
 	}
 	if (currentvalue == 'inventory')

@@ -21,12 +21,12 @@ function Manufacturers({distributor_data}){
 					</Flex>
 				:
 				<Flex direction='column' p='1' gap='2' overflowY='scroll' h='85vh'>
+					<Button bg='#009393' p='5' color='#fff' onClick={(()=>{setisaddnewmanufacturerModalvisible(true)})}>Add new Manufacturer</Button>
 					{manufacturers?.map((item)=>{
 						return(
 							<Manufacturer key={item?._id} item={item} id={distributor_data?._id}/>
 						)
 					})}
-					<Button bg='#009393' p='5' color='#fff' onClick={(()=>{setisaddnewmanufacturerModalvisible(true)})}>Add new Manufacturer</Button>
 				</Flex>
 			}
 		</Flex>
@@ -36,7 +36,8 @@ function Manufacturers({distributor_data}){
 export default Manufacturers;
 
 const Manufacturer=({item,id})=>{
-	const toast = useToast()
+	const toast = useToast();
+	const router = useRouter();
 	const [is_verify,set_is_verify]=useState(false);
 	const [is_edit,set_is_edit]=useState(false);
 	const [u_name,set_u_name]=useState(item?.name)
@@ -55,6 +56,7 @@ const Manufacturer=({item,id})=>{
 				status: 'success',
 				isClosable: true,
 			});
+			router.reload()
 		}).catch((err)=>{
 			toast({
 				title: '',
@@ -81,6 +83,7 @@ const Manufacturer=({item,id})=>{
 				status: 'success',
 				isClosable: true,
 			});
+			router.reload()
 		}).catch((err)=>{
 			toast({
 				title: '',

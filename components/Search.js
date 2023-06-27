@@ -64,8 +64,12 @@ export default function Search({setsearchbaractive,query_search,setquery_search}
 														item.email_of_lister?.toLowerCase().includes(debounce_search_value.toLowerCase()) ||
 														item.manufactured_by?.toLowerCase().includes(debounce_search_value.toLowerCase()) ||
 														item.distributed_by?.toLowerCase().includes(debounce_search_value.toLowerCase()) ||
+														item.description_of_product?.toLowerCase().includes(debounce_search_value.toLowerCase()) ||
+														item.features_of_product?.toLowerCase().includes(debounce_search_value.toLowerCase()) ||
+														item.application_of_product?.toLowerCase().includes(debounce_search_value.toLowerCase()) ||
 														item.technology?.toLowerCase().includes(debounce_search_value.toLowerCase()))
-			set_products_data(result);
+			
+														set_products_data(result);
 		}).then(()=>{
 			set_product_isfetching(false);
 		})
@@ -74,7 +78,8 @@ export default function Search({setsearchbaractive,query_search,setquery_search}
 		await Get_Industries().then((response)=>{
 			const data = response?.data
 			const result_data = data.filter((item)=> item.verification_status)
-			const result = result_data.filter(item => item.title?.toLowerCase().includes(debounce_search_value.toLowerCase()))
+			const result = result_data.filter(item => item.title?.toLowerCase().includes(debounce_search_value.toLowerCase()) || 
+														item.description?.toLowerCase().includes(debounce_search_value.toLowerCase()))
 			set_industries_data(result);
 		}).then(()=>{
 			set_industries_isfetching(false);
@@ -84,7 +89,8 @@ export default function Search({setsearchbaractive,query_search,setquery_search}
 		await Get_Technologies().then((response)=>{
 			const data = response?.data
 			const result_data = data.filter((item)=> item.verification_status)
-			const result = result_data.filter(item => item.title?.toLowerCase().includes(debounce_search_value.toLowerCase()))
+			const result = result_data.filter(item => item.title?.toLowerCase().includes(debounce_search_value.toLowerCase()) || 
+														item.description?.toLowerCase().includes(debounce_search_value.toLowerCase()))
 			set_technologies_data(result);
 		}).then(()=>{
 			set_technologies_isfetching(false);
