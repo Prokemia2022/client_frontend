@@ -21,6 +21,7 @@ export default function Salesperson({setCurrentValue,salesperson_data,set_is_ref
 	const cookies = new Cookies();
 	//states
 	const annonymous = salesperson_data?.account_status;  //current status for the salesperson i.e annonymous or not
+	const open_to_consultancy = salesperson_data?.open_to_consultancy;
 	//functions
 	const handle_annonymous_status=async()=>{
 		if(salesperson_data?.suspension_status){
@@ -43,6 +44,49 @@ export default function Salesperson({setCurrentValue,salesperson_data,set_is_ref
 			const payload = {
 				_id: salesperson_data?._id,
 				account_status: !annonymous
+			}
+			await Edit_Salesperson(payload).then(()=>{
+				//console.log(payload)
+				toast({
+					title: '',
+					description: 'Your account status has changed',
+					status: 'info',
+					isClosable: true,
+				});
+			}).then(()=>{
+				set_is_refetch(!is_refetch)
+			}).catch((err)=>{
+				console.log(err)
+				toast({
+					title: '',
+					description: `error while changing your account status`,
+					status: 'error',
+					isClosable: true,
+				});
+			});
+		}
+	}
+	const handle_open_to_consultancy_status=async()=>{
+		if(salesperson_data?.suspension_status){
+			//console.log(salesperson_data?.verification_status)
+			toast({
+				title: 'Your account is currently suspended.',
+				description: 'reach out to support for guidance by emailing us at help@prokemia.com',
+				status: 'error',
+				isClosable: true,
+			});
+		}else if(!salesperson_data?.verification_status){
+			//console.log(salesperson_data?.verification_status)
+			toast({
+				title: 'Your account has not yet been approved',
+				description: '',
+				status: 'info',
+				isClosable: true,
+			});
+		}else{
+			const payload = {
+				_id: salesperson_data?._id,
+				open_to_consultancy: !open_to_consultancy
 			}
 			await Edit_Salesperson(payload).then(()=>{
 				//console.log(payload)
@@ -115,25 +159,25 @@ export default function Salesperson({setCurrentValue,salesperson_data,set_is_ref
 					<Flex gap='4' justify='space-between'>
 						<Text fontSize='42px' fontFamily='ClearSans-bold'>Welcome,<br/> {salesperson_data?.first_name} {salesperson_data?.last_name}</Text>
 						<Flex gap='2' direction='column'>
-							<Flex gap='2'>
-								<Switch value={annonymous} size='md' onChange={handle_annonymous_status}/>
-								<Text fontSize='sm' w='100px' fontWeight='bold' color={annonymous == true ? '#009393' : '#000'}>{annonymous == true ? 'Annonymous' : `${salesperson_data?.email_of_salesperson}`}</Text>
+							<Flex gap='2' align='start'>
+								<Switch value={open_to_consultancy} size='md' onChange={handle_open_to_consultancy_status}/>
+								<Text fontSize='sm' w='150px' fontWeight='bold' color={open_to_consultancy == true ? '#009393' : '#000'}>{open_to_consultancy == true ? 'open to consult' : `Do you offer consultation? Toggle me.`}</Text>
 							</Flex>
-							{annonymous === true ?  								
+							{open_to_consultancy === true ?  								
 							<Flex boxShadow='dark-lg' bg='#fff' w='150px' h='100px' direction='column' align='center' justify='center' borderRadius='5'>
 								<SecurityOutlinedIcon/>
-								<Text fontSize='12px' textAlign='center' color='#000' fontWeight='bold'>your account is now annonymous </Text>
+								<Text fontSize='12px' textAlign='center' color='#000' fontWeight='bold'>you are now open to provide consultation </Text>
 							</Flex>
 							: null}
 						</Flex>
 					</Flex>
 					<Flex p='2' direction='column' gap='2' >
 									<Flex gap='2'>
-										<Flex _hover={{transform:"scale(1.02)",transition:'ease-out 1s all',bg:'#009393',color:'#fff'}} cursor='pointer' onClick={(()=>{setCurrentValue('sale')})} bg='#fff' boxShadow='dark-lg' border='px dashed #009393' direction='column' align='center' justify='center' p='2' gap='2' w='175px' h='150px' borderRadius='5'>
+										<Flex _hover={{transform:"scale(1.02)",transition:'ease-out 1s all',bg:'#009393',color:'#fff'}} cursor='pointer' onClick={(()=>{setCurrentValue('sale')})} bg='#fff' boxShadow='md' border='px dashed #009393' direction='column' align='center' justify='center' p='2' gap='2' w='175px' h='150px' borderRadius='5'>
 											<ReceiptOutlinedIcon/>
 											<Text>Initiate Sales</Text>
 										</Flex>
-										<Flex _hover={{transform:"scale(1.02)",transition:'ease-out 1s all',bg:'#009393',color:'#fff'}} cursor='pointer' onClick={(()=>{setCurrentValue('hub')})} bg='#fff'  boxShadow='dark-lg' border='px dashed #009393' direction='column' align='center' justify='center' p='2' gap='2' w='180px' h='150px' borderRadius='5'>
+										<Flex _hover={{transform:"scale(1.02)",transition:'ease-out 1s all',bg:'#009393',color:'#fff'}} cursor='pointer' onClick={(()=>{setCurrentValue('hub')})} bg='#fff'  boxShadow='md' border='px dashed #009393' direction='column' align='center' justify='center' p='2' gap='2' w='180px' h='150px' borderRadius='5'>
 											<Groups2OutlinedIcon/>
 											<Text>Join the community</Text>
 										</Flex>

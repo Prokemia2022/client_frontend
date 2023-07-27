@@ -1,7 +1,7 @@
 //modules imports
 import React,{useState} from 'react';
 import {useRouter} from 'next/router';
-import {Flex,Text,Button,Input,InputGroup,InputRightElement,Image,useToast} from '@chakra-ui/react';
+import {Flex,Text,Button,Input,InputGroup,InputRightElement,Image,useToast,Select} from '@chakra-ui/react';
 import bcrypt from 'bcryptjs';
 import Cookies from 'universal-cookie';
 //icons-imports
@@ -64,6 +64,7 @@ const Handle_Change_Password=async()=>{
 					</Flex>
 					<Flex direction='column' gap='1' w='100%' bg='#fff' p='2' borderRadius='5'>
 						<Text fontWeight='bold'>Payment Details</Text>
+						
 						<Text p='1' borderRadius='5'>{salesperson_data?.payment_method}</Text>
 					</Flex>
 					<Flex borderBottom='1px solid #000' p='1' direction='column'>
@@ -109,6 +110,7 @@ const EditProfile=({setedit,salesperson_data})=>{
 	const [company_name,set_company_name]=useState(salesperson_data?.company_name);
 	const [bio,set_bio]=useState(salesperson_data?.bio);
 	const [payment_method,set_payment_method]=useState(salesperson_data?.payment_method);
+	const [payment_type,set_payment_type]=useState('');
 	const [profile_photo,set_profile_photo]=useState('');
 	const [profile_photo_url,set_profile_photo_url]=useState(salesperson_data?.profile_photo_url);
 
@@ -119,10 +121,11 @@ const EditProfile=({setedit,salesperson_data})=>{
 		mobile,
 		address,
 		bio,
-		payment_method,
+		payment_method:`${payment_type}: ${payment_method}`,
 		company_name,
 		profile_photo_url
 	}
+	console.log(payload)
 	const profile_upload_function=async()=>{
 		/**handles uploads profile image functions to firebase storage**/
 		//console.log(profile_photo)
@@ -260,8 +263,16 @@ const EditProfile=({setedit,salesperson_data})=>{
 						<Text>Address</Text>
 						<Input type='text' placeholder={salesperson_data?.address} variant='filled' onChange={((e)=>{set_address(e.target.value)})}/>
 					</Flex>
-					<Flex direction='column'>
+					<Flex direction='column' gap='2'>
 						<Text>Payment method</Text>
+						<Select variant='filled' placeholder='Select payment type' onChange={((e)=>{set_payment_type(e.target.value)})}>
+							<option value='Mpesa'>Mpesa</option>
+							<option value='Bank'>Bank</option>
+							<option value='Airtel Money'>Airtel Money</option>
+						</Select>
+					</Flex>
+					<Flex direction='column' gap='2'>
+						<Text>Payment details</Text>
 						<Input type='text' placeholder={salesperson_data?.payment_method} variant='filled' onChange={((e)=>{set_payment_method(e.target.value)})}/>
 					</Flex>
 					<Flex gap='2'>

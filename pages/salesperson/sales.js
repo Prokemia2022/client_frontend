@@ -40,7 +40,6 @@ function Sales({salesperson_data}){
 			<Flex gap='2'>
 				<Select w='150px' placeholder='sort' onChange={((e)=>{set_sort_value(e.target.value)})}>
 					<option value='pending'>Pending </option>
-					<option value='disbursed'>Disbursed</option>
 					<option value='completed'>Completed</option>
 					<option value='rejected'>Rejected</option>
 				</Select>
