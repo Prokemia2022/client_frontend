@@ -38,7 +38,15 @@ export default function Feedback(){
 				isClosable: true,
 			});
 			return;
-  		}else{
+  		}else if(payload.name === '' || payload.email === '' || payload.feedback === ''){
+			toast({
+				title: '',
+				description: `All inputs are required`,
+				status: 'info',
+				isClosable: true,
+			  });
+			  return 0;
+		}else{
 	  		//console.log(payload)
 			await Create_Feedback(payload).then((response)=>{
 				toast({
@@ -47,7 +55,7 @@ export default function Feedback(){
 		          status: 'info',
 		          isClosable: true,
 		        });
-		        set_rate(5)
+				clear_inputs()
 				setActive(false)
 			}).catch((err)=>{
 				toast({
@@ -59,15 +67,41 @@ export default function Feedback(){
 			})
 	  	}
 	}
+	const clear_inputs=()=>{
+		setname('');
+		setemail('');
+		setmessage('');
+		set_rate(5)
+	}
+	function shuffle(array) {
+		let currentIndex = array.length,  randomIndex;
+	  
+		// While there remain elements to shuffle.
+		while (currentIndex != 0) {
+	  
+		  // Pick a remaining element.
+		  randomIndex = Math.floor(Math.random() * currentIndex);
+		  currentIndex--;
+	  
+		  // And swap it with the current element.
+		  [array[currentIndex], array[randomIndex]] = [
+			array[randomIndex], array[currentIndex]];
+		}
+	  
+		return array;
+	  }
 	const handle_get_feedbacks=async()=>{
 		await Get_Feedback().then((res)=>{
 			//console.log(res.data);
-			set_feedback_data(res.data.reverse())
+			const shuffled_data = shuffle(res.data);
+			set_feedback_data(shuffled_data)
 		})
 	}
 	useEffect(()=>{
 		handle_get_feedbacks()
 	},[])
+
+	
 	return(
 		<Flex direction='column'>
 			<Header/>
@@ -100,7 +134,7 @@ export default function Feedback(){
 							</Flex>
 						</Flex>
 						<Button bg='#009393' color='#fff' onClick={Handle_Create_Feedback}>Submit Feedback</Button>
-						<Button border='1px solid red' color='#000' onClick={(()=>{setActive(false)})}>Cancel</Button>
+						<Button border='1px solid red' color='#000' onClick={(()=>{setActive(false);clear_inputs()})}>Cancel</Button>
 					</Flex>
 				</Flex>	
 			:
@@ -108,7 +142,7 @@ export default function Feedback(){
 					<Flex direction={'column'} className={styles.feedback_title} gap='2'>
 						<Heading as='h2'>What Our Clients say<br/> about us</Heading>
 						<Text>We value feedback, view experiences and give us your feedback<br/> to help us improve our sevices, and our experiences.</Text>
-						<Button bg='#009393' color='#fff' w='145px' onClick={(()=>{setActive(true)})}>Give us a Feedback</Button>
+						<Button bg='#009393' p='2' color='#fff' onClick={(()=>{setActive(true)})}>Give us a Feedback</Button>
 					</Flex>
 					<Flex className={styles.feedback_content_body} gap='2'>
 						{feedback_data?.slice(0,3).map((feedback)=>{
@@ -138,7 +172,6 @@ const Feedback_Content_Card=({feedback})=>{
 			</Flex>
 			<Flex p='2' direction={'column'}>
 				<Text fontWeight={'bold'} fontSize={'18px'}>{feedback?.name}</Text>
-				<Text fontSize={'10px'} color='grey'>{feedback?.email}</Text>
 			</Flex>
 			<Text p='2' textAlign={'left'} overflow={'hidden'}>"{feedback?.feedback} "</Text>
 		</Flex>

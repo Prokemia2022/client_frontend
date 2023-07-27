@@ -4,11 +4,9 @@ import {useRouter} from 'next/router';
 import Cookies from 'universal-cookie';
 import jwt_decode from "jwt-decode";
 //icons
-// import FileDownloadIcon from '@mui/icons-material/FileDownload';
-// import LanguageIcon from '@mui/icons-material/Language';
-// import FavoriteIcon from '@mui/icons-material/Favorite';
 import DescriptionIcon from '@mui/icons-material/Description';
 import VerifiedIcon from '@mui/icons-material/Verified';
+import ShareIcon from '@mui/icons-material/Share';
 //components
 import QuotationModal from '../../components/modals/Quotation.js';
 import SampleModal from '../../components/modals/Sample.js';
@@ -17,6 +15,7 @@ import Header from '../../components/Header.js';
 import Get_Product from '../api/product/get_product.js';
 //utils
 import styles from '../../styles/Home.module.css';
+import { RWebShare } from "react-web-share";
 
 export default function Product(){
 	const router = useRouter();
@@ -92,13 +91,25 @@ export default function Product(){
 					</Flex>
 				</Flex>
 				<Text fontFamily='ClearSans-Bold' fontSize='32px' color='#009393'>{product_data?.name_of_product}</Text>
+				
+				<RWebShare
+				data={{
+					title: `${product_data?.name_of_product}`,
+					text: `${product_data?.description_of_product}`,
+					url: `https://prokemia.com/product/${product_data?._id}`,
+				}}>
+					<Flex gap='2' mt='2' mb='2' cursor='pointer' align='center'>
+						<ShareIcon style={{fontSize:20}}/>
+						<Text fontSize='14px' fontWeight='bold'>Share this product</Text>
+					</Flex>
+				</RWebShare>
 				<Text>{product_data?.description_of_product}</Text>
 				<Flex gap='2'>
-					<Text fontWeight={'bold'}>Manufactured by:</Text>
+					<Text fontWeight={'bold'}>Manufactured by  </Text>
 					<Text color='grey'>{product_data?.manufactured_by}</Text>
 				</Flex>
 				<Flex gap='2'>
-					<Text fontWeight={'bold'}>Distributed by:</Text>
+					<Text fontWeight={'bold'}>Distributed by</Text>
 					<Text color='grey'>{product_data?.distributed_by}</Text>
 				</Flex>
 				<Text fontWeight='bold'>Chemical_name:</Text>
@@ -109,16 +120,15 @@ export default function Product(){
 				<Flex direction='column'  borderRadius='5' p=''>
 					<Text>{product_data?.function}</Text>
 				</Flex>
-				<Flex direction='column' gap='2' mt='2' mb='2'>
-					<Text fontWeight='bold'>Attachments</Text>
+				<Flex direction='column' gap='2' mt='4' mb='4'>
 					{product_data?.data_sheet === ''? 
 						<Text bg='#eee' p='2' textAlign='center' borderRadius='5'>No data sheet attached</Text> 
 						: 
 						<>
 							{is_signed_in?
-								<Link href={product_data?.data_sheet} bg='' border='1px solid #eee' borderRadius='5' boxShadow='lg' color='#000' align='center' p='1' isExternal fontSize='20px'><DescriptionIcon style={{color:'#EA9DB0',fontSize:'18px'}} /> Product Data Sheet</Link>
+								<Link href={product_data?.data_sheet} border='1px solid #eee' borderRadius='5' color='#000' align='start' p='1' isExternal fontSize='20px'><DescriptionIcon style={{color:'#EA9DB0',fontSize:'18px'}} /> Product Data Sheet</Link>
 								:
-								<Text onClick={Send_Info} bg='' cursor='pointer' border='1px solid #eee' borderRadius='5' boxShadow='lg' color='#000' align='center' p='1' fontSize='20px'><DescriptionIcon style={{color:'#EA9DB0',fontSize:'18px'}} /> Product Data Sheet</Text>
+								<Text onClick={Send_Info} bg='' cursor='pointer' border='1px solid #eee' borderRadius='5' color='#000' align='start' p='1' fontSize='20px'><DescriptionIcon style={{color:'#EA9DB0',fontSize:'18px'}} /> Product Data Sheet</Text>
 							}
 						</>
 					}
@@ -127,9 +137,9 @@ export default function Product(){
 						: 
 						<>
 							{is_signed_in?
-								<Link href={product_data?.formulation_document} bg='' border='1px solid #eee' borderRadius='5' boxShadow='lg' color='#000' align='center' p='1' isExternal fontSize='20px'><DescriptionIcon style={{color:'#5D95B4',fontSize:'18px'}} /> Fomulation document</Link>
+								<Link href={product_data?.formulation_document} bg='' border='1px solid #eee' borderRadius='5' color='#000' align='start' p='1' isExternal fontSize='20px'><DescriptionIcon style={{color:'#5D95B4',fontSize:'18px'}} /> Fomulation document</Link>
 								:
-								<Text onClick={Send_Info} bg='' cursor='pointer' border='1px solid #eee' borderRadius='5' boxShadow='lg' color='#000' align='center' p='1' fontSize='20px'><DescriptionIcon style={{color:'#5D95B4',fontSize:'18px'}} /> Fomulation document</Text>
+								<Text onClick={Send_Info} bg='' cursor='pointer' border='1px solid #eee' borderRadius='5' color='#000' align='start' p='1' fontSize='20px'><DescriptionIcon style={{color:'#5D95B4',fontSize:'18px'}} /> Fomulation document</Text>
 							}
 						</>
 					}
@@ -138,9 +148,9 @@ export default function Product(){
 						: 
 						<>
 							{is_signed_in?
-								<Link href={product_data?.safety_data_sheet} bg='' border='1px solid #eee' borderRadius='5' boxShadow='lg' color='#000' align='center' p='1' isExternal fontSize='20px'><DescriptionIcon style={{color:'#8c52ff',fontSize:'18px'}} /> Safety Data Sheet</Link>
+								<Link href={product_data?.safety_data_sheet} bg='' border='1px solid #eee' borderRadius='5' color='#000' align='start' p='1' isExternal fontSize='20px'><DescriptionIcon style={{color:'#8c52ff',fontSize:'18px'}} /> Safety Data Sheet</Link>
 								:
-								<Text onClick={Send_Info} bg='' cursor='pointer' border='1px solid #eee' borderRadius='5' boxShadow='lg' color='#000' align='center' p='1' fontSize='20px'><DescriptionIcon style={{color:'#8c52ff',fontSize:'18px'}} /> Safety Data Sheet</Text>
+								<Text onClick={Send_Info} bg='' cursor='pointer' border='1px solid #eee' borderRadius='5' color='#000' align='start' p='1' fontSize='20px'><DescriptionIcon style={{color:'#8c52ff',fontSize:'18px'}} /> Safety Data Sheet</Text>
 							}
 						</>
 					}
