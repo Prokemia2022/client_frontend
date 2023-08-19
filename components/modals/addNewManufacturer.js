@@ -20,7 +20,7 @@ import {
 import { useEffect,useState } from 'react';
 import Add_New_Manufacturer from '../../pages/api/auth/distributor/add_new_manufacturer.js'
 
-function AddNewManufacturerModal({isaddnewmanufacturerModalvisible,setisaddnewmanufacturerModalvisible,id}){
+function AddNewManufacturerModal({isaddnewmanufacturerModalvisible,setisaddnewmanufacturerModalvisible,id,set_refresh_data}){
     const toast = useToast();
     const { isOpen, onOpen, onClose } = useDisclosure();
 
@@ -70,6 +70,7 @@ function AddNewManufacturerModal({isaddnewmanufacturerModalvisible,setisaddnewma
             isClosable: true,
           });
         }).then(()=>{
+          set_refresh_data(`${name} has been added as a manufacturer.`)
           setisaddnewmanufacturerModalvisible(false)
         }).catch((err)=>{
           toast({

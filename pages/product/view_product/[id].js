@@ -114,7 +114,7 @@ export default function Product(){
 				</Flex>
 			</Flex>
 				<Flex p='2' gap='2' direction='column' w='100%'>
-					<Button color='#fff' borderRadius='0' bg='#009393' onClick={(()=>{router.push(`/product/edit_config/${product_data?._id}`)})}>Edit Product</Button>
+					<Button color='#fff' borderRadius='0' bg='#009393' onClick={(()=>{router.push(`/products/product/edit/${product_data?._id}`)})}>Edit Product</Button>
 					<Button color='red' borderRadius='0' bg='#fff' border='1px solid red' onClick={(()=>{set_is_delete_product_Modalvisible(true)})}>Delete Product</Button>
                     <Button color='#000' borderRadius='0' bg='#fff' border='1px solid #000' onClick={(()=>{router.back()})}>Go back</Button>
 				</Flex>

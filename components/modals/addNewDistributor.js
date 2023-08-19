@@ -16,11 +16,14 @@ import {
     InputGroup,Heading,
     Stack,
     useToast,
+    FormControl,
+    FormLabel,
   } from '@chakra-ui/react';
 import { useEffect,useState } from 'react';
 import Add_New_Distributor from '../../pages/api/auth/manufacturer/add_new_distributor.js'
+import Get_Industries from '../../pages/api/control/get_industries';
 
-function AddNewDistributorModal({isaddnewdistributorModalvisible,setisaddnewdistributorModalvisible,id}){
+function AddNewDistributorModal({isaddnewdistributorModalvisible,setisaddnewdistributorModalvisible,id,set_refresh_data}){
     const { isOpen, onOpen, onClose } = useDisclosure();
     const toast  =useToast();
 
@@ -35,6 +38,23 @@ function AddNewDistributorModal({isaddnewdistributorModalvisible,setisaddnewdist
     useEffect(()=>{
       HandleModalOpen();
     },[isaddnewdistributorModalvisible])
+
+    //data
+	const [industries_data, set_industries_data]=useState([]);
+    
+  useEffect(()=>{
+      get_Industries_Data()
+    },[])
+
+
+    const get_Industries_Data=async()=>{
+      await Get_Industries().then((response)=>{
+        //console.log(response.data)
+        const data = response.data
+        const result = data.filter(v => v.verification_status)
+        set_industries_data(result)
+      })
+    }
 
     const [name,set_name]=useState('')
     const [mobile,set_mobile]=useState('')
@@ -72,6 +92,7 @@ function AddNewDistributorModal({isaddnewdistributorModalvisible,setisaddnewdist
             isClosable: true,
           });
         }).then(()=>{
+          set_refresh_data(`added ${name} as a distributor`)
           setisaddnewdistributorModalvisible(false)
         }).catch((err)=>{
           toast({
@@ -106,10 +127,16 @@ function AddNewDistributorModal({isaddnewdistributorModalvisible,setisaddnewdist
                 <Text>Mobile</Text>
                 <Input type='tel' placeholder='Mobile' variant='filled' onChange={((e)=>{set_mobile(e.target.value)})}/>
               </Flex>
-              <Flex direction='column'>
-                <Text>Industries the distributor specializes in</Text>
-                <Input type='text' placeholder='Use a comma to separate multiple Industries' variant='filled' onChange={((e)=>{set_industry(e.target.value)})}/>
-              </Flex>
+              <FormControl>
+                  <FormLabel>Industry the distributor specializes in</FormLabel>
+                  <Select value={industry} placeholder='select industry product will be categorized' onChange={((e)=>{set_industry(e.target.value)})}>
+                      {industries_data?.map((item)=>{
+                          return(
+                              <option key={item?._id} value={item?.title}>{item?.title}</option>
+                          )
+                      })}
+                  </Select>
+              </FormControl>
               <Button bg='#009393' borderRadius='0' color='#fff' onClick={verify_inputs}>Add new Distributor</Button>
             </Stack>
           </ModalBody>

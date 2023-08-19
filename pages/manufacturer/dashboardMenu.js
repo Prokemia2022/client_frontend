@@ -18,7 +18,7 @@ import Cookies from 'universal-cookie';
 
 
 
-export default function DashboardMenu({manufacturer_data}){
+export default function DashboardMenu({manufacturer_data,set_refresh_data}){
 	/**
 	 * DashboardMenu: Dashboard for the manufacturer profile.
 	*/
@@ -108,9 +108,8 @@ export default function DashboardMenu({manufacturer_data}){
 	},[manufacturer_data])
 	return (
 		<Flex p='2' direction='column' gap='4' w='100%' overflowY='scroll' h='100vh'>
-			<AddNewProduct isaddnewproductModalvisible={isaddnewproductModalvisible} setisaddnewProductModalvisible={setisaddnewProductModalvisible}/>
-			<AddNewExpertsModal router={router} isaddnewexpertModalvisible={isaddnewexpertModalvisible} setisaddNewExpertModalvisible={setisaddNewExpertModalvisible} id={id} acc_type='manufacturer'/>
-			<AddNewDistributor isaddnewdistributorModalvisible={isaddnewdistributorModalvisible} setisaddnewdistributorModalvisible={setisaddnewdistributorModalvisible} id={id}/>
+			<AddNewExpertsModal set_refresh_data={set_refresh_data} router={router} isaddnewexpertModalvisible={isaddnewexpertModalvisible} setisaddNewExpertModalvisible={setisaddNewExpertModalvisible} id={id} acc_type='manufacturer'/>
+			<AddNewDistributor set_refresh_data={set_refresh_data} isaddnewdistributorModalvisible={isaddnewdistributorModalvisible} setisaddnewdistributorModalvisible={setisaddnewdistributorModalvisible} id={id}/>
 			{!manufacturer_data?.valid_email_status?
 				<Flex w='100%' p='1' borderRadius='5' bg='#009393' align='center' justify='space-between' color='#fff'>
 					<Flex align='center' gap='2'>
@@ -142,7 +141,7 @@ export default function DashboardMenu({manufacturer_data}){
 					<Text>{manufacturer_data?.description}</Text>
 				</Flex>
 			<Flex gap='3' direction='column'>
-				<Button bg='#009393' color='#fff' onClick={(()=>{router.push('/product/add_product')})}><Add/>Add new Product</Button>
+				<Button bg='#009393' color='#fff' onClick={(()=>{router.push('/products/product/new')})}><Add/>Add new Product</Button>
 				<Button bg='#fff' border='1px solid #000' onClick={(()=>{setisaddNewExpertModalvisible(true)})}>Add new Experts</Button>
 				<Button bg='#fff' border='1px solid #000' onClick={(()=>{setisaddnewdistributorModalvisible(true)})}>Add new Distributor</Button>
 			</Flex>

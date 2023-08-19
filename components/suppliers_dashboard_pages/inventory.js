@@ -119,7 +119,7 @@ export default function Supplier_Inventory({manufacturer_data,distributor_data,a
 					}
 				</>
 			}
-			<Circle _hover={{transform:"scale(1.03)",transition:'ease-out 0.9s all'}} onClick={(()=>{router.push('/product/add_product')})} boxShadow='dark-lg' cursor='pointer' color='#fff' boxSize='60px' bg='#009393' position='fixed' bottom='20px' right='20px'><AddIcon/></Circle>
+			<Circle _hover={{transform:"scale(1.03)",transition:'ease-out 0.9s all'}} onClick={(()=>{router.push('/products/product/new')})} boxShadow='dark-lg' cursor='pointer' color='#fff' boxSize='60px' bg='#009393' position='fixed' bottom='20px' right='20px'><AddIcon/></Circle>
 		</Flex>
 	)
 }
@@ -212,7 +212,7 @@ const Product_Card_Item=({router,product,manufacturer_data,toast,is_subscribed,s
 				{product?.sponsored === true ? <VerifiedIcon style={{color:'gold',position:'absolute',top:'10px',right:'15px'}}/> : null}
 				<Flex gap='2' mt='2' mb='2' w='100%'>
 					<Text w='75px' align='center' fontWeight='bold' color='#000' bg='#eee' p='2' borderRadius='5' cursor='pointer' onClick={(()=>{router.push(`/product/view_product/${product?._id}`)})}>View</Text>
-                    <Text w='75px' align='center' fontWeight='bold' color='#000' bg='#eee' p='2' borderRadius='5' cursor='pointer' onClick={(()=>{router.push(`/product/edit_config/${product?._id}`)})}>Edit</Text>
+                    <Text w='75px' align='center' fontWeight='bold' color='#000' bg='#eee' p='2' borderRadius='5' cursor='pointer' onClick={(()=>{router.push(`/products/product/edit/${product?._id}`)})}>Edit</Text>
                 </Flex>
                 {product?.sponsored ? 
                     <Flex bg='#eee' p='2' gap='2' borderRadius='5' cursor='pointer' onClick={handle_un_feature_product} align='center'>

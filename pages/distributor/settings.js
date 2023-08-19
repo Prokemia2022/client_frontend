@@ -20,7 +20,7 @@ import {storage} from '../../components/firebase.js';
 import {ref,uploadBytes,getDownloadURL} from 'firebase/storage';
 import { v4 } from "uuid";
  
-function Settings({distributor_data}){
+function Settings({distributor_data,set_refresh_data}){
 	//utils
 	const router = useRouter();
 	const cookies = new Cookies();
@@ -46,7 +46,7 @@ function Settings({distributor_data}){
 			<Delete_Account_Modal is_delete_account_Modalvisible={is_delete_account_Modalvisible} set_is_delete_account_Modalvisible={set_is_delete_account_Modalvisible} distributor_data={distributor_data} acc_type='distributors'/>
 			<Text fontSize='34px' fontWeight='bold'>MyProfile</Text>
 			{edit ?
-				<EditProfile setedit={setedit} distributor_data={distributor_data}/>
+				<EditProfile setedit={setedit} distributor_data={distributor_data} set_refresh_data={set_refresh_data}/>
 			:
 				<Flex direction='column' gap='2'>
 					<Flex gap='3' direction='column'>
@@ -96,7 +96,7 @@ function Settings({distributor_data}){
 
 export default Settings;
 
-const EditProfile=({setedit,distributor_data})=>{
+const EditProfile=({setedit,distributor_data,set_refresh_data})=>{
 	//utils
 	const cookies = new Cookies();
 	const toast = useToast();
@@ -197,7 +197,7 @@ const EditProfile=({setedit,distributor_data})=>{
 				isClosable: true,
 			});
 		}).then(()=>{
-			//console.log(payload)
+			set_refresh_data(`${payload?.company_name} edited`)
 			setedit(false)
 		}).catch((err)=>{
 			toast({

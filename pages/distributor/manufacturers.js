@@ -5,16 +5,16 @@ import AddNewManufacturer from '../../components/modals/addNewManufacturer.js';
 import Delete_Manufacturer_Distributor from '../api/auth/distributor/delete_manufacturer.js'
 import Edit_Manufacturer_Distributor from '../api/auth/distributor/edit_manufacturer.js'
 
-function Manufacturers({distributor_data}){
+function Manufacturers({distributor_data,set_refresh_data}){
 	const router = useRouter();
 	const [isaddnewmanufacturerModalvisible,setisaddnewmanufacturerModalvisible]=useState(false);
 	const [manufacturers,set_manufacturers]=useState(distributor_data?.manufacturers)
 	const id = distributor_data?._id
 	return(
 		<Flex direction='column' gap='2' p='2' w='100%'>
-			<AddNewManufacturer isaddnewmanufacturerModalvisible={isaddnewmanufacturerModalvisible} setisaddnewmanufacturerModalvisible={setisaddnewmanufacturerModalvisible} id={id}/>
+			<AddNewManufacturer set_refresh_data={set_refresh_data} isaddnewmanufacturerModalvisible={isaddnewmanufacturerModalvisible} setisaddnewmanufacturerModalvisible={setisaddnewmanufacturerModalvisible} id={id}/>
 			<Text fontSize='32px' fontWeight='bold'>Manufacturers</Text>
-			{manufacturers?.length === 0 ?
+			{distributor_data?.manufacturers?.length === 0 ?
 					<Flex justify='center' align='center' h='40vh' direction='column' gap='2'>
 						<Text>You have not listed any manufacturers</Text>
 						<Button bg='#009393' color='#fff' onClick={(()=>{setisaddnewmanufacturerModalvisible(true)})}>Add new Manufacturer</Button>
@@ -22,9 +22,9 @@ function Manufacturers({distributor_data}){
 				:
 				<Flex direction='column' p='1' gap='2' overflowY='scroll' h='85vh'>
 					<Button bg='#009393' p='5' color='#fff' onClick={(()=>{setisaddnewmanufacturerModalvisible(true)})}>Add new Manufacturer</Button>
-					{manufacturers?.map((item)=>{
+					{distributor_data?.manufacturers?.map((item)=>{
 						return(
-							<Manufacturer key={item?._id} item={item} id={distributor_data?._id}/>
+							<Manufacturer key={item?._id} item={item} id={distributor_data?._id} set_refresh_data={set_refresh_data}/>
 						)
 					})}
 				</Flex>
@@ -35,7 +35,7 @@ function Manufacturers({distributor_data}){
  
 export default Manufacturers;
 
-const Manufacturer=({item,id})=>{
+const Manufacturer=({item,id,set_refresh_data})=>{
 	const toast = useToast();
 	const router = useRouter();
 	const [is_verify,set_is_verify]=useState(false);
@@ -56,7 +56,7 @@ const Manufacturer=({item,id})=>{
 				status: 'success',
 				isClosable: true,
 			});
-			router.reload()
+			set_refresh_data(`${payload.name} has been removed successfully`)
 		}).catch((err)=>{
 			toast({
 				title: '',
@@ -83,7 +83,7 @@ const Manufacturer=({item,id})=>{
 				status: 'success',
 				isClosable: true,
 			});
-			router.reload()
+			set_refresh_data(`${payload.name} has been edited successfully`)
 		}).catch((err)=>{
 			toast({
 				title: '',

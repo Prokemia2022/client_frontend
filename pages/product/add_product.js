@@ -96,6 +96,7 @@ export default function Add_New_Product(){
 		const [email_of_lister,set_email_of_lister]=useState('');
 		const [listed_by_id,set_listed_by_id]=useState("");
 		const [short_on_expiry,set_short_on_expiry]=useState(false);
+		//date for short on expiry goes here
 		//manufacturer information
 		const [manufactured_by,set_manufactured_by]=useState('');
 		//seller information

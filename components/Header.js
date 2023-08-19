@@ -56,7 +56,8 @@ function Header(){
 
 			const payload = {
 				email_of_company : details?.email,
-				_id: uid
+				_id: uid,
+				acc_type
 			}
 			////console.log(user)
 			handle_Fetch_Profile_Photo(payload)

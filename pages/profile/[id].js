@@ -34,18 +34,19 @@ export default function Client_Profile(){
 
 	//states
 	const [client_data,set_client_data]=useState("");
+	const [refresh_data,set_refresh_data]=useState('')
 	const [edit,setedit]=useState(false);
   	
   	const [is_delete_account_Modalvisible,set_is_delete_account_Modalvisible]=useState(false)
 	//api calls'
 	
 	const Get_Client_Data=async(payload)=>{
-		//console.log(payload)
+		////console.log(payload)
 		if (!payload || payload._id == '' || payload.email == ''){
 			return;
 		}else{
 			await Get_Client(payload).then((response)=>{
-				//console.log(response.data)
+				////console.log(response.data)
 				set_client_data(response.data)
 			})
 		}
@@ -68,7 +69,7 @@ export default function Client_Profile(){
 			}
 			Get_Client_Data(payload);
 		}
-	},[token])
+	},[token,refresh_data])
 
 	const Generate_Code=async()=>{
 		const characters = '0123456789';
@@ -121,7 +122,7 @@ export default function Client_Profile(){
 				<Delete_Account_Modal is_delete_account_Modalvisible={is_delete_account_Modalvisible} set_is_delete_account_Modalvisible={set_is_delete_account_Modalvisible} client_data={client_data} acc_type='client'/>
 				<Text fontSize='34px' fontWeight='bold'>Welcome,<br/> {client_data?.first_name} {client_data?.last_name}</Text>
 				{edit ?
-					<EditProfile setedit={setedit} client_data={client_data}/>
+					<EditProfile setedit={setedit} client_data={client_data} set_refresh_data={set_refresh_data}/>
 				:
 					<Flex direction='column' gap='2'>
 						<Flex gap='3' direction='column'>
@@ -162,7 +163,7 @@ export default function Client_Profile(){
 	)
 }
 
-const EditProfile=({setedit,client_data})=>{
+const EditProfile=({setedit,client_data,set_refresh_data})=>{
 	//utils
 	const toast = useToast();
 	const cookies = new Cookies();
@@ -193,7 +194,7 @@ const EditProfile=({setedit,client_data})=>{
 	//api calls
 	const profile_upload_function=async()=>{
 		/**handles uploads profile image functions to firebase storage**/
-		console.log(profile_photo)
+		//console.log(profile_photo)
 		if (profile_photo == ''){
 			toast({
 				title: '',
@@ -243,7 +244,7 @@ const EditProfile=({setedit,client_data})=>{
 			});
 			return;
 		}else{
-			console.log(profile_photo?.name)
+			//console.log(profile_photo?.name)
 			const profile_photo_documentRef = ref(storage, `profile_photo/${profile_photo?.name + v4()}`);
 			const snapshot= await uploadBytes(profile_photo_documentRef,profile_photo)
 			const file_url = await getDownloadURL(snapshot.ref)
@@ -261,7 +262,7 @@ const EditProfile=({setedit,client_data})=>{
 				isClosable: true,
 			});
 		}).then(()=>{
-			//console.log(payload)
+			set_refresh_data(`${payload?.first_name} account has been edited`)
 			setedit(false)
 		}).catch((err)=>{
 			toast({

@@ -3,6 +3,7 @@ import React,{useState} from 'react'
 import {Flex,Text,Button,Input,InputGroup,InputRightElement,useToast} from '@chakra-ui/react'
 import {useRouter} from 'next/router'
 import Cookies from 'universal-cookie';
+import jwt_decode from "jwt-decode";
 //components imports
 import styles from '../../styles/Home.module.css'
 import Header from '../../components/Header.js';
@@ -79,22 +80,22 @@ export default function DistributorSignUp(){
 	}
 	const handle_Sign_Up=async()=>{
 		await SignUp(payload).then((response)=>{
-			if(response.status === 201){
+			if (response.status == 201){
 				toast({
 					title: '',
-					description: `${response.data}`,
+					description: response?.data,
 					status: 'error',
+					variant:'left-accent',
+					position:'top-left',
 					isClosable: true,
 				});
-			}
-			else{
-				toast({
-					title: '',
-					description: 'Successfully Created an account',
-					status: 'success',
-					isClosable: true,
-				});
-				router.push(`/distributor/${response.data._id}`)
+			}else{
+				if(response?.data){
+					const token = response?.data
+					const decoded_token = jwt_decode(token)
+					//console.log(decoded_token)
+					router.push(`/distributor/${decoded_token?.id}`)
+				}
 			}
 		}).catch((err)=>{
 			toast({

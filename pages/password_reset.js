@@ -101,11 +101,11 @@ export default function Password_Reset_Function(){
   			await Password_Reset(payload).then(()=>{
   				toast({
 					title: '',
-					description: 'password changed successfully,',
+					description: 'password changed successfully,we are taking you to sign in page',
 					status: 'success',
 					isClosable: true,
 				});
-				router.push('/')
+				router.push('/signin')
   			});
   		}else{
   			toast({
@@ -120,7 +120,7 @@ export default function Password_Reset_Function(){
 	return(
 		<Flex className={styles.Password_Body}>
 			<div className={styles.Password_Image}>
-				<Flex className={styles.Back_Icon} gap='2' boxShadow={'lg'} onClick={(()=>{router.back()})}>
+				<Flex className={styles.Back_Icon} gap='2' boxShadow={'lg'}>
 					<ArrowBackIcon />
 					<Text fontWeight={'bold'}>Back</Text>
 				</Flex>
@@ -133,7 +133,11 @@ export default function Password_Reset_Function(){
 				<Heading as='h3' >Forgot password?</Heading>
 				{active?
 					<Flex direction='column' gap='3' mt='3'>
-						<Text>Enter email to receive the code to change your password.</Text>
+						{code_active?
+							<Text>Enter the code to change your password.</Text>
+							:
+							<Text>Enter email to receive the code to change your password.</Text>
+						}
 						{code_active?
 							<Flex direction='column' gap='2'>
 								<Input variant='filled' bg='#eee' required type='Number' placeholder='Enter Code' onChange={((e)=>{set_confirmation_code(e.target.value)})}/>

@@ -16,7 +16,7 @@ import Suggest_Technology from '../api/control/suggest_technology.js';
 import Email_Verification from '../api/email_handler/email_verification.js';
 
 
-export default function DashboardMenu({distributor_data}){
+export default function DashboardMenu({distributor_data,set_refresh_data}){
 	/**
 	 * DashboardMenu: Dashboard for the distributor profile.
 	 */
@@ -109,8 +109,8 @@ export default function DashboardMenu({distributor_data}){
 	return (
 		<Flex p='2' direction='column' gap='4' w='100%' overflowY='scroll' h='100vh'>
 			<AddNewProduct isaddnewproductModalvisible={isaddnewproductModalvisible} setisaddnewProductModalvisible={setisaddnewProductModalvisible}/>
-			<AddNewExpertsModal isaddnewexpertModalvisible={isaddnewexpertModalvisible} setisaddNewExpertModalvisible={setisaddNewExpertModalvisible} id={id} acc_type='distributor'/>
-			<AddNewManufacturer isaddnewmanufacturerModalvisible={isaddnewmanufacturerModalvisible} setisaddnewmanufacturerModalvisible={setisaddnewmanufacturerModalvisible} id={id}/>
+			<AddNewExpertsModal set_refresh_data={set_refresh_data} isaddnewexpertModalvisible={isaddnewexpertModalvisible} setisaddNewExpertModalvisible={setisaddNewExpertModalvisible} id={id} acc_type='distributor'/>
+			<AddNewManufacturer set_refresh_data={set_refresh_data} isaddnewmanufacturerModalvisible={isaddnewmanufacturerModalvisible} setisaddnewmanufacturerModalvisible={setisaddnewmanufacturerModalvisible} id={id}/>
 			{!distributor_data?.valid_email_status?
 				<Flex w='100%' p='1' borderRadius='5' bg='#009393' align='center' justify='space-between' color='#fff'>
 					<Flex align='center' gap='2'>
@@ -142,7 +142,7 @@ export default function DashboardMenu({distributor_data}){
 					<Text>{distributor_data?.description}</Text>
 			</Flex>
 			<Flex gap='3' direction='column'>
-			<Button bg='#009393' color='#fff' onClick={(()=>{router.push('/product/add_product')})}><Add/>Add new Product</Button>
+			<Button bg='#009393' color='#fff' onClick={(()=>{router.push('/products/product/new')})}><Add/>Add new Product</Button>
 				<Button bg='#fff' border='1px solid #000' onClick={(()=>{setisaddNewExpertModalvisible(true)})}>Add new Experts</Button>
 				<Button bg='#fff' border='1px solid #000' onClick={(()=>{setisaddnewmanufacturerModalvisible(true)})}>Add new Manufacturer</Button>
 			</Flex>
