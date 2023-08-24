@@ -30,6 +30,7 @@ export default function Manufacturer(){
 	const router = useRouter();
 
 	const [manufacturer_data,set_manufacturer_data]=useState("");
+	const [refresh_data,set_refresh_data]=useState('')
 
 	useEffect(()=>{
 		if(!token){
@@ -46,11 +47,12 @@ export default function Manufacturer(){
 			//console.log(details)
 			const payload = {
 				email_of_company : details?.email,
-				_id: details?.id
+				_id: details?.id,
+				acc_type: 'manufacturer'
 			}
 			get_Data(payload)
 		}
-	},[token])
+	},[token,refresh_data])
 	const handle_LogOut=()=>{
 		cookies.remove('user_token', { path: '/' });
 		cookies.remove('is_acc_verified', { path: '/' });
@@ -98,7 +100,7 @@ export default function Manufacturer(){
 					{manufacturer_data?.suspension_status?<Suspension_Notification/>:null}
 					<Flex className={styles.consolebody} >
 						<Navbar currentvalue={currentvalue} setCurrentValue={setCurrentValue}/>
-						<Settings manufacturer_data={manufacturer_data}/>
+						<Settings manufacturer_data={manufacturer_data} set_refresh_data={set_refresh_data}/>
 					</Flex>
 				</Flex>
 			)
@@ -110,7 +112,7 @@ export default function Manufacturer(){
 					{manufacturer_data?.suspension_status?<Suspension_Notification/>:null}
 					<Flex className={styles.consolebody} >
 						<Navbar currentvalue={currentvalue} setCurrentValue={setCurrentValue}/>
-						<Experts manufacturer_data={manufacturer_data}/>
+						<Experts manufacturer_data={manufacturer_data} set_refresh_data={set_refresh_data}/>
 					</Flex>
 				</Flex>
 			)
@@ -122,7 +124,7 @@ export default function Manufacturer(){
 					{manufacturer_data?.suspension_status?<Suspension_Notification/>:null}
 					<Flex className={styles.consolebody} >
 						<Navbar currentvalue={currentvalue} setCurrentValue={setCurrentValue}/>
-						<Distributors manufacturer_data={manufacturer_data}/>
+						<Distributors manufacturer_data={manufacturer_data} set_refresh_data={set_refresh_data}/>
 					</Flex>
 				</Flex>
 			)
@@ -145,7 +147,7 @@ export default function Manufacturer(){
 					{manufacturer_data?.suspension_status?<Suspension_Notification/>:null}
 					<Flex className={styles.consolebody} >
 						<Navbar currentvalue={currentvalue} setCurrentValue={setCurrentValue}/>
-						<DashboardMenu manufacturer_data={manufacturer_data}/>
+						<DashboardMenu manufacturer_data={manufacturer_data} set_refresh_data={set_refresh_data}/>
 					</Flex>
 				</Flex>
 			)

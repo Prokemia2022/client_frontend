@@ -21,7 +21,7 @@ import {storage} from '../../components/firebase.js';
 import {ref,uploadBytes,getDownloadURL} from 'firebase/storage';
 import { v4 } from "uuid";
 
-function Settings({manufacturer_data}){
+function Settings({manufacturer_data,set_refresh_data}){
 	//utils
 	const router = useRouter();
 	const cookies = new Cookies();
@@ -47,7 +47,7 @@ function Settings({manufacturer_data}){
 		<Delete_Account_Modal is_delete_account_Modalvisible={is_delete_account_Modalvisible} set_is_delete_account_Modalvisible={set_is_delete_account_Modalvisible} manufacturer_data={manufacturer_data} acc_type='manufacturers'/>
 			<Text fontSize='34px' fontWeight='bold'>MyProfile</Text>
 			{edit ?
-				<EditProfile setedit={setedit} manufacturer_data={manufacturer_data}/>
+				<EditProfile setedit={setedit} manufacturer_data={manufacturer_data} set_refresh_data={set_refresh_data}/>
 			:
 				<Flex direction='column' gap='2'>
 					<Flex gap='3' direction='column'>
@@ -97,7 +97,7 @@ function Settings({manufacturer_data}){
 
 export default Settings;
 
-const EditProfile=({setedit,manufacturer_data})=>{
+const EditProfile=({setedit,manufacturer_data,set_refresh_data})=>{
 	const toast = useToast();
 	const cookies = new Cookies();
 	const [contact_person_name,set_contact_person_name]=useState(manufacturer_data?.contact_person_name);
@@ -149,6 +149,7 @@ const EditProfile=({setedit,manufacturer_data})=>{
 							isClosable: true,
 						});
 					}).then(()=>{
+						
 						setedit(false)
 					}).catch((err)=>{
 						toast({
@@ -192,7 +193,7 @@ const EditProfile=({setedit,manufacturer_data})=>{
 				isClosable: true,
 			});
 		}).then(()=>{
-			//console.log(payload)
+			set_refresh_data(`${payload?.company_name} edited`)
 			setedit(false)
 		}).catch((err)=>{
 			toast({

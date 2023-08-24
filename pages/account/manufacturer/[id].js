@@ -103,15 +103,7 @@ export default function Manufacturer(){
 	}
 	//useEffects
 	useEffect(()=>{
-		if (!payload || id === undefined){
-			toast({
-				title: '',
-				description: `...broken link,we are redirecting you`,
-				status: 'info',
-				isClosable: true,
-			});
-			router.back()
-		}else{
+		if (id){
 			fetch_manufacturer_data(payload)
 		}
 	},[id])

@@ -4,7 +4,7 @@ import styles from '../styles/Search.module.css';
 import SearchIcon from '@mui/icons-material/Search';
 import Script from 'next/script';
 import {useRouter} from 'next/router'
-import Get_Products from '../pages/api/product/get_products.js'
+import Get_Products from '../pages/api/product/fetch_products_by_search.js'
 import Get_Industries from '../pages/api/control/get_industries.js'
 import Get_Technologies from '../pages/api/control/get_technologies.js'
 import Get_Distributors from '../pages/api/auth/distributor/get_distributors.js'
@@ -51,25 +51,15 @@ export default function Search({setsearchbaractive,query_search,setquery_search}
 				set_is_querying(false)
 			}
 		})();
-	},[debounce_search_value,query_search,search_value])
+	},[debounce_search_value,query_search])
 
 	const get_Products_Data=async()=>{
-		await Get_Products().then((response)=>{
-			const data = response?.data
-			const result_data = data.filter((item)=> item.verification_status && !item.suspension_status)
-			const result = result_data.filter((item) => item.name_of_product?.toLowerCase().includes(debounce_search_value.toLowerCase()) ||
-														item.industry?.toLowerCase().includes(debounce_search_value.toLowerCase()) || 
-														item.function?.toLowerCase().includes(debounce_search_value.toLowerCase()) ||
-														item.chemical_name?.toLowerCase().includes(debounce_search_value.toLowerCase()) ||
-														item.email_of_lister?.toLowerCase().includes(debounce_search_value.toLowerCase()) ||
-														item.manufactured_by?.toLowerCase().includes(debounce_search_value.toLowerCase()) ||
-														item.distributed_by?.toLowerCase().includes(debounce_search_value.toLowerCase()) ||
-														item.description_of_product?.toLowerCase().includes(debounce_search_value.toLowerCase()) ||
-														item.features_of_product?.toLowerCase().includes(debounce_search_value.toLowerCase()) ||
-														item.application_of_product?.toLowerCase().includes(debounce_search_value.toLowerCase()) ||
-														item.technology?.toLowerCase().includes(debounce_search_value.toLowerCase()))
-			
-														set_products_data(result);
+		const query_params = {
+			query : debounce_search_value
+		}
+		await Get_Products(query_params).then((response)=>{
+			const data = response?.data;
+			set_products_data(data);
 		}).then(()=>{
 			set_product_isfetching(false);
 		})

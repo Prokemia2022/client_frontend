@@ -56,7 +56,8 @@ function Header(){
 
 			const payload = {
 				email_of_company : details?.email,
-				_id: uid
+				_id: uid,
+				acc_type
 			}
 			////console.log(user)
 			handle_Fetch_Profile_Photo(payload)
@@ -71,9 +72,9 @@ function Header(){
 		if(acc_type === 'client')
 			router.push(`/profile/${uid}`)
 		if(acc_type === 'distributor')
-			router.push(`/distributor/${uid}`)
+			router.push(`/distributor_new?uid=${uid}`)
 		if(acc_type === 'manufacturer')
-			router.push(`/manufacturer/${uid}`)
+			router.push(`/manufacturer_new?uid=${uid}`)
 	}
 	const handle_Fetch_Profile_Photo=async(payload)=>{
 		////console.log(payload,acc_type)
@@ -143,7 +144,7 @@ function Header(){
 							<MenuOpenIcon style={{fontSize:'24px'}}/>
 						</MenuButton>
 					</Flex>
-						<MenuList alignItems={'center'} p='2' boxShadow='dark-lg' zIndex={'9999'}>
+						<MenuList alignItems={'center'} p='2' boxShadow='md' zIndex={'9999'}>
 							<Flex align='center' gap='2'>
 								<Script src="https://cdn.lordicon.com/xdjxvujz.js"></Script>
 								{profile_photo_url == '' || !profile_photo_url ?
@@ -159,7 +160,7 @@ function Header(){
 									</Flex> 
 									: 
 									<Flex direction='column' gap='1' p='2' mt='3' color='#009393'>
-										<Text onClick={(()=>{router.push(`/signin`)})}>sign in to <br/> view profile</Text>
+										<Text onClick={(()=>{router.replace(`/signin`)})}>sign in to <br/> view profile</Text>
 									</Flex> 
 								}
 							</Flex>

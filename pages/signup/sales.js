@@ -1,5 +1,5 @@
 import React,{useState,useEffect} from 'react'
-import {Flex,Center,Text,Button,Input,InputGroup,InputRightElement} from '@chakra-ui/react'
+import {Flex,Center,Text,Button,Input,InputGroup,InputRightElement,useToast} from '@chakra-ui/react'
 import {useRouter} from 'next/router'
 import Cookies from 'universal-cookie';
 import jwt_decode from "jwt-decode";
@@ -12,6 +12,7 @@ import {Room,Visibility,VisibilityOff} from '@mui/icons-material'
 import SignUp from '../api/auth/signup.js'
 
 export default function SalesSignUp(){
+	const toast = useToast()
 	const [show, setShow] = useState(false);
   	const handleClick = () => setShow(!show);
 
@@ -34,20 +35,28 @@ export default function SalesSignUp(){
 
   	const handle_Sign_Up=async()=>{
   		await SignUp(payload).then((response)=>{
-  			if(response === null){
-  					alert('error')
-  			}
-  			else{
-  				router.push(`/salesperson/${response.data._id}`)
-  			}
-  		})
-  		//console.log(payload)
+			//console.log(response);
+			if (response.status == 201){
+				toast({
+					title: '',
+					description: response?.data,
+					status: 'error',
+					variant:'left-accent',
+					position:'top-left',
+					isClosable: true,
+				});
+			}else{
+				if(response?.data){
+					const token = response?.data
+					const decoded_token = jwt_decode(token)
+					//console.log(decoded_token)
+					router.push(`/salesperson/${decoded_token?.id}`)
+				}
+			}
+  		}).catch((err)=>{
+			console.log(err)
+		})
   	}
- //  	useEffect(()=>{
-	// 	if(token || token !== null){
-	// 		router.back()
-	// 	}
-	// },[])
 
 	return(
 		<Flex direction='column'>
