@@ -7,7 +7,7 @@ import HelpOutlineOutlinedIcon from '@mui/icons-material/HelpOutlineOutlined';
 import Delete_Distributor_Manufacturer from '../api/auth/manufacturer/delete_distributor.js'
 import Edit_Distributor_Manufacturer from '../api/auth/manufacturer/edit_distributor.js'
 
-function Distributors({manufacturer_data}){
+function Distributors({manufacturer_data,set_refresh_data}){
 	const router = useRouter();
 	const [isaddnewdistributorModalvisible,setisaddnewdistributorModalvisible]=useState(false);
 	const [isfinddistributorModalvisible,setisfinddistributorModalvisible]=useState(false);
@@ -19,7 +19,7 @@ function Distributors({manufacturer_data}){
 
 	return(
 		<Flex direction='column' gap='2' p='2' w='100%'  overflowY='scroll' h='100vh'>
-			<AddNewDistributor isaddnewdistributorModalvisible={isaddnewdistributorModalvisible} setisaddnewdistributorModalvisible={setisaddnewdistributorModalvisible} id={id}/>
+			<AddNewDistributor set_refresh_data={set_refresh_data} isaddnewdistributorModalvisible={isaddnewdistributorModalvisible} setisaddnewdistributorModalvisible={setisaddnewdistributorModalvisible} id={id}/>
 			<FindDistributors isfinddistributorModalvisible={isfinddistributorModalvisible} setisfinddistributorModalvisible={setisfinddistributorModalvisible} id={id} manufacturer_data={manufacturer_data}/>
 			<Text fontSize='32px' fontWeight='bold'>Distributors</Text>
 			
@@ -58,7 +58,7 @@ function Distributors({manufacturer_data}){
 					</Flex>
 					{distributors?.map((item)=>{
 						return(
-							<Distributor item={item} key={item._id} id={manufacturer_data._id}/>
+							<Distributor item={item} key={item._id} id={manufacturer_data._id} set_refresh_data={set_refresh_data}/>
 						)
 					})}
 				</Flex>
@@ -69,7 +69,7 @@ function Distributors({manufacturer_data}){
 
 export default Distributors;
 
-const Distributor=({item,id,index})=>{
+const Distributor=({item,id,index,set_refresh_data})=>{
 	const toast = useToast()
 	const [is_verify,set_is_verify]=useState(false);
 	const [is_edit,set_is_edit]=useState(false);
@@ -90,6 +90,7 @@ const Distributor=({item,id,index})=>{
 				status: 'success',
 				isClosable: true,
 			});
+			set_refresh_data(`deleted ${payload.name}`)
 		}).catch((err)=>{
 			toast({
 				title: '',
@@ -117,6 +118,7 @@ const Distributor=({item,id,index})=>{
 				status: 'success',
 				isClosable: true,
 			});
+			set_refresh_data(`edited ${payload.name}`)
 		}).catch((err)=>{
 			toast({
 				title: '',

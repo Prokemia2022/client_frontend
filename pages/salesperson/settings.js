@@ -225,7 +225,7 @@ const EditProfile=({setedit,salesperson_data})=>{
 					<Flex direction='column' gap='2'>
 						<Text>Select Image to set as Profile Image</Text>
 						<Input type='file' placeholder='Select Image to set as Profile Image' accept='.jpg,.png,.jpeg' variant='filled' onChange={((e)=>{set_profile_photo(e.target.files[0])})}/>
-						<Button bg='#009393' color='#fff' onClick={profile_upload_function} disabled={profile_photo !== ''? true: false}>Upload profile photo</Button>
+						<Button bg='#009393' color='#fff' onClick={profile_upload_function} disabled={profile_photo == ''? true: false}>Upload profile photo</Button>
 					</Flex>
 				</Flex>
 			: 

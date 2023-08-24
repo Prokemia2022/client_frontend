@@ -29,6 +29,7 @@
     flex-direction:column;
     width: 100%;
     padding: 10px;
+    height: 90%;
     overflow-y: scroll;
 }
 .ResultsBar::-webkit-scrollbar{

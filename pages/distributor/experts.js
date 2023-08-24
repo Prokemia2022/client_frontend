@@ -5,14 +5,13 @@ import AddNewExpertsModal from '../../components/modals/addNewExperts.js';
 import Delete_Expert_Distributor from '../api/auth/distributor/delete_expert.js'
 import Edit_Expert_Distributor from '../api/auth/distributor/edit_expert.js'
 
-function Experts({distributor_data}){
+function Experts({distributor_data,set_refresh_data}){
 	const router = useRouter();
 	const [isaddnewexpertModalvisible,setisaddNewExpertModalvisible]=useState(false);
-	const [experts,set_experts]=useState(distributor_data?.experts)
 	const id = distributor_data?._id
 	return (
 		<Flex direction='column' gap='3' p='2' w='100%' h='100vh'>
-			<AddNewExpertsModal isaddnewexpertModalvisible={isaddnewexpertModalvisible} setisaddNewExpertModalvisible={setisaddNewExpertModalvisible} id={id} acc_type='distributor'/>
+			<AddNewExpertsModal set_refresh_data={set_refresh_data} isaddnewexpertModalvisible={isaddnewexpertModalvisible} setisaddNewExpertModalvisible={setisaddNewExpertModalvisible} id={id} acc_type='distributor'/>
 			<Text fontSize='32px' fontWeight='bold'>Experts</Text>
 			{distributor_data?.experts?.length === 0 ?
 					<Flex justify='center' align='center' h='40vh' direction='column' gap='2'>
@@ -25,7 +24,7 @@ function Experts({distributor_data}){
 					<Button bg='#009393' color='#fff' p='5' onClick={(()=>{setisaddNewExpertModalvisible(true)})}>Add a new Expert</Button>
 					{distributor_data?.experts?.map((item)=>{
 						return(
-							<Expert_Item  key={item._id} item={item} id={distributor_data?._id}/>
+							<Expert_Item  key={item._id} item={item} id={distributor_data?._id} set_refresh_data={set_refresh_data}/>
 						)
 					})}
 					
@@ -37,7 +36,7 @@ function Experts({distributor_data}){
 
 export default Experts;
 
-const Expert_Item=({item,id})=>{
+const Expert_Item=({item,id,set_refresh_data})=>{
 	const toast = useToast()
 	const [is_verify,set_is_verify]=useState(false);
 	const [is_edit,set_is_edit]=useState(false);
@@ -60,6 +59,7 @@ const Expert_Item=({item,id})=>{
 				status: 'success',
 				isClosable: true,
 			});
+			set_refresh_data(`${payload.name} has been removed successfully`)
 		}).catch((err)=>{
 			toast({
 				title: '',
@@ -88,6 +88,7 @@ const Expert_Item=({item,id})=>{
 				status: 'success',
 				isClosable: true,
 			});
+			set_refresh_data(`${payload.name} has been edited successfully`)
 		}).catch((err)=>{
 			toast({
 				title: '',

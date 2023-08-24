@@ -19,7 +19,7 @@ export default function Delete_Account_Modal({
 	    client_data,
 	    salesperson_data,
 	    acc_type,
-	    id
+	    id,
 	}){
 
 	//utils
@@ -42,7 +42,7 @@ export default function Delete_Account_Modal({
 	//api_calls
 	//useEffects
 	useEffect(()=>{
-		console.log(client_data)
+		//console.log(client_data)
       	HandleModalOpen();
 	    if (acc_type === 'client'){
 		  	set_uid(client_data?._id);
@@ -50,14 +50,14 @@ export default function Delete_Account_Modal({
 			set_is_suspended(client_data?.suspension_status);
 	    }
 	    if (acc_type === 'distributors'){
-	    	set_uid(distributor_data?._id);
-	        set_name(distributor_data?.company_name);
-			set_is_suspended(distributor_data?.suspension_status);
+	    	set_uid(client_data?._id);
+	        set_name(client_data?.company_name);
+			set_is_suspended(client_data?.suspension_status);
 	    }
 	    if (acc_type === 'manufacturers'){
-	    	set_uid(manufacturer_data?._id);
-	        set_name(manufacturer_data?.company_name);
-			set_is_suspended(manufacturer_data?.suspension_status);
+	    	set_uid(client_data?._id);
+	        set_name(client_data?.company_name);
+			set_is_suspended(client_data?.suspension_status);
 	    }
 	    if (acc_type === 'salesperson'){
 	      	set_uid(salesperson_data?._id);

@@ -25,7 +25,7 @@ export default function Salesperson({setCurrentValue,salesperson_data,set_is_ref
 	//functions
 	const handle_annonymous_status=async()=>{
 		if(salesperson_data?.suspension_status){
-			//console.log(salesperson_data?.verification_status)
+			////console.log(salesperson_data?.verification_status)
 			toast({
 				title: 'Your account is currently suspended.',
 				description: 'reach out to support for guidance by emailing us at help@prokemia.com',
@@ -33,7 +33,7 @@ export default function Salesperson({setCurrentValue,salesperson_data,set_is_ref
 				isClosable: true,
 			});
 		}else if(!salesperson_data?.verification_status){
-			console.log(salesperson_data?.verification_status)
+			//console.log(salesperson_data?.verification_status)
 			toast({
 				title: 'Your account has not been approved',
 				description: '',
@@ -46,7 +46,7 @@ export default function Salesperson({setCurrentValue,salesperson_data,set_is_ref
 				account_status: !annonymous
 			}
 			await Edit_Salesperson(payload).then(()=>{
-				//console.log(payload)
+				////console.log(payload)
 				toast({
 					title: '',
 					description: 'Your account status has changed',
@@ -56,7 +56,7 @@ export default function Salesperson({setCurrentValue,salesperson_data,set_is_ref
 			}).then(()=>{
 				set_is_refetch(!is_refetch)
 			}).catch((err)=>{
-				console.log(err)
+				//console.log(err)
 				toast({
 					title: '',
 					description: `error while changing your account status`,
@@ -68,7 +68,7 @@ export default function Salesperson({setCurrentValue,salesperson_data,set_is_ref
 	}
 	const handle_open_to_consultancy_status=async()=>{
 		if(salesperson_data?.suspension_status){
-			//console.log(salesperson_data?.verification_status)
+			////console.log(salesperson_data?.verification_status)
 			toast({
 				title: 'Your account is currently suspended.',
 				description: 'reach out to support for guidance by emailing us at help@prokemia.com',
@@ -76,7 +76,7 @@ export default function Salesperson({setCurrentValue,salesperson_data,set_is_ref
 				isClosable: true,
 			});
 		}else if(!salesperson_data?.verification_status){
-			//console.log(salesperson_data?.verification_status)
+			////console.log(salesperson_data?.verification_status)
 			toast({
 				title: 'Your account has not yet been approved',
 				description: '',
@@ -89,7 +89,7 @@ export default function Salesperson({setCurrentValue,salesperson_data,set_is_ref
 				open_to_consultancy: !open_to_consultancy
 			}
 			await Edit_Salesperson(payload).then(()=>{
-				//console.log(payload)
+				////console.log(payload)
 				toast({
 					title: '',
 					description: 'Your account status has changed',
@@ -99,7 +99,7 @@ export default function Salesperson({setCurrentValue,salesperson_data,set_is_ref
 			}).then(()=>{
 				set_is_refetch(!is_refetch)
 			}).catch((err)=>{
-				console.log(err)
+				//console.log(err)
 				toast({
 					title: '',
 					description: `error while changing your account status`,

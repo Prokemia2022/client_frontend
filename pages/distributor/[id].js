@@ -35,6 +35,7 @@ export default function Distributor(){
 	
 
 	const [distributor_data,set_distributor_data]=useState("");
+	const [refresh_data,set_refresh_data]=useState('')
 
 	useEffect(()=>{
 		if(!token){
@@ -51,11 +52,12 @@ export default function Distributor(){
 			//console.log(details)
 			const payload = {
 				email_of_company : details?.email,
-				_id: details?.id
+				_id: details?.id,
+				acc_type: 'distributor'
 			}
 			get_Data(payload)
 		}
-	},[token]);
+	},[token,refresh_data]);
 	const handle_LogOut=()=>{
 		cookies.remove('user_token', { path: '/' });
 		cookies.remove('is_acc_verified', { path: '/' });
@@ -100,7 +102,7 @@ export default function Distributor(){
 					{distributor_data?.suspension_status ?<Suspension_Notification/>:null}
 					<Flex className={styles.consolebody}>
 						<Navbar  currentvalue={currentvalue} setCurrentValue={setCurrentValue}/>
-						<Experts distributor_data={distributor_data}/>
+						<Experts distributor_data={distributor_data} set_refresh_data={set_refresh_data}/>
 					</Flex>
 				</Flex>
 			)
@@ -112,7 +114,7 @@ export default function Distributor(){
 				{distributor_data?.suspension_status ?<Suspension_Notification/>:null}
 				<Flex className={styles.consolebody}>
 					<Navbar currentvalue={currentvalue} setCurrentValue={setCurrentValue}/>
-					<Manufacturers distributor_data={distributor_data}/>
+					<Manufacturers distributor_data={distributor_data} set_refresh_data={set_refresh_data}/>
 				</Flex>
 			</Flex>
 		)
@@ -136,7 +138,7 @@ export default function Distributor(){
 				{distributor_data?.suspension_status ?<Suspension_Notification/>:null}
 				<Flex className={styles.consolebody}>
 					<Navbar currentvalue={currentvalue} setCurrentValue={setCurrentValue}/>
-					<Settings distributor_data={distributor_data}/>
+					<Settings distributor_data={distributor_data} set_refresh_data={set_refresh_data}/>
 				</Flex>
 			</Flex>
 		)
@@ -147,7 +149,7 @@ export default function Distributor(){
 				{distributor_data?.suspension_status ?<Suspension_Notification/>:null}
 				<Flex className={styles.consolebody} justify='space-between'>
 					<Navbar currentvalue={currentvalue} setCurrentValue={setCurrentValue}/>
-					<DashboardMenu setCurrentValue={setCurrentValue} distributor_data={distributor_data}/>
+					<DashboardMenu setCurrentValue={setCurrentValue} distributor_data={distributor_data} set_refresh_data={set_refresh_data}/>
 				</Flex>
 			</Flex>
 			)

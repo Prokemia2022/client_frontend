@@ -5,7 +5,7 @@ import AddNewExpertsModal from '../../components/modals/addNewExperts.js';
 import Delete_Expert_Manufacturer from '../api/auth/manufacturer/delete_expert.js'
 import Edit_Expert_Manufacturer from '../api/auth/manufacturer/edit_expert.js';
 
-export default function Experts({manufacturer_data}){
+export default function Experts({manufacturer_data,set_refresh_data}){
 	/**
 	 * Expert page: Shows all listed experts by user.
 	 * Props
@@ -18,7 +18,7 @@ export default function Experts({manufacturer_data}){
 	const id = manufacturer_data?._id
 	return (
 		<Flex direction='column' gap='3' p='2' w='100%' h='100vh'>
-			<AddNewExpertsModal isaddnewexpertModalvisible={isaddnewexpertModalvisible} setisaddNewExpertModalvisible={setisaddNewExpertModalvisible} id={id} acc_type='manufacturer' router={router}/>
+			<AddNewExpertsModal set_refresh_data={set_refresh_data} isaddnewexpertModalvisible={isaddnewexpertModalvisible} setisaddNewExpertModalvisible={setisaddNewExpertModalvisible} id={id} acc_type='manufacturer' router={router}/>
 			<Text fontSize='32px' fontWeight='bold'>Experts</Text>
 			{manufacturer_data?.experts?.length === 0 ?
 					<Flex justify='center' align='center' h='40vh' direction='column' gap='2'>
@@ -31,7 +31,7 @@ export default function Experts({manufacturer_data}){
 					<Button bg='#009393' color='#fff' p='5' onClick={(()=>{setisaddNewExpertModalvisible(true)})}>Add a new Expert</Button>
 					{manufacturer_data?.experts?.map((item)=>{
 						return(
-							<Expert_Item  key={item._id} item={item} id={manufacturer_data?._id} router={router}/>
+							<Expert_Item set_refresh_data={set_refresh_data}  key={item._id} item={item} id={manufacturer_data?._id} router={router}/>
 						)
 					})}
 					
@@ -41,7 +41,7 @@ export default function Experts({manufacturer_data}){
 	)
 }
 
-const Expert_Item=({item,id,router})=>{
+const Expert_Item=({item,id,router,set_refresh_data})=>{
 	const toast = useToast()
 	const [is_verify,set_is_verify]=useState(false);
 	const [is_edit,set_is_edit]=useState(false);
@@ -72,7 +72,7 @@ const Expert_Item=({item,id,router})=>{
 				isClosable: true,
 			});
 		}).finally(()=>{
-			setTimeout(()=>{router.reload()},500)
+			set_refresh_data(`${payload.name} has been removed successfully`)
 		})
 	}
 
@@ -102,7 +102,7 @@ const Expert_Item=({item,id,router})=>{
 				isClosable: true,
 			});
 		}).finally(()=>{
-			setTimeout(()=>{router.reload()},500)
+			set_refresh_data(`${payload.name} has been edited successfully`)
 		})
 		set_is_edit(false)
 	}

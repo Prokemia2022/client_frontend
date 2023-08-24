@@ -162,7 +162,7 @@ const Item=({router,product,distributor_data})=>{
 				</Flex>
 				{product?.sponsored === true ? <VerifiedIcon style={{color:'gold',position:'absolute',top:'10px',right:'15px'}}/> : null}
 				<Flex direction='' justify='space-between' gap='2' mt='2'>
-					<Text fontWeight='bold' color='#009393' bg='#fff' p='2' borderRadius='5' boxShadow='lg' cursor='pointer' onClick={(()=>{router.push(`/product/edit_config/${product?._id}`)})}>View</Text>
+					<Text fontWeight='bold' color='#009393' bg='#fff' p='2' borderRadius='5' boxShadow='lg' cursor='pointer' onClick={(()=>{router.push(`/products/product/edit/${product?._id}`)})}>View</Text>
 					{product?.sponsored ? 
 						<Flex bg='#fff' p='1' gap='2' borderRadius='5' cursor='pointer' boxShadow='lg' onClick={handle_un_feature_product} align='center'>
 							<Text fontWeight='bold' >Remove from featured list</Text>

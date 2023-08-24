@@ -21,7 +21,7 @@ import Add_New_Expert from '../../pages/api/auth/distributor/add_new_expert.js'
 import Add_New_Expert_Manufacturer from '../../pages/api/auth/manufacturer/add_new_expert.js';
 import {useRouter} from 'next/router';
 
-export default function AddNewExpertsModal({isaddnewexpertModalvisible,setisaddNewExpertModalvisible,id,acc_type}){
+export default function AddNewExpertsModal({isaddnewexpertModalvisible,setisaddNewExpertModalvisible,id,acc_type,set_refresh_data}){
     const toast = useToast();
     const router = useRouter();
     const { isOpen, onOpen, onClose } = useDisclosure();
@@ -76,6 +76,7 @@ export default function AddNewExpertsModal({isaddnewexpertModalvisible,setisaddN
             isClosable: true,
           });
         }).then(()=>{
+          set_refresh_data(`${name} has been added as an expert.`)
           setisaddNewExpertModalvisible(false)
         }).catch((err)=>{
           toast({
@@ -94,6 +95,7 @@ export default function AddNewExpertsModal({isaddnewexpertModalvisible,setisaddN
             isClosable: true,
           });
         }).then(()=>{
+          set_refresh_data(`${name} has been added as an expert.`)
           setisaddNewExpertModalvisible(false)
         }).catch((err)=>{
           toast({
@@ -105,11 +107,10 @@ export default function AddNewExpertsModal({isaddnewexpertModalvisible,setisaddN
         })
       }
       onClose()
-      setTimeout(()=>{router.reload()},1000)
     }
     return (
         <>
-          <Modal isOpen={isOpen} onClose={onClose}>
+          <Modal isOpen={isOpen} onClose={onClose} isCentered>
             <ModalOverlay />
             <ModalContent>
               <ModalHeader>
