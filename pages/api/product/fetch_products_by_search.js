@@ -8,7 +8,7 @@ export default async function Get_Products_By_Search(query_params) {
     	return result
     }
     else if (env == "production"){
-    	const result = await axios.get(`https://prokemia-clientserver-production.up.railway.app/api/fetch_products_by_search?${query_params?.query}`)
+    	const result = await axios.get(`https://prokemia-clientserver-production.up.railway.app/api/fetch_products_by_search?query=${query_params?.query}`)
     	return result
     }
 }
