@@ -93,8 +93,7 @@ export default function DistributorSignUp(){
 				if(response?.data){
 					const token = response?.data
 					const decoded_token = jwt_decode(token)
-					//console.log(decoded_token)
-					router.push(`/distributor/${decoded_token?.id}`)
+					router.push(`/distributor_new?uid=${decoded_token?.id}`)
 				}
 			}
 		}).catch((err)=>{

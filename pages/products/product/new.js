@@ -31,6 +31,10 @@ import {
     AlertDescription,
     Switch,
     AlertIcon,
+    Center,
+    Heading,
+    InputGroup,
+    InputLeftAddon,
 } from '@chakra-ui/react';
 //utils
 import {useRouter} from 'next/router';
@@ -48,32 +52,60 @@ import Get_Manufacturers from '../../api/auth/manufacturer/get_manufacturers.js'
 import PersonSearchIcon from '@mui/icons-material/PersonSearch';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import Header from "../../../components/Header";
-
+import WarningAmberRoundedIcon from '@mui/icons-material/WarningAmberRounded';
+import ArrowBackRoundedIcon from '@mui/icons-material/ArrowBackRounded';
 
 export default function New_Product(){
-    const router = useRouter()
+    const router = useRouter();
+    const is_acc_suspended = router.query.is_suspended;
+    const is_acc_verified = router.query.is_verified;
+    console.log
     return (
         <Box gap='2' p='2' bg='#eee'>
             <Header/>
-            <VStack justifyContent={'space-between'} align='flex-start'>
-                <Text fontSize='32px' fontWeight={'medium'}>Create a new product</Text>
-                <Breadcrumb spacing='5px' alignItems={'center'} fontSize={'sm'} fontWeight={'semibold'}>
-                    <BreadcrumbItem>
-                        <BreadcrumbLink onClick={(()=>{router.back()})}>Dashboard</BreadcrumbLink>
-                    </BreadcrumbItem>
-                    <BreadcrumbItem isCurrentPage>
-                        <BreadcrumbLink color='gray.400'>New Product</BreadcrumbLink>
-                    </BreadcrumbItem>
-                </Breadcrumb>
-            </VStack>
-            <Box px={{base:'2', md:'12'}}>
-                <Details/>
-            </Box>
+            {is_acc_suspended == 'true' || is_acc_verified == 'false'? 
+                <Box textAlign="center" py={10} px={6} h='100vh'>
+                    <WarningAmberRoundedIcon style={{fontSize:'100px',color:'orange'}}/>
+                    <Heading as="h2" size="xl" mt={6} mb={2}>
+                        Your account is not able to create a product at the moment!
+                    </Heading>
+                    <Text color={'gray.500'}>
+                        contact our support at help@prokemia.com for any assistance.
+                    </Text>
+                    <Center m='4'>
+                        <Button bg='gray.400' leftIcon={<ArrowBackRoundedIcon />} onClick={(()=>router.back())}>Go back</Button>
+                    </Center>
+                </Box>
+                :
+                <Box>
+                    <VStack justifyContent={'space-between'} align='flex-start' px={{base:'2',md:'12'}}>
+                        <Text fontSize='32px' fontWeight={'medium'}>Create a new product</Text>
+                        <Breadcrumb spacing='5px' alignItems={'center'} fontSize={'sm'} fontWeight={'semibold'}>
+                            <BreadcrumbItem>
+                                <BreadcrumbLink onClick={(()=>{router.back()})}>Dashboard</BreadcrumbLink>
+                            </BreadcrumbItem>
+                            <BreadcrumbItem isCurrentPage>
+                                <BreadcrumbLink color='gray.400'>New Product</BreadcrumbLink>
+                            </BreadcrumbItem>
+                        </Breadcrumb>
+                    </VStack>
+                    <Box px={{base:'2', md:'12'}}>
+                        <Details/>
+                    </Box>
+                </Box>
+            }
         </Box>
     )
 }
 
 const Details=()=>{
+    // <Center h='100vh'>
+    //                 <Alert status='warning' mb='2'>
+    //                     <AlertIcon />
+    //                     <AlertTitle>Your account is not able to create a product at the moment!</AlertTitle>
+    //                     <AlertDescription>contact our support at help@prokemia.com for any assistance.</AlertDescription>
+    //                 </Alert>
+    //             </Center>
     /**
 	 * Add_product: Form that enables the listing of a new product.
 	 */
@@ -82,6 +114,14 @@ const Details=()=>{
     const router = useRouter();
     const cookies = new Cookies();
     let token = cookies.get('user_token');
+
+    console.log
+
+    const acc_type = router.query.acc_type;
+    const company_name = router.query.company_name;
+    let uid = router.query?.lister_id
+    let email = router.query?.email
+    ;
 //apis
 const get_Industries_Data=async()=>{
     await Get_Industries().then((response)=>{
@@ -133,7 +173,7 @@ const [short_on_expiry_status_info, set_short_on_expiry_status_info]=useState(fa
 
 //payload short_on_expiry
     const [name_of_product,set_name_of_product]=useState('');
-    const [email_of_lister,set_email_of_lister]=useState('');
+    const [email_of_lister,set_email_of_lister]=useState(email);
     const [listed_by_id,set_listed_by_id]=useState('');
     const [short_on_expiry,set_short_on_expiry]=useState(false);
     const [short_on_expiry_date,set_short_on_expiry_date]=useState('');
@@ -225,7 +265,7 @@ const [short_on_expiry_status_info, set_short_on_expiry_status_info]=useState(fa
                 Returns a alert modal to show the error.
             */
             set_is_submitting(true);
-            //console.log(payload);
+            console.log
             const response = await Add_Product(payload).then((res)=>{
                 /**
                     sends a payload data to server to add new product.
@@ -254,7 +294,7 @@ const [short_on_expiry_status_info, set_short_on_expiry_status_info]=useState(fa
                     }
                     return response;
                 }).catch((err)=>{
-                    //console.log(err)
+                    console.log
                     toast({
                         position: 'top-left',
                         variant: 'left-accent',
@@ -275,8 +315,6 @@ const [short_on_expiry_status_info, set_short_on_expiry_status_info]=useState(fa
     }
     const Clean_input_data=()=>{
         set_name_of_product('');
-        set_email_of_lister('');
-        set_listed_by_id('');
         set_short_on_expiry(false);
         set_short_on_expiry_date('');
         //manufacturer information
@@ -312,20 +350,30 @@ const [short_on_expiry_status_info, set_short_on_expiry_status_info]=useState(fa
             router.push("/")
           }else{
                 const details = jwt_decode(token);
-				//console.log(details)
+				console.log
 				set_email_of_lister(details?.email);
 				set_listed_by_id(details?.id);
-
-                get_Industries_Data()
-                get_Technology_Data()
+                if (acc_type === 'distributor'){
+                    set_distributed_by(company_name);
+                    set_distributed_by_id(uid);
+                }else if (acc_type === 'manufacturer'){
+                    set_manufactured_by(company_name);
+                    set_manufactured_by_id(uid);
+                }
           }
-    },[])
+    },[is_submitting])
     useEffect(()=>{
         get_Distributors_Data()
     },[distributed_by])
     useEffect(()=>{
         get_Manufacturers_Data()
     },[manufactured_by])
+    useEffect(()=>{
+        get_Technology_Data()
+    },[technology])
+    useEffect(()=>{
+        get_Industries_Data()
+    },[industry])
 
     //input error handlers
     const [input_error,set_input_error]=useState(false);
@@ -337,6 +385,7 @@ const [short_on_expiry_status_info, set_short_on_expiry_status_info]=useState(fa
                     <Upload_documents
                         set_isfileupload={set_isfileupload}
                         handle_add_new_product={handle_add_new_product}
+                        uid={uid}
                     />
                 </Box>
                 :
@@ -382,7 +431,7 @@ const [short_on_expiry_status_info, set_short_on_expiry_status_info]=useState(fa
                                                     <PopoverBody>
                                                     {manufacturers_data?.map((manufacturer)=>{
                                                         return(
-                                                            <HStack cursor={'pointer'} minH='48px' key={manufacturer?._id} onClick={(()=>set_manufactured_by(manufacturer?.company_name))}>
+                                                            <HStack cursor={'pointer'} minH='48px' key={manufacturer?._id} onClick={(()=>{set_manufactured_by(manufacturer?.company_name);set_manufactured_by_id(manufacturer?._id)})}>
                                                                 <Avatar
                                                                     boxSize='2rem'
                                                                     borderRadius='full'
@@ -421,7 +470,7 @@ const [short_on_expiry_status_info, set_short_on_expiry_status_info]=useState(fa
                                                     <PopoverBody>
                                                     {distributors_data?.map((distributor)=>{
                                                         return(
-                                                            <HStack cursor={'pointer'} minH='48px' key={distributor?._id} onClick={(()=>set_distributed_by(distributor?.company_name))}>
+                                                            <HStack cursor={'pointer'} minH='48px' key={distributor?._id} onClick={(()=>{set_distributed_by(distributor?.company_name);set_distributed_by_id(distributor?._id)})}>
                                                                 <Avatar
                                                                     boxSize='2rem'
                                                                     borderRadius='full'
@@ -556,12 +605,15 @@ const [short_on_expiry_status_info, set_short_on_expiry_status_info]=useState(fa
                         <Divider/>
                         <FormControl mt='2'>
                             <FormLabel>Website link</FormLabel>
-                            <Input type='url' value={website_link} placeholder='website link to the company' onChange={((e)=>{set_website_link(e.target.value)})}/>
+                            <InputGroup size='sm'>
+                                <InputLeftAddon children='https://' />
+                                <Input type='url' value={website_link} placeholder='mysite' onChange={((e)=>{set_website_link(e.target.value)})}/>
+                            </InputGroup>
                         </FormControl>
                     </Box>
                     <Box mt='2' align='end' gap='2'>
                         <Tooltip hasArrow label='proceed to add documents' placement='auto' >
-                            <Button onClick={(()=>{set_isfileupload(true)})}>Add documents</Button>
+                            <Button bg='gray.400' color='#fff' onClick={(()=>{set_isfileupload(true)})}>Add documents</Button>
                         </Tooltip>
                         <Tooltip hasArrow label='Save product details and add files later'  placement='auto'>
                             <Button ml={'2'} bg='#009393' color='#fff' onClick={handle_add_new_product} >Create product</Button>

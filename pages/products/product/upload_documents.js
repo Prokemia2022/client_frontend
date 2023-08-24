@@ -20,7 +20,7 @@ import Cookies from 'universal-cookie';
 import {storage} from '../../../components/firebase.js';
 import {ref,uploadBytes,getDownloadURL} from 'firebase/storage';
 
-function Upload_documents({set_isfileupload,handle_add_new_product}) {
+function Upload_documents({set_isfileupload,handle_add_new_product,uid}) {
     /**
      * Upload_documents: Handles the upload and update of files.
      * Files: data sheet, safety data sheet, formulation document
@@ -127,19 +127,19 @@ function Upload_documents({set_isfileupload,handle_add_new_product}) {
     const fetch_file_urls=async()=>{
         if (data_sheet){
             let get_data_sheet_file_url = await data_sheet_file_upload_to_firebase_storage();
-            //console.log(get_data_sheet_file_url);
+            
             set_data_sheet_url(get_data_sheet_file_url);
             files.data_sheet_url = get_data_sheet_file_url;
         }
         if (safety_data_sheet){
             let get_safety_data_sheet_file_url = await safety_data_sheet_file_upload_to_firebase_storage();
-            //console.log(get_safety_data_sheet_file_url);
+            
             set_safety_data_sheet_url(get_safety_data_sheet_file_url)
             files.safety_data_sheet_url = get_safety_data_sheet_file_url;
         }
         if (formulation_document){
             let get_formulation_document_file_url = await formulation_document_file_upload_to_firebase_storage();
-            //console.log(get_formulation_document_file_url);
+            
             set_formulation_document_url(get_formulation_document_file_url);
             files.formulation_document_url = get_formulation_document_file_url;
         }
@@ -183,7 +183,7 @@ function Upload_documents({set_isfileupload,handle_add_new_product}) {
             if (confirmation === 'yes'){
                 //Create product
                 handle_add_new_product().then((res)=>{
-                    //console.log(res)
+                    
                     if (res.status === 200){
                         fetch_file_urls().then(()=>{
                             Update_Product_Details(res)
@@ -195,7 +195,7 @@ function Upload_documents({set_isfileupload,handle_add_new_product}) {
                     //     alert(res.status);
                     // }
                 }).catch((err)=>{
-                    //console.log(err);
+                    
                     set_is_submitting(false)
                 })
             }else{
@@ -205,7 +205,7 @@ function Upload_documents({set_isfileupload,handle_add_new_product}) {
         }else{
             //Create product
             handle_add_new_product().then((res)=>{
-                //console.log(res)
+                
                 if (res.status === 200){
                     fetch_file_urls().then(()=>{
                         Update_Product_Details(res)
@@ -214,7 +214,7 @@ function Upload_documents({set_isfileupload,handle_add_new_product}) {
                     set_is_submitting(false)
                 }
             }).catch((err)=>{
-                //console.log(err);
+                
                 set_is_submitting(false)
             })
         }
@@ -226,10 +226,11 @@ function Upload_documents({set_isfileupload,handle_add_new_product}) {
 			safety_data_sheet_url: files?.safety_data_sheet_url,
 			formulation_document_url: files?.formulation_document_url,
             _id: res?._id,
-            auth_role: res?.auth_role
+            uid
         }
-        ////console.log(payload);
+        
         if (res){
+            
             await Edit_Product(payload).then(()=>{
                 /**
                     sends a payload data to server to update the product.
@@ -256,7 +257,7 @@ function Upload_documents({set_isfileupload,handle_add_new_product}) {
                         Clean_input_data();
                     },2000);
                 }).catch((err)=>{
-                    //console.log(err)
+                    
                     toast({
                         position: 'top-left',
                         variant:"subtle",

@@ -93,8 +93,7 @@ export default function ManufacturerSignUp(){
 				if(response?.data){
 					const token = response?.data
 					const decoded_token = jwt_decode(token)
-					//console.log(decoded_token)
-					router.push(`/manufacturer/${decoded_token?.id}`)
+					router.push(`/manufacturer_new?uid=${decoded_token?.id}`)
 				}
 			}
 		}).catch((err)=>{

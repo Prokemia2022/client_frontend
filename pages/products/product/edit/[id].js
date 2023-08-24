@@ -69,10 +69,13 @@ const toast = useToast();
 const router = useRouter();
 const cookies = new Cookies();
 //utils
-const id = router.query;
+let id = router.query;
+let uid = id?.uid;
+let acc_type = id?.acc_type;
+
 const product_payload = {
     _id : id?.id,
-    
+    acc_type: acc_type
 }
 
 const [auth_role,set_auth_role]=useState("");
@@ -80,7 +83,7 @@ const [auth_role,set_auth_role]=useState("");
 const get_Product_Data=async()=>{
     await Get_Product(product_payload).then((response)=>{
         set_product_data(response.data)
-        //console.log(response.data)
+        
     })
 }
 const get_Industries_Data=async()=>{
@@ -157,6 +160,7 @@ const [short_on_expiry_status_info, set_short_on_expiry_status_info]=useState(fa
     const [website_link,set_website_link]=useState(product_data?.website_link_to_Seller)
 
     const payload = {
+        uid,
         _id: product_data?._id,
         name_of_product,
         short_on_expiry,
@@ -212,7 +216,7 @@ const [short_on_expiry_status_info, set_short_on_expiry_status_info]=useState(fa
             }
         }
         set_is_submitting(true);
-        //console.log(payload);
+        
         const response = await Edit_Product(payload).then((res)=>{
             /**
                 sends a payload data to server to edit product.
@@ -237,10 +241,10 @@ const [short_on_expiry_status_info, set_short_on_expiry_status_info]=useState(fa
                     status: 200
                 }
                 router.back()
-                //console.log(response)
+                
                 return response;
             }).catch((err)=>{
-                //console.log(err)
+                
                 toast({
                     position: 'top-left',
                     variant:"subtle",
@@ -256,17 +260,17 @@ const [short_on_expiry_status_info, set_short_on_expiry_status_info]=useState(fa
             }).finally(()=>{
                 set_is_submitting(false);
             })
-        //console.log(response)
+        
         return response;
     }
     //useEffects
 	useEffect(()=>{
-        if (payload._id || id.id ){
+        if (payload._id || id ){
             get_Industries_Data()
             get_Technology_Data()
             get_Product_Data()
         }
-    },[])
+    },[id])
 
 	useEffect(()=>{
 		get_Distributors_Data()

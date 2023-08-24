@@ -1,5 +1,5 @@
 import {useState,useEffect} from 'react';
-import {Flex,Text,Button,Input,useToast,InputGroup,InputRightElement,Heading} from '@chakra-ui/react'
+import {Flex,Text,Button,Input,useToast,InputGroup,InputRightElement,Heading, HStack, PinInput, PinInputField} from '@chakra-ui/react'
 import {useRouter} from 'next/router'
 import Header from '../components/Header.js';
 import axios from 'axios';
@@ -13,10 +13,13 @@ import styles from '../styles/Password.module.css';
 
 export default function Password_Reset_Function(){
 	const router = useRouter();
+
+	const query = router?.query?.email;
+	
 	const toast = useToast()
 	const cookies = new Cookies();
 	
-	const [email,set_email]=useState('');
+	const [email,set_email]=useState(query);
 	const [active,set_active]=useState(true);
 	const [code_active,set_code_active]=useState(false);
   	const [code,set_code]=useState();	
@@ -48,11 +51,11 @@ export default function Password_Reset_Function(){
   	}
 
   	const Compare_Codes=()=>{
-  		//set_active(!active)
+  		
   		if (code === confirmation_code){
   			set_active(!active)
   		}else{
-  			//console.log(confirmation_code)
+  			
   			toast({
 	          title: '',
 	          description: `wrong code,try again `,
@@ -78,7 +81,7 @@ export default function Password_Reset_Function(){
 	  			code,
 	  			email
 	  		}
-	  		//console.log(payload)
+	  		
 	  		await Send_Password_Otp(payload).then(()=>{
 				set_code_active(!code_active)
 			}).catch((err)=>{
@@ -105,7 +108,7 @@ export default function Password_Reset_Function(){
 					status: 'success',
 					isClosable: true,
 				});
-				router.push('/signin')
+				handle_LogOut()
   			});
   		}else{
   			toast({
@@ -116,7 +119,15 @@ export default function Password_Reset_Function(){
 			});
   		}
   	}
+	const handle_LogOut=()=>{
+		cookies.remove('user_token', { path: '/' });
+		cookies.remove('is_acc_verified', { path: '/' });
+		cookies.remove('is_suspended', { path: '/' });
+		// router.reload()
+		router.replace('/signin');
+	}
 
+	const [input_error,set_input_error]=useState(false);
 	return(
 		<Flex className={styles.Password_Body}>
 			<div className={styles.Password_Image}>
@@ -140,7 +151,16 @@ export default function Password_Reset_Function(){
 						}
 						{code_active?
 							<Flex direction='column' gap='2'>
-								<Input variant='filled' bg='#eee' required type='Number' placeholder='Enter Code' onChange={((e)=>{set_confirmation_code(e.target.value)})}/>
+								<HStack>
+									<PinInput type='number' onChange={((e)=>{set_confirmation_code(e)})} otp={true}>
+										<PinInputField errorBorderColor={input_error && confirmation_code == '' ? true : false}/>
+										<PinInputField errorBorderColor={input_error && confirmation_code == '' ? true : false}/>
+										<PinInputField errorBorderColor={input_error && confirmation_code == '' ? true : false}/>
+										<PinInputField errorBorderColor={input_error && confirmation_code == '' ? true : false}/>
+										<PinInputField errorBorderColor={input_error && confirmation_code == '' ? true : false}/>
+										<PinInputField errorBorderColor={input_error && confirmation_code == '' ? true : false}/>
+									</PinInput>
+								</HStack>
 								<Flex gap='2'>
 									<Button bg='#000' color='#fff' flex='1' onClick={(()=>{set_code_active(!code_active)})}>Resend Code</Button>
 									<Button bg='#009393' flex='1' color='#fff' onClick={Compare_Codes}>Verify Code</Button>
@@ -148,7 +168,7 @@ export default function Password_Reset_Function(){
 							</Flex>
 						:
 							<Flex direction='column' gap='2'>
-								<Input variant='filled' bg='#eee' required type='email' placeholder='Enter your email' onChange={((e)=>{set_email(e.target.value)})}/>
+								<Input value={email} variant='filled' bg='#eee' required type='email' placeholder='Enter your email' onChange={((e)=>{set_email(e.target.value)})}/>
 								<Button bg='#000' color='#fff' onClick={Send_Code_Email}>Send Email</Button>
 							</Flex>
 						}

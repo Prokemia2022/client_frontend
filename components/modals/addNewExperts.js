@@ -110,7 +110,7 @@ export default function AddNewExpertsModal({isaddnewexpertModalvisible,setisaddN
     }
     return (
         <>
-          <Modal isOpen={isOpen} onClose={onClose}>
+          <Modal isOpen={isOpen} onClose={onClose} isCentered>
             <ModalOverlay />
             <ModalContent>
               <ModalHeader>
