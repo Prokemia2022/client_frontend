@@ -1,5 +1,5 @@
 import React,{useState,useEffect} from 'react'
-import { Flex,Text,Image,Center,Select,Button,SimpleGrid} from '@chakra-ui/react';
+import { Flex,Text,Image,Center,Select,Button,SimpleGrid, Box} from '@chakra-ui/react';
 import styles from '../styles/Home.module.css';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import {useRouter} from 'next/router';
@@ -167,13 +167,15 @@ function Home(){
 			</Flex>
 			<Text mt='4' fontSize='24px' fontFamily='ClearSans-Bold'>Featured Products</Text>
 			{!isloading ?
-				<Flex direction={'column'} gap='2'>
+				<SimpleGrid minChildWidth='300px' spacing='40px' my='2'>
 					{products_data?.slice(0,4).map((item)=>{
 						return(
 							<Product_Cart_Item item={item} key={item?._id}/>
 						)
 					})}
-				</Flex>:
+				</SimpleGrid>
+				
+				:
 				<>
 					<Loading />
 					<Loading />
@@ -184,7 +186,7 @@ function Home(){
 				<>
 					{distributors_data?.slice(0,4).map((distributor)=>{
 						return(
-							<Flex bg='#eee' mb='1' borderRadius='5' key={distributor?._id} gap='2' onClick={(()=>{router.push(`/account/distributor/${distributor?._id}`)})} cursor='pointer'>
+							<Flex _hover={{bg:'gray.100'}} bg='#eee' mb='1' borderRadius='5' key={distributor?._id} gap='2' onClick={(()=>{router.push(`/account/distributor/${distributor?._id}`)})} cursor='pointer'>
 								<Image objectFit={distributor?.profile_photo_url == '' || !distributor?.profile_photo_url? "contain":'cover'} src={distributor?.profile_photo_url == '' || !distributor?.profile_photo_url? "../Pro.png":distributor?.profile_photo_url} boxSize='100px' alt='profilelogo'/>
 								<Flex direction='column' p='2' gap='2' flex='1'>
 									<Text mb='0' fontSize='24px' fontFamily='ClearSans-Bold'>{distributor?.company_name}</Text>
@@ -204,7 +206,7 @@ function Home(){
 				<>
 					{manufacturers_data?.slice(0,4).map((manufacturer)=>{
 						return(
-							<Flex bg='#eee' mb='1' borderRadius='5' key={manufacturer?._id} gap='2' onClick={(()=>{router.push(`/account/manufacturer/${manufacturer?._id}`)})} cursor='pointer'>
+							<Flex _hover={{bg:'gray.100'}} bg='#eee' mb='1' borderRadius='5' key={manufacturer?._id} gap='2' onClick={(()=>{router.push(`/account/manufacturer/${manufacturer?._id}`)})} cursor='pointer'>
 								<Image objectFit={manufacturer?.profile_photo_url == '' || !manufacturer?.profile_photo_url? "contain":'cover'} src={manufacturer?.profile_photo_url == '' || !manufacturer?.profile_photo_url? "../Pro.png":manufacturer?.profile_photo_url} w='100px' h='100px' alt='profilelogo'/>
 								<Flex direction='column' p='2' gap='2' flex='1'>
 									<Text mb='0' fontSize='24px' fontFamily='ClearSans-Bold'>{manufacturer?.company_name}</Text>
@@ -279,8 +281,8 @@ const Promo=({router})=>{
 const Product_Cart_Item=({item})=>{
 	const router = useRouter();
 	return(
-		<Flex cursor='pointer' gap='2' align='center' bg='#fff' p='1' borderRadius='5' boxShadow='lg' onClick={(()=>{router.push(`/product/${item._id}`)})} >
-			<Image w='50px' h='50px' borderRadius='10px' objectFit='cover' src='../../Pro.png' alt='next'/>
+		<Flex _hover={{bg:'#eee',m:'1',boxShadow:'lg'}}   cursor='pointer' gap='2' align='center' bg='#fff' p='1' borderRadius='5' boxShadow='md' onClick={(()=>{router.push(`/product/${item._id}`)})} >
+		<Image w='50px' h='50px' borderRadius='10px' objectFit='cover' src='../../Pro.png' alt='next'/>
 			<Flex direction='column'>
 				<Text fontSize='16px' fontFamily='ClearSans-Bold' color='#009393'>{item.name_of_product}</Text>
 				<Text fontSize='14px'>{item.distributed_by}</Text>
@@ -315,7 +317,7 @@ const Item_Loading=()=>{
 
 const Control_Item_Card=({item,window,router})=>{
 	return(
-		<Flex cursor='pointer' w='100%' h='225px' m='1' position='relative' onClick={(()=>{router.push(`/products/${item.title}`)})}>
+		<Flex _hover={{m:'2',boxShadow:'lg',opacity:'100%'}} opacity='75%' cursor='pointer' w='100%' h='225px' m='1' position='relative' onClick={(()=>{router.push(`/products/${item.title}`)})}>
 			<Image objectFit={item?.cover_image == ''? "contain":'cover'} src={item?.cover_image == ''? "../Pro.png":item?.cover_image} alt='photo' boxShadow='lg' w='100%'/>
 			<Text bg='rgb(0,0,0,0.6)' p='1' position='absolute' bottom='0px' left='0px' w='100%' fontSize='14px' color='#fff'>{item.title}</Text>
 		</Flex>
