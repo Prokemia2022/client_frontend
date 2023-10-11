@@ -21,7 +21,7 @@ export default function SalesSignUp(){
   	const [last_name, set_last_name] = useState('');
   	const [password, set_password] = useState('');
   	const [email_of_company, set_email_of_company] = useState('');
-
+ 
   	const payload = {
   		first_name,
   		last_name,
@@ -34,28 +34,38 @@ export default function SalesSignUp(){
 	const token = cookies.get('user_token');
 
   	const handle_Sign_Up=async()=>{
-  		await SignUp(payload).then((response)=>{
-			//console.log(response);
-			if (response.status == 201){
-				toast({
-					title: '',
-					description: response?.data,
-					status: 'error',
-					variant:'left-accent',
-					position:'top-left',
-					isClosable: true,
-				});
-			}else{
-				if(response?.data){
-					const token = response?.data
-					const decoded_token = jwt_decode(token)
-					//console.log(decoded_token)
-					router.push(`/salesperson/${decoded_token?.id}`)
-				}
-			}
-  		}).catch((err)=>{
-			console.log(err)
-		})
+		if(!first_name || !last_name || !password || !email_of_company){
+			toast({
+				title: '',
+				description: 'All inputs are required',
+				status: 'info',
+				isClosable: true,
+			});
+			return ;
+		}else{
+			await SignUp(payload).then((response)=>{
+			  //console.log(response);
+			  if (response.status == 201){
+				  toast({
+					  title: '',
+					  description: response?.data,
+					  status: 'error',
+					  variant:'left-accent',
+					  position:'top-left',
+					  isClosable: true,
+				  });
+			  }else{
+				  if(response?.data){
+					  const token = response?.data
+					  const decoded_token = jwt_decode(token)
+					  //console.log(decoded_token)
+					  router.push(`/salesperson/${decoded_token?.id}`)
+				  }
+			  }
+			}).catch((err)=>{
+			  console.log(err)
+		  })
+		}
   	}
 
 	return(
