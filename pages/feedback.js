@@ -1,25 +1,19 @@
 import React,{useEffect, useState} from 'react';
-import {Flex,Heading,Text,Button,Input,InputGroup,InputRightElement,Image,Textarea,useToast, useEditable} from '@chakra-ui/react';
+import {Flex,Heading,Text,Button,Input,Textarea,useToast} from '@chakra-ui/react';
 import styles from '../styles/Feedback.module.css';
-import {useRouter} from 'next/router';
-import Header from '../components/Header.js';
 import Create_Feedback from './api/control/create_feedback.js'
-import StarRateIcon from '@mui/icons-material/StarRate';
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import { MdStarRate,MdAccountCircle } from "react-icons/md";
 import Get_Feedback from './api/control/get_feedbacks.js'
 
 export default function Feedback(){
 	const [active, setActive] = useState(false);
-  	const router = useRouter();
   	const toast = useToast();
   	
   	const [name,setname]=useState('');
   	const [email,setemail]=useState('');
   	const [message,setmessage]=useState('');
   	const [rate,set_rate]=useState(5);
-	const [feedback_data,set_feedback_data]=useState([])
-
-  	let route = '';
+	const [feedback_data,set_feedback_data]=useState([]);
 
 	const payload = {
 		name,
@@ -104,7 +98,6 @@ export default function Feedback(){
 	
 	return(
 		<Flex direction='column'>
-			<Header/>
 			<Flex className={styles.feedback_body} gap='2'>
 			{active?
 				<Flex className={styles.feedback_form_body} >
@@ -165,9 +158,9 @@ const Feedback_Content_Card=({feedback})=>{
 	return(
 		<Flex className={styles.feedback_content_card} direction={'column'} w='300px' h='300px'>
 			<Flex gap='2' align='center'>
-				<AccountCircleIcon style={{fontSize:'32px',color:'grey'}}/>
+				<MdAccountCircle style={{fontSize:'32px',color:'grey'}}/>
 				{jsx.map((index)=>(
-					<StarRateIcon key={index} style={{fontSize:'14px',color:'gold'}}/>
+					<MdStarRate key={index} style={{fontSize:'14px',color:'gold'}}/>
 				))}
 			</Flex>
 			<Flex p='2' direction={'column'}>

@@ -1,28 +1,24 @@
 import {useState,useEffect} from 'react';
 import {Flex,Text,Button,Input,useToast,InputGroup,InputRightElement,Heading, HStack, PinInput, PinInputField} from '@chakra-ui/react'
-import {useRouter} from 'next/router'
-import Header from '../components/Header.js';
-import axios from 'axios';
-import Cookies from 'universal-cookie';
-import Password_Reset from './api/auth/password_reset.js'
-import {Visibility,VisibilityOff} from '@mui/icons-material';
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import {useRouter} from 'next/router';
+import { MdVisibilityOff,MdVisibility  } from "react-icons/md";
 //api
-import Send_Password_Otp from './api/email_handler/password_email.js'
 import styles from '../styles/Password.module.css';
+import { Generate_Otp, Send_otp, Verify_otp } from '../hooks/useHandleOtp.hook.js';
+import useLogOut from '../hooks/useLogOut.hook.js';
+import { useUserContext } from '../components/Providers/userContext.js';
+import { Password_Reset } from './api/auth/route.api.js';
 
 export default function Password_Reset_Function(){
+	const {user,set_user_handler} = useUserContext()
 	const router = useRouter();
-
 	const query = router?.query?.email;
-	
-	const toast = useToast()
-	const cookies = new Cookies();
+	const toast = useToast();
 	
 	const [email,set_email]=useState(query);
 	const [active,set_active]=useState(true);
+	const [code,set_code]=useState();	
 	const [code_active,set_code_active]=useState(false);
-  	const [code,set_code]=useState();	
 
   	const [new_password,set_new_password]=useState('');
   	const [confirm_password,set_confirm_password]=useState('');
@@ -32,69 +28,29 @@ export default function Password_Reset_Function(){
   	const [show, setShow] = useState(false); //handle state to toggle password
 	const handleClick = () => setShow(!show); //handle state to toggle view of password
 
-  	useEffect(()=>{
-  		const retrieved_password_reset_code = cookies.get("password_reset_code")
-  		set_code(retrieved_password_reset_code)
-  	},[])
-
-	const Generate_Code=async()=>{
-		const characters = '0123456789';
-		let result = ''
-		const charactersLength = characters.length
-
-		for (let i = 0;i<6;i++){
-			result += characters.charAt(Math.floor(Math.random() * charactersLength));
-		}
-		cookies.set('password_reset_code', result, { path: '/' });
-		set_code(result)
-		return result
-  	}
-
-  	const Compare_Codes=()=>{
-  		
-  		if (code === confirmation_code){
-  			set_active(!active)
-  		}else{
-  			
-  			toast({
-	          title: '',
-	          description: `wrong code,try again `,
-	          status: 'error',
-	          isClosable: true,
-	        });
-  		}
-  	}
-
-  	const Send_Code_Email=async()=>{
-  		const validRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
-  		if (!email.match(validRegex)){
-  			toast({
-				title: '',
-				description: 'Use a valid email format e.g example@company.com',
-				status: 'info',
-				isClosable: true,
-			});
-			return;
-  		}else{
-	  		const code = await Generate_Code()
-	  		const payload = {
-	  			code,
-	  			email
-	  		}
-	  		
-	  		await Send_Password_Otp(payload).then(()=>{
+	const handle_otp=async()=>{
+		const code = await Generate_Otp();
+		if (code){
+			const email_status = await Send_otp(code, email);
+			console.log(email_status)
+			if (email_status?.data == 'success'){
 				set_code_active(!code_active)
-			}).catch((err)=>{
-				toast({
-					title: '',
-					description: 'error while sending code',
-					status: 'error',
-					isClosable: true,
-				});
-			})
-	  		//set_code_active(!code_active)
-	  	}
+				return 'success'
+			}
+			return null;
+		}
+		return null;
+	}
+	
+	const Compare_Codes=()=>{
+		const otp_status = Verify_otp(confirmation_code);
+		if(otp_status === 'error'){
+			toast({ title: 'Code verification error', description: `the code you entered does not match `, status: 'warning', variant:'left-accent', position: 'top-left', isClosable: true });
+			return ;
+		}
+		set_active(!active);
   	}
+	
   	const Set_New_Password=async()=>{
   		const payload = {
   			email_of_company : email,
@@ -102,45 +58,24 @@ export default function Password_Reset_Function(){
   		}
   		if (new_password == confirm_password){
   			await Password_Reset(payload).then(()=>{
-  				toast({
-					title: '',
-					description: 'password changed successfully,we are taking you to sign in page',
-					status: 'success',
-					isClosable: true,
-				});
-				handle_LogOut()
-  			});
+				toast({ title: 'Password has been changed successfully', description: 'Sign in again to your account', status: 'success', variant:'left-accent', position: 'top-left', isClosable: true });
+				useLogOut()
+				set_user_handler(`${user?._id} logged out `)
+				setTimeout(()=>{
+					router.push('/')
+				},2000);
+			}).catch((err)=>{
+				console.log(err)
+			})
   		}else{
-  			toast({
-				title: '',
-				description: 'passwords do not match',
-				status: 'info',
-				isClosable: true,
-			});
+			toast({ title: 'Passwords do not match', description: '', status: 'warning', variant:'left-accent', position: 'top-left', isClosable: true });
   		}
   	}
-	const handle_LogOut=()=>{
-		cookies.remove('user_token', { path: '/' });
-		cookies.remove('is_acc_verified', { path: '/' });
-		cookies.remove('is_suspended', { path: '/' });
-		// router.reload()
-		router.replace('/signin');
-	}
-
 	const [input_error,set_input_error]=useState(false);
 	return(
 		<Flex className={styles.Password_Body}>
-			<div className={styles.Password_Image}>
-				<Flex className={styles.Back_Icon} gap='2' boxShadow={'lg'}>
-					<ArrowBackIcon />
-					<Text fontWeight={'bold'}>Back</Text>
-				</Flex>
-			</div>
+			<div className={styles.Password_Image}/>
 			<Flex direction='column' className={styles.Form_Body}>
-				<Flex className={styles.Back_Icon} gap='2' boxShadow={'lg'} onClick={(()=>{router.back()})}>
-					<ArrowBackIcon />
-					<Text fontWeight={'bold'}>Back</Text>
-				</Flex>
 				<Heading as='h3' >Forgot password?</Heading>
 				{active?
 					<Flex direction='column' gap='3' mt='3'>
@@ -169,7 +104,7 @@ export default function Password_Reset_Function(){
 						:
 							<Flex direction='column' gap='2'>
 								<Input value={email} variant='filled' bg='#eee' required type='email' placeholder='Enter your email' onChange={((e)=>{set_email(e.target.value)})}/>
-								<Button bg='#000' color='#fff' onClick={Send_Code_Email}>Send Email</Button>
+								<Button bg='#000' color='#fff' onClick={handle_otp}>Send Email</Button>
 							</Flex>
 						}
 						
@@ -180,37 +115,23 @@ export default function Password_Reset_Function(){
 						<Flex direction='column' gap='2' w='80%'>
 							<Text>New Password</Text>
 							<InputGroup size='md'>
-								<Input
-								pr='4.5rem'
-								type={show ? 'text' : 'password'}
-								placeholder='Enter password'
-								variant='filled'
-								required
-								onChange={((e)=>{set_new_password(e.target.value)})}
-								/>
+								<Input pr='4.5rem' type={show ? 'text' : 'password'} placeholder='Enter password' variant='filled' required onChange={((e)=>{set_new_password(e.target.value)})} />
 								<InputRightElement width='4.5rem'>
 									<Button h='1.75rem' size='sm' onClick={handleClick} bg='#fff'>
-									{show ? <VisibilityOff/> : <Visibility/>}
+									{show ? <MdVisibilityOff/> : <MdVisibility/>}
 									</Button>
 								</InputRightElement>
 							</InputGroup>
 							<Text>Confirm new password</Text>
 							<InputGroup size='md'>
-								<Input
-								pr='4.5rem'
-								type={show ? 'text' : 'password'}
-								placeholder='Enter password'
-								variant='filled'
-								required
-								onChange={((e)=>{set_confirm_password(e.target.value)})}
-								/>
+								<Input pr='4.5rem' type={show ? 'text' : 'password'} placeholder='Enter password' variant='filled' required onChange={((e)=>{set_confirm_password(e.target.value)})} />
 								<InputRightElement width='4.5rem'>
 									<Button h='1.75rem' size='sm' onClick={handleClick} bg='#fff'>
-									{show ? <VisibilityOff/> : <Visibility/>}
+									{show ? <MdVisibilityOff/> : <MdVisibility/>}
 									</Button>
 								</InputRightElement>
 							</InputGroup>
-							<Button bg='#009393' color='#fff' onClick={Set_New_Password}>Change New Password</Button>
+							<Button bg='#009393' color='#fff' onClick={Set_New_Password}>Set New Password</Button>
 						</Flex>
 					</>
 				}

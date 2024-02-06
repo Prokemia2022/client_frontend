@@ -17,8 +17,8 @@ import {
   } from '@chakra-ui/react';
 import { useEffect,useState } from 'react';
 import Manufacturer_request from '../../pages/api/auth/manufacturer/manufacturer_request.js';
-import Get_Technologies from '../../pages/api/control/get_technologies'
-import Get_Industries from '../../pages/api/control/get_industries';
+import { useTechnologiesSrt } from '../../hooks/technology/useTechnologiesSrt.js';
+import { useIndustriesSrt } from '../../hooks/industries/useIndustriesSrt.js';
 
 export default function FindDistributors({isfinddistributorModalvisible,setisfinddistributorModalvisible,manufacturer_data}){
   /**
@@ -47,7 +47,7 @@ export default function FindDistributors({isfinddistributorModalvisible,setisfin
     useEffect(()=>{
       HandleModalOpen();
       get_Industries_Data();
-      get_Technology_Data();
+      get_Technologies_Data();
     },[isfinddistributorModalvisible])
 
     const [industry,set_industry]=useState('')
@@ -67,19 +67,13 @@ export default function FindDistributors({isfinddistributorModalvisible,setisfin
       name_of_requester : manufacturer_data?.company_name 
     }
 
-    const get_Industries_Data=async()=>{
-      await Get_Industries().then((response)=>{
-        const data = response.data
-        const result = data.filter(v => v.verification_status);
-        set_industries_data(result)
-      })
+    async function get_Industries_Data(){
+      let data = await useIndustriesSrt();
+      set_industries_data(data)
     }
-    const get_Technology_Data=async()=>{
-      await Get_Technologies().then((response)=>{
-        const data = response.data;
-        const result = data.filter(v => v.verification_status);
-        set_technologies_data(result);
-      })
+    async function get_Technologies_Data(){
+      let data = await useTechnologiesSrt();
+      set_technologies_data(data)
     }
 
     const Submit_Request_Handler=async()=>{

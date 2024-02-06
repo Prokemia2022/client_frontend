@@ -18,7 +18,7 @@ export default function home() {
         <meta name="msapplication-TileColor" content="#da532c"/>
         <meta name="theme-color" content="#ffffff"/>
       </Head>
-	  <Index />
+	    <Index />
 	</div>
   )
 }

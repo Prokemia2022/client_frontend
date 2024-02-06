@@ -1,9 +1,11 @@
 import React,{useState,useEffect}from 'react'
-import {Flex,Image,Text,Input,Button,Select} from '@chakra-ui/react'
-import SearchIcon from '@mui/icons-material/Search';
+import {Flex,Text,Input,Button,Select, Icon, Grid} from '@chakra-ui/react';
 import {useRouter} from 'next/router';
-import Header from '../components/Header.js';
-import Get_Products from './api/product/get_products.js'
+import { IoSearchSharp } from "react-icons/io5";
+
+import { FaStore } from "react-icons/fa";
+import Product_Card from '../components/ui/Category/Product_Card.ui.js';
+import { Get_Products } from './api/product/route.api.js';
 
 export default function Market(){
 	const router = useRouter();
@@ -40,55 +42,37 @@ export default function Market(){
 		})
 	}
 	return(
-		<Flex direction='column'>
-			<Header/>
-			<Flex direction='column' gap='2' p='2' w='100%' overflowY='scroll' h='100vh'>
+		<Flex direction='column' gap='2' p={{base:'4',md:'6'}} w='100%'>
+			<Flex align='center' gap='2'>
+				<Icon as={FaStore} boxSize={6} />
 				<Text fontSize='32px' fontWeight='bold' color='#009393'>Marketplace</Text>
-				<Text>Find products listed by other companies, that are looking to dispatch their excess or products expiring soon.</Text>
-				
-				<Flex gap='2' p='2' align='center'>
-					<Select placeholder='sort' w='100px' onChange={((e)=>{set_sort(e.target.value)})}> 
-						<option value='desc'>A - Z</option>
-						<option value='asc'>Z - A</option>
-					</Select>
-					<Flex gap='2' p='2' flex='1'>
-						<Input placeholder='search Products by Name, Industry, Technology...' bg='#fff' flex='1' onChange={((e)=>{set_search_query(e.target.value)})}/>
-						<Button bg='#009393' color='#fff'><SearchIcon /></Button>
-					</Flex>
-				</Flex>
-				{products_data.length === 0? 
-					<Flex h='60vh' bg='' borderRadius='5' m='2' align='center' justify='center'>
-						<Text fontSize='24px' color='grey'>There are no products listed that are expiring soon</Text>
-					</Flex>
-				:
-					<Flex direction='column'>
-						{products_data.map((item)=>{
-							return(
-								<div key={item._id} style={{margin:'5px'}}>
-									<Product_Cart_Item router={router} item={item}/>
-								</div>
-							)
-						})}
-					</Flex>
-				}
 			</Flex>
-		</Flex>
-	)
-}
-
-const Product_Cart_Item=({item})=>{
-	const router = useRouter();
-	return(
-		<Flex cursor='pointer' gap='2' align='center' bg='#fff' p='1' borderRadius='5' boxShadow='lg' onClick={(()=>{router.push(`/product/${item._id}`)})} >
-			<Image w='50px' h='50px' borderRadius='10px' objectFit='cover' src='../../Pro.png' alt='next'/>
-			<Flex direction='column'>
-				<Text fontSize='16px' fontFamily='ClearSans-Bold' color='#009393'>{item.name_of_product}</Text>
-				<Text fontSize='14px'>{item.distributed_by}</Text>
-				<Flex gap='2' fontSize='10px' color='grey'>
-					<Text>{item.industry? item.industry : "-"}</Text>
-					<Text borderLeft='1px solid grey' paddingLeft='2'>{item.technology? item.technology : "-"}</Text>
+			<Text>Find products listed by other companies, that are looking to dispatch their excess or products expiring soon.</Text>
+			<Flex gap='2' align='center' justify={'space-between'} w='100%' my='2'>
+				<Select placeholder='sort' w='100px' onChange={((e)=>{set_sort(e.target.value)})} size='sm'> 
+					<option value='desc'>A - Z</option>
+					<option value='asc'>Z - A</option>
+				</Select>
+				<Flex gap='2' w={'40vw'}>
+					<Input placeholder='search Products by Name, Industry, Technology...' size='sm' bg='#fff' flex='1' onChange={((e)=>{set_search_query(e.target.value)})}/>
+					<Button bg='#009393' color='#fff' size='sm'>
+						<Icon as={IoSearchSharp} boxSize={4}/>
+					</Button>
 				</Flex>
 			</Flex>
+			{products_data.length === 0? 
+				<Flex h='60vh' bg='' borderRadius='5' m='2' align='center' justify='center'>
+					<Text fontSize='24px' color='grey'>There are no products listed that are expiring soon</Text>
+				</Flex>
+			:
+				<Grid templateColumns={{base:'repeat(1, 1fr)',md:'repeat(2, 1fr)',lg:'repeat(3, 1fr)'}} gap={'2'} mt='1'>
+					{products_data?.map((item)=>{
+						return(
+							<Product_Card item={item} key={item?._id}/>
+						)
+					})}
+				</Grid>
+			}
 		</Flex>
 	)
 }
