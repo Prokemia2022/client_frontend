@@ -1,7 +1,7 @@
 import { Drawer, DrawerBody, DrawerFooter, DrawerHeader, DrawerOverlay, DrawerContent, DrawerCloseButton, Stack, Box, FormLabel, Input, FormControl, Select, FormErrorMessage, Textarea, Button, useToast } from '@chakra-ui/react';
 import { useEffect } from 'react';
-import { useTechnologiesSrt } from '../../../hooks/technology/useTechnologiesSrt';
-import { useIndustriesSrt } from '../../../hooks/industries/useIndustriesSrt';
+import { UseTechnologiesSrt } from '../../../hooks/technology/useTechnologiesSrt';
+import { UseIndustriesSrt } from '../../../hooks/industries/useIndustriesSrt';
 import { useState } from 'react';
 import Create_Request from '../../../pages/api/control/consultation.api';
 import { useUserContext } from '../../Providers/userContext';
@@ -27,12 +27,12 @@ export default function Consultancy_Form({consultation_drawer_form,label}) {
     },[industry])
 
 	async function get_Industries_Data(){
-		let data = await useIndustriesSrt();
+		let data = await UseIndustriesSrt();
 		set_industries_data(data)
 	}
 
 	async function get_Technologies_Data(){
-		let data = await useTechnologiesSrt();
+		let data = await UseTechnologiesSrt();
 		set_technologies_data(data)
 	}
 

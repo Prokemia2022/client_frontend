@@ -5,14 +5,14 @@ import { IoMenu } from "react-icons/io5";
 import { VscAccount } from "react-icons/vsc";
 import Script from "next/script"
 import { useUserContext } from "../../Providers/userContext";
-import useLogOut from "../../../hooks/useLogOut.hook";
+import UseLogOut from "../../../hooks/useLogOut.hook";
 import { useUserDashboardroute } from "../../../hooks/useUserDashboardroute.hook";
 
 export const MenuComponent = ()=>{
     const router = useRouter();
     const {user,set_user_handler} = useUserContext();
     const handleClick = ()=>{
-        useLogOut();
+        UseLogOut();
         router.push('/');
         set_user_handler(`${user?._id} logged out `)
     }

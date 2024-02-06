@@ -6,7 +6,7 @@ import Head from 'next/head';
 import Footer from '../components/Footer.js'
 import Header from '../components/ui/header_navigation/index.js'
 // hooks 
-import useFetchUserData from '../hooks/useFetchUserData.hook.js'
+import UseFetchUserData from '../hooks/useFetchUserData.hook.js'
 // providers
 import { userContext } from '../components/Providers/userContext.js';
 
@@ -17,7 +17,7 @@ function MyApp ({ Component, pageProps }) {
 		fetch()
 	},[user_handler]);
 	async function fetch(){
-		const result = await useFetchUserData();
+		const result = await UseFetchUserData();
 		set_user(result);
 	}
 	return (

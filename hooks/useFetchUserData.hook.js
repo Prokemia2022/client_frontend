@@ -4,7 +4,7 @@ import { Get_Client } from "../pages/api/clients/client/route.api";
 import { Get_Manufacturer } from "../pages/api/supplier/manufacturer/route.api";
 import { Get_Distributor } from "../pages/api/supplier/distributor/route.api";
 
-const useFetchUserData = async() =>{
+const UseFetchUserData = async() =>{
     const retrived_token = useFetchToken();
     let data = null;
     if (retrived_token === null){
@@ -44,4 +44,4 @@ const useFetchUserData = async() =>{
     }
     return data;
 }
-export default useFetchUserData;
+export default UseFetchUserData;

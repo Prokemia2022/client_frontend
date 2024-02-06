@@ -2,7 +2,7 @@ import { Alert, AlertDescription, AlertDialog, AlertDialogBody, AlertDialogConte
 import { Notification } from "../../../../../components/ui/Dashboard/alert.ui";
 import { useEffect, useState } from "react";
 import { useUserContext } from "../../../../../components/Providers/userContext";
-import { usedashboardContext } from "../../../../../components/Providers/dashboardContext";
+import { UsedashboardContext } from "../../../../../components/Providers/dashboardContext";
 import Create_Sale from "../../../../api/clients/salesperson/route.api";
 
 export const New_Sale=()=>{
@@ -16,7 +16,7 @@ export const New_Sale=()=>{
 
 const Body=()=>{
     const toast = useToast();
-    const {set_page} = usedashboardContext();
+    const {set_page} = UsedashboardContext();
     const DiscardDialog = useDisclosure()
     const {user} = useUserContext();
 
@@ -236,7 +236,7 @@ const Body=()=>{
 
 const AlertDiscardDialog=(props)=>{
     const {DiscardDialog} = {...props}
-    const {set_page} = usedashboardContext()
+    const {set_page} = UsedashboardContext()
     const HandleClick=()=>{
         props.Clean_input_data();
         set_page('Sales');
@@ -255,7 +255,7 @@ const AlertDiscardDialog=(props)=>{
                     </AlertDialogHeader>
 
                     <AlertDialogBody>
-                        Are you sure? You can't undo this action afterwards.
+                        Are you sure? You cant undo this action afterwards.
                     </AlertDialogBody>
 
                     <AlertDialogFooter>

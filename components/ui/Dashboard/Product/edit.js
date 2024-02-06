@@ -5,17 +5,17 @@ import Edit_documents from "./edit_documents.js";
 //apis
 import { Edit_Product, Get_Product } from "../../../../pages/api/product/route.api.js";
 //hooks
-import { useIndustriesSrt } from "../../../../hooks/industries/useIndustriesSrt.js";
-import { useTechnologiesSrt } from "../../../../hooks/technology/useTechnologiesSrt.js";
-import { useDistributorSrt } from "../../../../hooks/distributor/useDistributorSrt.js";
-import { useManufacturerSrt } from "../../../../hooks/manufacturer/useManufacturerSrt.js";
+import { UseIndustriesSrt } from "../../../../hooks/industries/useIndustriesSrt.js";
+import { UseTechnologiesSrt } from "../../../../hooks/technology/useTechnologiesSrt.js";
+import { UseDistributorSrt } from "../../../../hooks/distributor/useDistributorSrt.js";
+import { UseManufacturerSrt } from "../../../../hooks/manufacturer/useManufacturerSrt.js";
 //icons
 import { MdPersonSearch,MdInfoOutline } from "react-icons/md";
 //utils
 import moment from "moment";
 // providers
 import { useUserContext } from "../../../../components/Providers/userContext.js";
-import { usedashboardContext } from "../../../../components/Providers/dashboardContext.js";
+import { UsedashboardContext } from "../../../../components/Providers/dashboardContext.js";
 
 export default function Edit_Product_Details(){
     return (
@@ -33,7 +33,7 @@ const Details=()=>{
 //utils
 const {user} = useUserContext();
 const toast = useToast();
-const {set_page,product_page_data} = usedashboardContext();
+const {set_page,product_page_data} = UsedashboardContext();
 //apis
 const get_Product_Data=async()=>{
     await Get_Product(product_page_data?._id).then((response)=>{
@@ -41,22 +41,22 @@ const get_Product_Data=async()=>{
     })
 }
 async function get_Industries_Data(){
-    let data = await useIndustriesSrt();
+    let data = await UseIndustriesSrt();
     set_industries_data(data)
 }
 
 async function get_Technologies_Data(){
-    let data = await useTechnologiesSrt();
+    let data = await UseTechnologiesSrt();
     set_technologies_data(data)
 }
 
 async function get_Distributors_Data(){
-    let data = await useDistributorSrt();
+    let data = await UseDistributorSrt();
     set_distributors_data(data)
 }
 
 async function get_Manufacturers_Data(){
-    let data = await useManufacturerSrt();
+    let data = await UseManufacturerSrt();
     set_manufacturers_data(data)
 }
 //usestates

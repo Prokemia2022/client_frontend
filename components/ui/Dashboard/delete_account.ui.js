@@ -1,7 +1,7 @@
 import { AlertDialog, AlertDialogBody, AlertDialogContent, AlertDialogFooter, AlertDialogHeader, AlertDialogOverlay, Button, useToast } from '@chakra-ui/react';
 import React from 'react';
 import { useUserContext} from '../../Providers/userContext';
-import useLogOut from '../../../hooks/useLogOut.hook';
+import UseLogOut from '../../../hooks/useLogOut.hook';
 import { useRouter } from 'next/router'
 import { useState } from 'react';
 import { DeleteAccount } from '../../../pages/api/auth/route.api';
@@ -24,7 +24,7 @@ export default function DeleteUserAccount({delete_account_disclosure}) {
       await DeleteAccount(payload).then((response)=>{
         toast({ title: 'Account deleted successfully', description: '', status: 'success', variant:'left-accent', position:'top-left', isClosable: true, });
         setTimeout(()=>{
-          useLogOut();
+          UseLogOut();
           set_user_handler(payload?.email_of_company)
           router.push('/');
         },2000)
@@ -51,7 +51,7 @@ export default function DeleteUserAccount({delete_account_disclosure}) {
               </AlertDialogHeader>
   
               <AlertDialogBody>
-                Are you sure? You can't undo this action afterwards.
+                Are you sure? You cant undo this action afterwards.
                 By deleting this account, You will not have access to use the service and/or the platform.
               </AlertDialogBody>
               <AlertDialogFooter>

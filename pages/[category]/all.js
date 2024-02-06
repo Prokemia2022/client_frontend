@@ -4,12 +4,12 @@ import {Flex,Text, SimpleGrid, Box} from '@chakra-ui/react';
 
 import { useRouter } from 'next/router';
 // hooks
-import { useProductsSrt } from '../../hooks/product/useProductSrt.js';
-import { useIndustriesSrt } from '../../hooks/industries/useIndustriesSrt.js';
-import { useTechnologiesSrt } from '../../hooks/technology/useTechnologiesSrt.js';
-import useShuffle from '../../hooks/lib/useShuffle.js';
-import { useManufacturerSrt } from '../../hooks/manufacturer/useManufacturerSrt.js';
-import { useDistributorSrt } from '../../hooks/distributor/useDistributorSrt.js';
+import { UseProductsSrt } from '../../hooks/product/useProductSrt.js';
+import { UseIndustriesSrt } from '../../hooks/industries/useIndustriesSrt.js';
+import { UseTechnologiesSrt } from '../../hooks/technology/useTechnologiesSrt.js';
+import UseShuffle from '../../hooks/lib/useShuffle.js';
+import { UseManufacturerSrt } from '../../hooks/manufacturer/useManufacturerSrt.js';
+import { UseDistributorSrt } from '../../hooks/distributor/useDistributorSrt.js';
 // components
 import Loading_Card from '../../components/ui/Product/Loading_Card.js';
 import Item_Card from '../../components/ui/Category/Item_Card.js';
@@ -48,25 +48,25 @@ export default function Categories(){
 	},[categ?.category])
 	
 	async function get_Products_Data(){
-		let data = await useProductsSrt();
+		let data = await UseProductsSrt();
 		set_products_data(data)
 	}
 	async function get_Industries_Data(){
-		let data = await useIndustriesSrt();
+		let data = await UseIndustriesSrt();
 		set_data(data)
 	}
 	async function get_Technologies_Data(){
-		let data = await useTechnologiesSrt();
+		let data = await UseTechnologiesSrt();
 		set_data(data)
 	}
 	async function get_Distributors_Data(){
-		let data = await useDistributorSrt();
-		const shuffled_data = useShuffle(data.filter((item)=> item?.subscription));
+		let data = await UseDistributorSrt();
+		const shuffled_data = UseShuffle(data.filter((item)=> item?.subscription));
 		set_distributors_data(shuffled_data)
 	}
 	async function get_Manufacturers_Data(){
-		let data = await useManufacturerSrt();
-		const shuffled_data = useShuffle(data.filter((item)=> item?.subscription));
+		let data = await UseManufacturerSrt();
+		const shuffled_data = UseShuffle(data.filter((item)=> item?.subscription));
 		set_manufacturers_data(shuffled_data)
 		set_isloading(false)
 	}

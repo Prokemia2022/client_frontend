@@ -3,8 +3,8 @@ import { Uploaded_File } from "./uploaded_file.ui"
 import { Selected_File } from "./selected_file.ui"
 import { useState } from "react";
 import { FaArrowLeft } from "react-icons/fa";
-import { useFileTypeChecker } from "../../../../hooks/useFileTypeChecker.hook";
-import useFileUpload from "../../../../hooks/useFileUpload.hook";
+import { UseFileTypeChecker } from "../../../../hooks/useFileTypeChecker.hook";
+import UseFileUpload from "../../../../hooks/useFileUpload.hook";
 import { Edit_Product } from "../../../../pages/api/product/route.api";
 //import Edit_Product from "../../../../pages/api/product/edit_product";
 
@@ -35,7 +35,7 @@ export const Upload_documents=({set_isfileupload,handle_add_new_product,uid})=>{
                 file: data_sheet,
                 file_type: 'data_sheet'
             }
-            let file_url = await useFileUpload(data);
+            let file_url = await UseFileUpload(data);
             set_data_sheet_url(file_url);
             files.data_sheet_url = file_url;
         }
@@ -44,7 +44,7 @@ export const Upload_documents=({set_isfileupload,handle_add_new_product,uid})=>{
                 file: safety_data_sheet,
                 file_type: 'safety_data_sheet'
             }
-            let file_url = await useFileUpload(data);
+            let file_url = await UseFileUpload(data);
             set_safety_data_sheet_url(file_url)
             files.safety_data_sheet_url = file_url;
         }
@@ -53,7 +53,7 @@ export const Upload_documents=({set_isfileupload,handle_add_new_product,uid})=>{
                 file: formulation_document,
                 file_type: 'formulation_document'
             }
-            let file_url = await useFileUpload(data);
+            let file_url = await UseFileUpload(data);
             set_formulation_document_url(file_url);
             files.formulation_document_url = file_url;
         }
@@ -71,7 +71,7 @@ export const Upload_documents=({set_isfileupload,handle_add_new_product,uid})=>{
             set_is_submitting(false);
             return ;
         }
-        let file_checker = useFileTypeChecker();
+        let file_checker = UseFileTypeChecker();
         if (file_checker){
             set_is_submitting(false);
             return ;

@@ -1,13 +1,13 @@
 import React, { useRef } from 'react';
 import { AlertDialog, AlertDialogBody, AlertDialogContent, AlertDialogFooter, AlertDialogHeader, AlertDialogOverlay, Button, useToast } from '@chakra-ui/react';
 import { useUserContext} from '../../Providers/userContext';
-import { usedashboardContext } from '../../Providers/dashboardContext';
+import { UsedashboardContext } from '../../Providers/dashboardContext';
 import { Delete_Product } from '../../../pages/api/product/route.api';
 
 export default function DeleteProduct({delete_product_disclosure}) {
     const toast = useToast();
     const { isOpen, onOpen, onClose } = delete_product_disclosure;
-    const {set_page,product_page_data,set_refetch_products} = usedashboardContext();
+    const {set_page,product_page_data,set_refetch_products} = UsedashboardContext();
     const {user} = useUserContext();
     const cancelRef = useRef();
 

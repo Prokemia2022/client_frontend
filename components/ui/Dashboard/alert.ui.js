@@ -1,6 +1,6 @@
 import { Alert, AlertDescription, AlertIcon, AlertTitle, Badge, Box, Button, Collapse, Text, useDisclosure } from "@chakra-ui/react"
 import { useUserContext } from "../../Providers/userContext";
-import { usedashboardContext } from "../../Providers/dashboardContext";
+import { UsedashboardContext } from "../../Providers/dashboardContext";
 import { FaArrowLeft } from "react-icons/fa";
 
 export const Notification=()=>{
@@ -29,7 +29,7 @@ const Alert_Card=({
     Title,
     Description,
 })=>{
-    const {set_page} = usedashboardContext()
+    const {set_page} = UsedashboardContext()
     return(
         <Alert status={status} mb='2' fontSize={'xs'} borderRadius={'md'}>
             <AlertIcon />

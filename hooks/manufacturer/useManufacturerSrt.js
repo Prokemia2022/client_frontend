@@ -1,6 +1,6 @@
 import { Get_Manufacturer_Srt } from "../../pages/api/supplier/manufacturer/route.api";
 
-export const useManufacturerSrt = async()=>{
+export const UseManufacturerSrt = async()=>{
     let result = await Get_Manufacturer_Srt().then((response)=>{
         return response?.data;
     }).catch((err)=>{

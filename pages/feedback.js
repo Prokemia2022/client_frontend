@@ -166,7 +166,7 @@ const Feedback_Content_Card=({feedback})=>{
 			<Flex p='2' direction={'column'}>
 				<Text fontWeight={'bold'} fontSize={'18px'}>{feedback?.name}</Text>
 			</Flex>
-			<Text p='2' textAlign={'left'} overflow={'hidden'}>"{feedback?.feedback} "</Text>
+			<Text p='2' textAlign={'left'} overflow={'hidden'}>{feedback?.feedback}</Text>
 		</Flex>
 	)
 }

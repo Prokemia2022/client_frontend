@@ -1,6 +1,6 @@
 import { Get_Distributors_Srt } from "../../pages/api/supplier/distributor/route.api";
 
-export const useDistributorSrt = async()=>{
+export const UseDistributorSrt = async()=>{
     let result = await Get_Distributors_Srt().then((response)=>{
         return response?.data;
     }).catch((err)=>{

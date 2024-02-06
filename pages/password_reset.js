@@ -5,7 +5,7 @@ import { MdVisibilityOff,MdVisibility  } from "react-icons/md";
 //api
 import styles from '../styles/Password.module.css';
 import { Generate_Otp, Send_otp, Verify_otp } from '../hooks/useHandleOtp.hook.js';
-import useLogOut from '../hooks/useLogOut.hook.js';
+import UseLogOut from '../hooks/useLogOut.hook.js';
 import { useUserContext } from '../components/Providers/userContext.js';
 import { Password_Reset } from './api/auth/route.api.js';
 
@@ -59,7 +59,7 @@ export default function Password_Reset_Function(){
   		if (new_password == confirm_password){
   			await Password_Reset(payload).then(()=>{
 				toast({ title: 'Password has been changed successfully', description: 'Sign in again to your account', status: 'success', variant:'left-accent', position: 'top-left', isClosable: true });
-				useLogOut()
+				UseLogOut()
 				set_user_handler(`${user?._id} logged out `)
 				setTimeout(()=>{
 					router.push('/')

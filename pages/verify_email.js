@@ -70,7 +70,7 @@ export default function Verify_Email(){
             <Box>
                 <Heading as='h1' my='4'>Thanks for Signing Up!</Heading>
                 <Text>Welcome to the prokemia community,</Text>
-                <Text>We are full of great features that we'd like you to try out.</Text>
+                <Text>We are full of great features that we would like you to try out.</Text>
                 <Text>To fully enjoy the experience in our platform<br/> we recommend you to  verify your email.</Text>
                 {code_active? 
                 <HStack my='4' align='center' justify={'center'}>

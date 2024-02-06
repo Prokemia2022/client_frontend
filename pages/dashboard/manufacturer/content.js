@@ -1,4 +1,4 @@
-import { usedashboardContext } from "../../../components/Providers/dashboardContext";
+import { UsedashboardContext } from "../../../components/Providers/dashboardContext";
 import { Home } from "./Home";
 import { Inventory } from "../../../components/ui/Dashboard/Inventory";
 import { ViewProduct } from "../../../components/ui/Dashboard/Product/view";
@@ -10,7 +10,7 @@ import Pricing from "../../../components/ui/Dashboard/pricing";
 import Edit_Product_Details from "../../../components/ui/Dashboard/Product/edit";
 
 export const Content=()=>{
-    const {active_page} = usedashboardContext();
+    const {active_page} = UsedashboardContext();
     if (active_page == 'Home'){ 
         return ( <Home/> ) 
     }else if (active_page == 'Inventory'){ 

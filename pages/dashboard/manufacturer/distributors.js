@@ -6,13 +6,13 @@ import { MdAdd,MdSearch,MdDeleteSweep,MdPhone,MdEmail } from "react-icons/md";
 //apis
 //modals
 import { useUserContext } from "../../../components/Providers/userContext.js";
-import { usedashboardContext } from "../../../components/Providers/dashboardContext.js";
+import { UsedashboardContext } from "../../../components/Providers/dashboardContext.js";
 import AddNewDistributorModal from "../../../components/modals/addNewDistributor.js";
 import { Delete_Distributor_Manufacturer, Edit_Distributor_Manufacturer } from "../../api/supplier/manufacturer/route.api.js";
 
 export default function Distributors(){
     const {user} = useUserContext();
-    const {set_page} = usedashboardContext();
+    const {set_page} = UsedashboardContext();
 	const [search_query,set_search_query] = useState('');
     const [isaddnewdistributorModalvisible,setisaddnewdistributorModalvisible]=useState(false);
     let [is_fetching,set_is_fetching]=useState(false);

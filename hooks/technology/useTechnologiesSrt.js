@@ -1,6 +1,6 @@
 import { Get_Technologies_Srt } from "../../pages/api/technologies/route.api";
 
-export const useTechnologiesSrt = async()=>{
+export const UseTechnologiesSrt = async()=>{
     let result = await Get_Technologies_Srt().then((response)=>{
         return response?.data;
     }).catch((err)=>{

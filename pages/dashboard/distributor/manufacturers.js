@@ -7,12 +7,12 @@ import { MdAdd,MdSearch,MdDeleteSweep,MdPhone,MdEmail } from "react-icons/md";
 //modals
 import AddNewManufacturer from '../../../components/modals/addNewManufacturer.js';
 import { useUserContext } from "../../../components/Providers/userContext.js";
-import { usedashboardContext } from "../../../components/Providers/dashboardContext.js";
+import { UsedashboardContext } from "../../../components/Providers/dashboardContext.js";
 import { Delete_Manufacturer_Distributor, Edit_Manufacturer_Distributor } from "../../api/supplier/distributor/route.api.js";
 
 export default function Manufacturers(){
     const {user} = useUserContext();
-    const {set_page} = usedashboardContext()
+    const {set_page} = UsedashboardContext()
     const [manufacturers,set_manufacturers]=useState(user?.manufacturers);
 
 	const [search_query,set_search_query] = useState('');

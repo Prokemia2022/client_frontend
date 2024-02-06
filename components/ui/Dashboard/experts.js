@@ -7,14 +7,14 @@ import { MdAdd,MdSearch,MdDeleteSweep,MdEmail,MdBusinessCenter,MdPhone } from "r
 //modals
 import { useUserContext } from "../../Providers/userContext.js";
 import AddNewExpertsModal from "../../modals/addNewExperts.js";
-import { usedashboardContext } from "../../Providers/dashboardContext.js";
+import { UsedashboardContext } from "../../Providers/dashboardContext.js";
 import { Delete_Expert_Manufacturer, Edit_Expert_Manufacturer } from "../../../pages/api/supplier/manufacturer/route.api.js";
 import { Delete_Expert_Distributor, Edit_Expert_Distributor } from "../../../pages/api/supplier/distributor/route.api.js";
 
 
 export default function Expert_Body(props){
     const {user} = useUserContext();
-    const {set_page} = usedashboardContext()
+    const {set_page} = UsedashboardContext()
 
 	const [search_query,set_search_query] = useState('');
 

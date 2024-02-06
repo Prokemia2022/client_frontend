@@ -8,7 +8,7 @@ import moment from "moment";
 import { RiExternalLinkLine } from "react-icons/ri";
 import { BiEdit } from "react-icons/bi";
 import { MdDeleteOutline } from "react-icons/md";
-import { usedashboardContext } from "../../Providers/dashboardContext";
+import { UsedashboardContext } from "../../Providers/dashboardContext";
 import DeleteProduct from "./delete_product.ui";
 
 export const Product_Table=({data})=>{
@@ -47,7 +47,7 @@ const Product_Card=(props)=>{
     const { item} = {...props};
     const router = useRouter();
     const toast = useToast();
-    const {set_page,set_product_page_data} = usedashboardContext();
+    const {set_page,set_product_page_data} = UsedashboardContext();
     const delete_product_disclosure = useDisclosure();
 
     const HandleViewProduct=()=>{

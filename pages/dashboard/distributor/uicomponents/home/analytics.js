@@ -18,7 +18,7 @@ export const Analytics=()=>{
                 : 
                 <>
                     <StatGroup bg='#fff' p='4' borderRadius={'md'} boxShadow={'sm'} my='2' display={'flex'} flexDirection={'column'}>
-                        {user?.subscription? null : <Text fontSize={'sm'} color={'gray.400'}>Upgrade to analyse your account's analytics</Text>}
+                        {user?.subscription? null : <Text fontSize={'sm'} color={'gray.400'}>Upgrade to analyse your accounts analytics</Text>}
                         <Flex w='full' mt='2'>
                             <Stat>
                                 <HStack color={user?.subscription? 'black':'gray.400'}>

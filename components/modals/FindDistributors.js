@@ -17,8 +17,8 @@ import {
   } from '@chakra-ui/react';
 import { useEffect,useState } from 'react';
 import Manufacturer_request from '../../pages/api/auth/manufacturer/manufacturer_request.js';
-import { useTechnologiesSrt } from '../../hooks/technology/useTechnologiesSrt.js';
-import { useIndustriesSrt } from '../../hooks/industries/useIndustriesSrt.js';
+import { UseTechnologiesSrt } from '../../hooks/technology/useTechnologiesSrt.js';
+import { UseIndustriesSrt } from '../../hooks/industries/useIndustriesSrt.js';
 
 export default function FindDistributors({isfinddistributorModalvisible,setisfinddistributorModalvisible,manufacturer_data}){
   /**
@@ -68,11 +68,11 @@ export default function FindDistributors({isfinddistributorModalvisible,setisfin
     }
 
     async function get_Industries_Data(){
-      let data = await useIndustriesSrt();
+      let data = await UseIndustriesSrt();
       set_industries_data(data)
     }
     async function get_Technologies_Data(){
-      let data = await useTechnologiesSrt();
+      let data = await UseTechnologiesSrt();
       set_technologies_data(data)
     }
 

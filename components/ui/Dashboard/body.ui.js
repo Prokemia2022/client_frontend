@@ -1,7 +1,7 @@
 import { Box, Button, Divider, Drawer, DrawerContent, DrawerOverlay, Flex, Icon, IconButton, Text, useDisclosure } from "@chakra-ui/react";
 import { MdMenu } from "react-icons/md";
 import { MdSupportAgent } from "react-icons/md";
-import { usedashboardContext } from "../../Providers/dashboardContext";
+import { UsedashboardContext } from "../../Providers/dashboardContext";
 
 function Dashboard_Body({children,}){
     const sidebar = useDisclosure();
@@ -45,7 +45,7 @@ const NavItem = (props) => {
   };
 
 const SidebarContent = (props) => {
-  const {navigation,active_page,set_page} = usedashboardContext();
+  const {navigation,active_page,set_page} = UsedashboardContext();
   return(
     <Box as="nav" pos="fixed" top={{  base: "70px",  md: "70px" }} left="0" zIndex="sticky" h="calc(100vh - 70px)" pb="10" overflowX="hidden" overflowY="auto" bg="white" _dark={{ bg: "gray.800", }} bordercolor="inherit" borderRightWidth="1px" w="60" {...props} >
       <Flex direction="column" as="nav" fontSize="sm" color="gray.600" aria-label="Main Navigation" gap='1' h='100%' justify={'space-between'} position={'relative'}>

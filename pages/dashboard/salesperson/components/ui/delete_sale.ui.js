@@ -1,13 +1,13 @@
 import { AlertDialog, AlertDialogBody, AlertDialogContent, AlertDialogFooter, AlertDialogHeader, AlertDialogOverlay, Button, useToast } from '@chakra-ui/react';
 import React, { useRef } from 'react';
 import { useUserContext} from '../../../../../components/Providers/userContext';
-import { usedashboardContext } from '../../../../../components/Providers/dashboardContext';
+import { UsedashboardContext } from '../../../../../components/Providers/dashboardContext';
 import {Delete_Sale} from '../../../../api/clients/salesperson/route.api';
 
 export default function DeleteSale({delete_sale_disclosure}) {
     const toast = useToast();
     const { isOpen, onOpen, onClose } = delete_sale_disclosure;
-    const {set_page,sales_data} = usedashboardContext();
+    const {set_page,sales_data} = UsedashboardContext();
     const {user} = useUserContext();
     const cancelRef = useRef();
 
@@ -56,7 +56,7 @@ export default function DeleteSale({delete_sale_disclosure}) {
                 Delete Sale
               </AlertDialogHeader>
               <AlertDialogBody>
-                Are you sure? You can't undo this action afterwards.
+                Are you sure? You cant undo this action afterwards.
                 By deleting this product, You will not have access to use the product.
               </AlertDialogBody>
               <AlertDialogFooter>

@@ -1,6 +1,6 @@
 import { Modal, ModalOverlay, ModalContent, ModalHeader, ModalBody, ModalCloseButton, useDisclosure, Button, Text, Flex, Center, Textarea, Input, Select, InputGroup,Heading, Stack, useToast, FormControl, FormLabel,} from '@chakra-ui/react';
 import { useEffect,useState } from 'react';
-import { useIndustriesSrt } from '../../hooks/industries/useIndustriesSrt';
+import { UseIndustriesSrt } from '../../hooks/industries/useIndustriesSrt';
 import { Add_New_Distributor } from '../../pages/api/supplier/manufacturer/route.api';
 
 function AddNewDistributorModal({isaddnewdistributorModalvisible,setisaddnewdistributorModalvisible,id}){
@@ -28,7 +28,7 @@ function AddNewDistributorModal({isaddnewdistributorModalvisible,setisaddnewdist
 
 
     async function get_Industries_Data(){
-      let data = await useIndustriesSrt();
+      let data = await UseIndustriesSrt();
       set_industries_data(data)
     }
 

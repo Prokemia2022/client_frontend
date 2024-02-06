@@ -1,4 +1,4 @@
-export const useFileTypeChecker=(file)=>{
+export const UseFileTypeChecker=(file)=>{
     /**
      * File_Type_Checker: Checks if the uploaded files are of pdf format.
      * Returns:

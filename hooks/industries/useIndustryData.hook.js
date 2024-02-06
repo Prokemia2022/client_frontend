@@ -1,6 +1,6 @@
 import { Get_Industry_data } from "../../pages/api/industries/route.api";
 
-export const useIndustryData= async(title)=>{
+export const UseIndustryData= async(title)=>{
     let result = await Get_Industry_data(title).then((response)=>{
         return response?.data;
     }).catch((err)=>{

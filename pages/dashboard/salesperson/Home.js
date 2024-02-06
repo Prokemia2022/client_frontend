@@ -16,7 +16,7 @@ export const Home=()=>{
                         <Text my='3'>Looking to earn more money? <br/> Offer qualified information about ingredients and chemicals to buyers and suppliers. <br/> Become an expert and join the community.</Text>
                         <Button bg='#343838' color='white' onClick={(()=>{consultation_drawer_form.onToggle()})}>Register now</Button>
                     </Box>
-                    <Image src='../../dashboard_image.jpg' boxSize='200' display={{sm:'block',md:'none',lg:'block'}}/>
+                    <Image src='../../dashboard_image.jpg' alt='bannerimage' boxSize='200' display={{sm:'block',md:'none',lg:'block'}}/>
                 </Flex>
                 <Consultancy_Form label='Become an expert' consultation_drawer_form={consultation_drawer_form}/>
                 <Carousel w='300px' h='250px' boxShadow={'md'}/>

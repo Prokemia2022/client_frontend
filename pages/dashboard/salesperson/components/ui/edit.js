@@ -1,10 +1,10 @@
 import { AlertDialog, AlertDialogBody, AlertDialogContent, AlertDialogFooter, AlertDialogHeader, AlertDialogOverlay, Box, Breadcrumb, BreadcrumbItem, BreadcrumbLink, Button, Divider, Flex, FormControl, FormErrorMessage, FormLabel, Input, NumberDecrementStepper, NumberIncrementStepper, NumberInput, NumberInputField, NumberInputStepper, Switch, Text, Tooltip, useDisclosure, useToast } from "@chakra-ui/react";
-import { usedashboardContext } from "../../../../../components/Providers/dashboardContext";
+import { UsedashboardContext } from "../../../../../components/Providers/dashboardContext";
 import { useState } from "react";
 import { Edit_Sale_Data } from "../../../../api/clients/salesperson/route.api";
 
 export const Edit_Sale=()=>{
-    const {sales_data,set_page} = usedashboardContext();
+    const {sales_data,set_page} = UsedashboardContext();
     const DiscardDialog = useDisclosure();
     const toast = useToast();
 
@@ -221,7 +221,7 @@ export const Edit_Sale=()=>{
 
 const AlertDiscardDialog=(props)=>{
     const {DiscardDialog} = {...props}
-    const {set_page} = usedashboardContext()
+    const {set_page} = UsedashboardContext()
     const HandleClick=()=>{
         set_page('Sales');
         DiscardDialog.onClose();

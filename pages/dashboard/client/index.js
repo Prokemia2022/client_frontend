@@ -23,7 +23,7 @@ export default function Index(){
             router.push('/');
             return ;
         }
-    },[page]);
+    },[page,signed_in]);
     return(
         <dashboardContext.Provider value={{active_page,page,set_page,navigation}}>
 			<Body>

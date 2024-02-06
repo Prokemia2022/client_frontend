@@ -2,8 +2,8 @@ import { Text, Image, SlideFade, useDisclosure, Box, Icon, Flex, Divider, HStack
 import { useRouter } from "next/router";
 import { useEffect, useState } from 'react';
 import { IoMdArrowDropdown,IoIosClose } from "react-icons/io";
-import { useIndustriesSrt } from '../../../hooks/industries/useIndustriesSrt';
-import { useTechnologiesSrt } from '../../../hooks/technology/useTechnologiesSrt';
+import { UseIndustriesSrt } from '../../../hooks/industries/useIndustriesSrt';
+import { UseTechnologiesSrt } from '../../../hooks/technology/useTechnologiesSrt';
 
 export const Explore_Industries=()=>{
     const router = useRouter();
@@ -29,11 +29,11 @@ const Industries=({onToggle})=>{
     const [data, set_data]=useState([]);
 
     async function get_Industries_Data(){
-		let data = await useIndustriesSrt();
+		let data = await UseIndustriesSrt();
 		set_data(data);
 	}
 	async function get_Technologies_Data(){
-		let data = await useTechnologiesSrt();
+		let data = await UseTechnologiesSrt();
 		set_data(data);
 	}
 

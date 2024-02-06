@@ -9,12 +9,12 @@ import { Section } from '../components/ui/Category/Card_section.js';
 import { Supplier_Section } from '../components/ui/Supplier/Card_section.js';
 import { Product_Section } from '../components/ui/Product/Card_Section.js';
 // hooks
-import { useTechnologiesSrt } from '../hooks/technology/useTechnologiesSrt.js';
-import { useIndustriesSrt } from '../hooks/industries/useIndustriesSrt.js';
-import { useDistributorSrt } from '../hooks/distributor/useDistributorSrt.js';
-import { useManufacturerSrt } from '../hooks/manufacturer/useManufacturerSrt.js';
-import { useProductsSrt } from '../hooks/product/useProductSrt.js';
-import useShuffle from '../hooks/lib/useShuffle.js';
+import { UseTechnologiesSrt } from '../hooks/technology/useTechnologiesSrt.js';
+import { UseIndustriesSrt } from '../hooks/industries/useIndustriesSrt.js';
+import { UseDistributorSrt } from '../hooks/distributor/useDistributorSrt.js';
+import { UseManufacturerSrt } from '../hooks/manufacturer/useManufacturerSrt.js';
+import { UseProductsSrt } from '../hooks/product/useProductSrt.js';
+import UseShuffle from '../hooks/lib/useShuffle.js';
 
 function Home(){
 	const [products_data,set_products_data]=useState([]);
@@ -34,25 +34,25 @@ function Home(){
 		set_isloading(false)
 	},[])
 	async function get_Products_Data(){
-		let data = await useProductsSrt();
+		let data = await UseProductsSrt();
 		set_products_data(data)
 	}
 	async function get_Industries_Data(){
-		let data = await useIndustriesSrt();
+		let data = await UseIndustriesSrt();
 		set_industries_data(data)
 	}
 	async function get_Technologies_Data(){
-		let data = await useTechnologiesSrt();
+		let data = await UseTechnologiesSrt();
 		set_technologies_data(data)
 	}
 	async function get_Distributors_Data(){
-		let data = await useDistributorSrt();
-		const shuffled_data = useShuffle(data.filter((item)=> item?.subscription));
+		let data = await UseDistributorSrt();
+		const shuffled_data = UseShuffle(data.filter((item)=> item?.subscription));
 		set_distributors_data(shuffled_data)
 	}
 	async function get_Manufacturers_Data(){
-		let data = await useManufacturerSrt();
-		const shuffled_data = useShuffle(data.filter((item)=> item?.subscription));
+		let data = await UseManufacturerSrt();
+		const shuffled_data = UseShuffle(data.filter((item)=> item?.subscription));
 		set_manufacturers_data(shuffled_data)
 		set_isloading(false)
 	}

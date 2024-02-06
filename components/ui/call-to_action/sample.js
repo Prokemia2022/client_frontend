@@ -2,8 +2,8 @@ import { Drawer, DrawerBody, DrawerFooter, DrawerHeader, DrawerOverlay, DrawerCo
 } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
 import { useUserContext } from '../../Providers/userContext';
-import { useTechnologiesSrt } from '../../../hooks/technology/useTechnologiesSrt';
-import { useIndustriesSrt } from '../../../hooks/industries/useIndustriesSrt';
+import { UseTechnologiesSrt } from '../../../hooks/technology/useTechnologiesSrt';
+import { UseIndustriesSrt } from '../../../hooks/industries/useIndustriesSrt';
 import NewSample from '../../../pages/api/call_to_action/sample.api';
 
 const Make_A_Sample=({prod_data,view_drawer_disclosure})=>{
@@ -32,12 +32,12 @@ const Make_A_Sample=({prod_data,view_drawer_disclosure})=>{
     },[industry])
 
 	async function get_Industries_Data(){
-		let data = await useIndustriesSrt();
+		let data = await UseIndustriesSrt();
 		set_industries_data(data)
 	}
 
 	async function get_Technologies_Data(){
-		let data = await useTechnologiesSrt();
+		let data = await UseTechnologiesSrt();
 		set_technologies_data(data)
 	}
 
@@ -116,7 +116,7 @@ const Make_A_Sample=({prod_data,view_drawer_disclosure})=>{
             </DrawerHeader>
             <DrawerBody mt='10px' p='4'>
                 <HStack borderRadius={10} bg='#eee' p='2' my='2'>
-                    <Image src='../Pro.png' boxSize={'50'} />
+                    <Image src='../Pro.png' boxSize={'50'} alt='image'/>
                     <Text>{prod_data?.name_of_product}</Text>
                 </HStack>
                 <Divider />

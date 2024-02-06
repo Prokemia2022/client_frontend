@@ -16,7 +16,7 @@ export const Supplier_Section = (props) =>{
             >
                 {data?.map((item)=>{
                 return(
-                        <Image boxSize={'full'} src={item?.profile_photo_url || "../Pro.png"} key={item?.id} objectFit={'contain'} border={'2px dotted #eee'} p='2' _hover={{boxShadow:'lg'}} onClick={(()=>{router.push(`/supplier?id=${item?._id}&supplier=${item?.account_type}`)})}/>
+                        <Image boxSize={'full'} src={item?.profile_photo_url || "../Pro.png"} alt='image' key={item?.id} objectFit={'contain'} border={'2px dotted #eee'} p='2' _hover={{boxShadow:'lg'}} onClick={(()=>{router.push(`/supplier?id=${item?._id}&supplier=${item?.account_type}`)})}/>
                     )
                 })}
             </Grid>

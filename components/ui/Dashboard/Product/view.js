@@ -12,7 +12,7 @@ import { MdDelete } from "react-icons/md";
 import { Share_Item } from "../../share.ui";
 import DeleteProduct from "../delete_product.ui";
 // providers
-import { usedashboardContext } from "../../../Providers/dashboardContext";
+import { UsedashboardContext } from "../../../Providers/dashboardContext";
 import { useUserContext } from "../../../Providers/userContext";
 //utils
 import moment from "moment";
@@ -24,7 +24,7 @@ import { Feature_Product, Un_Feature_Product } from "../../../../pages/api/produ
 import { useRouter } from "next/router";
 
 export const ViewProduct=()=>{
-    const {set_page,product_page_data,set_product_page_data} = usedashboardContext();
+    const {set_page,product_page_data,set_product_page_data} = UsedashboardContext();
     const {user,set_user_handler } = useUserContext();
     const delete_product_disclosure = useDisclosure();
     const toast = useToast();
@@ -216,7 +216,7 @@ export const ViewProduct=()=>{
                         : 
                             <Center boxShadow={'sm'} display={'flex'} flexDirection={'column'} py='10' h='full' borderRadius='md'>
                                 <Icon as={SiGoogleanalytics} boxSize={10} color={'gray.200'}/>
-                                {user?.subscription? null : <Text fontSize={'xs'} color={'gray.400'} textAlign={'center'}>you need to upgrade to see<br/> your product's analytics</Text>}
+                                {user?.subscription? null : <Text fontSize={'xs'} color={'gray.400'} textAlign={'center'}>you need to upgrade to see<br/> your products analytics</Text>}
                             </Center>
                         }
                         <Text fontWeight='bold'>Documents</Text>

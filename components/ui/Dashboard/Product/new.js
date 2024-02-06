@@ -7,13 +7,13 @@ import { MdPersonSearch } from "react-icons/md";
 import { FaInfoCircle } from "react-icons/fa";
 import { IoClose } from "react-icons/io5";
 // components
-import { usedashboardContext } from "../../../Providers/dashboardContext";
+import { UsedashboardContext } from "../../../Providers/dashboardContext";
 import { Upload_documents } from "./documents";
 // hooks
-import { useIndustriesSrt } from "../../../../hooks/industries/useIndustriesSrt";
-import { useTechnologiesSrt } from "../../../../hooks/technology/useTechnologiesSrt";
-import { useDistributorSrt } from "../../../../hooks/distributor/useDistributorSrt";
-import { useManufacturerSrt } from "../../../../hooks/manufacturer/useManufacturerSrt";
+import { UseIndustriesSrt } from "../../../../hooks/industries/useIndustriesSrt";
+import { UseTechnologiesSrt } from "../../../../hooks/technology/useTechnologiesSrt";
+import { UseDistributorSrt } from "../../../../hooks/distributor/useDistributorSrt";
+import { UseManufacturerSrt } from "../../../../hooks/manufacturer/useManufacturerSrt";
 //api 
 import { Add_Product } from "../../../../pages/api/product/route.api";
 
@@ -30,7 +30,7 @@ export const New_Product=()=>{
 
 const Body=()=>{
     const toast = useToast();
-    const {set_page} = usedashboardContext();
+    const {set_page} = UsedashboardContext();
     const {user} = useUserContext();
     const distributor_action = useDisclosure();
     const manufactuer_action = useDisclosure();
@@ -107,7 +107,7 @@ const Body=()=>{
             set_manufactured_by(user?.company_name);
             set_manufactured_by_id(user?.id);
         }
-    })
+    },[user.account_type, user.company_name, user._id, user.id])
     useEffect(()=>{
         get_Distributors_Data()
     },[distributed_by])
@@ -122,22 +122,22 @@ const Body=()=>{
     },[industry])
 
 	async function get_Industries_Data(){
-		let data = await useIndustriesSrt();
+		let data = await UseIndustriesSrt();
 		set_industries_data(data)
 	}
 
 	async function get_Technologies_Data(){
-		let data = await useTechnologiesSrt();
+		let data = await UseTechnologiesSrt();
 		set_technologies_data(data)
 	}
 
 	async function get_Distributors_Data(){
-		let data = await useDistributorSrt();
+		let data = await UseDistributorSrt();
 		set_distributors_data(data)
 	}
 
 	async function get_Manufacturers_Data(){
-		let data = await useManufacturerSrt();
+		let data = await UseManufacturerSrt();
 		set_manufacturers_data(data)
 	}
     const handle_add_new_product=async()=>{
@@ -397,7 +397,7 @@ const Body=()=>{
                         <FormControl mt='2'>
                             <FormLabel>Website link</FormLabel>
                             <InputGroup size='sm'>
-                                <InputLeftAddon children='https://' />
+                                <InputLeftAddon/>
                                 <Input type='url' value={website_link} placeholder='mysite' onChange={((e)=>{set_website_link(e.target.value)})}/>
                             </InputGroup>
                         </FormControl>

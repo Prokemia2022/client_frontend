@@ -24,7 +24,7 @@ export default function Index(){
             router.back('/');
             return ;
         }
-    },[page]);
+    },[page,signed_in]);
     return(
         <dashboardContext.Provider value={{active_page,page,set_page,navigation,sales_data,set_sales_data}}>
 			<Body>

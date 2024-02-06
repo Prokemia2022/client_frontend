@@ -1,22 +1,22 @@
 import { Box, Breadcrumb, BreadcrumbItem, BreadcrumbLink, Button, Flex, HStack, Heading, Icon, Input, InputGroup, InputLeftElement, InputRightElement, Spinner, Tag, TagLabel, Text, Wrap } from "@chakra-ui/react"
 import { IoIosAdd } from "react-icons/io";
-import { usedashboardContext } from "../../Providers/dashboardContext";
+import { UsedashboardContext } from "../../Providers/dashboardContext";
 import { IoSearch } from "react-icons/io5";
 import { IoClose } from "react-icons/io5";
 import { useEffect, useState } from "react";
 import { AiOutlineClear } from "react-icons/ai";
 import { useProductsByLister } from "../../../hooks/product/useProductByLister.hook";
 import { useUserContext } from "../../Providers/userContext";
-import { useDebounceValue } from "../../../hooks/lib/useDebounce.hook";
+import { UseDebounceValue } from "../../../hooks/lib/useDebounce.hook";
 import { Product_Table } from "./supplier_product_table.ui";
 
 export const Inventory=()=>{
-    const {set_page,refetch_products} = usedashboardContext();
+    const {set_page,refetch_products} = UsedashboardContext();
     const {user} = useUserContext()
     const [search_query,set_search_query] = useState('');
     const [is_fetching, set_is_fetching]=useState(false);
     const [products, set_products]=useState([]);
-    const debounce_search_value = useDebounceValue(search_query);
+    const debounce_search_value = UseDebounceValue(search_query);
 
     useEffect(()=>{
         Fetch_Data()

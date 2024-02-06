@@ -4,13 +4,12 @@ import { IoSearch } from "react-icons/io5";
 import { IoClose } from "react-icons/io5";
 import { useEffect, useState } from "react";
 import { AiOutlineClear } from "react-icons/ai";
-import { usedashboardContext } from "../../../components/Providers/dashboardContext";
+import { UsedashboardContext } from "../../../components/Providers/dashboardContext";
 import { useUserContext } from "../../../components/Providers/userContext";
-import {useDebounceValue} from '../../../hooks/lib/useDebounce.hook'
 import { Sales_Table } from "./components/ui/sales_table";
 
 export const Sales=()=>{
-    const {set_page} = usedashboardContext();
+    const {set_page} = UsedashboardContext();
     const HandleAddSales=()=>{
         set_page('New_Sales');
     }

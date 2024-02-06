@@ -28,7 +28,7 @@ export default function Index(){
             router.back('/');
             return ;
         }
-    },[page]);
+    },[page,signed_in]);
     return(
         <dashboardContext.Provider value={{active_page,page,set_page,navigation,product_page_data,set_product_page_data,refetch_products,set_refetch_products}}>
 			<Body>

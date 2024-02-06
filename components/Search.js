@@ -2,12 +2,12 @@ import { useState,useEffect} from 'react';
 import { useRouter } from 'next/router';
 import { Flex,Text,Image, Spinner } from '@chakra-ui/react';
 // hooks
-import { useDebounceValue } from '../hooks/lib/useDebounce.hook.js';
-import { useProductsSearch } from '../hooks/product/useProductSearch.hook.js';
-import { useIndustriesSrt } from '../hooks/industries/useIndustriesSrt.js';
-import { useTechnologiesSrt } from '../hooks/technology/useTechnologiesSrt.js';
-import { useDistributorSrt } from '../hooks/distributor/useDistributorSrt.js';
-import { useManufacturerSrt } from '../hooks/manufacturer/useManufacturerSrt.js';
+import { UseDebounceValue } from '../hooks/lib/useDebounce.hook.js';
+import { UseProductsSearch } from '../hooks/product/useProductSearch.hook.js';
+import { UseIndustriesSrt } from '../hooks/industries/useIndustriesSrt.js';
+import { UseTechnologiesSrt } from '../hooks/technology/useTechnologiesSrt.js';
+import { UseDistributorSrt } from '../hooks/distributor/useDistributorSrt.js';
+import { UseManufacturerSrt } from '../hooks/manufacturer/useManufacturerSrt.js';
 // components
 import { Product_Card } from './ui/Product/Item_Card.js';
 import { Item_accordion } from './ui/header_navigation/accordion.js';
@@ -22,7 +22,7 @@ export default function Search({setsearchbaractive,query_search,setquery_search}
 	const [distributors_data,set_distributors_data]=useState([]);
 	const [manufacturers_data,set_manufacturers_data]=useState([]);
 	const [isfetching, set_isfetching]=useState(null);
-	const debounce_search_value = useDebounceValue(query_search.trimStart());
+	const debounce_search_value = UseDebounceValue(query_search.trimStart());
 
 	useEffect(()=>{
 		set_isfetching(true);
@@ -44,26 +44,26 @@ export default function Search({setsearchbaractive,query_search,setquery_search}
 
 	async function get_Products_Data(){
 		const query_params = { query : debounce_search_value };
-		let data = await useProductsSearch(query_params);
+		let data = await UseProductsSearch(query_params);
 		set_products_data(data);
 	}
 	async function get_Industries_Data(){
-		let data = await useIndustriesSrt();
+		let data = await UseIndustriesSrt();
 		const filtered_result = data?.filter(item => item.title?.toLowerCase().includes(debounce_search_value.toLowerCase()));
 		set_industries_data(filtered_result);
 	}
 	async function get_Technologies_Data(){
-		let data = await useTechnologiesSrt();
+		let data = await UseTechnologiesSrt();
 		const filtered_result = data?.filter(item => item.title?.toLowerCase().includes(debounce_search_value.toLowerCase()));
 		set_technologies_data(filtered_result);
 	}
 	async function get_Distributors_Data(){
-		let data = await useDistributorSrt();
+		let data = await UseDistributorSrt();
 		const result = data.filter(item => item.company_name?.toLowerCase().includes(debounce_search_value.toLowerCase()));
 		set_distributors_data(result);
 	}
 	async function get_Manufacturers_Data(){
-		let data = await useManufacturerSrt();
+		let data = await UseManufacturerSrt();
 		const result = data.filter(item => item.company_name?.toLowerCase().includes(debounce_search_value.toLowerCase()));
 		set_manufacturers_data(result);
 	}

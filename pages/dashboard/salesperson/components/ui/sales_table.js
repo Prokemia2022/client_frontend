@@ -1,11 +1,11 @@
 import { Badge, Box, Center, Flex, Icon, IconButton, Input, InputGroup, InputLeftElement, InputRightElement, Spinner, Table, TableContainer, Tag, TagLabel, Tbody, Td, Text, Th, Thead, Tooltip, Tr, Wrap, useDisclosure } from "@chakra-ui/react"
 import { useEffect,  useState } from "react";
 import { FaFolderOpen } from "react-icons/fa";
-import { usedashboardContext } from "../../../../../components/Providers/dashboardContext";
+import { UsedashboardContext } from "../../../../../components/Providers/dashboardContext";
 import { useUserContext } from "../../../../../components/Providers/userContext";
 import { GoDotFill } from "react-icons/go";
 import { AiOutlineClear } from "react-icons/ai";
-import { useDebounceValue } from "../../../../../hooks/lib/useDebounce.hook";
+import { UseDebounceValue } from "../../../../../hooks/lib/useDebounce.hook";
 import { IoClose, IoSearch } from "react-icons/io5";
 import { TbExternalLink } from "react-icons/tb";
 import { Get_Sales_By_Creator } from "../../../../api/clients/salesperson/route.api";
@@ -16,7 +16,7 @@ export const Sales_Table=()=>{
     const [publish_sort,set_publish_sort]=useState(null);
     const [search_query,set_search_query] = useState('');
     const [is_fetching, set_is_fetching]=useState(false);
-    const debounce_search_value = useDebounceValue(search_query);
+    const debounce_search_value = UseDebounceValue(search_query);
 
     const Clear_Filter_Options=()=>{
 		set_search_query('');
@@ -123,7 +123,7 @@ export const Sales_Table=()=>{
 
 const Sale_Card=(props)=>{
     const { item} = {...props};
-    const {set_page,set_sales_data} = usedashboardContext();
+    const {set_page,set_sales_data} = UsedashboardContext();
     const delete_sale_disclosure = useDisclosure();
 
     const HandleViewSale=()=>{

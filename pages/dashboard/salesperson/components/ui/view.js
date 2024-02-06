@@ -1,7 +1,7 @@
 import React from "react";
 import { Text,  Box,  Breadcrumb, BreadcrumbItem, BreadcrumbLink, Badge, Menu, MenuButton, MenuList, MenuItem, Button, HStack, Tag, TagLabel, TagCloseButton, Grid, Flex, Wrap, GridItem, Heading, VStack, Divider, useToast, Link, Tooltip, Avatar, Popover, Portal, PopoverTrigger, PopoverContent, PopoverHeader, PopoverArrow, PopoverCloseButton, PopoverBody, Drawer, DrawerOverlay, DrawerContent, DrawerCloseButton, DrawerHeader, DrawerBody, DrawerFooter, useDisclosure, AlertDialog, AlertDialogOverlay, AlertDialogContent, AlertDialogHeader, AlertDialogBody, AlertDialogFooter, Icon, AbsoluteCenter } from '@chakra-ui/react';
 //utils
-import { usedashboardContext } from "../../../../../components/Providers/dashboardContext.js";
+import { UsedashboardContext } from "../../../../../components/Providers/dashboardContext.js";
 import { IoIosArrowDown, IoMdCloudDownload } from "react-icons/io";
 import { BiEdit } from "react-icons/bi";
 import { MdDeleteOutline, MdEmail } from "react-icons/md";
@@ -15,7 +15,7 @@ import { Create_Invoice_PDF } from "../../../../../hooks/sales.hook.js";
 
 const ViewSale=()=>{
     const delete_sale_disclosure = useDisclosure();
-    const {set_page,sales_data}= usedashboardContext();
+    const {set_page,sales_data}= UsedashboardContext();
     const vat_total = sales_data?.total*0.16;
     const total = vat_total+sales_data?.total;
 

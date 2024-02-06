@@ -3,7 +3,7 @@ import {ref,uploadBytes,getDownloadURL} from 'firebase/storage';
 import { v4 } from "uuid";
 import Cookies from 'universal-cookie';
 
-const useFileUpload=async(data)=>{
+const UseFileUpload=async(data)=>{
     /**handles uploads profile image functions to firebase storage**/
     const cookies = new Cookies();
     const documentRef = ref(storage, `${data?.file_type}/${data?.file?.name + v4()}`);
@@ -13,4 +13,4 @@ const useFileUpload=async(data)=>{
     return file_url;
 }
 
-export default useFileUpload;
+export default UseFileUpload;

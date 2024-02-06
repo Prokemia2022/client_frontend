@@ -12,9 +12,8 @@ function About(){
 					<Heading as='h1'>ABOUT US</Heading>
 					<Text my='4'>
 						Welcome to our dynamic online marketplace, where we seamlessly bridge the gap <br/>between sellers and consumers across East, Central, and Southern Africa. At the heart<br/> of our platform is a commitment to empowering businesses by providing a robust<br/> space for sellers to showcase and market their products. Our user-friendly interface<br/> ensures a hassle-free experience for sellers to list their offerings, reaching a diverse <br/>and expansive customer base.<br/><br/>
-						For consumers, we offer an unparalleled opportunity to explore a vast array<br/> of products while effortlessly connecting with trusted suppliers in the region. Whether<br/> you're searching for unique handmade crafts, cutting-edge technology, or everyday <br/>essentials, our marketplace is a one-stop destination for all your needs. Our <br/>commitment to fostering meaningful connections between buyers and sellers sets us <br/>apart, creating a thriving community where commerce meets convenience.<br/><br/>
+						For consumers, we offer an unparalleled opportunity to explore a vast array<br/> of products while effortlessly connecting with trusted suppliers in the region. Whether<br/> you are searching for unique handmade crafts, cutting-edge technology, or everyday <br/>essentials, our marketplace is a one-stop destination for all your needs. Our <br/>commitment to fostering meaningful connections between buyers and sellers sets us <br/>apart, creating a thriving community where commerce meets convenience.<br/><br/>
 						Discover the ease of navigating through a marketplace that transcends geographical <br/>boundaries, creating a vibrant ecosystem for economic growth. Join us in reshaping<br/> the way business is done in East, Central, and Southern Africa – where opportunities <br/>abound, and connections flourish.
-						
 					</Text>
 				</Box>
 			</Flex>

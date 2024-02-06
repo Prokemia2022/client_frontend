@@ -1,7 +1,7 @@
 import { Get_Industries_Srt } from "../../pages/api/industries/route.api";
 
 
-export const useIndustriesSrt = async()=>{
+export const UseIndustriesSrt = async()=>{
     let result = await Get_Industries_Srt().then((response)=>{
         return response?.data;
     }).catch((err)=>{

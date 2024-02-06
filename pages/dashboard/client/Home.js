@@ -17,7 +17,7 @@ export const Home=()=>{
                         <Button bg='#343838' color='white' onClick={(()=>{consultation_drawer_form.onToggle()})}>Go now</Button>
                         <Consultancy_Form label='Talk to qualified experts' consultation_drawer_form={consultation_drawer_form}/>
                     </Box>
-                    <Image src='../../dashboard_image.jpg' boxSize='200' display={{sm:'block',md:'none',lg:'block'}}/>
+                    <Image src='../../dashboard_image.jpg' alt='bannerimage' boxSize='200' display={{sm:'block',md:'none',lg:'block'}}/>
                 </Flex>
                 <Carousel w='300px' h='250px' boxShadow={'md'}/>
             </Flex>
