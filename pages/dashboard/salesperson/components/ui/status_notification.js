@@ -1,9 +1,9 @@
 import { Alert, AlertDescription, AlertIcon, AlertTitle, Badge, Box, Collapse, Text, useDisclosure } from "@chakra-ui/react"
 import Script from "next/script";
-import { usedashboardContext } from "../../../../../components/Providers/dashboardContext";
+import { UsedashboardContext } from "../../../../../components/Providers/dashboardContext";
 
 export const Notification=()=>{
-    const {sales_data} = usedashboardContext()
+    const {sales_data} = UsedashboardContext()
     if (sales_data?.order_status === 'rejected'){
         return (
             <Alert_Card status={'error'} Title={'Your sale has been rejected!'} Description={'contact our support at help@prokemia.com for any assistance.'}/>
