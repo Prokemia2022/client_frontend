@@ -1,7 +1,7 @@
-export const useStoreLocalStorage=async(key, data)=>{
+export const UseStoreLocalStorage=async(key, data)=>{
     const saved_products = [];
     console.log(key,data)
-    const fetched_data = await useGetLocalStorage(key);
+    const fetched_data = await UseGetLocalStorage(key);
     console.log(fetched_data)
     if (!fetched_data || fetched_data?.length === 0){
         saved_products.push(data)
@@ -23,14 +23,14 @@ export const useStoreLocalStorage=async(key, data)=>{
     }
 }
 
-export const useGetLocalStorage=async(key)=>{
+export const UseGetLocalStorage=async(key)=>{
     let data = localStorage.getItem(key);
     return JSON.parse(data)
 }
 
-export const useRemoveItemLocalStorage=async(key,data)=>{
+export const UseRemoveItemLocalStorage=async(key,data)=>{
     console.log(key,data)
-    const fetched_data = await useGetLocalStorage(key);
+    const fetched_data = await UseGetLocalStorage(key);
     console.log(fetched_data)
     if (!fetched_data){
         throw new Error('You dont have any data stored')
@@ -47,6 +47,6 @@ export const useRemoveItemLocalStorage=async(key,data)=>{
     }
 }
 
-export const useClearLocalStorage=async(key)=>{
+export const UseClearLocalStorage=async(key)=>{
     localStorage.removeItem(key);
 }

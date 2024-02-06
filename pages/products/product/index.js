@@ -18,7 +18,7 @@ import Make_A_Sample from "../../../components/ui/call-to_action/sample.js";
 import { Share_Item } from "../../../components/ui/share.ui";
 //providers
 import { useUserContext } from '../../../components/Providers/userContext.js'
-import { useGetLocalStorage, useStoreLocalStorage } from "../../../hooks/useLocalStorage.hook.js";
+import { UseGetLocalStorage, UseStoreLocalStorage } from "../../../hooks/useLocalStorage.hook.js";
 
 export default function Product(){
     const { user } = useUserContext();
@@ -83,20 +83,13 @@ export default function Product(){
             listed_by_id:   product_data?.listed_by_id,
             supplier_link
         }
-        const examplePromise = new Promise((resolve, reject) => {
-            useStoreLocalStorage('products',data).then((res)=>{
-                resolve();
-            }).catch((err)=>{
-                reject(err)
-            }).finally(()=>{
-                set_saving_liked_prod(false)
-            })
+        UseStoreLocalStorage('products',data).then((res)=>{
+            toast({ title: 'Product added to your library', description: '',position:'top-left',variant:'left-accent'})
+        }).catch((err)=>{
+            toast({ title: 'Something went wrong', description: 'Could not add this product to your library, seems it already exists',position:'top-left',variant:'left-accent' })
+        }).finally(()=>{
+            set_saving_liked_prod(false)
         })
-        toast.promise(examplePromise, {
-            success: { title: 'Product added to your library', description: '',position:'top-left',variant:'left-accent'},
-            error: { title: 'Something went wrong', description: 'Could not add this product to your library, seems it already exists',position:'top-left',variant:'left-accent' },
-            loading: { title: 'Adding product to your library', description: 'Please wait',position:'top-left',variant:'left-accent' },
-          })
     }
     
 	useEffect(()=>{
@@ -108,7 +101,7 @@ export default function Product(){
 	},[id,saving_liked_prod,is_prod_liked]);
 
     const Handle_Check_Liked_Prod=async()=>{
-        const data= await useGetLocalStorage('products');
+        const data= await UseGetLocalStorage('products');
         set_is_prod_liked(data?.some(item => item?._id === product_data?._id))
     }
     const documents = [

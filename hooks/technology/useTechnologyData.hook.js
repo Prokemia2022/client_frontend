@@ -1,6 +1,6 @@
 import { Get_Technology_data } from "../../pages/api/technologies/route.api";
 
-export const useTechnologyData= async(title)=>{
+export const UseTechnologyData= async(title)=>{
     let result = await Get_Technology_data(title).then((response)=>{
         return response?.data;
     }).catch((err)=>{

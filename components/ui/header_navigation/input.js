@@ -27,7 +27,7 @@ export const Search_Input = ()=>{
         <>
             <InputGroup flex='1' borderRadius={'full'} ml={{md:'0',base:'2'}} position={'relative'}>
                 <Input type='text' onChange={handleInput} value={query} bg='#e1e6e6' variant='outline' borderRadius={'full'} placeholder='Search products,suppliers,industries, technologies' outline={'none'}/>
-                <InputRightElement cursor={'pointer'} onClick={clearInput} bg='#343838' color='#fff' borderLeft='1px solid #eee' borderRadius={'full'} mt='1' mx='2' boxSize={8} children={icon} />
+                <InputRightElement cursor={'pointer'} onClick={clearInput} bg='#343838' color='#fff' borderLeft='1px solid #eee' borderRadius={'full'} mt='1' mx='2' boxSize={8}>{icon}</InputRightElement>
             </InputGroup>
             {show_drawer ? ( <Search setsearchbaractive={set_show_drawer} query_search={query} setquery_search={set_query} /> ) : null}			
         </>

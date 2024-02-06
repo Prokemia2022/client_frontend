@@ -11,7 +11,7 @@ import { UseDistributorSrt } from '../../hooks/distributor/useDistributorSrt.js'
 import { UseManufacturerSrt } from '../../hooks/manufacturer/useManufacturerSrt.js';
 import UseShuffle from '../../hooks/lib/useShuffle.js';
 import { UseIndustryData } from '../../hooks/industries/useIndustryData.hook.js';
-import { useTechnologyData } from '../../hooks/technology/useTechnologyData.hook.js';
+import { UseTechnologyData } from '../../hooks/technology/useTechnologyData.hook.js';
 import { UseProductsSearch } from '../../hooks/product/useProductSearch.hook.js';
 
 export default function Products(){
@@ -42,7 +42,7 @@ export default function Products(){
 		get_Products_Data(data)
 	}
 	async function get_Technology_data(){
-		let data = await useTechnologyData(category_title);
+		let data = await UseTechnologyData(category_title);
 		set_data(data)
 		get_Products_Data(data)
 	}

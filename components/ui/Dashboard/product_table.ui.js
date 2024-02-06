@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { FaFolderOpen, FaStore } from "react-icons/fa";
 import { Share_Item } from "../share.ui";
-import { useGetLocalStorage, useRemoveItemLocalStorage } from "../../../hooks/useLocalStorage.hook";
+import { UseGetLocalStorage, UseRemoveItemLocalStorage } from "../../../hooks/useLocalStorage.hook";
 import { RiExternalLinkLine } from "react-icons/ri";
 import { MdDeleteOutline } from "react-icons/md";
 
@@ -14,7 +14,7 @@ export const Product_Table=()=>{
         fetchdata()
     },[])
     async function fetchdata(){
-        const data= await useGetLocalStorage('products');
+        const data= await UseGetLocalStorage('products');
         set_data(data)
     }
     return(
@@ -58,18 +58,23 @@ const Product_Card=(props)=>{
         const data={
             _id: item?._id
         }
-        const examplePromise = new Promise((resolve, reject) => {
-            useRemoveItemLocalStorage('products', data).then((res)=>{
-                resolve()
-            }).catch((err)=>{
-                reject(err)
-            })
+        UseRemoveItemLocalStorage('products', data).then((res)=>{
+            toast({ title: 'Product removed from library', description: '',position:'top-left',variant:'left-accent'})
+        }).catch((err)=>{
+            toast({ title: 'Something went wrong', description: 'Could not remove this product',position:'top-left',variant:'left-accent' })
         })
-        toast.promise(examplePromise, {
-            success: { title: 'Product removed from library', description: '',position:'top-left',variant:'left-accent'},
-            error: { title: 'Something went wrong', description: 'Could not remove this product',position:'top-left',variant:'left-accent' },
-            loading: { title: 'Removing product from your library', description: 'Please wait',position:'top-left',variant:'left-accent' },
-        })
+        // const examplePromise = new Promise((resolve, reject) => {
+        //     UseRemoveItemLocalStorage('products', data).then((res)=>{
+        //         resolve()
+        //     }).catch((err)=>{
+        //         reject(err)
+        //     })
+        // })
+        // toast.promise(examplePromise, {
+        //     success: { title: 'Product removed from library', description: '',position:'top-left',variant:'left-accent'},
+        //     error: { title: 'Something went wrong', description: 'Could not remove this product',position:'top-left',variant:'left-accent' },
+        //     loading: { title: 'Removing product from your library', description: 'Please wait',position:'top-left',variant:'left-accent' },
+        // })
         router.reload()
     }
     return(
