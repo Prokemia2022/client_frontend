@@ -29,7 +29,9 @@ export default function Content(){
         return( <Edit_Product_Details/> ) 
     }else if (active_page == 'AddProduct'){ 
         return( <New_Product/> ) 
+    }else if (active_page == null){
+        return( <Home />)
     }else{
-        return( <Home/>)
+        return( <Home />)
     }
 }

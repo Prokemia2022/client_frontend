@@ -4,7 +4,7 @@ import { useUserContext} from '../../../../../components/Providers/userContext';
 import { UsedashboardContext } from '../../../../../components/Providers/dashboardContext';
 import {Delete_Sale} from '../../../../api/clients/salesperson/route.api';
 
-export default function DeleteSale({delete_sale_disclosure}) {
+export default function DeleteSale(delete_sale_disclosure) {
     const toast = useToast();
     const { isOpen, onOpen, onClose } = delete_sale_disclosure;
     const {set_page,sales_data} = UsedashboardContext();

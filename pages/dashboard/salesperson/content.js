@@ -20,6 +20,8 @@ export default function Content(){
         return( <Edit_Sale /> ) 
     }else if (active_page == 'Settings'){ 
         return( <Settings /> ) 
+    }else if (active_page == null){
+        return( <Home />)
     }else{
         return( <Home />)
     }

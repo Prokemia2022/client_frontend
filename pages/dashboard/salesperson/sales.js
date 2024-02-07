@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 import { AiOutlineClear } from "react-icons/ai";
 import { UsedashboardContext } from "../../../components/Providers/dashboardContext";
 import { useUserContext } from "../../../components/Providers/userContext";
-import { Sales_Table } from "./components/ui/sales_table";
+import Sales_Table from "./components/ui/sales_table";
 
 export default function Sales(){
     const {set_page} = UsedashboardContext();
