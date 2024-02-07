@@ -10,7 +10,7 @@ import { RiAccountCircleLine, RiUserLocationLine } from "react-icons/ri";
 import moment from "moment";
 import { FaPhone } from "react-icons/fa";
 import DeleteSale from "./delete_sale.ui.js";
-import { Notification } from "./status_notification.js";
+import Notification from "./status_notification.js";
 import { Create_Invoice_PDF } from "../../../../../hooks/sales.hook.js";
 
 const ViewSale=()=>{

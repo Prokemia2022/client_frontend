@@ -8,7 +8,7 @@ import { UsedashboardContext } from "../../../components/Providers/dashboardCont
 import { useUserContext } from "../../../components/Providers/userContext";
 import { Sales_Table } from "./components/ui/sales_table";
 
-export const Sales=()=>{
+export default function Sales(){
     const {set_page} = UsedashboardContext();
     const HandleAddSales=()=>{
         set_page('New_Sales');

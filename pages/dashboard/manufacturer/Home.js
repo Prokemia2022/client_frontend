@@ -1,11 +1,11 @@
 import { Box, Button, Flex, Grid, GridItem, Image, Text, useDisclosure } from "@chakra-ui/react"
 import { Carousel } from "../../../components/ui/Dashboard/carousel.ui";
 import { useUserContext } from "../../../components/Providers/userContext";
-import { Account } from "./uicomponents/home/account";
-import { Analytics } from "./uicomponents/home/analytics";
+import Account from "./uicomponents/home/account";
+import Analytics from "./uicomponents/home/analytics";
 import Consultancy_Form from "../../../components/ui/Dashboard/consultationform.ui";
 
-export const Home=()=>{
+export default function Home(){
     const {user,set_user_handler } = useUserContext();
     const consultation_drawer_form = useDisclosure()
     return(

@@ -3,7 +3,7 @@ import { UsedashboardContext } from "../../../../../components/Providers/dashboa
 import { useState } from "react";
 import { Edit_Sale_Data } from "../../../../api/clients/salesperson/route.api";
 
-export const Edit_Sale=()=>{
+export default function Edit_Sale(){
     const {sales_data,set_page} = UsedashboardContext();
     const DiscardDialog = useDisclosure();
     const toast = useToast();

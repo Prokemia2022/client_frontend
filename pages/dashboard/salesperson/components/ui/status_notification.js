@@ -2,7 +2,7 @@ import { Alert, AlertDescription, AlertIcon, AlertTitle, Badge, Box, Collapse, T
 import Script from "next/script";
 import { UsedashboardContext } from "../../../../../components/Providers/dashboardContext";
 
-export const Notification=()=>{
+export default function Notification(){
     const {sales_data} = UsedashboardContext()
     if (sales_data?.order_status === 'rejected'){
         return (

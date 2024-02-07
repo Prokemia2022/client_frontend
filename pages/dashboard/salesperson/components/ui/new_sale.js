@@ -5,7 +5,7 @@ import { useUserContext } from "../../../../../components/Providers/userContext"
 import { UsedashboardContext } from "../../../../../components/Providers/dashboardContext";
 import Create_Sale from "../../../../api/clients/salesperson/route.api";
 
-export const New_Sale=()=>{
+export default function New_Sale(){
     const {user} = useUserContext();
     return(
         <Box p='2'>

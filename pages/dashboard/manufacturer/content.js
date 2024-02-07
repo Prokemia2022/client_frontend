@@ -1,15 +1,15 @@
 import { UsedashboardContext } from "../../../components/Providers/dashboardContext";
-import { Home } from "./Home";
+import Home from "./Home";
 import { Inventory } from "../../../components/ui/Dashboard/Inventory";
 import { ViewProduct } from "../../../components/ui/Dashboard/Product/view";
 import { New_Product } from "../../../components/ui/Dashboard/Product/new";
 import Expert_Body from "../../../components/ui/Dashboard/experts";
 import Distributors from "./distributors";
-import { Settings } from "./settings";
+import Settings from "./settings";
 import Pricing from "../../../components/ui/Dashboard/pricing";
 import Edit_Product_Details from "../../../components/ui/Dashboard/Product/edit";
 
-export const Content=()=>{
+export default function Content(){
     const {active_page} = UsedashboardContext();
     if (active_page == 'Home'){ 
         return ( <Home/> ) 

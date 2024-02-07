@@ -10,7 +10,7 @@ import { IoClose, IoSearch } from "react-icons/io5";
 import { TbExternalLink } from "react-icons/tb";
 import { Get_Sales_By_Creator } from "../../../../api/clients/salesperson/route.api";
 
-export const Sales_Table=()=>{
+export default function Sales_Table(){
     const {user} = useUserContext()
     const [data, set_data]=useState([]);
     const [publish_sort,set_publish_sort]=useState(null);

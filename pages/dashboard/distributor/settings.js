@@ -9,10 +9,10 @@ import { v4 } from "uuid";
 import { useRouter } from "next/router.js";
 import { useUserContext } from "../../../components/Providers/userContext.js";
 import DeleteUserAccount from "../../../components/ui/Dashboard/delete_account.ui.js";
-import { Manage } from "./manage/user.js";
+import Manage from "./manage/user.js";
 import { Edit_Distributor } from "../../api/supplier/distributor/route.api.js";
 
-export const Settings=()=>{
+export default function Settings(){
     const toast = useToast();
     const router = useRouter()
     const {user,set_user_handler } = useUserContext();

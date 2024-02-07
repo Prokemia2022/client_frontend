@@ -3,7 +3,7 @@ import { useState } from "react";
 import { useUserContext } from "../../../../components/Providers/userContext";
 import { Edit_Manufacturer } from "../../../api/supplier/manufacturer/route.api";
 
-export const Manage=({set_profile_edit})=>{
+export default function Manage({set_profile_edit}){
 	const {user, set_user_handler} = useUserContext();
     const toast = useToast();
 

@@ -5,7 +5,7 @@ import { FaFolderOpen } from "react-icons/fa";
 import { useUserContext } from "../../../components/Providers/userContext";
 import { FetchSamplesByRequester } from "../../api/call_to_action/sample.api";
 
-export const Samples=()=>{
+export default function Samples(){
     const [data, set_data]=useState([]);
     const {user} = useUserContext()
     useEffect(()=>{

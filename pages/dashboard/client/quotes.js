@@ -5,7 +5,7 @@ import { FaFolderOpen } from "react-icons/fa";
 import { useUserContext } from "../../../components/Providers/userContext";
 import { FetchQuotesByRequester } from "../../api/call_to_action/quote.api";
 
-export const Quotes=()=>{
+export default function Quotes(){
     const [data, set_data]=useState([]);
     const {user} = useUserContext()
     useEffect(()=>{

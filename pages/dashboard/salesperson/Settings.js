@@ -3,7 +3,7 @@ import { useState } from "react";
 import { IoClose } from "react-icons/io5";
 import { LiaUserEditSolid } from "react-icons/lia";
 import { FaUserLock } from "react-icons/fa";
-import { Manage } from "./manage/user.js";
+import Manage from "./manage/user.js";
 import { useUserContext } from "../../../components/Providers/userContext.js";
 import DeleteAccount from "../../../components/ui/Dashboard/delete_account.ui.js";
 import {storage} from '../../../lib/firebase.js';
@@ -13,7 +13,7 @@ import { useRouter } from "next/router.js";
 import { Edit_Salesperson } from "../../api/clients/salesperson/route.api.js";
 import { BsIncognito } from "react-icons/bs";
 
-export const Settings=()=>{
+export default function Settings(){
     const toast = useToast();
     const router = useRouter()
     const {user,set_user_handler } = useUserContext();

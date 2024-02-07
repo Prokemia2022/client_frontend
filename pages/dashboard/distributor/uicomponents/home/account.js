@@ -3,7 +3,7 @@ import { useUserContext } from "../../../../../components/Providers/userContext"
 import { MdCalendarMonth, MdEmail, MdLocalPhone, MdLocationPin, MdPerson } from "react-icons/md";
 import moment from "moment";
 
-export const Account=()=>{
+export default function Account(){
     const {user,set_user_handler } = useUserContext();
     return(
         <>

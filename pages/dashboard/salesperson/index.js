@@ -1,7 +1,7 @@
 import Body from "../../../components/ui/Dashboard/body.ui";
 import { dashboardContext } from "../../../components/Providers/dashboardContext";
 import { useEffect, useState } from "react";
-import { Content } from "./content";
+import Content from "./content";
 import { MdManageAccounts, MdSpaceDashboard } from "react-icons/md";
 import useFetchToken from "../../../hooks/useFetchToken.hook";
 import { useRouter } from "next/router";

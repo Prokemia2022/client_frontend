@@ -6,7 +6,7 @@ import { useState } from "react";
 import SuggestMarket from "../../../../../components/ui/Dashboard/suggestmarket";
 import { MdEmail, MdLocalPhone, MdBusinessCenter, MdFactory } from "react-icons/md";
 
-export const Analytics=()=>{
+export default function Analytics(){
     const {user,set_user_handler } = useUserContext();
     return(
         <>

@@ -1,10 +1,10 @@
 import { UsedashboardContext } from "../../../components/Providers/dashboardContext";
-import { Home } from "./Home"
-import { Settings } from "./Settings";
-import { Quotes } from "./quotes";
-import { Samples } from "./samples";
+import Home from "./Home"
+import Settings from "./Settings";
+import Quotes from "./quotes";
+import Samples from "./samples";
 
-export const Content=()=>{
+export default function Content(){
     const {active_page} = UsedashboardContext();
     if (active_page == 'Home'){ 
         return ( <Home /> ) 

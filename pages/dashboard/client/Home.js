@@ -4,7 +4,7 @@ import { useUserContext } from "../../../components/Providers/userContext";
 import { Product_Table } from "../../../components/ui/Dashboard/product_table.ui";
 import Consultancy_Form from "../../../components/ui/Dashboard/consultationform.ui";
 
-export const Home=()=>{
+export default function Home(){
     const {user,set_user_handler } = useUserContext();
     const consultation_drawer_form = useDisclosure()
     return(
