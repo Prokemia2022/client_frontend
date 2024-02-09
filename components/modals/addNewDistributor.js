@@ -1,29 +1,9 @@
-import {
-    Modal,
-    ModalOverlay,
-    ModalContent,
-    ModalHeader,
-    ModalBody,
-    ModalCloseButton,
-    useDisclosure,
-    Button,
-    Text,
-    Flex,
-    Center,
-    Textarea,
-    Input,
-    Select,
-    InputGroup,Heading,
-    Stack,
-    useToast,
-    FormControl,
-    FormLabel,
-  } from '@chakra-ui/react';
+import { Modal, ModalOverlay, ModalContent, ModalHeader, ModalBody, ModalCloseButton, useDisclosure, Button, Text, Flex, Center, Textarea, Input, Select, InputGroup,Heading, Stack, useToast, FormControl, FormLabel,} from '@chakra-ui/react';
 import { useEffect,useState } from 'react';
-import Add_New_Distributor from '../../pages/api/auth/manufacturer/add_new_distributor.js'
-import Get_Industries from '../../pages/api/control/get_industries';
+import { UseIndustriesSrt } from '../../hooks/industries/useIndustriesSrt';
+import { Add_New_Distributor } from '../../pages/api/supplier/manufacturer/route.api';
 
-function AddNewDistributorModal({isaddnewdistributorModalvisible,setisaddnewdistributorModalvisible,id,set_refresh_data}){
+function AddNewDistributorModal({isaddnewdistributorModalvisible,setisaddnewdistributorModalvisible,id}){
     const { isOpen, onOpen, onClose } = useDisclosure();
     const toast  =useToast();
 
@@ -40,20 +20,16 @@ function AddNewDistributorModal({isaddnewdistributorModalvisible,setisaddnewdist
     },[isaddnewdistributorModalvisible])
 
     //data
-	const [industries_data, set_industries_data]=useState([]);
-    
-  useEffect(()=>{
+    const [industries_data, set_industries_data]=useState([]);
+      
+    useEffect(()=>{
       get_Industries_Data()
     },[])
 
 
-    const get_Industries_Data=async()=>{
-      await Get_Industries().then((response)=>{
-        //console.log(response.data)
-        const data = response.data
-        const result = data.filter(v => v.verification_status)
-        set_industries_data(result)
-      })
+    async function get_Industries_Data(){
+      let data = await UseIndustriesSrt();
+      set_industries_data(data)
     }
 
     const [name,set_name]=useState('')
@@ -85,22 +61,11 @@ function AddNewDistributorModal({isaddnewdistributorModalvisible,setisaddnewdist
     const handle_add_new_distributor=async()=>{
       console.log(payload)
       await Add_New_Distributor(payload).then(()=>{
-          toast({
-            title: '',
-            description: `${name} has been added as a distributor.`,
-            status: 'success',
-            isClosable: true,
-          });
+          toast({title: '',description: `${name} has been added as a distributor.`,status: 'success',isClosable: true,variant:'left-accent',position:'top-left'});
         }).then(()=>{
-          set_refresh_data(`added ${name} as a distributor`)
           setisaddnewdistributorModalvisible(false)
         }).catch((err)=>{
-          toast({
-            title: '',
-            description: err.response.data,
-            status: 'error',
-            isClosable: true,
-          });
+          toast({ title: '', description: err?.response?.data, status: 'error', isClosable: true,variant:'left-accent',position:'top-left'});
         })
       onClose()
     }

@@ -1,26 +1,8 @@
-import {
-    Modal,
-    ModalOverlay,
-    ModalContent,
-    ModalHeader,
-    ModalBody,
-    ModalCloseButton,
-    useDisclosure,
-    Button,
-    Text,
-    Flex,
-    Center,
-    Textarea,
-    Input,
-    Select,
-    InputGroup,Heading,
-    Stack,
-    useToast,
-  } from '@chakra-ui/react';
+import { Modal, ModalOverlay, ModalContent, ModalHeader, ModalBody, ModalCloseButton, useDisclosure, Button, Text, Flex, Input, Stack, useToast } from '@chakra-ui/react';
 import { useEffect,useState } from 'react';
-import Add_New_Manufacturer from '../../pages/api/auth/distributor/add_new_manufacturer.js'
+import { Add_New_Manufacturer_Distributor } from '../../pages/api/supplier/distributor/route.api';
 
-function AddNewManufacturerModal({isaddnewmanufacturerModalvisible,setisaddnewmanufacturerModalvisible,id,set_refresh_data}){
+function AddNewManufacturerModal({isaddnewmanufacturerModalvisible,setisaddnewmanufacturerModalvisible,id}){
     const toast = useToast();
     const { isOpen, onOpen, onClose } = useDisclosure();
 
@@ -62,7 +44,7 @@ function AddNewManufacturerModal({isaddnewmanufacturerModalvisible,setisaddnewma
 
     const handle_add_new_manufacturer=()=>{
       console.log(payload)
-      Add_New_Manufacturer(payload).then(()=>{
+      Add_New_Manufacturer_Distributor(payload).then(()=>{
           toast({
             title: '',
             description: `${name} has been added as a manufacturer.`,
@@ -70,7 +52,6 @@ function AddNewManufacturerModal({isaddnewmanufacturerModalvisible,setisaddnewma
             isClosable: true,
           });
         }).then(()=>{
-          set_refresh_data(`${name} has been added as a manufacturer.`)
           setisaddnewmanufacturerModalvisible(false)
         }).catch((err)=>{
           toast({

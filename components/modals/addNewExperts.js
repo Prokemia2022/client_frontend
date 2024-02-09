@@ -17,11 +17,11 @@ import {
     useToast,
   } from '@chakra-ui/react';
 import { useEffect,useState } from 'react';
-import Add_New_Expert from '../../pages/api/auth/distributor/add_new_expert.js'
-import Add_New_Expert_Manufacturer from '../../pages/api/auth/manufacturer/add_new_expert.js';
 import {useRouter} from 'next/router';
+import { Add_New_Expert_Manufacturer } from '../../pages/api/supplier/manufacturer/route.api.js';
+import { Add_New_Expert_Distributor } from '../../pages/api/supplier/distributor/route.api.js';
 
-export default function AddNewExpertsModal({isaddnewexpertModalvisible,setisaddNewExpertModalvisible,id,acc_type,set_refresh_data}){
+export default function AddNewExpertsModal({isaddnewexpertModalvisible,setisaddNewExpertModalvisible,id,acc_type,}){
     const toast = useToast();
     const router = useRouter();
     const { isOpen, onOpen, onClose } = useDisclosure();
@@ -68,7 +68,7 @@ export default function AddNewExpertsModal({isaddnewexpertModalvisible,setisaddN
     const handle_add_new_expert=async()=>{
       //console.log(payload)
       if(acc_type === 'distributor')
-        await Add_New_Expert(payload).then(()=>{
+        await Add_New_Expert_Distributor(payload).then(()=>{
           toast({
             title: '',
             description: `${name} has been added as an expert.`,
@@ -76,12 +76,12 @@ export default function AddNewExpertsModal({isaddnewexpertModalvisible,setisaddN
             isClosable: true,
           });
         }).then(()=>{
-          set_refresh_data(`${name} has been added as an expert.`)
           setisaddNewExpertModalvisible(false)
         }).catch((err)=>{
+          console.log(err)
           toast({
             title: '',
-            description: err.response.data,
+            description: err?.response?.data,
             status: 'error',
             isClosable: true,
           });
@@ -95,12 +95,12 @@ export default function AddNewExpertsModal({isaddnewexpertModalvisible,setisaddN
             isClosable: true,
           });
         }).then(()=>{
-          set_refresh_data(`${name} has been added as an expert.`)
           setisaddNewExpertModalvisible(false)
         }).catch((err)=>{
+          console.log(err)
           toast({
             title: '',
-            description: err.response.data,
+            description: err?.response?.data,
             status: 'error',
             isClosable: true,
           });

@@ -14,12 +14,4 @@ export default async function Contact_Support(payload) {
 	}
 	const result = axios.post(`${base_url}/api/create_support_question`,payload);
     return result;
-    // if(env == "development"){
-    //     const result = await axios.post("http://localhost:5000/api/create_support_question",payload)
-    // 	return result
-    // }
-    // else if (env == "production"){
-    // 	const result = await axios.post(`https://prokemia-clientserver-production.up.railway.app/api/create_support_question`,payload)
-    // 	return result
-    // }
 }

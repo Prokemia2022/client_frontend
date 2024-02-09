@@ -1,30 +1,29 @@
 //modules import
 import React,{useState,useEffect} from 'react';
-import {Flex,Text,Image,Divider} from '@chakra-ui/react';
-//api calls
-import Get_Products from '../api/product/get_products.js'
-import Get_Distributors from '../api/auth/distributor/get_distributors.js'
-import Get_Industries from '../api/control/get_industries.js'
-import Get_Technologies from '../api/control/get_technologies.js'
-import Get_Manufacturers from '../api/auth/manufacturer/get_manufacturers.js'
-//icons
+import {Flex,Text,Image,Divider, Heading, Collapse, Button, Icon, Grid} from '@chakra-ui/react';
 //components
-import Header from '../../components/Header.js';
 //utils
 import {useRouter} from 'next/router';
 //styles
-import styles from '../../styles/Home.module.css'
+import { IoIosArrowDown,IoIosArrowUp } from "react-icons/io";
+import Product_Card from '../../components/ui/Category/Product_Card.ui.js';
+import { UseDistributorSrt } from '../../hooks/distributor/useDistributorSrt.js';
+import { UseManufacturerSrt } from '../../hooks/manufacturer/useManufacturerSrt.js';
+import UseShuffle from '../../hooks/lib/useShuffle.js';
+import { UseIndustryData } from '../../hooks/industries/useIndustryData.hook.js';
+import { UseTechnologyData } from '../../hooks/technology/useTechnologyData.hook.js';
+import { UseProductsSearch } from '../../hooks/product/useProductSearch.hook.js';
 
 export default function Products(){
 	//utils
 	const router = useRouter();
 	const categ = router.query; //gets the category object in the query i.e industry/technology
 	//console.log(categ?.id)
-	const category_title = categ?.id
+	const category_title = categ?.id;
+	const category_type = categ?.type;
 	//states
 	const [products_data,set_products_data]=useState([]);
-	const [industry_data,set_industry_data]=useState('')
-	const [technology_data,set_technology_data]=useState('')
+	const [data,set_data]=useState('');
 	const [distributors_data,set_distributors_data]=useState([]);
 	const [manufacturers_data,set_manufacturers_data]=useState([]);
 	const [isloading,set_isloading]=useState(true);
@@ -32,129 +31,85 @@ export default function Products(){
 	//functions
 	
 	//api calls
+	async function get_Products_Data(prop){
+		const query_params = { query : prop?.title };
+		let data = await UseProductsSearch(query_params);
+		set_products_data(data)
+	}
+	async function get_Industry_data(){
+		let data = await UseIndustryData(category_title);
+		set_data(data);
+		get_Products_Data(data)
+	}
+	async function get_Technology_data(){
+		let data = await UseTechnologyData(category_title);
+		set_data(data)
+		get_Products_Data(data)
+	}
 	/**fetch products data*/
-	const get_Products_Data=async()=>{
-		await Get_Products().then((response)=>{
-			const data = response?.data;
-			const result_data = data.filter((item)=> item?.verification_status);
-			const result = result_data.filter((item)=> item?.industry.includes(categ?.id) || item?.technology.includes(categ?.id));
-			////console.log(response.data)
-			set_products_data(result);
-			set_isloading(false);
-		})
+	async function get_Distributors_Data(){
+		let data = await UseDistributorSrt();
+		const shuffled_data = UseShuffle(data.filter((item)=> item?.subscription));
+		set_distributors_data(shuffled_data)
 	}
-	/*fetch manufacturers */
-	const get_Distributors_Data=async()=>{
-		await Get_Distributors().then((response)=>{
-			const data = response?.data
-			const result_data = data.filter((item)=> item?.verification_status && !item?.suspension_status);
-			const shuffled_data = shuffle(result_data.filter((item)=> item?.subscription));
-			set_distributors_data(shuffled_data)
-			//console.log(shuffled_data)
-		})
-	}
-	const get_Manufacturers_Data=async()=>{
-		await Get_Manufacturers().then((response)=>{
-			const data = response?.data
-			const result_data = data.filter((item)=> item?.verification_status && !item?.suspension_status)
-			const shuffled_data = shuffle(result_data.filter((item)=> item?.subscription));
-			set_manufacturers_data(shuffled_data)
-			//console.log(shuffled_data)
-		})
-	}
-	function shuffle(array) {
-		let currentIndex = array.length,  randomIndex;
-	  
-		// While there remain elements to shuffle.
-		while (currentIndex != 0) {
-	  
-		  // Pick a remaining element.
-		  randomIndex = Math.floor(Math.random() * currentIndex);
-		  currentIndex--;
-	  
-		  // And swap it with the current element.
-		  [array[currentIndex], array[randomIndex]] = [
-			array[randomIndex], array[currentIndex]];
-		}
-	  
-		return array;
-	  }
-	const get_Industry_data=async()=>{
-		await Get_Industries().then((res)=>{
-			//console.log(res.data)
-			const industry = res.data
-			const filtered_result = industry.filter((item)=> item?.title?.toLowerCase().includes(category_title?.toLowerCase()))
-			set_industry_data(...filtered_result)
-			//console.log(...filtered_result)
-		})
-	}
-	const get_Technology_data=async()=>{
-		await Get_Technologies().then((res)=>{
-			//console.log(res.data)
-			const technology = res.data
-			const filtered_result = technology.filter((item)=> item?.title?.toLowerCase().includes(category_title?.toLowerCase()))
-			set_technology_data(...filtered_result)
-			///console.log(...filtered_result)
-		})
+	async function get_Manufacturers_Data(){
+		let data = await UseManufacturerSrt();
+		const shuffled_data = UseShuffle(data.filter((item)=> item?.subscription));
+		set_manufacturers_data(shuffled_data)
+		set_isloading(false)
 	}
 	//useEffects
 	useEffect(()=>{
-		//console.log(category_title)
-		get_Products_Data()
+		if (category_type === 'Industries'){
+			get_Industry_data()
+		}else if(category_type === 'Technologies'){
+			get_Technology_data()
+		}
 		get_Distributors_Data()
 		get_Manufacturers_Data()
-		get_Technology_data()
-		get_Industry_data()
-	},[categ])
-	////console.log(industry_data)
+	},[categ,category_title,category_type])
+	const [show, setShow] = useState(false)
+
+  const handleToggle = () => setShow(!show)
 	return(
-		<Flex direction='column'>
-			<Header/>
-			<Flex p='2' direction='column' gap='2'>
-				<Flex direction='column' mb=''>
-					<Text fontSize='32px' fontFamily='ClearSans-Bold' color='#009393'>{category_title}</Text>
-					{industry_data == undefined? 
-						null : 
-						<Text overflowY={'scroll'} height={'200px'} className={styles.scrollbar} bg='#eee' p='1'>{industry_data?.description}</Text>
-					}
-					{technology_data == undefined? 
-						null : 
-						<Text overflowY={'scroll'} height={'200px'} className={styles.scrollbar} bg='#eee' p='1'>{technology_data?.description}</Text>
-					}
-					
+		<Flex direction='column' p='6'>	
+			<Flex gap='2' flexDirection={{md:'row',base:'column'}}>
+				<Image src={data?.cover_image} alt='image' boxSize={200} objectFit={'cover'} borderRadius={5}/>
+				<Flex flexDirection={'column'} px='2' flex='1' >
+					<Heading as={'h2'}>{data?.title}</Heading>
+					<Collapse startingHeight={100} in={show}>
+						{data?.description}
+					</Collapse>
+					<Text fontSize='sm' onClick={handleToggle} mt='1rem' bg='#eee' p='2' w='110px' borderRadius={'5'} cursor={'pointer'}>
+						Show {show ? 'Less' : 'More'} {show ? <Icon as={IoIosArrowUp} boxSize={3}/> : <Icon as={IoIosArrowDown} boxSize={3}/>}
+					</Text>
 				</Flex>
-				{isloading ?
-					<>
-						<Loading/>
-						<Loading/>
-					</>
+			</Flex>
+			<Flex direction='column' gap='2'>
+				<Text color='#009393' fontSize='24px' mt='2'>Products </Text>
+				<Divider/>
+				{products_data.length !== 0 ?
+					<Grid templateColumns={{base:'repeat(1, 1fr)',md:'repeat(2, 1fr)',lg:'repeat(3, 1fr)'}} gap={'2'} mt='1'>
+						{products_data?.map((item)=>{
+							return(
+								<Product_Card item={item} key={item?._id}/>
+							)
+						})}
+					</Grid>
 					:
-					<>
-						<Text color='#009393' fontSize='24px'>Products </Text>
-						<Divider/>
-						{products_data.length !== 0 ?
-							<>
-								{products_data?.map((item)=>{
-									return(
-										<Product_Cart_Item item={item} key={item?._id}/>
-									)
-								})}
-							</>:
-							<Flex bg='#eee' p='2' justify='center' align='center' h='40vh' boxShadow='lg'>
-								<Text>No products have been listed under this category</Text>
-							</Flex>
-						}
-					</>
+					<Flex bg='#eee' p='2' justify='center' align='center' h='40vh' boxShadow='lg'>
+						<Text>No products have been listed under this category</Text>
+					</Flex>
 				}
 			</Flex>
 			<Flex p='2' direction='column' gap='2'>
-					<Text color='#009393' fontSize='24px'> Featured Distributors </Text>
-					<Divider/>
+				<Text color='#009393' fontSize='24px'> Featured Distributors </Text>
+				<Divider/>
 					{!isloading ?
 						<>
 							{distributors_data?.slice(0,4).map((distributor)=>{
 								return(
-									<Flex bg='#eee' mb='1' borderRadius='5' key={distributor?._id} gap='2' onClick={(()=>{router.push(`/account/distributor/${distributor?._id}`)})} cursor='pointer'>
+									<Flex bg='#eee' mb='1' borderRadius='5' key={distributor?._id} gap='2' onClick={(()=>{router.push(`/supplier?id=${distributor?._id}&supplier=distributor`)})} cursor='pointer'>
 										<Image objectFit={distributor?.profile_photo_url == ''? "contain":'cover'} src={distributor?.profile_photo_url == '' || !distributor?.profile_photo_url? "../Pro.png":distributor?.profile_photo_url} alt='photo' boxShadow='lg' boxSize='100px'/>
 										<Flex direction='column' p='2' gap='2' flex='1'>
 											<Text mb='0' fontSize='24px' fontFamily='ClearSans-Bold'>{distributor?.company_name}</Text>
@@ -175,7 +130,7 @@ export default function Products(){
 							<>
 								{manufacturers_data?.slice(0,4).map((manufacturer)=>{
 									return(
-										<Flex bg='#eee' mb='1' borderRadius='5' key={manufacturer?._id} gap='2' onClick={(()=>{router.push(`/account/manufacturer/${manufacturer?._id}`)})} cursor='pointer'>
+										<Flex bg='#eee' mb='1' borderRadius='5' key={manufacturer?._id} gap='2' onClick={(()=>{router.push(`/supplier?id=${manufacturer?._id}&supplier=manufacturer`)})} cursor='pointer'>
 											<Image objectFit={manufacturer?.profile_photo_url == ''? "contain":'cover'} src={manufacturer?.profile_photo_url == '' || !manufacturer?.profile_photo_url? "../Pro.png":manufacturer?.profile_photo_url} alt='photo' boxShadow='lg' boxSize='100px'/>
 											<Flex direction='column' p='2' gap='2' flex='1'>
 												<Text mb='0' fontSize='24px' fontFamily='ClearSans-Bold'>{manufacturer?.company_name}</Text>
@@ -202,23 +157,6 @@ const Loading=()=>{
 			<Flex direction='column' flex='1' gap='3'>
 				<Flex bg='#eee' w='100%' h='20px' borderRadius='5'/>
 				<Flex bg='#eee' w='100%' h='20px' borderRadius='5'/>
-			</Flex>
-		</Flex>
-	)
-}
-
-const Product_Cart_Item=({item})=>{
-	const router = useRouter();
-	return(
-		<Flex cursor='pointer' gap='2' align='center' bg='#fff' p='1' borderRadius='5' boxShadow='lg' onClick={(()=>{router.push(`/product/${item._id}`)})} >
-			<Image w='50px' h='50px' borderRadius='10px' objectFit='cover' src='../../Pro.png' alt='next'/>
-			<Flex direction='column'>
-				<Text fontSize='16px' fontFamily='ClearSans-Bold' color='#009393'>{item.name_of_product}</Text>
-				<Text fontSize='14px'>{item.distributed_by}</Text>
-				<Flex gap='2' fontSize='10px' color='grey'>
-					<Text>{item.industry? item.industry : "-"}</Text>
-					<Text borderLeft='1px solid grey' paddingLeft='2'>{item.technology? item.technology : "-"}</Text>
-				</Flex>
 			</Flex>
 		</Flex>
 	)

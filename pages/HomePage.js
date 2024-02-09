@@ -1,241 +1,95 @@
 import React,{useState,useEffect} from 'react'
-import { Flex,Text,Image,Center,Select,Button,SimpleGrid, Box} from '@chakra-ui/react';
-import styles from '../styles/Home.module.css';
-import PlayArrowIcon from '@mui/icons-material/PlayArrow';
+import { Flex,Text,Center,Button, Icon, SimpleGrid, Image, } from '@chakra-ui/react';
+// utils
 import {useRouter} from 'next/router';
-import CloudDownloadIcon from '@mui/icons-material/CloudDownload';
-import QueryStatsIcon from '@mui/icons-material/QueryStats';
-import Header from '../components/Header.js';
-import Get_Products from './api/product/get_products.js'
-import Get_Industries from './api/control/get_industries.js'
-import Get_Technologies from './api/control/get_technologies.js'
-import Get_Distributors from './api/auth/distributor/get_distributors.js'
-import Get_Manufacturers from './api/auth/manufacturer/get_manufacturers.js'
+// icons
+import { FaFileDownload, FaSearch  } from "react-icons/fa";
+// components
+import { Section } from '../components/ui/Category/Card_section.js';
+import { Supplier_Section } from '../components/ui/Supplier/Card_section.js';
+import { Product_Section } from '../components/ui/Product/Card_Section.js';
+// hooks
+import { UseTechnologiesSrt } from '../hooks/technology/useTechnologiesSrt.js';
+import { UseIndustriesSrt } from '../hooks/industries/useIndustriesSrt.js';
+import { UseDistributorSrt } from '../hooks/distributor/useDistributorSrt.js';
+import { UseManufacturerSrt } from '../hooks/manufacturer/useManufacturerSrt.js';
+import { UseProductsSrt } from '../hooks/product/useProductSrt.js';
+import UseShuffle from '../hooks/lib/useShuffle.js';
 
 function Home(){
-	const router = useRouter();
 	const [products_data,set_products_data]=useState([]);
-	const [industries_data,set_industries_data]=useState([]);
+	const [industries_data,set_industries_data] = useState([]);
 	const [technologies_data,set_technologies_data]=useState([]);
 	const [distributors_data,set_distributors_data]=useState([]);
 	const [manufacturers_data,set_manufacturers_data]=useState([]);
-	const [window,set_window]=useState({});
 	const [isloading,set_isloading]=useState(true);
+	let data = [...distributors_data,...manufacturers_data]
 
 	useEffect(()=>{
-		const client = {
-			width: document?.documentElement?.clientWidth,
-			height: document?.documentElement?.clientHeight
-		}
-		//console.log(typeof(client))
-		if (client != {}){
-			set_window(client)
-		}else{
-			set_window({})
-		}
 		get_Products_Data()
 		get_Industries_Data()
 		get_Technologies_Data()
 		get_Distributors_Data()
 		get_Manufacturers_Data()
+		set_isloading(false)
 	},[])
-
-	const get_Products_Data=async()=>{
-		await Get_Products().then((response)=>{
-			set_isloading(false);
-			const data = response?.data;
-			const result_data = data.filter((item)=> item?.verification_status && item?.sponsored);
-			set_products_data(result_data);
-		}).catch((err)=>{
-			//console.log(err);
-		});		
+	async function get_Products_Data(){
+		let data = await UseProductsSrt();
+		set_products_data(data)
 	}
-	const get_Industries_Data=async()=>{
-		await Get_Industries().then((response)=>{
-			const data = response?.data
-			const result_data = data.filter((item)=> item?.verification_status)
-			set_industries_data(result_data)
-			//console.log(result_data)
-		})
+	async function get_Industries_Data(){
+		let data = await UseIndustriesSrt();
+		set_industries_data(data)
 	}
-	const get_Technologies_Data=async()=>{
-		await Get_Technologies().then((response)=>{
-			const data = response?.data
-			const result_data = data.filter((item)=> item?.verification_status)
-			set_technologies_data(result_data)
-			//console.log(result_data)
-		})
+	async function get_Technologies_Data(){
+		let data = await UseTechnologiesSrt();
+		set_technologies_data(data)
 	}
-	const get_Distributors_Data=async()=>{
-		await Get_Distributors().then((response)=>{
-			const data = response?.data
-			const result_data = data.filter((item)=> item?.verification_status && !item?.suspension_status);
-			const shuffled_data = shuffle(result_data.filter((item)=> item?.subscription));
-			set_distributors_data(shuffled_data)
-			//console.log(shuffled_data)
-		})
+	async function get_Distributors_Data(){
+		let data = await UseDistributorSrt();
+		const shuffled_data = UseShuffle(data.filter((item)=> item?.subscription));
+		set_distributors_data(shuffled_data)
 	}
-	const get_Manufacturers_Data=async()=>{
-		await Get_Manufacturers().then((response)=>{
-			const data = response?.data
-			const result_data = data.filter((item)=> item?.verification_status && !item?.suspension_status)
-			const shuffled_data = shuffle(result_data.filter((item)=> item?.subscription));
-			set_manufacturers_data(shuffled_data)
-			//console.log(shuffled_data)
-		})
+	async function get_Manufacturers_Data(){
+		let data = await UseManufacturerSrt();
+		const shuffled_data = UseShuffle(data.filter((item)=> item?.subscription));
+		set_manufacturers_data(shuffled_data)
+		set_isloading(false)
 	}
-	function shuffle(array) {
-		let currentIndex = array.length,  randomIndex;
-	  
-		// While there remain elements to shuffle.
-		while (currentIndex != 0) {
-	  
-		  // Pick a remaining element.
-		  randomIndex = Math.floor(Math.random() * currentIndex);
-		  currentIndex--;
-	  
-		  // And swap it with the current element.
-		  [array[currentIndex], array[randomIndex]] = [
-			array[randomIndex], array[currentIndex]];
-		}
-	  
-		return array;
-	  }
+    const [searchbaractive, setsearchbaractive]=useState(null);
+    const [query_search, setquery_search]=useState('');
 	return(
 		<Flex direction='column' position='relative' gap='2'>
-		<Header products_data={products_data} distributors_data={distributors_data} manufacturers_data={manufacturers_data} industries_data={industries_data} technologies_data={technologies_data}/>
-		<Flex p='4' direction='column' >
-			<Flex mt={window.width > 500? '10vh' : ''} mb='50px' direction='column' gap='3' w='100%' p='2'>
-				<Text mb='3' fontFamily='ClearSans-Bold' fontSize='38px' >The <span style={{color:"#009393"}}>Marketplace</span> for Ingredients, Polymers and Chemistry.</Text>
-				<Text mb='0' w='80%'>Search, earn, engage, sample, quote and purchase from thousands of suppliers - all in one platform.</Text>
-			</Flex>
-			<Flex direction='column' gap='2' w='100%'>
-				<Flex justify='space-between' align='center' p='2'>
-					<Text mb='0' fontFamily='ClearSans-Bold' fontSize='24px'>Industries</Text>
-					<Text mb='0' fontSize='18px' color='#009393' onClick={(()=>{router.push('/Industries/all')})} cursor='pointer'>see more</Text>
+			<Flex p='4' direction='column' >
+				<Flex mt={{md:'10vh', sm:''}} mb='50px' direction='column' gap='3' w='100%' p='2'>
+					<Text mb='3' fontFamily='ClearSans-Bold' fontSize='38px' >The <span style={{color:"#009393"}}>Marketplace</span> for Ingredients, Polymers and Chemistry.</Text>
+					<Text mb='0' w='80%'>Search, earn, engage, sample, quote and purchase from thousands of suppliers - all in one platform.</Text>
 				</Flex>
-				<SimpleGrid minChildWidth='150px' spacing='20px'>
-					{!isloading ?
-						<>
-							{industries_data?.slice(0,6).map((item)=>{
-								return(
-									<Control_Item_Card item={item} window={window} router={router} key={item?._id}/>
-								)
-							})}
-						</>:
-						<>
-							<Item_Loading />
-							<Item_Loading />
-							<Item_Loading />
-							<Item_Loading />
-							<Item_Loading />
-							<Item_Loading />
-							<Item_Loading />
-							<Item_Loading />
-						</>
-					}				
-				</SimpleGrid>
-			</Flex>
-			<Flex direction='column' gap='3' w='100%' mt='2'>
-				<Flex p='2' justify='space-between' alighn='center'>
-					<Text mb='0' fontFamily='ClearSans-Bold' fontSize='24px'>Technologies</Text>
-					<Text mb='0' color='#009393' fontSize='18px' onClick={(()=>{router.push("/Technologies/all")})}>see more</Text>
-				</Flex>
-				<SimpleGrid minChildWidth='150px' spacing='20px'>
-					{!isloading ?
-						<>
-							{technologies_data?.slice(0,6).map((item)=>{
-								return(
-									<Control_Item_Card item={item} window={window} router={router} key={item?._id}/>
-								)
-							})}
-						</>:
-						<>
-							<Item_Loading />
-							<Item_Loading />
-							<Item_Loading />
-							<Item_Loading />
-							<Item_Loading />
-							<Item_Loading />
-							<Item_Loading />
-							<Item_Loading />
-							<Item_Loading />
-							<Item_Loading />
-						</>
-					}
-				</SimpleGrid>
-			</Flex>
-			<Text mt='4' fontSize='24px' fontFamily='ClearSans-Bold'>Featured Products</Text>
-			{!isloading ?
-				<SimpleGrid minChildWidth='300px' spacing='40px' my='2'>
-					{products_data?.slice(0,4).map((item)=>{
+				{/** industries section*/}
+				<Section isloading={isloading} title='Industries' data={industries_data}/>
+				{/** technologies section*/}
+				<Section isloading={isloading} title='Technologies' data={technologies_data}/>
+				{/** products section*/}
+				<Product_Section isloading={isloading} data={products_data} setquery_search={setquery_search} setsearchbaractive={setsearchbaractive}/>
+				{/** suppliers section*/}
+				<Supplier_Section isloading={isloading} title='Our Top Suppliers' data={data} link_tag='distributor'/>
+				{/** stats section*/}
+				<Center>
+					<Flex justify='space-around'>
+					{numbers.map((item)=>{
 						return(
-							<Product_Cart_Item item={item} key={item?._id}/>
-						)
-					})}
-				</SimpleGrid>
-				
-				:
-				<>
-					<Loading />
-					<Loading />
-				</>
-			}
-			<Text  mt='4' fontSize='24px' fontFamily='ClearSans-Bold'>Top Distributors </Text>
-			{!isloading ?
-				<>
-					{distributors_data?.slice(0,4).map((distributor)=>{
-						return(
-							<Flex _hover={{bg:'gray.100'}} bg='#eee' mb='1' borderRadius='5' key={distributor?._id} gap='2' onClick={(()=>{router.push(`/account/distributor/${distributor?._id}`)})} cursor='pointer'>
-								<Image objectFit={distributor?.profile_photo_url == '' || !distributor?.profile_photo_url? "contain":'cover'} src={distributor?.profile_photo_url == '' || !distributor?.profile_photo_url? "../Pro.png":distributor?.profile_photo_url} boxSize='100px' alt='profilelogo'/>
-								<Flex direction='column' p='2' gap='2' flex='1'>
-									<Text mb='0' fontSize='24px' fontFamily='ClearSans-Bold'>{distributor?.company_name}</Text>
-									<Text mb='0' w='80%' overflow='hidden' h='20px'>{!distributor?.description || distributor?.description == ''? '-' : distributor?.description}</Text>
-								</Flex>
+							<Flex key={item.id} textAlign='center' align='center' direction='column' m='5'>
+								<Text mb='0' color='#009393' fontSize='32px' fontFamily='ClearSans-Bold'>{item.numbers}</Text>
+								<Icon as={item?.icon} boxSize={6} mt='2'/>
+								<Text mb='0' fontSize='20px'>{item.title}</Text>
+								<Text mb='0'>made</Text>
 							</Flex>
 						)
 					})}
-				</>:
-				<>
-					<Loading />
-					<Loading />
-				</>
-			}
-			<Text  mt='4' fontSize='24px' fontFamily='ClearSans-Bold'>Top Manufacturers </Text>
-			{!isloading ?
-				<>
-					{manufacturers_data?.slice(0,4).map((manufacturer)=>{
-						return(
-							<Flex _hover={{bg:'gray.100'}} bg='#eee' mb='1' borderRadius='5' key={manufacturer?._id} gap='2' onClick={(()=>{router.push(`/account/manufacturer/${manufacturer?._id}`)})} cursor='pointer'>
-								<Image objectFit={manufacturer?.profile_photo_url == '' || !manufacturer?.profile_photo_url? "contain":'cover'} src={manufacturer?.profile_photo_url == '' || !manufacturer?.profile_photo_url? "../Pro.png":manufacturer?.profile_photo_url} w='100px' h='100px' alt='profilelogo'/>
-								<Flex direction='column' p='2' gap='2' flex='1'>
-									<Text mb='0' fontSize='24px' fontFamily='ClearSans-Bold'>{manufacturer?.company_name}</Text>
-									<Text mb='0' w='80%' overflow='hidden' h='20px'>{!manufacturer?.description || manufacturer?.description == ''? '-' : manufacturer?.description}</Text>
-								</Flex>
-							</Flex>
-						)
-					})}
-				</>:
-				<>
-					<Loading />
-					<Loading />
-				</>
-			}
-			<Center>
-				<Flex justify='space-around'>
-				{numbers.map((item)=>{
-					return(
-						<Flex key={item.id} textAlign='center' align='center' direction='column' m='5'>
-							<Text mb='0' color='#009393' fontSize='32px' fontFamily='ClearSans-Bold'>{item.numbers}</Text>
-							{item.icon}
-							<Text mb='0' fontSize='20px'>{item.title}</Text>
-							<Text mb='0'>made</Text>
-						</Flex>
-					)
-				})}
-				</Flex>
-			</Center>
-			<Promo router={router}/>
+					</Flex>
+				</Center>
+				{/** promo section*/}
+				<Promo/>
 			</Flex>
 		</Flex>
 	)
@@ -248,78 +102,37 @@ const numbers=[
 		id:'1',
 		title:'Quotation requests',
 		numbers:'1k',
-		icon:<CloudDownloadIcon/>,
+		icon: FaFileDownload,
 	},
 	{
 		id:'2',
 		title:'Search results',
 		numbers:'200k',
-		icon:<QueryStatsIcon/>,
+		icon: FaSearch ,
 	},
 	{
 		id:'3',
 		title:'Sample requests',
 		numbers:'2k',
-		icon:<CloudDownloadIcon/>,
+		icon: FaFileDownload,
 	},
 ]
 
-const Promo=({router})=>{
-	return(
-		<Flex bg='#000' p='2' borderRadius='5' justify='center'>
-			<Flex className={styles.promotext} p='2' direction='column' color='#fff' gap='3' >
-				<Text mb='0'  fontSize='48px'>Interested in Selling Products?</Text>
-				<Text mb='0'  >Register as a Manufacturer or Distributor to start marketing your products in East, Central and Southern Africa.</Text>
-				<Text  mb='0' >Boost your sales and access a wide market for your company or business.</Text>
-				<Button bg='#000' border='1px solid #fff' onClick={(()=>{router.push('/request_demo')})}>Request a demo</Button>
-				<Button bg='#009393' color='#fff' onClick={(()=>{router.push('/account/1')})}>Start selling</Button>
-			</Flex>
-		</Flex>
-	)
-}
-
-const Product_Cart_Item=({item})=>{
+const Promo=({})=>{
 	const router = useRouter();
 	return(
-		<Flex _hover={{bg:'#eee',m:'1',boxShadow:'lg'}}   cursor='pointer' gap='2' align='center' bg='#fff' p='1' borderRadius='5' boxShadow='md' onClick={(()=>{router.push(`/product/${item._id}`)})} >
-		<Image w='50px' h='50px' borderRadius='10px' objectFit='cover' src='../../Pro.png' alt='next'/>
-			<Flex direction='column'>
-				<Text fontSize='16px' fontFamily='ClearSans-Bold' color='#009393'>{item.name_of_product}</Text>
-				<Text fontSize='14px'>{item.distributed_by}</Text>
-				<Flex gap='2' fontSize='10px' color='grey'>
-					<Text>{item.industry? item.industry : "-"}</Text>
-					<Text borderLeft='1px solid grey' paddingLeft='2'>{item.technology? item.technology : "-"}</Text>
-				</Flex>
+		<SimpleGrid columns={{ base: 1, md: 2, }} spacing={0} bg='#343838' color={'white'} borderRadius={10}>
+			<Flex bg="brand.400">
+				<Image src="https://images.unsplash.com/photo-1525130413817-d45c1d127c42?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&auto=format&fit=crop&w=750&q=80" alt="3 women looking at a laptop" fit="cover" w="full" h={{ base: 64, md: "full", }} bg="gray.100" loading="lazy" opacity={0.4}/>
 			</Flex>
-		</Flex>
-	)
-}
-
-const Loading=()=>{
-	return(
-		<Flex h='80px' position='relative' gap='2' align='center' boxShadow='lg' p='2'>
-			<Flex w='50px' h='50px' borderRadius='10px' bg='#eee'/>
-			<Flex direction='column' flex='1' gap='3'>
-				<Flex bg='#eee' w='100%' h='20px' borderRadius='5'/>
-				<Flex bg='#eee' w='100%' h='20px' borderRadius='5'/>
+			<Flex direction="column" alignItems="start" justifyContent="center" px={{ base: 4, md: 8, lg: 20, }} py={24} zIndex={3} >
+				<Text color="brand.600" fontSize="lg"textTransform="uppercase"fontWeight="extrabold">Interested in Selling Products?</Text>
+				<Text mb={4} fontSize={{ base: "4xl", md: "4xl", lg: "5xl", }} fontWeight="bold" color="brand.600" lineHeight="shorter" textShadow="2px 0 currentcolor" > We&apos;re here to help </Text>
+				<Text pr={{ base: 0, lg: 16, }} mb={4} fontSize="lg" color="brand.600"  letterSpacing="wider" > Register for a supplier account to start marketing your products in East, Central and Southern Africa.</Text>
+				<Button bg='#009393' transition={'.6 ease-in-out'} onClick={(()=>{router.push('/demo')})} _hover={{bg:'#000'}}>
+					REQUEST A DEMO
+				</Button>
 			</Flex>
-		</Flex>
-	)
-}
-
-const Item_Loading=()=>{
-	return(
-		<Flex w='100%' h='225px' m='1' position='relative' bg='#fff' boxShadow='lg'>
-			<Flex bg='#eee' p='4' m='2' mb='0' borderRadius='5' position='absolute' top='10px' left='10px' w='80%' h='50px'/>
-		</Flex>
-	)
-}
-
-const Control_Item_Card=({item,window,router})=>{
-	return(
-		<Flex _hover={{m:'2',boxShadow:'lg',opacity:'100%'}} opacity='75%' cursor='pointer' w='100%' h='225px' m='1' position='relative' onClick={(()=>{router.push(`/products/${item.title}`)})}>
-			<Image objectFit={item?.cover_image == ''? "contain":'cover'} src={item?.cover_image == ''? "../Pro.png":item?.cover_image} alt='photo' boxShadow='lg' w='100%'/>
-			<Text bg='rgb(0,0,0,0.6)' p='1' position='absolute' bottom='0px' left='0px' w='100%' fontSize='14px' color='#fff'>{item.title}</Text>
-		</Flex>
+		</SimpleGrid>
 	)
 }

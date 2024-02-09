@@ -1,13 +1,10 @@
 import React,{useState} from 'react';
-import {Flex,Center,Text,Button,Input,InputGroup,InputRightElement,Image,Textarea,useToast} from '@chakra-ui/react';
+import {Flex,Text,Button,Input,Image,useToast} from '@chakra-ui/react';
 import styles from '../styles/Home.module.css';
-import {Room,Visibility,VisibilityOff} from '@mui/icons-material';
 import {useRouter} from 'next/router';
-import Header from '../components/Header.js';
 import Create_Career_mailing_list from './api/control/create_career_mailing_list.js'
 
 export default function Career_mailing_list(){
-	const [active, setActive] = useState(false);
   	const router = useRouter();
   	const toast = useToast();
 
@@ -17,8 +14,6 @@ export default function Career_mailing_list(){
   	const payload = {
 		name,
 		email,
-		// feedback,
-		// rate
 	}
 
 	const Handle_Register=async()=>{
@@ -54,7 +49,6 @@ export default function Career_mailing_list(){
 	}
 	return(
 		<Flex direction='column'>
-			<Header/>
 			<Flex className={styles.feedbackBody}>
 				<Flex className={styles.feedbackSection} gap='2' p='6'>
 					<h3>Join Our Mailing List</h3>
@@ -78,22 +72,3 @@ export default function Career_mailing_list(){
 		</Flex>
 	)
 }
-
-const passwords=[
-	{
-		acc:'client',
-		password:'client'
-	},
-	{
-		acc:'sales',
-		password:'sales'
-	},
-	{
-		acc:'distributor',
-		password:'distributor'
-	},
-	{
-		acc:'manufacturer',
-		password:'manufacturer'
-	},
-]

@@ -1,11 +1,9 @@
 import React from 'react'
 import {Flex,Text,Heading,Link} from '@chakra-ui/react'
-import Header from '../components/Header.js';
 
 export default function privacy_policy(){
 	return(
 		<Flex direction='column'>
-			<Header/>
 			<Flex direction='column' gap='2' p='2'>
 			<Heading textAlign='center'>PRIVACY POLICY</Heading>
 

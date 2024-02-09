@@ -1,26 +1,23 @@
 import React,{useState} from 'react';
 import {Flex,Text} from '@chakra-ui/react';
-import {Add,HorizontalRule} from '@mui/icons-material';
-import Header from '../components/Header.js'
+import { MdAdd,MdHorizontalRule } from "react-icons/md";
 
 export default function FAQs(){
 	const [active,setActive]=useState(false);
 	const [currentValue,setcurrentValue]=useState('');
 	return(
 		<Flex direction='column'>
-			<Header/>
-			<Flex direction='column' p='4' h='100vh'>
+			<Flex direction='column' p='8'>
 				<Text fontSize='52px' fontFamily='ClearSans-bold'>FAQs</Text>
 				<Text color='grey'>Frequently asked Questions.</Text>
 				<Text color='grey'>Here are some common asked questions about Prokemia</Text>
-
 				<Flex direction='column' mt='4' gap='3'>
 					{faqs.map((item)=>{
 						return(
 							<Flex key={item.id} borderTop='0px solid grey' borderBottom='1px solid grey' p='2' direction='column'>
 								<Flex cursor='pointer' onClick={(()=>{setActive(!active); setcurrentValue(`${item.title}`)})} align='center' justify='space-between' w='100%'>
 									<Text fontWeight='bold'>{item.title}</Text>
-									{active && item.title === currentValue ? <HorizontalRule /> : <Add style={{color:'#009393'}}/>}
+									{active && item.title === currentValue ? <MdHorizontalRule /> : <MdAdd style={{color:'#009393'}}/>}
 								</Flex>
 								{active && item.title === currentValue ? 
 									<Flex direction='column' gap='1'>
