@@ -23,7 +23,8 @@ export default function Password_Reset_Function(){
   	const [new_password,set_new_password]=useState('');
   	const [confirm_password,set_confirm_password]=useState('');
 
-  	const [confirmation_code,set_confirmation_code]=useState();
+  	const [confirmation_code,set_confirmation_code]=useState('');
+  	const [isloading,set_isloading]=useState(false);
 
   	const [show, setShow] = useState(false); //handle state to toggle password
 	const handleClick = () => setShow(!show); //handle state to toggle view of password
@@ -52,6 +53,7 @@ export default function Password_Reset_Function(){
   	}
 	
   	const Set_New_Password=async()=>{
+		set_isloading(true);
   		const payload = {
   			email_of_company : email,
   			password : new_password
@@ -63,12 +65,15 @@ export default function Password_Reset_Function(){
 				set_user_handler(`${user?._id} logged out `)
 				setTimeout(()=>{
 					router.push('/')
+					set_isloading(false)
 				},2000);
 			}).catch((err)=>{
 				console.log(err)
 			})
+			
   		}else{
 			toast({ title: 'Passwords do not match', description: '', status: 'warning', variant:'left-accent', position: 'top-left', isClosable: true });
+			set_isloading(false)
   		}
   	}
 	const [input_error,set_input_error]=useState(false);
@@ -131,7 +136,11 @@ export default function Password_Reset_Function(){
 									</Button>
 								</InputRightElement>
 							</InputGroup>
-							<Button bg='#009393' color='#fff' onClick={Set_New_Password}>Set New Password</Button>
+							{isloading?
+								<Button loadingText='verifying...' isLoading/>
+							:
+								<Button bg='#009393' color='#fff' onClick={Set_New_Password} disabled={new_password?.length === 0 && confirm_password?.length === 0 ? true: false}>Set New Password</Button>
+							}
 						</Flex>
 					</>
 				}

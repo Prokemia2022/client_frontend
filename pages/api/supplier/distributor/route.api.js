@@ -20,7 +20,7 @@ export async function Get_Distributor(email) {
 }
 
 export async function Edit_Distributor(payload) {
-    const result = axios.post(`${base_url}/api/edit_distributor_account`,payload)
+    const result = axios.put(`${base_url}/api/distributor/user/edit`,payload)
     return result;
 }
 {/**Expert */}

@@ -120,18 +120,18 @@ const Make_A_Sample=({prod_data,view_drawer_disclosure})=>{
                     <Text>{prod_data?.name_of_product}</Text>
                 </HStack>
                 <Divider />
+                <FormControl mt='2' isRequired isInvalid={input_error && number_of_samples == '' ? true : false}>
+                    <FormLabel>Number of samples</FormLabel>
+                    <NumberInput defaultValue={1} min={1} onChange={((e)=>{set_number_of_samples(e)})}>
+                        <NumberInputField />
+                        <NumberInputStepper>
+                            <NumberIncrementStepper />
+                            <NumberDecrementStepper />
+                        </NumberInputStepper>
+                    </NumberInput>
+                    {input_error && number_of_samples == '' ? <FormErrorMessage>The number of samples.</FormErrorMessage> : ( null )}
+                </FormControl>
                 <Flex mt='2' gap='2' flexDirection={{base:'column',md:'row'}}>
-                    <FormControl mt='2' isRequired isInvalid={input_error && number_of_samples == '' ? true : false}>
-                        <FormLabel>Number of sides</FormLabel>
-                        <NumberInput defaultValue={1} min={1} onChange={((e)=>{set_number_of_samples(e)})}>
-                            <NumberInputField />
-                            <NumberInputStepper>
-                                <NumberIncrementStepper />
-                                <NumberDecrementStepper />
-                            </NumberInputStepper>
-                        </NumberInput>
-                        {input_error && number_of_samples == '' ? <FormErrorMessage>The number of samples.</FormErrorMessage> : ( null )}
-                    </FormControl>
                     <FormControl isRequired isInvalid={input_error && industry == '' ? true : false}>
                         <FormLabel>Industry</FormLabel>
                         <Select value={industry} placeholder='Select your market' onChange={((e)=>{set_industry(e.target.value)})}>

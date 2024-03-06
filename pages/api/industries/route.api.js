@@ -2,10 +2,22 @@ import axios from 'axios';
 import Handler from '../routehandler';
 
 let base_url = Handler();
+const options = {
+    // Ensure no referrer is sent
+    'Referrer-Policy': 'no-referrer',
+}
 
 export async function Get_Industries_Srt() {
-	const result = axios.get(`${base_url}/api/industries/srt`);
-    return result;
+	// const result = await axios.get(`${base_url}/api/industries/srt`,{headers: options});
+    // return result;
+    try {
+        const result = await axios.get(`${base_url}/api/industries/srt`, { headers: options });
+        return result; // Return just the data from the response
+    } catch (error) {
+        // Handle errors
+        console.error('Error fetching industries:', error);
+        throw error; // Rethrow the error to be handled elsewhere
+    }
 }
 
 export async function Get_Industry_data(title) {
