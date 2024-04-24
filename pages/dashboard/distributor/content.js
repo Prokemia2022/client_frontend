@@ -9,6 +9,7 @@ import Manufacturers from "./manufacturers";
 import Settings from "./settings";
 import Pricing from "../../../components/ui/Dashboard/pricing";
 import Edit_Product_Details from "../../../components/ui/Dashboard/Product/edit";
+import Samples from "./samples";
 
 export default function Content(){
     const {active_page} = UsedashboardContext();
@@ -16,6 +17,10 @@ export default function Content(){
         return ( <Home/> ) 
     }else if (active_page == 'Inventory'){ 
         return( <Inventory/> ) 
+    }else if (active_page == 'Quotes'){ 
+        return( <Home /> ) 
+    }else if (active_page == 'Samples'){ 
+        return( <Samples /> ) 
     }else if (active_page == 'Experts'){ 
         return( <Expert_Body/> ) 
     }else if (active_page == 'Manufacturers'){ 
