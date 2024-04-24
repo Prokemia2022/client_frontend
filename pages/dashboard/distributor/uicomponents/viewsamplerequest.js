@@ -14,7 +14,7 @@ const View_Sample_Request=({sample_data,view_drawer_disclosure,edit_drawer_discl
     const {user } = useUserContext();
     const toast = useToast();
     // write the usestate for the following 4 lines of code
-    const sample_id = sample_data._id;
+    const sample_id = sample_data?._id;
 
     const [follow_up_date,set_follow_up_date]=useState(sample_data?.follow_up_date)
     const [follow_up_remarks,set_follow_up_remarks]=useState(sample_data?.follow_up_remarks)
