@@ -25,7 +25,7 @@ export default function Index(){
         set_active_page(page);
         if(!signed_in){
             toast({ title: 'Authentication required to access dashboard', description: '', status: 'error', variant:'left-accent', position:'top-left', isClosable: true, });
-            router.back('/');
+            router.push('/');
             return ;
         }
     },[page,signed_in]);

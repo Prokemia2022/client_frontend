@@ -1,10 +1,15 @@
-import { Drawer, DrawerBody, DrawerFooter, DrawerHeader, DrawerOverlay, DrawerContent, DrawerCloseButton, Button, Image, Text, Flex, Box, HStack, Divider, Select, FormControl, FormLabel, FormErrorMessage, Textarea, Input, useToast, NumberInput, NumberInputField, NumberInputStepper, NumberIncrementStepper, NumberDecrementStepper,
+import { Drawer, DrawerBody, DrawerFooter, DrawerHeader, DrawerOverlay, DrawerContent, DrawerCloseButton, Button, Image, Text, Flex, Box, HStack, Divider, Select, FormControl, FormLabel, FormErrorMessage, Textarea, Input, useToast, NumberInput, NumberInputField, NumberInputStepper, NumberIncrementStepper, NumberDecrementStepper, Icon,
 } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
 import { useUserContext } from '../../Providers/userContext';
 import { UseTechnologiesSrt } from '../../../hooks/technology/useTechnologiesSrt';
 import { UseIndustriesSrt } from '../../../hooks/industries/useIndustriesSrt';
 import NewSample from '../../../pages/api/call_to_action/sample.api';
+import { useForm, Controller } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup"
+import * as yup from "yup"
+import { CiWarning } from 'react-icons/ci';
+import NewSampleForm from '../../Forms/NewSampleForm';
 
 const Make_A_Sample=({prod_data,view_drawer_disclosure})=>{
     const {user} = useUserContext();
@@ -42,29 +47,38 @@ const Make_A_Sample=({prod_data,view_drawer_disclosure})=>{
 	}
 
     const payload = {
-        product_name : prod_data?.name_of_product,
         product_id : prod_data?._id,
         listed_by_id : prod_data?.listed_by_id,
-        email_of_lister : prod_data?. email_of_lister,
-        technology,
+        client_id:  user?._id,
+        requester_id: user?._id,
+        supplier_id:prod_data?.listed_by_id,
         industry,
-        first_name: user?.first_name ,			
-        last_name : user?.last_name,			
-        company_name: user?.company_name,		
-        email_of_company: user?.email_of_company || user?.email_of_salesperson,	
-        mobile_of_company: user?.mobile_of_company || user?.mobile_of_salesperson,	
-        address: user?.address ,			
+        technology,
         description,
         number_of_samples,      
         annual_volume,      
-        units,              
+        units,             
         additional_info,
-        requester_id:           user?._id,
-        email_sent:             false,
-        suspension_status:      false,
-        Notification_Status:    false,
-        approval_status:        false, 
-    }
+        follow_up_date: '',
+        follow_up_remarks: '',
+        follow_up_prospect_status: false,
+        follow_up_sampling_period: 0, // number of says the client requested to sample the product
+        follow_up_sampling_price: 0, // price per unit of requested sample
+        // closing
+        conversion_client_status: false,
+        conversion_client_price: 0,
+        conversion_client_date: '',
+        // delivery
+        delivery_date: '',
+        delivery_remarks: '',
+        // sample status
+        sample_status: false, // the active status of the sample True: Active, False: Declined
+        sample_status_stage: '',  // the active stage of the sample
+        sample_status_comment: '',  // comment on the stage of the sample i.e status: False, Stage:declined, reason: The Client is spamming. 
+        deletion_status: false,
+        client_notification_Status: false,
+        supplier_notification_Status: false,
+    };
 
     const Handle_Sumbit=async()=>{
         set_saving(true)
@@ -73,7 +87,7 @@ const Make_A_Sample=({prod_data,view_drawer_disclosure})=>{
             set_saving(false)
             return ;
         }
-        if (!payload?.address || !industry || !technology || !description || !number_of_samples){
+        if (!annual_volume || !units || !industry || !technology || !description || !number_of_samples){
             toast({title:'Warning!',description:'Required fields need to be filled',status:'warning',position:'top-left',variant:'left-accent',isClosable:true})
             set_input_error(true)
             set_saving(false)
@@ -104,8 +118,6 @@ const Make_A_Sample=({prod_data,view_drawer_disclosure})=>{
         set_input_error(false)
         set_saving(false)
     }
-
-
     return(
         <Drawer isOpen={view_drawer_disclosure?.isOpen} placement='right' onClose={view_drawer_disclosure?.onClose} size='md' >
             <DrawerOverlay />
@@ -115,77 +127,79 @@ const Make_A_Sample=({prod_data,view_drawer_disclosure})=>{
                 Make a Sample request
             </DrawerHeader>
             <DrawerBody mt='10px' p='4'>
-                <HStack borderRadius={10} bg='#eee' p='2' my='2'>
-                    <Image src='../Pro.png' boxSize={'50'} alt='image'/>
-                    <Text>{prod_data?.name_of_product}</Text>
-                </HStack>
-                <Divider />
-                <FormControl mt='2' isRequired isInvalid={input_error && number_of_samples == '' ? true : false}>
-                    <FormLabel>Number of samples</FormLabel>
-                    <NumberInput defaultValue={1} min={1} onChange={((e)=>{set_number_of_samples(e)})}>
-                        <NumberInputField />
-                        <NumberInputStepper>
-                            <NumberIncrementStepper />
-                            <NumberDecrementStepper />
-                        </NumberInputStepper>
-                    </NumberInput>
-                    {input_error && number_of_samples == '' ? <FormErrorMessage>The number of samples.</FormErrorMessage> : ( null )}
-                </FormControl>
-                <Flex mt='2' gap='2' flexDirection={{base:'column',md:'row'}}>
-                    <FormControl isRequired isInvalid={input_error && industry == '' ? true : false}>
-                        <FormLabel>Industry</FormLabel>
-                        <Select value={industry} placeholder='Select your market' onChange={((e)=>{set_industry(e.target.value)})}>
-                            {industries_data?.map((item)=>{
-                                return(
-                                    <option key={item?._id} value={item?.title}>{item?.title}</option>
-                                )
-                            })}
-                        </Select>
-                        {input_error && industry == '' ? 
-                            <FormErrorMessage>A industry is required.</FormErrorMessage>
-                        : (
-                            null
-                        )}
+                <NewSampleForm prod_data={prod_data} view_drawer_disclosure={view_drawer_disclosure}/>
+                    {/* {!user && <HStack color='red.400' bg='red.200' borderRadius={'md'} p='2' mt='2' align={'center'}><Icon as={CiWarning} boxSize='4'/> <Text>You need to be signed in to request a sample</Text></HStack>}
+                    <HStack borderRadius={10} bg='#eee' p='2' my='2'>
+                        <Image src='../Pro.png' boxSize={'50'} alt='image'/>
+                        <Text>{prod_data?.name_of_product}</Text>
+                    </HStack>
+                    <Divider />
+                    <FormControl mt='2' isRequired isInvalid={input_error && number_of_samples == '' ? true : false}>
+                        <FormLabel>Number of samples</FormLabel>
+                        <NumberInput defaultValue={1} min={1} onChange={((e)=>{set_number_of_samples(e)})}>
+                            <NumberInputField />
+                            <NumberInputStepper>
+                                <NumberIncrementStepper />
+                                <NumberDecrementStepper />
+                            </NumberInputStepper>
+                        </NumberInput>
+                        {input_error && number_of_samples == '' ? <FormErrorMessage>The number of samples.</FormErrorMessage> : ( null )}
                     </FormControl>
-                    <FormControl isRequired isInvalid={input_error && technology == '' ? true : false}>
-                        <FormLabel>Technology</FormLabel>
-                        <Select value={technology} placeholder='Select your application' onChange={((e)=>{set_technology(e.target.value)})} >
-                            {technologies_data?.map((item)=>{
-                                return(
-                                    <option key={item?._id} value={item?.title}>{item?.title}</option>
+                    <Flex mt='2' gap='2' flexDirection={{base:'column',md:'row'}}>
+                        <FormControl isRequired isInvalid={input_error && industry == '' ? true : false}>
+                            <FormLabel>Industry</FormLabel>
+                            <Select value={industry} placeholder='Select your market' onChange={((e)=>{set_industry(e.target.value)})}>
+                                {industries_data?.map((item)=>{
+                                    return(
+                                        <option key={item?._id} value={item?.title}>{item?.title}</option>
+                                    )
+                                })}
+                            </Select>
+                            {input_error && industry == '' ? 
+                                <FormErrorMessage>A industry is required.</FormErrorMessage>
+                            : (
+                                null
+                            )}
+                        </FormControl>
+                        <FormControl isRequired isInvalid={input_error && technology == '' ? true : false}>
+                            <FormLabel>Technology</FormLabel>
+                            <Select value={technology} placeholder='Select your application' onChange={((e)=>{set_technology(e.target.value)})} >
+                                {technologies_data?.map((item)=>{
+                                    return(
+                                        <option key={item?._id} value={item?.title}>{item?.title}</option>
 
-                                )
-                            })}
-                        </Select>
-                        {input_error && technology == '' ? 
-                            <FormErrorMessage>A technology is required.</FormErrorMessage>
-                        : (
-                            null
-                        )}
-                    </FormControl>
-                </Flex>
-                <Textarea my='2' placeholder='How des your business intend to use this product?' value={description} onChange={((e)=>{set_description(e.target.value)})}/>
-                <Box>
-                    <Text my='2' fontSize={'lg'} fontWeight={'bold'}>Expected Annual Volume</Text>
-                    <Text my='2' fontSize={'md'} color='gray.300'>The quantity your business will require annually.</Text>
-                    <Flex w='full' gap='2' my='2'>
-                        <Input value={annual_volume} type='number' variant='outline' placeholder='Expected Annual Volume e.g 2000' onChange={((e)=>{set_annual_volume(e.target.value)})} flex='1'/>
-                        <Select placeholder='Units' onChange={((e)=>{set_units(e.target.value)})} w='20%'>
-                            <option value={'Kg'}>Kg</option>
-                            <option value={'Lb'}>Lb</option>
-                            <option value={'Gal'}>Gal</option>
-                            <option value={'L'}>L</option>
-                        </Select>
+                                    )
+                                })}
+                            </Select>
+                            {input_error && technology == '' ? 
+                                <FormErrorMessage>A technology is required.</FormErrorMessage>
+                            : (
+                                null
+                            )}
+                        </FormControl>
                     </Flex>
-                    <Textarea my='2' placeholder='Additional infomation for the supplier?' value={additional_info} onChange={((e)=>{set_additional_info(e.target.value)})}/>
-                </Box>
-            </DrawerBody>
-            <DrawerFooter>
-                {saving ? <Button isLoading loadingText='submitting ...' colorScheme='teal'/> : <Button colorScheme='teal' onClick={Handle_Sumbit}> Submit Request</Button> }
-                <Button ml='2' variant='outline' mr={3} onClick={view_drawer_disclosure?.onClose}>
-                    Close
-                </Button>
-            </DrawerFooter>
+                    <Textarea my='2' placeholder='How des your business intend to use this product?' value={description} onChange={((e)=>{set_description(e.target.value)})}/>
+                    <Box>
+                        <Text my='2' fontSize={'lg'} fontWeight={'bold'}>Expected Annual Volume</Text>
+                        <Text my='2' fontSize={'md'} color='gray.300'>The quantity your business will require annually.</Text>
+                        <Flex w='full' gap='2' my='2'>
+                            <Input value={annual_volume} type='number' variant='outline' placeholder='Expected Annual Volume e.g 2000' onChange={((e)=>{set_annual_volume(e.target.value)})} flex='1'/>
+                            <Select placeholder='Units' onChange={((e)=>{set_units(e.target.value)})} w='20%'>
+                                <option value={'Kg'}>Kg</option>
+                                <option value={'Lb'}>Lb</option>
+                                <option value={'Gal'}>Gal</option>
+                                <option value={'L'}>L</option>
+                            </Select>
+                        </Flex>
+                        <Textarea my='2' placeholder='Additional infomation for the supplier?' value={additional_info} onChange={((e)=>{set_additional_info(e.target.value)})}/>
+                    </Box> */}
+                </DrawerBody>
+                {/* <DrawerFooter> 
+                    {saving ? <Button isLoading loadingText='submitting ...' colorScheme='teal'/> : <Button isDisabled={!user} colorScheme='teal' onClick={Handle_Sumbit}> Submit Request</Button> }
+                    <Button ml='2' variant='outline' mr={3} onClick={view_drawer_disclosure?.onClose}>
+                        Close
+                    </Button>
+                </DrawerFooter> */}
             </DrawerContent>
         </Drawer>
     )

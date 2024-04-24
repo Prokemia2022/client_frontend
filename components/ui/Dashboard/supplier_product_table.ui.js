@@ -25,7 +25,6 @@ export const Product_Table=({data})=>{
                         <Tr>
                             <Th > Name </Th>
                             <Th > Featured status </Th>
-                            <Th > Approval status </Th>
                             <Th > Exipry status  </Th>
                             <Th > Actions   </Th>
                         </Tr>
@@ -67,8 +66,7 @@ const Product_Card=(props)=>{
     return(
         <Tr>
             <Td color='#009393' _hover={{ textDecoration:'underline dotted', cursor:'pointer'}}>{item?.name_of_product}</Td>
-            <Td> {item?.sponsored? 'Featured':'not featured'}</Td>
-            <Td> {item?.verification_status? 'Approved':'not approved'}</Td>
+            <Td> {item?.sponsored ? 'Featured':'not featured'}</Td>
             <Td> {item?.short_on_expiry_date ? moment( item?.short_on_expiry_date).format("MMM Do YY") : '-'}</Td>
             <Td>
                 <Menu>

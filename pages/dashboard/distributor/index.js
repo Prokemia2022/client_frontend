@@ -11,6 +11,7 @@ import { BsFillPeopleFill } from "react-icons/bs";
 import { MdFactory } from "react-icons/md";
 import { MdOutlineWorkspacePremium } from "react-icons/md";
 import { Notification } from "../../../components/ui/Dashboard/status_notification";
+import { TbFileInvoice } from "react-icons/tb";
 
 export default function Index(){
     const [signed_in,set_signed]=useState(useFetchToken())
@@ -25,7 +26,7 @@ export default function Index(){
         set_active_page(page);
         if(!signed_in){
             toast({ title: 'Authentication required to access dashboard', description: '', status: 'error', variant:'left-accent', position:'top-left', isClosable: true, });
-            router.back('/');
+            router.push('/');
             return ;
         }
     },[page,signed_in]);
@@ -47,6 +48,14 @@ const navigation = [
     {
         title:  'Inventory',
         icon:   FaFolderOpen
+    },
+    {
+        title:  'Quotes',
+        icon:   TbFileInvoice
+    },
+    {
+        title:  'Samples',
+        icon:   TbFileInvoice
     },
     {
         title:  'Experts',

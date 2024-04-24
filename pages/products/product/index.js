@@ -272,18 +272,21 @@ export default function Product(){
                             <Text>Price</Text>
                             <Text fontSize={'12px'}>Available on quote</Text>
                         </Box>
-                        <Flex direction={'column'} gap='2' mt='2'>
-                            <Make_A_Quote view_drawer_disclosure={view_quote_drawer_disclosure} prod_data={product_data}/>
-                            <Make_A_Sample view_drawer_disclosure={view_sample_drawer_disclosure} prod_data={product_data}/>
-                            <Button bg='#343838' color={'#fff'} onClick={(()=>{view_sample_drawer_disclosure.onToggle()})}>Request a Sample</Button>
-                            <Box position='relative' padding='2'>
-                                <Divider />
-                                <AbsoluteCenter bg='white' px='4'>
-                                    or
-                                </AbsoluteCenter>
-                            </Box>
-                            <Button bg={'#009393'} color='#fff' onClick={(()=>{view_quote_drawer_disclosure.onToggle()})}>Request a Qoute</Button>
-                        </Flex>
+                        {user?._id === product_data?.listed_by_id? 
+                            null:
+                            <Flex direction={'column'} gap='2' mt='2'>
+                                <Make_A_Quote view_drawer_disclosure={view_quote_drawer_disclosure} prod_data={product_data}/>
+                                <Make_A_Sample view_drawer_disclosure={view_sample_drawer_disclosure} prod_data={product_data}/>
+                                <Button bg='#343838' color={'#fff'} onClick={(()=>{view_sample_drawer_disclosure.onToggle()})}>Request a Sample</Button>
+                                <Box position='relative' padding='2'>
+                                    <Divider />
+                                    <AbsoluteCenter bg='white' px='4'>
+                                        or
+                                    </AbsoluteCenter>
+                                </Box>
+                                <Button bg={'#009393'} color='#fff' onClick={(()=>{view_quote_drawer_disclosure.onToggle()})}>Request a Qoute</Button>
+                            </Flex>
+                        }
                     </Box>
                 </GridItem>
             </Grid>
